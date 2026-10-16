@@ -1,0 +1,1286 @@
+[
+  {
+    "id": "upper-works",
+    "label": "洞窟",
+    "reveal_conditions": [
+      {
+        "actor_id": "goblin-shaman",
+        "kind": "actor_defeated"
+      }
+    ],
+    "rooms": [
+      {
+        "room_id": "r1c1",
+        "x": 0.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "r1c2",
+        "x": 1.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "r1c3",
+        "x": 2.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "r1c4",
+        "x": 3.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "r1c5",
+        "x": 4.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "r1c6",
+        "x": 5.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "r1c7",
+        "x": 6.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "r1c8",
+        "x": 7.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "r1c9",
+        "x": 8.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "r2c1",
+        "x": 0.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "r2c2",
+        "x": 1.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "r2c3",
+        "x": 2.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "r2c4",
+        "x": 3.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "r2c5",
+        "x": 4.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "r2c6",
+        "x": 5.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "r2c7",
+        "x": 6.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "r2c8",
+        "x": 7.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "r2c9",
+        "x": 8.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "r3c1",
+        "x": 0.0,
+        "y": 2.0
+      },
+      {
+        "room_id": "r3c2",
+        "x": 1.0,
+        "y": 2.0
+      },
+      {
+        "room_id": "r3c3",
+        "x": 2.0,
+        "y": 2.0
+      },
+      {
+        "room_id": "r3c4",
+        "x": 3.0,
+        "y": 2.0
+      },
+      {
+        "room_id": "r3c5",
+        "x": 4.0,
+        "y": 2.0
+      },
+      {
+        "room_id": "r3c6",
+        "x": 5.0,
+        "y": 2.0
+      },
+      {
+        "room_id": "r3c7",
+        "x": 6.0,
+        "y": 2.0
+      },
+      {
+        "room_id": "r3c8",
+        "x": 7.0,
+        "y": 2.0
+      },
+      {
+        "room_id": "r3c9",
+        "x": 8.0,
+        "y": 2.0
+      },
+      {
+        "room_id": "r4c1",
+        "x": 0.0,
+        "y": 3.0
+      },
+      {
+        "room_id": "r4c2",
+        "x": 1.0,
+        "y": 3.0
+      },
+      {
+        "room_id": "r4c3",
+        "x": 2.0,
+        "y": 3.0
+      },
+      {
+        "room_id": "r4c4",
+        "x": 3.0,
+        "y": 3.0
+      },
+      {
+        "room_id": "r4c5",
+        "x": 4.0,
+        "y": 3.0
+      },
+      {
+        "room_id": "r4c6",
+        "x": 5.0,
+        "y": 3.0
+      },
+      {
+        "room_id": "r4c7",
+        "x": 6.0,
+        "y": 3.0
+      },
+      {
+        "room_id": "r4c8",
+        "x": 7.0,
+        "y": 3.0
+      },
+      {
+        "room_id": "r4c9",
+        "x": 8.0,
+        "y": 3.0
+      },
+      {
+        "room_id": "r5c1",
+        "x": 0.0,
+        "y": 4.0
+      },
+      {
+        "room_id": "r5c2",
+        "x": 1.0,
+        "y": 4.0
+      },
+      {
+        "room_id": "r5c3",
+        "x": 2.0,
+        "y": 4.0
+      },
+      {
+        "room_id": "r5c4",
+        "x": 3.0,
+        "y": 4.0
+      },
+      {
+        "room_id": "r5c5",
+        "x": 4.0,
+        "y": 4.0
+      },
+      {
+        "room_id": "r5c6",
+        "x": 5.0,
+        "y": 4.0
+      },
+      {
+        "room_id": "r5c7",
+        "x": 6.0,
+        "y": 4.0
+      },
+      {
+        "room_id": "r5c8",
+        "x": 7.0,
+        "y": 4.0
+      },
+      {
+        "room_id": "r5c9",
+        "x": 8.0,
+        "y": 4.0
+      },
+      {
+        "room_id": "r6c1",
+        "x": 0.0,
+        "y": 5.0
+      },
+      {
+        "room_id": "r6c2",
+        "x": 1.0,
+        "y": 5.0
+      },
+      {
+        "room_id": "r6c3",
+        "x": 2.0,
+        "y": 5.0
+      },
+      {
+        "room_id": "r6c4",
+        "x": 3.0,
+        "y": 5.0
+      },
+      {
+        "room_id": "r6c5",
+        "x": 4.0,
+        "y": 5.0
+      },
+      {
+        "room_id": "r6c6",
+        "x": 5.0,
+        "y": 5.0
+      },
+      {
+        "room_id": "r6c7",
+        "x": 6.0,
+        "y": 5.0
+      },
+      {
+        "room_id": "r6c8",
+        "x": 7.0,
+        "y": 5.0
+      },
+      {
+        "room_id": "r6c9",
+        "x": 8.0,
+        "y": 5.0
+      },
+      {
+        "room_id": "r7c1",
+        "x": 0.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "r7c2",
+        "x": 1.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "r7c3",
+        "x": 2.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "r7c4",
+        "x": 3.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "r7c5",
+        "x": 4.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "r7c6",
+        "x": 5.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "r7c7",
+        "x": 6.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "r7c8",
+        "x": 7.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "r7c9",
+        "x": 8.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "r8c1",
+        "x": 0.0,
+        "y": 7.0
+      },
+      {
+        "room_id": "r8c2",
+        "x": 1.0,
+        "y": 7.0
+      },
+      {
+        "room_id": "r8c3",
+        "x": 2.0,
+        "y": 7.0
+      },
+      {
+        "room_id": "r8c4",
+        "x": 3.0,
+        "y": 7.0
+      },
+      {
+        "room_id": "r8c5",
+        "x": 4.0,
+        "y": 7.0
+      },
+      {
+        "room_id": "r8c6",
+        "x": 5.0,
+        "y": 7.0
+      },
+      {
+        "room_id": "r8c7",
+        "x": 6.0,
+        "y": 7.0
+      },
+      {
+        "room_id": "r8c8",
+        "x": 7.0,
+        "y": 7.0
+      },
+      {
+        "room_id": "r8c9",
+        "x": 8.0,
+        "y": 7.0
+      },
+      {
+        "room_id": "r9c1",
+        "x": 0.0,
+        "y": 8.0
+      },
+      {
+        "room_id": "r9c2",
+        "x": 1.0,
+        "y": 8.0
+      },
+      {
+        "room_id": "r9c3",
+        "x": 2.0,
+        "y": 8.0
+      },
+      {
+        "room_id": "r9c4",
+        "x": 3.0,
+        "y": 8.0
+      },
+      {
+        "room_id": "r9c5",
+        "x": 4.0,
+        "y": 8.0
+      },
+      {
+        "room_id": "r9c6",
+        "x": 5.0,
+        "y": 8.0
+      },
+      {
+        "room_id": "r9c7",
+        "x": 6.0,
+        "y": 8.0
+      },
+      {
+        "room_id": "r9c8",
+        "x": 7.0,
+        "y": 8.0
+      },
+      {
+        "room_id": "r9c9",
+        "x": 8.0,
+        "y": 8.0
+      }
+    ]
+  },
+  {
+    "id": "deep-forest",
+    "label": "地下森林",
+    "reveal_conditions": [
+      {
+        "actor_id": "elf-king-5",
+        "kind": "actor_defeated"
+      }
+    ],
+    "rooms": [
+      {
+        "room_id": "d1c1",
+        "x": 0.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "d1c2",
+        "x": 1.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "d1c3",
+        "x": 2.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "d1c4",
+        "x": 3.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "d1c5",
+        "x": 4.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "d1c6",
+        "x": 5.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "d1c7",
+        "x": 6.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "d1c8",
+        "x": 7.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "d2c1",
+        "x": 0.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "d2c2",
+        "x": 1.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "d2c3",
+        "x": 2.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "d2c4",
+        "x": 3.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "d2c5",
+        "x": 4.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "d2c6",
+        "x": 5.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "d2c7",
+        "x": 6.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "d2c8",
+        "x": 7.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "d3c1",
+        "x": 0.0,
+        "y": 2.0
+      },
+      {
+        "room_id": "d3c2",
+        "x": 1.0,
+        "y": 2.0
+      },
+      {
+        "room_id": "d3c3",
+        "x": 2.0,
+        "y": 2.0
+      },
+      {
+        "room_id": "d3c4",
+        "x": 3.0,
+        "y": 2.0
+      },
+      {
+        "room_id": "d3c5",
+        "x": 4.0,
+        "y": 2.0
+      },
+      {
+        "room_id": "d3c6",
+        "x": 5.0,
+        "y": 2.0
+      },
+      {
+        "room_id": "d3c7",
+        "x": 6.0,
+        "y": 2.0
+      },
+      {
+        "room_id": "d3c8",
+        "x": 7.0,
+        "y": 2.0
+      },
+      {
+        "room_id": "d4c1",
+        "x": 0.0,
+        "y": 3.0
+      },
+      {
+        "room_id": "d4c2",
+        "x": 1.0,
+        "y": 3.0
+      },
+      {
+        "room_id": "d4c3",
+        "x": 2.0,
+        "y": 3.0
+      },
+      {
+        "room_id": "d4c4",
+        "x": 3.0,
+        "y": 3.0
+      },
+      {
+        "room_id": "d4c5",
+        "x": 4.0,
+        "y": 3.0
+      },
+      {
+        "room_id": "d4c6",
+        "x": 5.0,
+        "y": 3.0
+      },
+      {
+        "room_id": "d4c7",
+        "x": 6.0,
+        "y": 3.0
+      },
+      {
+        "room_id": "d4c8",
+        "x": 7.0,
+        "y": 3.0
+      },
+      {
+        "room_id": "d5c1",
+        "x": 0.0,
+        "y": 4.0
+      },
+      {
+        "room_id": "d5c2",
+        "x": 1.0,
+        "y": 4.0
+      },
+      {
+        "room_id": "d5c3",
+        "x": 2.0,
+        "y": 4.0
+      },
+      {
+        "room_id": "d5c4",
+        "x": 3.0,
+        "y": 4.0
+      },
+      {
+        "room_id": "d5c5",
+        "x": 4.0,
+        "y": 4.0
+      },
+      {
+        "room_id": "d5c6",
+        "x": 5.0,
+        "y": 4.0
+      },
+      {
+        "room_id": "d5c7",
+        "x": 6.0,
+        "y": 4.0
+      },
+      {
+        "room_id": "d5c8",
+        "x": 7.0,
+        "y": 4.0
+      },
+      {
+        "room_id": "d6c1",
+        "x": 0.0,
+        "y": 5.0
+      },
+      {
+        "room_id": "d6c2",
+        "x": 1.0,
+        "y": 5.0
+      },
+      {
+        "room_id": "d6c3",
+        "x": 2.0,
+        "y": 5.0
+      },
+      {
+        "room_id": "d6c4",
+        "x": 3.0,
+        "y": 5.0
+      },
+      {
+        "room_id": "d6c5",
+        "x": 4.0,
+        "y": 5.0
+      },
+      {
+        "room_id": "d6c6",
+        "x": 5.0,
+        "y": 5.0
+      },
+      {
+        "room_id": "d6c7",
+        "x": 6.0,
+        "y": 5.0
+      },
+      {
+        "room_id": "d6c8",
+        "x": 7.0,
+        "y": 5.0
+      },
+      {
+        "room_id": "d7c1",
+        "x": 0.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "d7c2",
+        "x": 1.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "d7c3",
+        "x": 2.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "d7c4",
+        "x": 3.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "d7c5",
+        "x": 4.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "d7c6",
+        "x": 5.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "d7c7",
+        "x": 6.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "d7c8",
+        "x": 7.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "d8c1",
+        "x": 0.0,
+        "y": 7.0
+      },
+      {
+        "room_id": "d8c2",
+        "x": 1.0,
+        "y": 7.0
+      },
+      {
+        "room_id": "d8c3",
+        "x": 2.0,
+        "y": 7.0
+      },
+      {
+        "room_id": "d8c4",
+        "x": 3.0,
+        "y": 7.0
+      },
+      {
+        "room_id": "d8c5",
+        "x": 4.0,
+        "y": 7.0
+      },
+      {
+        "room_id": "d8c6",
+        "x": 5.0,
+        "y": 7.0
+      },
+      {
+        "room_id": "d8c7",
+        "x": 6.0,
+        "y": 7.0
+      },
+      {
+        "room_id": "d8c8",
+        "x": 7.0,
+        "y": 7.0
+      }
+    ]
+  },
+  {
+    "id": "outer-ring",
+    "label": "外環",
+    "reveal_conditions": [
+      {
+        "actor_id": "fire-elemental",
+        "kind": "actor_defeated"
+      }
+    ],
+    "rooms": [
+      {
+        "room_id": "oan",
+        "x": 6.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "o1",
+        "x": 8.603,
+        "y": 0.594
+      },
+      {
+        "room_id": "o2",
+        "x": 10.691,
+        "y": 2.259
+      },
+      {
+        "room_id": "o3",
+        "x": 11.85,
+        "y": 4.665
+      },
+      {
+        "room_id": "o4",
+        "x": 11.85,
+        "y": 7.335
+      },
+      {
+        "room_id": "o5",
+        "x": 10.691,
+        "y": 9.741
+      },
+      {
+        "room_id": "o6",
+        "x": 8.603,
+        "y": 11.406
+      },
+      {
+        "room_id": "oas",
+        "x": 6.0,
+        "y": 12.0
+      },
+      {
+        "room_id": "o7",
+        "x": 3.397,
+        "y": 11.406
+      },
+      {
+        "room_id": "o8",
+        "x": 1.309,
+        "y": 9.741
+      },
+      {
+        "room_id": "o9",
+        "x": 0.15,
+        "y": 7.335
+      },
+      {
+        "room_id": "o10",
+        "x": 0.15,
+        "y": 4.665
+      },
+      {
+        "room_id": "o11",
+        "x": 1.309,
+        "y": 2.259
+      },
+      {
+        "room_id": "o12",
+        "x": 3.397,
+        "y": 0.594
+      },
+      {
+        "room_id": "oh",
+        "x": 6.0,
+        "y": 6.0
+      }
+    ]
+  },
+  {
+    "id": "the-commoners",
+    "label": "工人村",
+    "reveal_conditions": [],
+    "rooms": [
+      {
+        "room_id": "village_north_gate",
+        "x": 12.0,
+        "y": 3.0
+      },
+      {
+        "room_id": "village_west_2",
+        "x": 8.0,
+        "y": 9.0
+      },
+      {
+        "room_id": "village_west_1",
+        "x": 4.0,
+        "y": 15.0
+      },
+      {
+        "room_id": "village_sw_corner",
+        "x": 0.0,
+        "y": 21.0
+      },
+      {
+        "room_id": "village_square",
+        "x": 8.0,
+        "y": 21.0
+      },
+      {
+        "room_id": "village_south_1",
+        "x": 16.0,
+        "y": 21.0
+      },
+      {
+        "room_id": "village_se_corner",
+        "x": 24.0,
+        "y": 21.0
+      },
+      {
+        "room_id": "village_east_2",
+        "x": 20.0,
+        "y": 15.0
+      },
+      {
+        "room_id": "village_east_1",
+        "x": 16.0,
+        "y": 9.0
+      },
+      {
+        "room_id": "fortress_gate",
+        "x": 12.0,
+        "y": 7.0
+      },
+      {
+        "room_id": "west_iron_walkway",
+        "x": 9.0,
+        "y": 12.0
+      },
+      {
+        "room_id": "steam_prison_cage",
+        "x": 6.0,
+        "y": 17.0
+      },
+      {
+        "room_id": "south_steam_gantry",
+        "x": 12.0,
+        "y": 17.0
+      },
+      {
+        "room_id": "command_bastion",
+        "x": 18.0,
+        "y": 17.0
+      },
+      {
+        "room_id": "east_sentry_walk",
+        "x": 15.0,
+        "y": 12.0
+      },
+      {
+        "room_id": "teleport_platform",
+        "x": 12.0,
+        "y": 14.0
+      }
+    ]
+  },
+  {
+    "id": "the-frost-citadel",
+    "label": "霜之城",
+    "reveal_conditions": [
+      {
+        "key": "has_sensory_enhancer",
+        "kind": "story_var_truthy"
+      }
+    ],
+    "rooms": [
+      {
+        "room_id": "courtyard_center",
+        "x": 12.0,
+        "y": 12.0
+      },
+      {
+        "room_id": "courtyard_north",
+        "x": 12.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "courtyard_northeast",
+        "x": 17.2,
+        "y": 9.0
+      },
+      {
+        "room_id": "courtyard_southeast",
+        "x": 17.2,
+        "y": 15.0
+      },
+      {
+        "room_id": "courtyard_south",
+        "x": 12.0,
+        "y": 18.0
+      },
+      {
+        "room_id": "courtyard_southwest",
+        "x": 6.8,
+        "y": 15.0
+      },
+      {
+        "room_id": "courtyard_northwest",
+        "x": 6.8,
+        "y": 9.0
+      },
+      {
+        "room_id": "frost_wolf_gallery",
+        "x": 12.0,
+        "y": 4.0
+      },
+      {
+        "room_id": "frost_wolf_muster",
+        "x": 12.0,
+        "y": 2.0
+      },
+      {
+        "room_id": "frost_wolf_throne",
+        "x": 12.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "iron_ram_gallery",
+        "x": 20.5,
+        "y": 17.0
+      },
+      {
+        "room_id": "iron_ram_muster",
+        "x": 23.8,
+        "y": 19.0
+      },
+      {
+        "room_id": "iron_ram_throne",
+        "x": 27.0,
+        "y": 21.0
+      },
+      {
+        "room_id": "frost_leopard_gallery",
+        "x": 3.5,
+        "y": 17.0
+      },
+      {
+        "room_id": "frost_leopard_muster",
+        "x": 0.2,
+        "y": 19.0
+      },
+      {
+        "room_id": "frost_leopard_throne",
+        "x": -3.0,
+        "y": 21.0
+      }
+    ]
+  },
+  {
+    "id": "salt-reach",
+    "label": "鹽灘",
+    "reveal_conditions": [
+      {
+        "key": "town_salt_reach_unlocked",
+        "kind": "story_var_truthy"
+      }
+    ],
+    "rooms": [
+      {
+        "room_id": "salt_reach_square",
+        "x": 12.0,
+        "y": 12.0
+      }
+    ]
+  },
+  {
+    "id": "glassbank",
+    "label": "玻璃鎮",
+    "reveal_conditions": [
+      {
+        "key": "town_glassbank_unlocked",
+        "kind": "story_var_truthy"
+      }
+    ],
+    "rooms": [
+      {
+        "room_id": "glassbank_square",
+        "x": 12.0,
+        "y": 12.0
+      }
+    ]
+  },
+  {
+    "id": "woolcross",
+    "label": "羊毛鎮",
+    "reveal_conditions": [
+      {
+        "key": "town_woolcross_unlocked",
+        "kind": "story_var_truthy"
+      }
+    ],
+    "rooms": [
+      {
+        "room_id": "woolcross_square",
+        "x": 12.0,
+        "y": 12.0
+      }
+    ]
+  },
+  {
+    "id": "greenrest",
+    "label": "綠息鎮",
+    "reveal_conditions": [
+      {
+        "key": "town_greenrest_unlocked",
+        "kind": "story_var_truthy"
+      }
+    ],
+    "rooms": [
+      {
+        "room_id": "greenrest_square",
+        "x": 12.0,
+        "y": 12.0
+      }
+    ]
+  },
+  {
+    "id": "brass-yard",
+    "label": "黃銅鎮",
+    "reveal_conditions": [
+      {
+        "key": "town_brass_yard_unlocked",
+        "kind": "story_var_truthy"
+      }
+    ],
+    "rooms": [
+      {
+        "room_id": "brass_yard_square",
+        "x": 12.0,
+        "y": 12.0
+      }
+    ]
+  },
+  {
+    "id": "the-high-sanctuary",
+    "label": "高聖所",
+    "reveal_conditions": [
+      {
+        "key": "has_sensory_enhancer",
+        "kind": "story_var_truthy"
+      }
+    ],
+    "rooms": [
+      {
+        "room_id": "sanctuary_grand_terrace",
+        "x": 12.0,
+        "y": 17.0
+      },
+      {
+        "room_id": "sanctuary_crossroads",
+        "x": 12.0,
+        "y": 12.0
+      },
+      {
+        "room_id": "sanctuary_wall_nw_tower",
+        "x": 0.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "sanctuary_wall_north",
+        "x": 12.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "sanctuary_wall_ne_tower",
+        "x": 24.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "sanctuary_wall_east",
+        "x": 24.0,
+        "y": 12.0
+      },
+      {
+        "room_id": "sanctuary_wall_se_tower",
+        "x": 24.0,
+        "y": 24.0
+      },
+      {
+        "room_id": "sanctuary_wall_south",
+        "x": 12.0,
+        "y": 24.0
+      },
+      {
+        "room_id": "sanctuary_wall_sw_tower",
+        "x": 0.0,
+        "y": 24.0
+      },
+      {
+        "room_id": "sanctuary_wall_west",
+        "x": 0.0,
+        "y": 12.0
+      },
+      {
+        "room_id": "basilica_portal",
+        "x": 10.0,
+        "y": 10.0
+      },
+      {
+        "room_id": "basilica_nave",
+        "x": 6.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "basilica_high_altar",
+        "x": 6.0,
+        "y": 3.0
+      },
+      {
+        "room_id": "basilica_vestry",
+        "x": 9.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "basilica_clergy_cells",
+        "x": 9.0,
+        "y": 3.0
+      },
+      {
+        "room_id": "scriptorium_portal",
+        "x": 14.0,
+        "y": 10.0
+      },
+      {
+        "room_id": "scriptorium_cloister",
+        "x": 18.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "scriptorium_library",
+        "x": 18.0,
+        "y": 3.0
+      },
+      {
+        "room_id": "scriptorium_archive_vault",
+        "x": 15.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "scriptorium_secret_archive",
+        "x": 15.0,
+        "y": 3.0
+      },
+      {
+        "room_id": "herbarium_portal",
+        "x": 10.0,
+        "y": 14.0
+      },
+      {
+        "room_id": "herbarium_garden",
+        "x": 6.0,
+        "y": 18.0
+      },
+      {
+        "room_id": "herbarium_apothecary",
+        "x": 9.0,
+        "y": 18.0
+      },
+      {
+        "room_id": "herbarium_still_room",
+        "x": 6.0,
+        "y": 21.0
+      },
+      {
+        "room_id": "herbarium_water_clock",
+        "x": 9.0,
+        "y": 21.0
+      },
+      {
+        "room_id": "mortuary_portal",
+        "x": 14.0,
+        "y": 14.0
+      },
+      {
+        "room_id": "mortuary_descent",
+        "x": 18.0,
+        "y": 18.0
+      },
+      {
+        "room_id": "mortuary_crypt",
+        "x": 18.0,
+        "y": 21.0
+      },
+      {
+        "room_id": "mortuary_embalming_hall",
+        "x": 15.0,
+        "y": 18.0
+      },
+      {
+        "room_id": "mortuary_reanimation_sanctum",
+        "x": 15.0,
+        "y": 21.0
+      },
+      {
+        "room_id": "sanctuary_main_platform",
+        "x": 15.0,
+        "y": 24.0
+      }
+    ]
+  },
+  {
+    "id": "the-architects-seat",
+    "label": "設計者之座",
+    "reveal_conditions": [
+      {
+        "key": "entered_floor7",
+        "kind": "story_var_truthy"
+      }
+    ],
+    "rooms": [
+      {
+        "room_id": "floor7_antechamber",
+        "x": 0.0,
+        "y": 0.0
+      }
+    ]
+  }
+]

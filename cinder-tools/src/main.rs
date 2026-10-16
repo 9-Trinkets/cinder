@@ -4,6 +4,7 @@ use std::path::{Path, PathBuf};
 mod builder;
 mod hygiene;
 mod lint;
+mod locale;
 mod scaffold;
 mod transcript;
 
@@ -55,6 +56,51 @@ enum Commands {
         /// Cyclomatic complexity threshold per function (default: 15)
         #[arg(long, default_value_t = 15)]
         complexity: usize,
+    },
+    /// Scaffold, apply, or check content-pack locale translations
+    Locale {
+        #[command(subcommand)]
+        cmd: LocaleCommands,
+    },
+}
+
+#[derive(Subcommand)]
+enum LocaleCommands {
+    /// Duplicate a source locale's structure into a new locale and emit a worklist
+    Scaffold {
+        /// Pack directory (e.g. content/layla)
+        #[arg(long, default_value = "content/layla")]
+        pack_dir: PathBuf,
+        /// Source locale code (default: en)
+        #[arg(long, default_value = "en")]
+        from: String,
+        /// Target locale code (e.g. zh-TW)
+        #[arg(long)]
+        to: String,
+        /// Overwrite the target locale, discarding existing files and translations
+        #[arg(long)]
+        force: bool,
+    },
+    /// Apply reviewed translations from the worklist into the locale files
+    Apply {
+        /// Pack directory (e.g. content/layla)
+        #[arg(long, default_value = "content/layla")]
+        pack_dir: PathBuf,
+        /// Target locale code
+        #[arg(long)]
+        locale: String,
+    },
+    /// Report translation coverage for a locale
+    Check {
+        /// Pack directory (e.g. content/layla)
+        #[arg(long, default_value = "content/layla")]
+        pack_dir: PathBuf,
+        /// Source locale code (default: en)
+        #[arg(long, default_value = "en")]
+        from: String,
+        /// Target locale code
+        #[arg(long)]
+        locale: String,
     },
 }
 
@@ -263,6 +309,29 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 test_warnings.len()
             );
         }
+        Commands::Locale { cmd } => match cmd {
+            LocaleCommands::Scaffold {
+                pack_dir,
+                from,
+                to,
+                force,
+            } => {
+                locale::scaffold::scaffold(&pack_dir, &from, &to, force)?;
+            }
+            LocaleCommands::Apply { pack_dir, locale } => {
+                locale::apply::apply(&pack_dir, &locale)?;
+            }
+            LocaleCommands::Check {
+                pack_dir,
+                from,
+                locale,
+            } => {
+                let pending = locale::apply::check(&pack_dir, &from, &locale)?;
+                if pending > 0 {
+                    std::process::exit(1);
+                }
+            }
+        },
     }
 
     Ok(())

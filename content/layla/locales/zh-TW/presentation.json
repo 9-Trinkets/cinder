@@ -1,0 +1,28 @@
+{
+  "error_text": {
+    "actor_not_here": "你在這裡沒看到{actor_name}。",
+    "actor_unknown": "你在這裡不認得叫「{target}」的人。",
+    "cannot_go": "你從這裡看不到往{target}的路。",
+    "dialogue_unavailable": "{actor_name}現在沒有回應。",
+    "feature_unknown": "你在這裡沒注意到叫「{target}」的東西。",
+    "room_missing": "前方的路，消失在黑暗裡。",
+    "unknown_input": "你不確定要怎麼「{raw_input}」。試試：{available_commands}。"
+  },
+  "presentation_text": {
+    "act_ended": "黑暗自四面合攏，棋盤屏住了呼吸。",
+    "actor_arrived": "{actor_name}自{room_title}走來。",
+    "actor_departed": "{actor_name}離開，走向{room_title}。",
+    "actor_speech": "{actor_name}：{text}",
+    "actor_targeted_speech": "{actor_name}（對{target_name}）：{text}",
+    "ally_suffix": "（同伴）",
+    "exits": "\n\n出口：{exits}。",
+    "feature_consumables": "\n\n{feature_label}可取得：{items}。",
+    "features": "\n\n你注意到：{features}。",
+    "hostile_suffix": "（敵人）",
+    "loose_items": "\n\n地上：{items}。",
+    "objective": "\n\n操作員：\n{objective}",
+    "party": "你的隊伍：{party}。",
+    "people": "\n\n在你身邊的：{people}。",
+    "room_observation": "{body}{features}{items}{people}{exits}"
+  }
+}

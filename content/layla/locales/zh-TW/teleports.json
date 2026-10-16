@@ -1,0 +1,92 @@
+{
+  "max_chalk_anchors": 3,
+  "permanent_anchors": [
+    {
+      "aliases": [
+        "teleport_platform",
+        "floor4_platform",
+        "floor 4 platform",
+        "floor 4"
+      ],
+      "armed_by": "anchor_floor4_platform",
+      "room_id": "teleport_platform",
+      "title": "第四層傳送台"
+    },
+    {
+      "aliases": [
+        "courtyard_center",
+        "courtyard",
+        "floor5_start",
+        "floor5_gate",
+        "floor 5 teleport platform",
+        "floor 5 platform",
+        "floor 5"
+      ],
+      "armed_by": "anchor_floor5_gate",
+      "room_id": "courtyard_center",
+      "title": "霜之城中庭"
+    },
+    {
+      "aliases": [
+        "salt reach",
+        "salt_reach",
+        "salt"
+      ],
+      "armed_by": "town_salt_reach_unlocked",
+      "room_id": "salt_reach_square",
+      "title": "鹽灘"
+    },
+    {
+      "aliases": [
+        "glassbank",
+        "glass bank",
+        "glass"
+      ],
+      "armed_by": "town_glassbank_unlocked",
+      "room_id": "glassbank_square",
+      "title": "玻璃鎮"
+    },
+    {
+      "aliases": [
+        "woolcross",
+        "wool cross",
+        "wool"
+      ],
+      "armed_by": "town_woolcross_unlocked",
+      "room_id": "woolcross_square",
+      "title": "羊毛鎮"
+    },
+    {
+      "aliases": [
+        "greenrest",
+        "green rest",
+        "green"
+      ],
+      "armed_by": "town_greenrest_unlocked",
+      "room_id": "greenrest_square",
+      "title": "綠息鎮"
+    },
+    {
+      "aliases": [
+        "brass yard",
+        "brass_yard",
+        "brass"
+      ],
+      "armed_by": "town_brass_yard_unlocked",
+      "room_id": "brass_yard_square",
+      "title": "黃銅鎮"
+    },
+    {
+      "aliases": [
+        "sanctuary_main_platform",
+        "floor6_platform",
+        "floor 6 platform",
+        "sanctuary platform",
+        "floor 6"
+      ],
+      "armed_by": "anchor_floor6_platform",
+      "room_id": "sanctuary_main_platform",
+      "title": "聖堂傳送台"
+    }
+  ]
+}

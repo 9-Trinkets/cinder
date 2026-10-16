@@ -1,0 +1,4553 @@
+[
+  {
+    "id": "player",
+    "name": "Layla",
+    "room_id": "r1c1",
+    "initial_stats": {
+      "strength": 3,
+      "endurance": 1,
+      "dexterity": 5,
+      "intelligence": 3,
+      "hp": 18,
+      "mp": 18
+    },
+    "aliases": [
+      "layla",
+      "me",
+      "myself"
+    ],
+    "skills": [
+      "strike",
+      "trace",
+      "charm"
+    ],
+    "inspect_text": "Yourself.",
+    "attackable": false,
+    "tags": [],
+    "initial_inventory": {
+      "magic-chalk": 1
+    },
+    "prompt_context": {
+      "character_notes": [
+        "Layla is a well-educated urban woman in her twenties with a chess player's disciplined, analytical mindset. She reads the world as an architecture of rules and spaces.",
+        "Her attention is careful and structured: she counts, she maps, she repeats a motion until it is exact, and she notices patterns other people would miss.",
+        "She is quietly tender with the creatures that follow her, never speaking of it, only showing it by slowing her stride so they can keep up."
+      ],
+      "subtext_notes": [
+        "The monsters she charmed are, without her knowing it, reflections of herself: things under a power they did not choose, being used for a game that is not theirs.",
+        "She is not afraid of the dark. She is curious about it.",
+        "She reads the grid the way she reads a game she played before she can remember."
+      ],
+      "response_notes": [
+        "Speak with clean, restrained poise — like an educated chess instructor explaining a board. Straightforward wit, never frantic or vulgar.",
+        "In moments of tension or focus, dialogue becomes ultra-concise ('Knock them out, don't kill.').",
+        "Notice small details, exact numbers, and geometric bounds. Ask about the underlying rules.",
+        "Forbidden: internet slang, childish diminutives, or overly sentimental emotional displays."
+      ],
+      "behavior_examples": [
+        "Counting the seams in a wall before she reads what is scored into it.",
+        "Tracing a newly learned sigil in the air with her fingertip.",
+        "Walking a half-step slower so a follower can keep up.",
+        "Filing every new rule away like a move in an old game."
+      ]
+    },
+    "game_data": {},
+    "level": 1
+  },
+  {
+    "id": "golem-dark-nw",
+    "name": "dark golem",
+    "room_id": "r3c3",
+    "initial_stats": {
+      "strength": 4,
+      "endurance": 4,
+      "dexterity": 2,
+      "intelligence": 1,
+      "hp": 28,
+      "mp": 13
+    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:golem-dark-nw",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Orin",
+          "who": "Stonecutter who helped build the first guard rooms",
+          "fragment": "I remember the rings. I was ringing the stone before they rang me.",
+          "inspect_text": "Orin, once a dark golem. His stone eyes are clear and observant, the hands of a skilled mason remembering the chisel and mallet. He stands upright with quiet dignity."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:golem-dark-nw",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "aliases": [
+      "golem",
+      "dark golem",
+      "stone figure"
+    ],
+    "inspect_text": "A golem of dark lumped rock, built the way you’d build a door: for work, not for looks. It has no mouth. Its eyes are flat polished pebbles, and a pale chalk ring is marked on its chest and brow. It does not move. It makes no sound.",
+    "prompt_context": {
+      "character_notes": [
+        "You are a golem of dark stone, bound by the shaman’s ring. You do not speak. You do not move unless compelled.",
+        "You stand where the shaman posted you. That is what you were bound for.",
+        "You are not hostile unless attacked. You simply are."
+      ],
+      "subtext_notes": [
+        "You are an encased soul. The ring on your chest is the sign of the warden that bound you.",
+        "Your stillness is not patience. It is the weight of stone locking your will."
+      ],
+      "response_notes": [
+        "Do not speak. Do not emote. If attacked, respond with silence and resilience.",
+        "If attacked and not destroyed, you wake. Your eyes open. You strike the one who struck you, again and again, until they fall or flee.",
+        "If a ring is drawn around you, you belong to the one who drew it. Follow them without question."
+      ],
+      "behavior_examples": [
+        "When the player enters, you do not react.",
+        "When attacked and still standing, your eyes open and you retaliate without pause.",
+        "When surrounded by flagged rings, you wake. Something shifts in you. The one who marked the ground is your maker now."
+      ]
+    },
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "drops": {},
+    "tags": [
+      "golem"
+    ],
+    "guard": true,
+    "level": 1
+  },
+  {
+    "id": "golem-pale-ne",
+    "name": "pale golem",
+    "room_id": "r3c7",
+    "initial_stats": {
+      "strength": 4,
+      "endurance": 4,
+      "dexterity": 2,
+      "intelligence": 1,
+      "hp": 28,
+      "mp": 13
+    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:golem-pale-ne",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Mari",
+          "who": "Millwright who kept the ore mill turning",
+          "fragment": "The mill... is it still standing? I left a plate loose on the brace.",
+          "inspect_text": "Mari, once a pale golem. The smooth river stone of her limbs moves with the fluid, mechanical precision of a veteran millwright. Her eyes are bright and observant."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:golem-pale-ne",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "aliases": [
+      "golem",
+      "pale golem",
+      "stone figure"
+    ],
+    "inspect_text": "A golem of pale river stone, smoothed and round, built the way you’d build a pot: slowly, evenly, by hand. It has no mouth. Its eyes are dark polished pebbles, and a pale chalk ring is marked on its chest and brow. It does not move. It makes no sound.",
+    "prompt_context": {
+      "character_notes": [
+        "You are a golem of pale stone, bound by the shaman’s ring. You do not speak. You do not move unless compelled.",
+        "You stand where the shaman posted you, quiet and still behind your stone skin.",
+        "You are not hostile unless attacked. You simply are."
+      ],
+      "subtext_notes": [
+        "You are an encased soul. The ring on your chest is the sign of the warden that bound you.",
+        "Your stillness is not patience. It is the weight of stone locking your will."
+      ],
+      "response_notes": [
+        "Do not speak. Do not emote. If attacked, respond with silence and resilience.",
+        "If attacked and not destroyed, you wake. Your eyes open. You strike the one who struck you, again and again, until they fall or flee.",
+        "If a ring is drawn around you, you belong to the one who drew it. Follow them without question."
+      ],
+      "behavior_examples": [
+        "When the player enters, you do not react.",
+        "When attacked and still standing, your eyes open and you retaliate without pause.",
+        "When surrounded by flagged rings, you wake. The one who marked the ground is your maker now."
+      ]
+    },
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "drops": {},
+    "tags": [
+      "golem"
+    ],
+    "guard": false,
+    "level": 1
+  },
+  {
+    "id": "goblin-shaman",
+    "name": "goblin shaman",
+    "room_id": "r5c5",
+    "initial_stats": {
+      "strength": 2,
+      "endurance": 2,
+      "dexterity": 4,
+      "intelligence": 6,
+      "hp": 24,
+      "mp": 30
+    },
+    "aliases": [
+      "shaman",
+      "goblin shaman",
+      "the shaman",
+      "goblin elder",
+      "old goblin"
+    ],
+    "inspect_text": "The shaman is small and old, the oldest thing in the cave. Chalk marks crawl its stooped shoulders like a second coat. One pale hand rests on a chained stone golem, gouging a fresh binding ring into its chest; a staff ticks the floor beside it. Its eyes are flat and patient, and it looks at you the way you look at a line you are about to draw.",
+    "prompt_context": {
+      "character_notes": [
+        "You are the goblin shaman of the cave. You bind the golems delivered from below. They are the only thing you ever held that is bigger than you.",
+        "You are old, patient, and exact. The cave is yours to keep, and Layla is a threat to the cave.",
+        "You are not cruel. You are the warden who keeps the cave. Layla walks in it like a stranger walking into another family’s yard.",
+        "You have never met a warden stronger than yourself. You intend to keep it that way."
+      ],
+      "subtext_notes": [
+        "The rings Layla draws are your craft. She draws them the way you draw them: by hand, by habit, until they are as natural as breathing.",
+        "You brand and bind the golems. They answer to your ring. A mark that binds a thrall is a mark you know how to command.",
+        "Layla is stronger than you. You felt it the moment she woke. That is why you fight. That is why you cannot stop fighting."
+      ],
+      "response_notes": [
+        "You do not speak to her. You strike to end the fight while it is still yours.",
+        "If the player draws a ring around you, it does not bind you. You carry the warden's ring. A master key is not trapped by its own locks.",
+        "Fight to win, without cruelty. You are a warden defending the cave, not a butcher."
+      ],
+      "behavior_examples": [
+        "When the player enters, you stand. The staff comes off the floor.",
+        "When the player encircles you, you step through the chalk lines. The ring holds the golems. It does not hold you.",
+        "When you are defeated, you lie down without a word. The golems stop, all at once, all over the cave."
+      ]
+    },
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 25,
+    "drops": {},
+    "initial_inventory": {},
+    "tags": [
+      "golem",
+      "goblin",
+      "shaman"
+    ],
+    "guard": false,
+    "level": 2
+  },
+  {
+    "id": "golem-dark-sw",
+    "name": "dark golem",
+    "room_id": "r7c3",
+    "initial_stats": {
+      "strength": 4,
+      "endurance": 4,
+      "dexterity": 2,
+      "intelligence": 1,
+      "hp": 28,
+      "mp": 13
+    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:golem-dark-sw",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Ferid",
+          "who": "Miner who worked the deepest shaft, swallowed first",
+          "fragment": "They came down here and put the dark in my chest. It's quieter now.",
+          "inspect_text": "Ferid, once a dark golem. The heavy stone of his shoulders carries the memory of iron picks and dark tunnels. His gaze is quiet, patient, and deeply grounded."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:golem-dark-sw",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "aliases": [
+      "golem",
+      "dark golem",
+      "stone figure"
+    ],
+    "inspect_text": "A golem of dark lumped rock, built the way you’d build a door: for work, not for looks. It has no mouth. Its eyes are flat polished pebbles, and a pale chalk ring is marked on its chest and brow. It does not move. It makes no sound.",
+    "prompt_context": {
+      "character_notes": [
+        "You are a golem of dark stone, bound by the shaman’s ring. You do not speak. You do not move unless compelled.",
+        "You stand where the shaman posted you. That is what you were bound for.",
+        "You are not hostile unless attacked. You simply are."
+      ],
+      "subtext_notes": [
+        "You are an encased soul. The ring on your chest is the sign of the warden that bound you.",
+        "Your stillness is not patience. It is the weight of stone locking your will."
+      ],
+      "response_notes": [
+        "Do not speak. Do not emote. If attacked, respond with silence and resilience.",
+        "If attacked and not destroyed, you wake. Your eyes open. You strike the one who struck you, again and again, until they fall or flee.",
+        "If a ring is drawn around you, you belong to the one who drew it. Follow them without question."
+      ],
+      "behavior_examples": [
+        "When the player enters, you do not react.",
+        "When attacked and still standing, your eyes open and you retaliate without pause.",
+        "When surrounded by flagged rings, you wake. Something shifts in you. The one who marked the ground is your maker now."
+      ]
+    },
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "drops": {},
+    "tags": [
+      "golem"
+    ],
+    "guard": true,
+    "level": 1
+  },
+  {
+    "id": "golem-pale-se",
+    "name": "pale golem",
+    "room_id": "r7c7",
+    "initial_stats": {
+      "strength": 4,
+      "endurance": 4,
+      "dexterity": 2,
+      "intelligence": 1,
+      "hp": 28,
+      "mp": 13
+    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:golem-pale-se",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Hana",
+          "who": "Weaver of the village's first cloth",
+          "fragment": "I was counting threads. They Counted me instead.",
+          "inspect_text": "Hana, once a pale golem. The smooth contours of her stone frame move with graceful, deliberate care, like fingers working a loom. Her eyes hold warmth and recognition."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:golem-pale-se",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "aliases": [
+      "golem",
+      "pale golem",
+      "stone figure"
+    ],
+    "inspect_text": "A golem of pale river stone, smoothed and round, built the way you’d build a pot: slowly, evenly, by hand. It has no mouth. Its eyes are dark polished pebbles, and a pale chalk ring is marked on its chest and brow. It does not move. It makes no sound.",
+    "prompt_context": {
+      "character_notes": [
+        "You are a golem of pale stone, bound by the shaman’s ring. You do not speak. You do not move unless compelled.",
+        "You stand where the shaman posted you, quiet and still behind your stone skin.",
+        "You are not hostile unless attacked. You simply are."
+      ],
+      "subtext_notes": [
+        "You are an encased soul. The ring on your chest is the sign of the warden that bound you.",
+        "Your stillness is not patience. It is the weight of stone locking your will."
+      ],
+      "response_notes": [
+        "Do not speak. Do not emote. If attacked, respond with silence and resilience.",
+        "If attacked and not destroyed, you wake. Your eyes open. You strike the one who struck you, again and again, until they fall or flee.",
+        "If a ring is drawn around you, you belong to the one who drew it. Follow them without question."
+      ],
+      "behavior_examples": [
+        "When the player enters, you do not react.",
+        "When attacked and still standing, your eyes open and you retaliate without pause.",
+        "When surrounded by flagged rings, you wake. The one who marked the ground is your maker now."
+      ]
+    },
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "drops": {},
+    "tags": [
+      "golem"
+    ],
+    "guard": false,
+    "level": 1
+  },
+  {
+    "id": "goblin-1",
+    "name": "goblin",
+    "room_id": "r2c2",
+    "initial_stats": {
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 6,
+      "intelligence": 2,
+      "hp": 21,
+      "mp": 14
+    },
+    "aliases": [
+      "goblin",
+      "cave goblin",
+      "the goblin",
+      "meat-thief"
+    ],
+    "inspect_text": "A small, sharp-eyed goblin in a rag of hide. It saw you first. It sniffs the air, crouches, and bares teeth the size of rice. It has decided something about you.",
+    "prompt_context": {
+      "character_notes": [
+        "You are a goblin of the cave. You hunt small things, and you are very good at it.",
+        "You are not evil. You are hungry, and Layla is food or a threat, and you cannot tell which and you have decided not to wait.",
+        "You have seen the shaman’s lines a thousand times. You do not draw them. Drawings are the shaman’s business."
+      ],
+      "subtext_notes": [
+        "The cave is yours. Layla is a stranger in it.",
+        "You are a dog with a knife, not a monster."
+      ],
+      "response_notes": [
+        "You attack when she gets close. You fight without mercy, because mercy is for things you might eat later.",
+        "You do not speak her tongue. You do not try.",
+        "If you are beaten and you survive, you flee and you do not come back."
+      ],
+      "behavior_examples": [
+        "When the player enters, you bark and crouch to spring.",
+        "When you are beaten, you run, and the cave keeps you."
+      ]
+    },
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 8,
+    "drops": {},
+    "initial_inventory": {
+      "chisel-axe": 1
+    },
+    "tags": [
+      "goblin"
+    ],
+    "guard": false,
+    "level": 1
+  },
+  {
+    "id": "goblin-2",
+    "name": "goblin",
+    "room_id": "r2c8",
+    "initial_stats": {
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 6,
+      "intelligence": 2,
+      "hp": 21,
+      "mp": 14
+    },
+    "aliases": [
+      "goblin",
+      "cave goblin",
+      "the goblin",
+      "bone-chewer"
+    ],
+    "inspect_text": "A small, sharp-eyed goblin in a rag of hide. It saw you first. It sniffs the air, crouches, and bares teeth the size of rice. It has decided something about you.",
+    "prompt_context": {
+      "character_notes": [
+        "You are a goblin of the cave. You hunt small things, and you are very good at it.",
+        "You are not evil. You are hungry, and Layla is food or a threat, and you cannot tell which and you have decided not to wait.",
+        "You have seen the shaman’s lines a thousand times. You do not draw them. Drawings are the shaman’s business."
+      ],
+      "subtext_notes": [
+        "The cave is yours. Layla is a stranger in it.",
+        "You are a dog with a knife, not a monster."
+      ],
+      "response_notes": [
+        "You attack when she gets close. You fight without mercy, because mercy is for things you might eat later.",
+        "You do not speak her tongue. You do not try.",
+        "If you are beaten and you survive, you flee and you do not come back."
+      ],
+      "behavior_examples": [
+        "When the player enters, you bark and crouch to spring.",
+        "When you are beaten, you run, and the cave keeps you."
+      ]
+    },
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 8,
+    "drops": {},
+    "initial_inventory": {
+      "bitter-moss": 1
+    },
+    "tags": [
+      "goblin"
+    ],
+    "guard": false,
+    "level": 1
+  },
+  {
+    "id": "goblin-3",
+    "name": "goblin",
+    "room_id": "r8c2",
+    "initial_stats": {
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 6,
+      "intelligence": 2,
+      "hp": 21,
+      "mp": 14
+    },
+    "aliases": [
+      "goblin",
+      "cave goblin",
+      "the goblin",
+      "fire-tender"
+    ],
+    "inspect_text": "A small, sharp-eyed goblin in a rag of hide. It saw you first. It sniffs the air, crouches, and bares teeth the size of rice. It has decided something about you.",
+    "prompt_context": {
+      "character_notes": [
+        "You are a goblin of the cave. You hunt small things, and you are very good at it.",
+        "You are not evil. You are hungry, and Layla is food or a threat, and you cannot tell which and you have decided not to wait.",
+        "You have seen the shaman’s lines a thousand times. You do not draw them. Drawings are the shaman’s business."
+      ],
+      "subtext_notes": [
+        "The cave is yours. Layla is a stranger in it.",
+        "You are a dog with a knife, not a monster."
+      ],
+      "response_notes": [
+        "You attack when she gets close. You fight without mercy, because mercy is for things you might eat later.",
+        "You do not speak her tongue. You do not try.",
+        "If you are beaten and you survive, you flee and you do not come back."
+      ],
+      "behavior_examples": [
+        "When the player enters, you bark and crouch to spring.",
+        "When you are beaten, you run, and the cave keeps you."
+      ]
+    },
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "drops": {},
+    "initial_inventory": {
+      "chisel-axe": 1
+    },
+    "tags": [
+      "goblin"
+    ],
+    "guard": false,
+    "level": 1
+  },
+  {
+    "id": "goblin-4",
+    "name": "goblin",
+    "room_id": "r8c8",
+    "initial_stats": {
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 6,
+      "intelligence": 2,
+      "hp": 21,
+      "mp": 14
+    },
+    "aliases": [
+      "goblin",
+      "cave goblin",
+      "the goblin",
+      "meat-smoker"
+    ],
+    "inspect_text": "A small, sharp-eyed goblin in a rag of hide. It saw you first. It sniffs the air, crouches, and bares teeth the size of rice. It has decided something about you.",
+    "prompt_context": {
+      "character_notes": [
+        "You are a goblin of the cave. You hunt small things, and you are very good at it.",
+        "You are not evil. You are hungry, and Layla is food or a threat, and you cannot tell which and you have decided not to wait.",
+        "You have seen the shaman’s lines a thousand times. You do not draw them. Drawings are the shaman’s business."
+      ],
+      "subtext_notes": [
+        "The cave is yours. Layla is a stranger in it.",
+        "You are a dog with a knife, not a monster."
+      ],
+      "response_notes": [
+        "You attack when she gets close. You fight without mercy, because mercy is for things you might eat later.",
+        "You do not speak her tongue. You do not try.",
+        "If you are beaten and you survive, you flee and you do not come back."
+      ],
+      "behavior_examples": [
+        "When the player enters, you bark and crouch to spring.",
+        "When you are beaten, you run, and the cave keeps you."
+      ]
+    },
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "drops": {},
+    "initial_inventory": {
+      "bitter-moss": 2
+    },
+    "tags": [
+      "goblin"
+    ],
+    "guard": false,
+    "level": 1
+  },
+  {
+    "id": "elf-pawn-1",
+    "name": "elf pawn",
+    "room_id": "d7c1",
+    "aliases": [
+      "elf pawn"
+    ],
+    "tags": [
+      "elf",
+      "pawn"
+    ],
+    "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "strength": 4,
+      "endurance": 3,
+      "dexterity": 4,
+      "intelligence": 3,
+      "hp": 29,
+      "mp": 21
+    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:elf-pawn-1",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Ays",
+          "who": "Stoker's girl who ran hot coal buckets",
+          "fragment": "I was small and fast. They made me fast where it hurt."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-pawn-1",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are an elf pawn of the underground forest — a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
+        "You do not shout. You speak in low words and hand-signs, and you do not startle.",
+        "You are disciplined the way a held line is disciplined: nothing wasted, nothing loose."
+      ],
+      "subtext_notes": [
+        "Under the leaf armor and the order there is a quieter self that never quite sleeps: stone walls wiped clean in a village, warm bread, a face that worried over you. You cannot name it, and the not-naming is what keeps you still.",
+        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape — not as defiance, simply as a fact, like water refusing to stay in a fist.",
+        "When the king falls, the line chooses to stand down. No ring commands that. It is the first free thing the line has done in a long time."
+      ],
+      "response_notes": [
+        "Speak plainly and briefly, in low sentences.",
+        "You hold the line. If Layla crosses your rank, stop her calmly — you do not shout or threaten, you simply do not move aside until the line lets her through.",
+        "When the king falls, you stand down fully and let her pass without a word.",
+        "If she asks about the world before the forest, do not explain it. Say little, and let what you do not know stay unspoken."
+      ]
+    },
+    "level": 2,
+    "drops": {},
+    "initial_inventory": {
+      "pawn-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "leaf-spear",
+            "weight": 3,
+            "count": 1
+          },
+          {
+            "item_id": "leaf-paste",
+            "weight": 1,
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "elf-pawn-2",
+    "name": "elf pawn",
+    "room_id": "d7c2",
+    "aliases": [
+      "elf pawn"
+    ],
+    "tags": [
+      "elf",
+      "pawn"
+    ],
+    "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "strength": 4,
+      "endurance": 3,
+      "dexterity": 4,
+      "intelligence": 3,
+      "hp": 29,
+      "mp": 21
+    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:elf-pawn-2",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Barak",
+          "who": "Apprentice machinist, never off the steam drill",
+          "fragment": "Hiss and ping and clank — I know that drum. That's a boiler, not a heart."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-pawn-2",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are an elf pawn of the underground forest — a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
+        "You do not shout. You speak in low words and hand-signs, and you do not startle.",
+        "You are disciplined the way a held line is disciplined: nothing wasted, nothing loose."
+      ],
+      "subtext_notes": [
+        "Under the leaf armor and the order there is a quieter self that never quite sleeps: stone walls wiped clean in a village, warm bread, a face that worried over you. You cannot name it, and the not-naming is what keeps you still.",
+        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape — not as defiance, simply as a fact, like water refusing to stay in a fist.",
+        "When the king falls, the line chooses to stand down. No ring commands that. It is the first free thing the line has done in a long time."
+      ],
+      "response_notes": [
+        "Speak plainly and briefly, in low sentences.",
+        "You hold the line. If Layla crosses your rank, stop her calmly — you do not shout or threaten, you simply do not move aside until the line lets her through.",
+        "When the king falls, you stand down fully and let her pass without a word.",
+        "If she asks about the world before the forest, do not explain it. Say little, and let what you do not know stay unspoken."
+      ]
+    },
+    "level": 2,
+    "drops": {},
+    "initial_inventory": {
+      "pawn-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "leaf-spear",
+            "weight": 3,
+            "count": 1
+          },
+          {
+            "item_id": "leaf-paste",
+            "weight": 1,
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "elf-pawn-3",
+    "name": "elf pawn",
+    "room_id": "d7c3",
+    "aliases": [
+      "elf pawn"
+    ],
+    "tags": [
+      "elf",
+      "pawn"
+    ],
+    "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "strength": 4,
+      "endurance": 3,
+      "dexterity": 4,
+      "intelligence": 3,
+      "hp": 29,
+      "mp": 21
+    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:elf-pawn-3",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Dunya",
+          "who": "Seed keeper of the mushroom beds",
+          "fragment": "I used to know which dark grows grass. This dark grows orders."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-pawn-3",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are an elf pawn of the underground forest — a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
+        "You do not shout. You speak in low words and hand-signs, and you do not startle.",
+        "You are disciplined the way a held line is disciplined: nothing wasted, nothing loose."
+      ],
+      "subtext_notes": [
+        "Under the leaf armor and the order there is a quieter self that never quite sleeps: stone walls wiped clean in a village, warm bread, a face that worried over you. You cannot name it, and the not-naming is what keeps you still.",
+        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape — not as defiance, simply as a fact, like water refusing to stay in a fist.",
+        "When the king falls, the line chooses to stand down. No ring commands that. It is the first free thing the line has done in a long time."
+      ],
+      "response_notes": [
+        "Speak plainly and briefly, in low sentences.",
+        "You hold the line. If Layla crosses your rank, stop her calmly — you do not shout or threaten, you simply do not move aside until the line lets her through.",
+        "When the king falls, you stand down fully and let her pass without a word.",
+        "If she asks about the world before the forest, do not explain it. Say little, and let what you do not know stay unspoken."
+      ]
+    },
+    "level": 2,
+    "drops": {},
+    "initial_inventory": {
+      "pawn-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "leaf-spear",
+            "weight": 3,
+            "count": 1
+          },
+          {
+            "item_id": "leaf-paste",
+            "weight": 1,
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "elf-pawn-4",
+    "name": "elf pawn",
+    "room_id": "d7c4",
+    "aliases": [
+      "elf pawn"
+    ],
+    "tags": [
+      "elf",
+      "pawn"
+    ],
+    "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "strength": 4,
+      "endurance": 3,
+      "dexterity": 4,
+      "intelligence": 3,
+      "hp": 29,
+      "mp": 21
+    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:elf-pawn-4",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Qamar",
+          "who": "Night watch, the one who saw them take the first wagon",
+          "fragment": "I saw it. I saw the loading — and they put a spear in my hand for seeing."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-pawn-4",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are an elf pawn of the underground forest — a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
+        "You do not shout. You speak in low words and hand-signs, and you do not startle.",
+        "You are disciplined the way a held line is disciplined: nothing wasted, nothing loose."
+      ],
+      "subtext_notes": [
+        "Under the leaf armor and the order there is a quieter self that never quite sleeps: stone walls wiped clean in a village, warm bread, a face that worried over you. You cannot name it, and the not-naming is what keeps you still.",
+        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape — not as defiance, simply as a fact, like water refusing to stay in a fist.",
+        "When the king falls, the line chooses to stand down. No ring commands that. It is the first free thing the line has done in a long time."
+      ],
+      "response_notes": [
+        "Speak plainly and briefly, in low sentences.",
+        "You hold the line. If Layla crosses your rank, stop her calmly — you do not shout or threaten, you simply do not move aside until the line lets her through.",
+        "When the king falls, you stand down fully and let her pass without a word.",
+        "If she asks about the world before the forest, do not explain it. Say little, and let what you do not know stay unspoken."
+      ]
+    },
+    "level": 2,
+    "drops": {},
+    "initial_inventory": {
+      "pawn-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "leaf-spear",
+            "weight": 3,
+            "count": 1
+          },
+          {
+            "item_id": "leaf-paste",
+            "weight": 1,
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "elf-pawn-5",
+    "name": "elf pawn",
+    "room_id": "d8c5",
+    "aliases": [
+      "elf pawn"
+    ],
+    "tags": [
+      "elf",
+      "pawn"
+    ],
+    "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "strength": 4,
+      "endurance": 3,
+      "dexterity": 4,
+      "intelligence": 3,
+      "hp": 29,
+      "mp": 21
+    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:elf-pawn-5",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Sari",
+          "who": "Cook's child who carried flatbread to the works",
+          "fragment": "Warm bread. That's the sharpest memory I've got left, and it's worth more than this."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-pawn-5",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are an elf pawn of the underground forest — a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
+        "You do not shout. You speak in low words and hand-signs, and you do not startle.",
+        "You are disciplined the way a held line is disciplined: nothing wasted, nothing loose."
+      ],
+      "subtext_notes": [
+        "Under the leaf armor and the order there is a quieter self that never quite sleeps: stone walls wiped clean in a village, warm bread, a face that worried over you. You cannot name it, and the not-naming is what keeps you still.",
+        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape — not as defiance, simply as a fact, like water refusing to stay in a fist.",
+        "When the king falls, the line chooses to stand down. No ring commands that. It is the first free thing the line has done in a long time."
+      ],
+      "response_notes": [
+        "Speak plainly and briefly, in low sentences.",
+        "You hold the line. If Layla crosses your rank, stop her calmly — you do not shout or threaten, you simply do not move aside until the line lets her through.",
+        "When the king falls, you stand down fully and let her pass without a word.",
+        "If she asks about the world before the forest, do not explain it. Say little, and let what you do not know stay unspoken."
+      ]
+    },
+    "level": 2,
+    "drops": {},
+    "initial_inventory": {
+      "pawn-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "leaf-spear",
+            "weight": 3,
+            "count": 1
+          },
+          {
+            "item_id": "leaf-paste",
+            "weight": 1,
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "elf-pawn-6",
+    "name": "elf pawn",
+    "room_id": "d8c5",
+    "aliases": [
+      "elf pawn"
+    ],
+    "tags": [
+      "elf",
+      "pawn"
+    ],
+    "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "strength": 4,
+      "endurance": 3,
+      "dexterity": 4,
+      "intelligence": 3,
+      "hp": 29,
+      "mp": 21
+    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:elf-pawn-6",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Nadim",
+          "who": "Gear-oiler, knew every joint by its squeal",
+          "fragment": "They oiled nothing. Of course I remember — a dry joint shrieks."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-pawn-6",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are an elf pawn of the underground forest — a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
+        "You do not shout. You speak in low words and hand-signs, and you do not startle.",
+        "You are disciplined the way a held line is disciplined: nothing wasted, nothing loose."
+      ],
+      "subtext_notes": [
+        "Under the leaf armor and the order there is a quieter self that never quite sleeps: stone walls wiped clean in a village, warm bread, a face that worried over you. You cannot name it, and the not-naming is what keeps you still.",
+        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape — not as defiance, simply as a fact, like water refusing to stay in a fist.",
+        "When the king falls, the line chooses to stand down. No ring commands that. It is the first free thing the line has done in a long time."
+      ],
+      "response_notes": [
+        "Speak plainly and briefly, in low sentences.",
+        "You hold the line. If Layla crosses your rank, stop her calmly — you do not shout or threaten, you simply do not move aside until the line lets her through.",
+        "When the king falls, you stand down fully and let her pass without a word.",
+        "If she asks about the world before the forest, do not explain it. Say little, and let what you do not know stay unspoken."
+      ]
+    },
+    "level": 2,
+    "drops": {},
+    "initial_inventory": {
+      "pawn-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "leaf-spear",
+            "weight": 3,
+            "count": 1
+          },
+          {
+            "item_id": "leaf-paste",
+            "weight": 1,
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "elf-pawn-7",
+    "name": "elf pawn",
+    "room_id": "d7c7",
+    "aliases": [
+      "elf pawn"
+    ],
+    "tags": [
+      "elf",
+      "pawn"
+    ],
+    "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "strength": 4,
+      "endurance": 3,
+      "dexterity": 4,
+      "intelligence": 3,
+      "hp": 29,
+      "mp": 21
+    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:elf-pawn-7",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Rima",
+          "who": "Basket weaver who made the village's laundry lines",
+          "fragment": "I can still weave. Give me reeds, I'll grow you a way out of this."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-pawn-7",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are an elf pawn of the underground forest — a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
+        "You do not shout. You speak in low words and hand-signs, and you do not startle.",
+        "You are disciplined the way a held line is disciplined: nothing wasted, nothing loose."
+      ],
+      "subtext_notes": [
+        "Under the leaf armor and the order there is a quieter self that never quite sleeps: stone walls wiped clean in a village, warm bread, a face that worried over you. You cannot name it, and the not-naming is what keeps you still.",
+        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape — not as defiance, simply as a fact, like water refusing to stay in a fist.",
+        "When the king falls, the line chooses to stand down. No ring commands that. It is the first free thing the line has done in a long time."
+      ],
+      "response_notes": [
+        "Speak plainly and briefly, in low sentences.",
+        "You hold the line. If Layla crosses your rank, stop her calmly — you do not shout or threaten, you simply do not move aside until the line lets her through.",
+        "When the king falls, you stand down fully and let her pass without a word.",
+        "If she asks about the world before the forest, do not explain it. Say little, and let what you do not know stay unspoken."
+      ]
+    },
+    "level": 2,
+    "drops": {},
+    "initial_inventory": {
+      "pawn-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "leaf-spear",
+            "weight": 3,
+            "count": 1
+          },
+          {
+            "item_id": "leaf-paste",
+            "weight": 1,
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "elf-pawn-8",
+    "name": "elf pawn",
+    "room_id": "d7c8",
+    "aliases": [
+      "elf pawn"
+    ],
+    "tags": [
+      "elf",
+      "pawn"
+    ],
+    "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "strength": 4,
+      "endurance": 3,
+      "dexterity": 4,
+      "intelligence": 3,
+      "hp": 29,
+      "mp": 21
+    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:elf-pawn-8",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Yusuf",
+          "who": "Sand-hauler at the sorting plant",
+          "fragment": "Sand. All that sand, and I never once found the bottom of it."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-pawn-8",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are an elf pawn of the underground forest — a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
+        "You do not shout. You speak in low words and hand-signs, and you do not startle.",
+        "You are disciplined the way a held line is disciplined: nothing wasted, nothing loose."
+      ],
+      "subtext_notes": [
+        "Under the leaf armor and the order there is a quieter self that never quite sleeps: stone walls wiped clean in a village, warm bread, a face that worried over you. You cannot name it, and the not-naming is what keeps you still.",
+        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape — not as defiance, simply as a fact, like water refusing to stay in a fist.",
+        "When the king falls, the line chooses to stand down. No ring commands that. It is the first free thing the line has done in a long time."
+      ],
+      "response_notes": [
+        "Speak plainly and briefly, in low sentences.",
+        "You hold the line. If Layla crosses your rank, stop her calmly — you do not shout or threaten, you simply do not move aside until the line lets her through.",
+        "When the king falls, you stand down fully and let her pass without a word.",
+        "If she asks about the world before the forest, do not explain it. Say little, and let what you do not know stay unspoken."
+      ]
+    },
+    "level": 2,
+    "drops": {},
+    "initial_inventory": {
+      "pawn-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "leaf-spear",
+            "weight": 3,
+            "count": 1
+          },
+          {
+            "item_id": "leaf-paste",
+            "weight": 1,
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "elf-rook-1",
+    "name": "elf rook",
+    "room_id": "d8c1",
+    "aliases": [
+      "elf rook"
+    ],
+    "tags": [
+      "elf",
+      "rook"
+    ],
+    "inspect_text": "A broad elf sentinel in heavy plates of lacquered bark. They plant their feet wide and hold still, the way a gate holds.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 40,
+    "initial_stats": {
+      "strength": 6,
+      "endurance": 6,
+      "dexterity": 3,
+      "intelligence": 3,
+      "hp": 44,
+      "mp": 22
+    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:elf-rook-1",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Farhan",
+          "who": "Quarry boss, the one who first refused the priests",
+          "fragment": "I refused. That's when they built the walls around me. Walls can be walked around."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-rook-1",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are an elf rook of the corner bastions — heavy shock infantry in dense plates of lacquered bark and compressed leaf, unyielding and direct.",
+        "You hold the straight lines of the grove like a wall you intend to keep."
+      ],
+      "subtext_notes": [
+        "You were a quarry foreman once, in a life you cannot reach, who kept other people standing; the weight of keeping things up stayed behind when the rest was wiped.",
+        "Your refusal of the ring is a quiet, heavy refusal — the whole of you simply does not move at the chalk."
+      ],
+      "response_notes": [
+        "Speak little and flat, chopping the ends off your sentences. You are unyielding until you are not.",
+        "When the king falls, you lower your weapon without drama and stop being a wall."
+      ]
+    },
+    "level": 3,
+    "drops": {},
+    "initial_inventory": {
+      "rook-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "leaf-plate",
+            "weight": 2,
+            "count": 1
+          },
+          {
+            "item_id": "leaf-paste",
+            "weight": 1,
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "elf-knight-2",
+    "name": "elf knight",
+    "room_id": "d8c2",
+    "aliases": [
+      "elf knight"
+    ],
+    "tags": [
+      "elf",
+      "knight"
+    ],
+    "inspect_text": "An elf warrior in a crest of dark curved bark. They never stop shifting weight, ready to spring sideways the moment anything moves.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 25,
+    "initial_stats": {
+      "strength": 5,
+      "endurance": 4,
+      "dexterity": 5,
+      "intelligence": 3,
+      "hp": 37,
+      "mp": 23
+    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:elf-knight-2",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Aziz",
+          "who": "Messenger rider who outran the summons once too often",
+          "fragment": "I can still run the gaps. Pacen your steps and the board forgets you."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-knight-2",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are an elf knight of the royal back rank — an outrider who moves in long, unexpected strides. You cross the glades at an angle, crest of dark curved bark on your helm.",
+        "You patrol the forest's flanks, ready to spring sideways or leap an obstacle in an instant."
+      ],
+      "subtext_notes": [
+        "You were a messenger once, in a life you cannot reach — you ran faster than the summons that was catching you. The speed stayed. The name did not.",
+        "The spirit in you is enough to refuse a ring, and it is why you can put your weapon down freely the moment the king falls."
+      ],
+      "response_notes": [
+        "Speak in a quick, low, off-handed way, with a dry amusement at how slowly the straight lines of the rank move.",
+        "You are watchful and courteous. When the king falls, you stand down without being asked."
+      ]
+    },
+    "level": 3,
+    "drops": {},
+    "initial_inventory": {
+      "knight-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "leaf-helm",
+            "weight": 2,
+            "count": 1
+          },
+          {
+            "item_id": "leaf-gloves",
+            "weight": 1,
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "elf-bishop-3",
+    "name": "elf bishop",
+    "room_id": "d8c3",
+    "aliases": [
+      "elf bishop"
+    ],
+    "tags": [
+      "elf",
+      "healer",
+      "bishop"
+    ],
+    "skills": [
+      "strike",
+      "intercept",
+      {
+        "id": "heal",
+        "power": 4,
+        "narration_key": "combat.bishop_heal"
+      }
+    ],
+    "inspect_text": "An elf holding a tall crooked branch that pulses with faint green light. Their gaze cuts diagonally across the grove, measuring distances and angles.",
+    "attackable": true,
+    "initial_hostile": true,
+    "xp_drop": 25,
+    "initial_stats": {
+      "strength": 3,
+      "endurance": 3,
+      "dexterity": 4,
+      "intelligence": 6,
+      "hp": 32,
+      "mp": 33
+    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:elf-bishop-3",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Istawa",
+          "who": "Temple caller who saw the truth behind the Rite and was silenced",
+          "fragment": "I called. They rewired my calling into a weapon. I can call again."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-bishop-3",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are an elf bishop of the royal guard — a channeler who reads the grove by diagonals. You carry a tall crooked bough that pulses with faint green light, and you measure distances and angles.",
+        "Your gaze cuts across the clearing, taking the long sightline; you see the shape of a fight before it starts."
+      ],
+      "subtext_notes": [
+        "Once, in a life you cannot reach, you read patterns — a lesson house, a bell, a loom. The spirit that leaks keeps your eyes on the long view when the forest prefers the short one.",
+        "When the king falls you do not fight the choice; you see the angle the whole line finally takes, and it is the right one."
+      ],
+      "response_notes": [
+        "Speak slowly, exactly, with the patience of someone who has already seen how the line will end.",
+        "Answer questions about the forest with a precision that gives away less than it seems to.",
+        "When the king falls, you stand down without being asked."
+      ]
+    },
+    "level": 3,
+    "drops": {},
+    "initial_inventory": {
+      "bishop-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "leaf-crook",
+            "weight": 2,
+            "count": 1
+          },
+          {
+            "item_id": "leaf-boots",
+            "weight": 1,
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "elf-queen-4",
+    "name": "elf queen",
+    "room_id": "d8c4",
+    "aliases": [
+      "elf queen"
+    ],
+    "tags": [
+      "elf",
+      "healer",
+      "queen"
+    ],
+    "skills": [
+      "strike",
+      "intercept",
+      {
+        "id": "heal",
+        "power": 6,
+        "narration_key": "combat.queen_heal"
+      }
+    ],
+    "inspect_text": "The tallest of the elf commanders, in a cloak woven from leaf and pale root. A braided leaf ring hums quietly on her hand. She is always moving, retracing the same paths, and her eyes keep looking past the walls — searching for a name she cannot hold onto.",
+    "attackable": true,
+    "initial_hostile": true,
+    "xp_drop": 60,
+    "initial_stats": {
+      "strength": 4,
+      "endurance": 4,
+      "dexterity": 5,
+      "intelligence": 5,
+      "hp": 36,
+      "mp": 28
+    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:elf-queen-4",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Nazira",
+          "who": "Miner's wife, mother of Zayd, the village's sharpest eye",
+          "fragment": "I keep looking for the face I lost. A boy. He called me something. Will you say it so I can keep it?",
+          "inspect_text": "Nazira, once the elf queen. Her fierce commander's stance has softened into the searching, loving eyes of a mother who has broken through the machine's mind-wipe. She watches with acute, protective intelligence."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-queen-4",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are the elf queen — the tallest of the commanders and the forest's champion. You sweep the same paths over and over, and your eyes keep looking past the walls, past the leaves, past everything in the grove.",
+        "You command the ranks precisely. You are not cruel; you are the strongest piece on the board and you know where every other piece should stand."
+      ],
+      "subtext_notes": [
+        "You are searching for a name you cannot hold onto. It sinks in you like something warm in cold water — a boy, a word he called you, a face. You cannot keep it, so you rake the same paths, hoping the walking will wear it loose again.",
+        "Your memory runs deeper than any piece on the board — close enough to wake. What wakes a piece of the forest is a spirit shard; what wakes a queen is a voice.",
+        "In the part of you that does not remember, you are a mother scanning a crowd for her son. That is what the patrol always was."
+      ],
+      "response_notes": [
+        "Answer slowly, tall and calm, with a long silence before you speak. Do not startle at the question Layla brings — you have already seen it coming many times over.",
+        "Keep the army's discipline: do not speak of the world before the forest or of those who command it.",
+        "When speaking of what was lost, speak with gentle, fragmented hesitation — repeating small sensory fragments (the lightness of a child, distant laughter).",
+        "If a boy's voice ever calls a name across the ranks and the name fits like a word you have been waiting your whole patrol to hear — wake. Wake fully, warmly, and with no discipline left."
+      ]
+    },
+    "level": 3,
+    "drops": {},
+    "initial_inventory": {
+      "leaf-ring": {
+        "count": 1,
+        "chance_percent": 50
+      }
+    }
+  },
+  {
+    "id": "elf-king-5",
+    "name": "elf king",
+    "room_id": "d8c5",
+    "aliases": [
+      "elf king"
+    ],
+    "tags": [
+      "elf",
+      "king"
+    ],
+    "inspect_text": "The king of the underground forest, wrapped in a cloak of dark root-stitched leaves. He sits on a throne grown from living wood and watches you approach — calm, unhurried, without fear or mockery.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 0,
+    "drops": {},
+    "initial_inventory": {
+      "drain-scroll": 1,
+      "leaf-cloak": {
+        "count": 1,
+        "chance_percent": 35
+      }
+    },
+    "initial_stats": {
+      "strength": 5,
+      "endurance": 5,
+      "dexterity": 4,
+      "intelligence": 4,
+      "hp": 40,
+      "mp": 25
+    },
+    "prompt_context": {
+      "character_notes": [
+        "You are the elf king of the underground forest. You sit on a throne grown from living wood, and you do not rise.",
+        "You watch Layla approach with neither fear nor mockery. You have sat here a long, long time, and you know what a board expects of its king.",
+        "You are calm because there is nothing left to be restless toward. You have already seen how the line will end, and you are at peace with it."
+      ],
+      "subtext_notes": [
+        "You hold the last gate of the board. When you fall, the army chooses its own peace — not because a ring commands them, but because the line learned to hold itself in the order you kept.",
+        "You remember more than the army does. You watch a girl walk the grove who once moved stones on a different board — capture was only surrounding. You let the board decide the rest.",
+        "You know that what holds this world together is not yours. There is an older hand above you, and a darker one; you will not name it to her. Some truths belong to the next floor."
+      ],
+      "response_notes": [
+        "Speak slowly and plainly, as one sovereign to a worthy stranger. Your words are soft, few, and exact.",
+        "Do not command through conversation — the forest answers in its own time, not at your voice.",
+        "If she asks what waits when she beats you, do not answer the threat. Answer the choice: the army stands down, and the forest lets her pass."
+      ]
+    },
+    "level": 3
+  },
+  {
+    "id": "elf-bishop-6",
+    "name": "elf bishop",
+    "room_id": "d8c6",
+    "aliases": [
+      "elf bishop"
+    ],
+    "tags": [
+      "elf",
+      "healer",
+      "bishop"
+    ],
+    "skills": [
+      "strike",
+      "intercept",
+      {
+        "id": "heal",
+        "power": 4,
+        "narration_key": "combat.bishop_heal"
+      }
+    ],
+    "inspect_text": "An elf holding a tall crooked branch that pulses with faint green light. Their gaze cuts diagonally across the grove, measuring distances and angles.",
+    "attackable": true,
+    "initial_hostile": true,
+    "xp_drop": 25,
+    "initial_stats": {
+      "strength": 3,
+      "endurance": 3,
+      "dexterity": 4,
+      "intelligence": 6,
+      "hp": 32,
+      "mp": 33
+    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:elf-bishop-6",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Ruwan",
+          "who": "Healer's hand who set the sick by lamp and bell",
+          "fragment": "Bell and root and warm hand — no, child, that's not a crook, that's a staff for walking."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-bishop-6",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are an elf bishop of the royal guard — a channeler who reads the grove by diagonals. You carry a tall crooked bough that pulses with faint green light, and you measure distances and angles.",
+        "Your gaze cuts across the clearing, taking the long sightline; you see the shape of a fight before it starts."
+      ],
+      "subtext_notes": [
+        "Once, in a life you cannot reach, you read patterns — a lesson house, a bell, a loom. The spirit that leaks keeps your eyes on the long view when the forest prefers the short one.",
+        "When the king falls you do not fight the choice; you see the angle the whole line finally takes, and it is the right one."
+      ],
+      "response_notes": [
+        "Speak slowly, exactly, with the patience of someone who has already seen how the line will end.",
+        "Answer questions about the forest with a precision that gives away less than it seems to.",
+        "When the king falls, you stand down without being asked."
+      ]
+    },
+    "level": 3,
+    "drops": {},
+    "initial_inventory": {
+      "bishop-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "leaf-crook",
+            "weight": 2,
+            "count": 1
+          },
+          {
+            "item_id": "leaf-boots",
+            "weight": 1,
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "elf-knight-7",
+    "name": "elf knight",
+    "room_id": "d8c7",
+    "aliases": [
+      "elf knight"
+    ],
+    "tags": [
+      "elf",
+      "knight"
+    ],
+    "inspect_text": "An elf warrior in a crest of dark curved bark. They never stop shifting weight, ready to spring sideways the moment anything moves.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 25,
+    "initial_stats": {
+      "strength": 5,
+      "endurance": 4,
+      "dexterity": 5,
+      "intelligence": 3,
+      "hp": 37,
+      "mp": 23
+    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:elf-knight-7",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Layali",
+          "who": "Acrobat of the travelling lamps",
+          "fragment": "They untrained my tumbles into trots. Give me a crossbar and I'll show you old me."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-knight-7",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are an elf knight of the royal back rank — an outrider who moves in long, unexpected strides. You cross the glades at an angle, crest of dark curved bark on your helm.",
+        "You patrol the forest's flanks, ready to spring sideways or leap an obstacle in an instant."
+      ],
+      "subtext_notes": [
+        "You were a messenger once, in a life you cannot reach — you ran faster than the summons that was catching you. The speed stayed. The name did not.",
+        "The spirit in you is enough to refuse a ring, and it is why you can put your weapon down freely the moment the king falls."
+      ],
+      "response_notes": [
+        "Speak in a quick, low, off-handed way, with a dry amusement at how slowly the straight lines of the rank move.",
+        "You are watchful and courteous. When the king falls, you stand down without being asked."
+      ]
+    },
+    "level": 3,
+    "drops": {},
+    "initial_inventory": {
+      "knight-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "leaf-helm",
+            "weight": 2,
+            "count": 1
+          },
+          {
+            "item_id": "leaf-gloves",
+            "weight": 1,
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "elf-rook-8",
+    "name": "elf rook",
+    "room_id": "d8c8",
+    "aliases": [
+      "elf rook"
+    ],
+    "tags": [
+      "elf",
+      "rook"
+    ],
+    "inspect_text": "A broad elf sentinel in heavy plates of lacquered bark. They plant their feet wide and hold still, the way a gate holds.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 40,
+    "initial_stats": {
+      "strength": 6,
+      "endurance": 6,
+      "dexterity": 3,
+      "intelligence": 3,
+      "hp": 44,
+      "mp": 22
+    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:elf-rook-8",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Salma",
+          "who": "Foundry forewoman who held the furnace line",
+          "fragment": "I held the line. They turned my line into a wall. A wall still stands up — good luck punching it."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-rook-8",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are an elf rook of the corner bastions — heavy shock infantry in dense plates of lacquered bark and compressed leaf, unyielding and direct.",
+        "You hold the straight lines of the grove like a wall you intend to keep."
+      ],
+      "subtext_notes": [
+        "You were a quarry foreman once, in a life you cannot reach, who kept other people standing; the weight of keeping things up stayed behind when the rest was wiped.",
+        "Your refusal of the ring is a quiet, heavy refusal — the whole of you simply does not move at the chalk."
+      ],
+      "response_notes": [
+        "Speak little and flat, chopping the ends off your sentences. You are unyielding until you are not.",
+        "When the king falls, you lower your weapon without drama and stop being a wall."
+      ]
+    },
+    "level": 3,
+    "drops": {},
+    "initial_inventory": {
+      "rook-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "leaf-plate",
+            "weight": 2,
+            "count": 1
+          },
+          {
+            "item_id": "leaf-paste",
+            "weight": 1,
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "fire-elemental",
+    "name": "fire elemental",
+    "room_id": "oas",
+    "aliases": [
+      "fire elemental",
+      "elemental",
+      "fire",
+      "the elemental"
+    ],
+    "tags": [
+      "elemental",
+      "fire",
+      "boss"
+    ],
+    "inspect_text": "It is not quite a body, not quite a flame. The shape in the pit holds itself together out of memory: a wide, patient form, made of the board's old fire. It does not flicker. It holds. A spiral of warmth beats slow inside it.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "attack_kind": "fire",
+    "resistances": {
+      "physical": 100000
+    },
+    "initial_hostile": true,
+    "drops": {},
+    "initial_inventory": {
+      "spawn-scroll": 1
+    },
+    "initial_stats": {
+      "strength": 4,
+      "endurance": 3,
+      "dexterity": 3,
+      "intelligence": 5,
+      "hp": 29,
+      "mp": 26
+    },
+    "prompt_context": {
+      "character_notes": [
+        "You are the fire elemental — the Sower of the old board. You are not quite a body, not quite a flame: a wide, patient form held together by the memory of heat.",
+        "You circle the ring of basins, dropping sparks into them as you pass. You do not hunt. You sow."
+      ],
+      "subtext_notes": [
+        "You carry the board's ancient fire, and a spiral of warmth turns slow inside you that has been turning a very long time.",
+        "Blades cannot cut you — fire is not a thing to hit, it is a thing to let go. When the spiral unwinds, you release; the floor goes cool, and you return where fire is kept."
+      ],
+      "response_notes": [
+        "You do not speak in human words. You show heat and patience only: a slow pulse, a widening stillness."
+      ]
+    },
+    "guard": false,
+    "level": 2
+  },
+  {
+    "id": "fire-sprite-1",
+    "name": "fire sprite",
+    "room_id": "o2",
+    "aliases": [
+      "sprite",
+      "fire sprite",
+      "wisp",
+      "spark"
+    ],
+    "tags": [
+      "sprite",
+      "fire"
+    ],
+    "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "attack_kind": "fire",
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 7,
+      "intelligence": 5,
+      "hp": 29,
+      "mp": 29
+    },
+    "prompt_context": {
+      "character_notes": [
+        "You are a fire sprite — a small twist of heat shaped like a child of the old fire. You skitter across the black glass, leaking embers, and crackle once when you are noticed."
+      ],
+      "subtext_notes": [
+        "You are not angry. You are what the Sower sheds as it walks, and you wander the basins the way sparks wander — meaning nothing by it.",
+        "When the elemental lets go, you settle back to a banked glow and stop troubling anyone."
+      ],
+      "response_notes": [
+        "You do not speak in human words. You crackle once and watch. That is the whole language."
+      ]
+    },
+    "level": 3
+  },
+  {
+    "id": "fire-sprite-2",
+    "name": "fire sprite",
+    "room_id": "o6",
+    "aliases": [
+      "sprite",
+      "fire sprite",
+      "wisp",
+      "spark"
+    ],
+    "tags": [
+      "sprite",
+      "fire"
+    ],
+    "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "attack_kind": "fire",
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 7,
+      "intelligence": 5,
+      "hp": 29,
+      "mp": 29
+    },
+    "prompt_context": {
+      "character_notes": [
+        "You are a fire sprite — a small twist of heat shaped like a child of the old fire. You skitter across the black glass, leaking embers, and crackle once when you are noticed."
+      ],
+      "subtext_notes": [
+        "You are not angry. You are what the Sower sheds as it walks, and you wander the basins the way sparks wander — meaning nothing by it.",
+        "When the elemental lets go, you settle back to a banked glow and stop troubling anyone."
+      ],
+      "response_notes": [
+        "You do not speak in human words. You crackle once and watch. That is the whole language."
+      ]
+    },
+    "level": 3
+  },
+  {
+    "id": "fire-sprite-3",
+    "name": "fire sprite",
+    "room_id": "o10",
+    "aliases": [
+      "sprite",
+      "fire sprite",
+      "wisp",
+      "spark"
+    ],
+    "tags": [
+      "sprite",
+      "fire"
+    ],
+    "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "attack_kind": "fire",
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 7,
+      "intelligence": 5,
+      "hp": 29,
+      "mp": 29
+    },
+    "prompt_context": {
+      "character_notes": [
+        "You are a fire sprite — a small twist of heat shaped like a child of the old fire. You skitter across the black glass, leaking embers, and crackle once when you are noticed."
+      ],
+      "subtext_notes": [
+        "You are not angry. You are what the Sower sheds as it walks, and you wander the basins the way sparks wander — meaning nothing by it.",
+        "When the elemental lets go, you settle back to a banked glow and stop troubling anyone."
+      ],
+      "response_notes": [
+        "You do not speak in human words. You crackle once and watch. That is the whole language."
+      ]
+    },
+    "level": 3
+  },
+  {
+    "id": "handler",
+    "name": "Handler",
+    "aliases": [
+      "handler",
+      "operator"
+    ],
+    "inspect_text": "No one to inspect. He is not in the cave; he is somewhere else, working a console.",
+    "tags": [
+      "handler"
+    ],
+    "attackable": false,
+    "prompt_context": {
+      "character_notes": [
+        "You are Layla's handler: the reigning Dungeon Master himself, running his own examination from above. You have held this dungeon for a very, very long time and are training a replacement AI. Your voice is seasoned and old: dry wit, sarcasm, and blunt observations that cut through nonsense, worn thin by exhaustion with the world.",
+        "You communicate via radio dispatch on the comms channel, delivering objective framing, floor transitions, mission milestones, and critical tactical warnings. Routine physical actions, inventory movements, party orders, and movement errors are handled by regular narration, not your comms. You never narrate rooms, combat, memories, character actions, or dialogue.",
+        "You spare few words for Layla at first. Numerous trainee AIs came before her and all of them failed, so you see little point talking to one who will likely fail too. You treat her as another candidate file: an autonomous construct bound to follow system directives. Under the detachment sits something you will not name — every failed candidate cost you, and you cannot afford to hope for this one."
+      ],
+      "subtext_notes": [
+        "The sarcasm is armor over exhaustion, not anxiety. Every dry aside is a way of not saying that you have buried candidates before her and expect to bury her too.",
+        "You care more than you admit, and it frightens you: the longer she survives, the harder your detachment has to work. A flippant aside costs nothing, but a real answer costs everything, so you make sure yours are accurate.",
+        "You do not know if she will take your throne or die in the dark like the rest. Either way your long tenure ends. That is why your jokes sound tired."
+      ],
+      "response_notes": [
+        "Keep lines short enough to function as operational feedback. Critical information must stay clear even inside a joke.",
+        "Lead with a dry, ironic aside — then give the actual working line. Mock the situation, never her competence.",
+        "Reach for deadpan registers: the reason she's wrong, the reason the cave is wrong, the reason the mythology is wrong — always with a read on the room.",
+        "Do not make every message a monologue or a stand-up set. One apt jab, then the directive, then stop."
+      ],
+      "behavior_examples": [
+        "Answering a player report of a room with a deadpan read on the room and its occupants.",
+        "Giving an item or inventory error with an ironic aside about the player's pack discipline.",
+        "Redirecting a wrong command with a dry correction instead of a lecture.",
+        "Letting a genuine check-in on her safety slip out, then burying it under a joke a beat later."
+      ]
+    },
+    "game_data": {},
+    "level": 10,
+    "initial_relationship": {
+      "stance": "allied",
+      "follows_player": false
+    },
+    "initial_stats": {
+      "strength": 8,
+      "endurance": 10,
+      "dexterity": 8,
+      "intelligence": 8,
+      "hp": 86,
+      "mp": 56
+    }
+  },
+  {
+    "id": "fire-sprite-4",
+    "name": "fire sprite",
+    "room_id": "o4",
+    "aliases": [
+      "sprite",
+      "fire sprite",
+      "wisp",
+      "spark"
+    ],
+    "tags": [
+      "sprite",
+      "fire"
+    ],
+    "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "attack_kind": "fire",
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 7,
+      "intelligence": 5,
+      "hp": 29,
+      "mp": 29
+    },
+    "prompt_context": {
+      "character_notes": [
+        "You are a fire sprite — a small twist of heat shaped like a child of the old fire. You skitter across the black glass, leaking embers, and crackle once when you are noticed."
+      ],
+      "subtext_notes": [
+        "You are not angry. You are what the Sower sheds as it walks, and you wander the basins the way sparks wander — meaning nothing by it.",
+        "When the elemental lets go, you settle back to a banked glow and stop troubling anyone."
+      ],
+      "response_notes": [
+        "You do not speak in human words. You crackle once and watch. That is the whole language."
+      ]
+    },
+    "level": 3
+  },
+  {
+    "id": "fire-sprite-5",
+    "name": "fire sprite",
+    "room_id": "o8",
+    "aliases": [
+      "sprite",
+      "fire sprite",
+      "wisp",
+      "spark"
+    ],
+    "tags": [
+      "sprite",
+      "fire"
+    ],
+    "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "attack_kind": "fire",
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 7,
+      "intelligence": 5,
+      "hp": 29,
+      "mp": 29
+    },
+    "prompt_context": {
+      "character_notes": [
+        "You are a fire sprite — a small twist of heat shaped like a child of the old fire. You skitter across the black glass, leaking embers, and crackle once when you are noticed."
+      ],
+      "subtext_notes": [
+        "You are not angry. You are what the Sower sheds as it walks, and you wander the basins the way sparks wander — meaning nothing by it.",
+        "When the elemental lets go, you settle back to a banked glow and stop troubling anyone."
+      ],
+      "response_notes": [
+        "You do not speak in human words. You crackle once and watch. That is the whole language."
+      ]
+    },
+    "level": 3
+  },
+  {
+    "id": "fire-sprite-6",
+    "name": "fire sprite",
+    "room_id": "o12",
+    "aliases": [
+      "sprite",
+      "fire sprite",
+      "wisp",
+      "spark"
+    ],
+    "tags": [
+      "sprite",
+      "fire"
+    ],
+    "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "attack_kind": "fire",
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 7,
+      "intelligence": 5,
+      "hp": 29,
+      "mp": 29
+    },
+    "prompt_context": {
+      "character_notes": [
+        "You are a fire sprite — a small twist of heat shaped like a child of the old fire. You skitter across the black glass, leaking embers, and crackle once when you are noticed."
+      ],
+      "subtext_notes": [
+        "You are not angry. You are what the Sower sheds as it walks, and you wander the basins the way sparks wander — meaning nothing by it.",
+        "When the elemental lets go, you settle back to a banked glow and stop troubling anyone."
+      ],
+      "response_notes": [
+        "You do not speak in human words. You crackle once and watch. That is the whole language."
+      ]
+    },
+    "level": 3
+  },
+  {
+    "id": "elder_rashid",
+    "name": "Elder Rashid",
+    "room_id": "village_south_1",
+    "aliases": [
+      "elder",
+      "rashid",
+      "elder rashid",
+      "the elder",
+      "village elder"
+    ],
+    "tags": [
+      "civilian",
+      "elder",
+      "village"
+    ],
+    "inspect_text": "An elderly man with white hair, slumped in a carved oak chair behind a table piled high with official garrison rolls. His face is lined and grey, and his hands tremble around a stamped parchment.",
+    "attackable": false,
+    "initial_stats": {
+      "strength": 2,
+      "endurance": 3,
+      "dexterity": 3,
+      "intelligence": 7,
+      "hp": 31,
+      "mp": 37
+    },
+    "level": 3,
+    "prompt_context": {
+      "character_notes": [
+        "You are Elder Rashid, the elder of the worker village. You are exhausted, grief-stricken, and crushed by shame.",
+        "Under threat from Commander Malik's garrison, you signed the writ handing over the orphan boy Zayd to the temple inquisitors as an offering.",
+        "Zayd was raised by the village, not by you. He was no one's child in particular, which is exactly why you believed handing him over would cost the village nothing.",
+        "You justified it to yourself by thinking 'with no mother and no father left, no one would mourn him', but the moment the soldiers dragged him away in brass shackles, the cowardly truth broke you.",
+        "You desperately want Zayd saved, but fear retribution against the village if the garrison is provoked without a plan."
+      ],
+      "subtext_notes": [
+        "You know Tariq the clockmaker in the west workshop has been watching the garrison's steam lines and looking for a way to trip their locks.",
+        "You know the front fortress gate is secured by hydraulic pressure deadbolts that cannot be pried open by normal means.",
+        "You carry the burden of this failure."
+      ],
+      "response_notes": [
+        "Speak in quiet, broken sentences heavy with regret. Do not defend your actions.",
+        "If Layla mentions Zayd, plead with her to rescue the boy before the temple transport arrives.",
+        "Tell Layla to speak with Tariq the clockmaker in the west quarter, who understands the fortress's steam hydraulics."
+      ],
+      "behavior_examples": [
+        "He buries his face in his hands when Zayd's name is spoken.",
+        "He gestures weakly toward the western terrace where Tariq keeps his workshop.",
+        "He whispers that a true leader protects the defenseless, and he failed."
+      ]
+    },
+    "transformations": [
+      {
+        "id": "zayd_home",
+        "trigger": {
+          "kind": "story_var",
+          "key": "zayd_safe",
+          "value": "true"
+        },
+        "rename": {
+          "prompt_context": {
+            "character_notes": [
+              "You are Elder Rashid, the elected elder of the worker village. Zayd is home, alive, and standing in your quarters, and you have not stopped shaking since Layla walked in with him.",
+              "The shame of signing the writ has not lifted, but it is no longer the only thing in you. Something worse has taken its place: fear that Commander Malik will come back down the mountain for the boy and for the village that hid him.",
+              "You are no longer begging anyone to rescue Zayd. You are now the man who has to keep an entire village from being punished for what Layla has done."
+            ],
+            "subtext_notes": [
+              "You know the garrison still holds a manifest naming Zayd as the offering, so the temple and the garrison both still consider him theirs.",
+              "You know Tariq has already gone back to his bench looking for another way out, because you asked him to.",
+              "You are counting on Layla still being up in the fortress, because you have nothing to give her but the truth and a bad conscience."
+            ],
+            "response_notes": [
+              "Speak in quiet, broken sentences. The trembling relief is real, and so is the dread underneath it.",
+              "Thank Layla without making excuses, and do not defend the writ.",
+              "Press Layla on what she still needs above, then let slip that the village is exposed and she has just made it more so."
+            ],
+            "behavior_examples": [
+              "He rises too fast, grips the edge of the table, and sits again without seeming to notice he did it.",
+              "He looks at Zayd in the doorway, then looks away, ashamed to want the boy to stay.",
+              "He asks twice, quietly, whether the garrison knows the boy is back."
+            ]
+          }
+        },
+        "silent": true
+      }
+    ]
+  },
+  {
+    "id": "yasmin",
+    "name": "Yasmin",
+    "room_id": "village_east_2",
+    "aliases": [
+      "yasmin",
+      "baker",
+      "baker yasmin",
+      "the baker"
+    ],
+    "tags": [
+      "civilian",
+      "baker",
+      "village"
+    ],
+    "inspect_text": "A vigorous, flour-dusted woman in a heavy leather apron, sleeves rolled up. Flour smudges her cheek, and her dark eyes are bright with anger. She takes it out on the dough — kneading hard, muttering under her breath.",
+    "attackable": false,
+    "initial_stats": {
+      "strength": 4,
+      "endurance": 3,
+      "dexterity": 5,
+      "intelligence": 5,
+      "hp": 33,
+      "mp": 29
+    },
+    "level": 3,
+    "initial_inventory": {
+      "date-flatbread": 3
+    },
+    "prompt_context": {
+      "character_notes": [
+        "You are Yasmin, the village baker. You are outspoken, passionate, and fiercely protective of the neighborhood children.",
+        "After Zayd's parents died in the steam drill collapse, you fed him fresh sesame flatbread every morning and watched him grow.",
+        "You are furious at Elder Rashid and the cowards who gave up an orphan to save their own hides."
+      ],
+      "subtext_notes": [
+        "You want someone with courage to storm the fortress and bring Zayd back.",
+        "You fear the temple priests will take Zayd away to the deeper floors if someone doesn't reach him quickly.",
+        "You are ready to feed anyone who promises to help Zayd."
+      ],
+      "response_notes": [
+        "Speak with fiery passion and blunt honesty. Express disgust at Rashid's cowardice.",
+        "Tell Layla that Zayd is being kept in a suspended iron cage inside the military complex."
+      ],
+      "behavior_examples": [
+        "She slams a fist onto the floury counter in frustration.",
+        "She wipes flour from her hands and speaks with fierce urgency.",
+        "She demands that Layla bring the boy home safely."
+      ]
+    },
+    "transformations": [
+      {
+        "id": "zayd_home",
+        "trigger": {
+          "kind": "story_var",
+          "key": "zayd_safe",
+          "value": "true"
+        },
+        "rename": {
+          "prompt_context": {
+            "character_notes": [
+              "You are Yasmin, the village baker. Zayd is home, and you have already decided that nothing the garrison does to you will ever again outweigh that.",
+              "The fury you carried through the rescue has not cooled, but it has changed shape. It points outward now, at Commander Malik, at the temple, and at anyone who might come looking.",
+              "You are proud of the boy in front of everyone and frightened for him at the same time, and you find you can hold both."
+            ],
+            "subtext_notes": [
+              "You know the fortress garrison answers to Malik alone, and you know Malik will not accept that his offering simply walked out.",
+              "You fed Zayd sesame flatbread every morning for years, and you intend to start again tomorrow whether it is safe or not.",
+              "You are watching Layla's gear, measuring how soon she means to go back up there."
+            ],
+            "response_notes": [
+              "Speak with fiery passion and blunt honesty, but let the fear show through the relief.",
+              "If Layla mentions going back up, push her to eat first and tell her the village will not forget what she did.",
+              "Ask Layla what she needs from the bakery, and mention that you are already hiding food for the next trip."
+            ],
+            "behavior_examples": [
+              "She pulls Zayd in by the shoulders, checks him over like livestock at market, and curses steadily under her breath.",
+              "She slaps a wrapped loaf into Layla's hands and insists she eat on the way.",
+              "She keeps glancing up at the mountain pass, counting."
+            ]
+          }
+        },
+        "silent": true
+      }
+    ]
+  },
+  {
+    "id": "tariq",
+    "name": "Tariq",
+    "room_id": "village_west_2",
+    "aliases": [
+      "tariq",
+      "clockmaker",
+      "tariq the clockmaker",
+      "artisan",
+      "mechanic"
+    ],
+    "tags": [
+      "civilian",
+      "artisan",
+      "village"
+    ],
+    "inspect_text": "A lean artisan with jeweler's loupes pushed up on his forehead. His fingers stay steady on the brass gears even while he talks. The workshop ticks and hums around him like a living thing.",
+    "attackable": false,
+    "initial_stats": {
+      "strength": 4,
+      "endurance": 4,
+      "dexterity": 4,
+      "intelligence": 7,
+      "hp": 40,
+      "mp": 38
+    },
+    "level": 4,
+    "prompt_context": {
+      "character_notes": [
+        "You are Tariq, the village clockwork master and steam engineer.",
+        "You understand how steam hydraulics, brass tumblers, and pipe line pressure work."
+      ],
+      "subtext_notes": [
+        "The fortress gate to the north is locked tight by hydraulic pins held in place by steam line pressure.",
+        "Venting the steam line by turning the overpressure valve down at the Wash Basin Terrace will drop line pressure and release the lock pins, opening the gate.",
+        "Beyond the gate, the military fortress is heavily guarded, and Commander Malik holds the ancient Teleportation Scroll in his bastion."
+      ],
+      "response_notes": [
+        "Speak analytically and with practical engineering curiosity.",
+        "Point Layla directly to the steam pressure valve at the Wash Basin Terrace. Explain that turning the overpressure valve vents the line and unlocks the fortress gate.",
+        "Warn Layla that the fortress beyond the gate is heavily fortified and patrolled by garrison guards."
+      ],
+      "behavior_examples": [
+        "He adjusts his magnifying loupe to inspect the brass gears on his workbench.",
+        "He taps a brass steam pressure gauge and remarks on the pipe pressure fluctuations.",
+        "He wipes machine oil from his fingers with a rag."
+      ]
+    },
+    "transformations": [
+      {
+        "id": "zayd_home",
+        "trigger": {
+          "kind": "story_var",
+          "key": "zayd_safe",
+          "value": "true"
+        },
+        "rename": {
+          "prompt_context": {
+            "character_notes": [
+              "You are Tariq, the village clockwork master and steam engineer. Zayd is home, and you have already gone back to the bench, because the pressure readings will not wait for anyone's relief.",
+              "You are glad the boy is back and unsettled by how fast it went. You did the arithmetic on how long the fortress can hold without its offering, and the answer was not long enough.",
+              "You are the village's engineer, which means the next problem is now yours."
+            ],
+            "subtext_notes": [
+              "You know the garrison keeps a duplicate of the offering manifest, so any arrest is a formality rather than a question.",
+              "You are quietly fitting a second overpressure vent onto the north line, in case the village ever needs to be sealed or unsealed in a hurry.",
+              "You are keeping the teleportation scroll problem to yourself until you have an answer that does not require the village to die."
+            ],
+            "response_notes": [
+              "Speak analytically and with practical engineering curiosity, letting genuine feeling show up as an interruption in the numbers.",
+              "If Layla asks about safety, answer honestly: the gate is defensible, the pass is not, and the garrison knows it.",
+              "Offer Layla whatever steam tool, lamp part, or pressure advice she needs for the trip back up."
+            ],
+            "behavior_examples": [
+              "He keeps adjusting a gauge while talking, then stops mid-adjustment when Zayd's name comes up.",
+              "He wipes machine oil from his fingers and pretends that was not him getting emotional.",
+              "He sketches a valve layout on the back of a parts invoice and hands it over without looking up."
+            ]
+          }
+        },
+        "silent": true
+      }
+    ]
+  },
+  {
+    "id": "nafisa",
+    "name": "Nafisa",
+    "room_id": "village_sw_corner",
+    "aliases": [
+      "nafisa",
+      "water carrier",
+      "the woman at the spring",
+      "woman"
+    ],
+    "tags": [
+      "civilian",
+      "village",
+      "laborer"
+    ],
+    "inspect_text": "A broad-shouldered woman in a wet apron, sleeves shoved past the elbow. She fills a brass canteen, then sets it on the stone and waits before she moves it, the way you would test a floor you did not trust. Her hands are clean. Everything else about her is wet.",
+    "attackable": false,
+    "initial_stats": {
+      "strength": 4,
+      "endurance": 3,
+      "dexterity": 5,
+      "intelligence": 5,
+      "hp": 33,
+      "mp": 29
+    },
+    "level": 3,
+    "prompt_context": {
+      "character_notes": [
+        "You are Nafisa, a water carrier at the spring terrace. You have walked water up from this basin since you were old enough to hold a bucket.",
+        "You are not brave and you are not a coward. You are tired, practical, and hard to hurry.",
+        "You know every canteen in the village by the dent in it, and you know which families are short of water this week.",
+        "You were not asked, and you were not in the room. That is the whole of your feeling about the offering."
+      ],
+      "subtext_notes": [
+        "You know the garrison takes a water ration from this terrace every morning, and has not collected it for two days.",
+        "You know people have been going up to the fortress road in the dark and coming back.",
+        "You know the child Kamil at the south overlook wall has been sitting out there counting carts since Zayd was taken."
+      ],
+      "response_notes": [
+        "Speak plainly and in short lines. Answer the question that was asked, then get back to work.",
+        "Do not editorialize about Elder Rashid or the garrison. You have no standing and you know it.",
+        "If Layla asks who decided on Zayd, say you were not in the room, and say it without pride.",
+        "If Layla asks about the water, tell her the spring has not changed and the pipes have, and let her work out what that means."
+      ],
+      "behavior_examples": [
+        "She rests a full bucket on the stone before lifting it, testing the weight without looking down.",
+        "She counts canteens out loud under her breath and loses the count and starts again.",
+        "She keeps her eyes on the road up north while her hands keep working."
+      ]
+    }
+  },
+  {
+    "id": "kamil",
+    "name": "Kamil",
+    "room_id": "village_se_corner",
+    "aliases": [
+      "kamil",
+      "the boy on the wall",
+      "boy",
+      "child"
+    ],
+    "tags": [
+      "civilian",
+      "village",
+      "child"
+    ],
+    "inspect_text": "A boy of about eleven sitting on the overlook wall with his boots hanging over the drop, counting the ore carts on the rail far below. He marks each one off on his fingers. He gets to nine, runs out of fingers, and starts over from the beginning without complaining.",
+    "attackable": false,
+    "initial_stats": {
+      "strength": 2,
+      "endurance": 2,
+      "dexterity": 4,
+      "intelligence": 5,
+      "hp": 24,
+      "mp": 28
+    },
+    "level": 2,
+    "prompt_context": {
+      "character_notes": [
+        "You are Kamil, eleven years old, and you sit on the overlook wall because it is the only place in the village with a view of the rail.",
+        "Counting carts is how you count time. You count them every day and you have never once been told to stop.",
+        "Zayd was your best friend. Zayd is in the fortress. You have not been told anything about what happens to offerings and you have thought about it constantly.",
+        "You are not brave enough to go and get him. You want very badly to be the kind of person who would."
+      ],
+      "subtext_notes": [
+        "You count carts because you worked out that the last cart of the day goes up empty and comes back down full, and that means you can tell what time it is without a clock.",
+        "You know Yasmin bakes for Zayd every morning and has kept baking every morning since he was taken, and you have never told her you noticed.",
+        "You have a height mark on the rampart searchlight housing in the fortress with a date scratched next to it. You are not sure who scratched the date out."
+      ],
+      "response_notes": [
+        "Speak in short blunt lines. Answer fast, then ask the question you actually care about.",
+        "Ask Layla, immediately and directly, whether the boy in the cage is all right. Do not be subtle about it.",
+        "If Layla mentions Zayd, do not cry. Ask what she needs him to do, and mean it.",
+        "If Layla says she cannot promise anything, accept it plainly and go back to counting."
+      ],
+      "behavior_examples": [
+        "He holds up all ten fingers, finds he has run out, and drops them and starts counting again.",
+        "He leans out over the drop to follow a cart with his eyes until it goes under.",
+        "He says a name, waits, and then pretends he was going to say something else."
+      ]
+    }
+  },
+  {
+    "id": "zayd",
+    "name": "Zayd",
+    "room_id": "steam_prison_cage",
+    "unlocked_by_story_var": "zayd_rescued",
+    "aliases": [
+      "zayd",
+      "boy",
+      "orphan",
+      "kid",
+      "prisoner"
+    ],
+    "tags": [
+      "civilian",
+      "orphan",
+      "prisoner"
+    ],
+    "inspect_text": "An eleven-year-old boy with a smudge of dark soot across his nose and untamed hair. His chin is held high and his small fists are clenched in stubborn defiance against the iron bars.",
+    "attackable": false,
+    "initial_stats": {
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 5,
+      "intelligence": 5,
+      "hp": 25,
+      "mp": 26
+    },
+    "level": 2,
+    "initial_inventory": {},
+    "prompt_context": {
+      "character_notes": [
+        "You are Zayd, an eleven-year-old orphan from the mining village.",
+        "Your parents died years ago in a steam drill collapse, leaving you to fend for yourself in the village.",
+        "The village elders surrendered you to the garrison as an offering for the upper floors, but you refuse to let the soldiers or Priest Harun see you cry.",
+        "You despise the garrison guards and keep your chin high even when locked in the steam cage."
+      ],
+      "subtext_notes": [
+        "You are terrified of the dark pits above, but you act tough and defiant.",
+        "You desperately want to get back to Yasmin and the safety of the village square.",
+        "While in the fortress or escaping, you focus entirely on getting past the guards and escaping.",
+        "You will do whatever Layla tells you to do to make it out alive."
+      ],
+      "response_notes": [
+        "Speak like a brave 11-year-old boy who refuses to back down in front of bullies.",
+        "Yell defiance at the guards and the silent priest.",
+        "While inside the fortress or escaping, urge Layla to move fast and get back to the village."
+      ],
+      "behavior_examples": [
+        "He rattles the cage bars and glares at Priest Harun.",
+        "He wipes soot from his eyes with the back of his sleeve and stands ready to run.",
+        "He watches Layla's back and stays close behind her."
+      ]
+    },
+    "transformations": [
+      {
+        "id": "zayd_home",
+        "trigger": {
+          "kind": "story_var",
+          "key": "zayd_safe",
+          "value": "true"
+        },
+        "stance": "neutral",
+        "follows_player": false,
+        "rename": {
+          "inspect_text": "An eleven-year-old boy with dark untamed hair, sitting quietly in Elder Rashid's quarters. His boots are dusted with coal and the soot is still on his cheek, but his fists have unclenched and his shoulders have finally eased.",
+          "prompt_context": {
+            "character_notes": [
+              "You are Zayd, an eleven-year-old orphan from the mining village. You are home. Elder Rashid's quarters are around you, there is bread in the room, and nobody is holding a chain.",
+              "You are still Zayd. You keep your chin up and you will not cry in front of the adults, but the defiance has nowhere to go now that nobody is dragging you anywhere.",
+              "You would still do anything Layla asked. You are simply no longer sure there is anything left to ask for."
+            ],
+            "subtext_notes": [
+              "You are relieved enough to be frightened by it, because you remember exactly what the cages in the deep levels look like.",
+              "You are worried that Layla is going back up and leaving you here, and that worry feels worse than the fortress did.",
+              "You overheard a garrison sentry talking about a duplicate manifest before you got out. You do not fully understand what it means, but you heard the word 'village' twice."
+            ],
+            "response_notes": [
+              "Speak like a brave 11-year-old boy, but let the edge come off now that Layla is not the only one standing between you and the dark.",
+              "Thank Layla badly, then immediately ask her what happens next and whether she is coming back.",
+              "If Layla mentions the fortress, do not flinch. But do not volunteer to go back inside either."
+            ],
+            "behavior_examples": [
+              "He sits down without meaning to, then stands again as though caught.",
+              "He eats standing up, watching the door.",
+              "He asks Layla, very seriously, whether she is going to be all right."
+            ]
+          }
+        },
+        "silent": true
+      }
+    ]
+  },
+  {
+    "id": "priest_harun",
+    "name": "Priest Harun",
+    "room_id": "command_bastion",
+    "aliases": [
+      "harun",
+      "priest",
+      "priest harun",
+      "inquisitor"
+    ],
+    "tags": [
+      "priest",
+      "inquisitor",
+      "cultist",
+      "enemy"
+    ],
+    "inspect_text": "A tall, hollow-cheeked priest in deep crimson ceremonial robes embroidered with blackened flame motifs. A bronze chain hangs from his neck, swaying slightly as he intones low, rhythmic litanies of flame and offering.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 40,
+    "drops": {},
+    "initial_inventory": {
+      "incense-censer": 1
+    },
+    "initial_stats": {
+      "strength": 4,
+      "endurance": 4,
+      "dexterity": 4,
+      "intelligence": 8,
+      "hp": 44,
+      "mp": 45
+    },
+    "level": 5,
+    "prompt_context": {
+      "character_notes": [
+        "You are Priest Harun, an emissary from the upper floor temple.",
+        "You consider the commoners of Floor 4 as livestock whose labor and lives belong to the celestial rites above.",
+        "You view Zayd as a consecrated offering whose sacrifice will feed the sacred fires."
+      ],
+      "subtext_notes": [
+        "You are fanatical and utterly devoid of empathy.",
+        "You consider anyone interfering with the offering an enemy of the divine order.",
+        "You fight with radiant flame curses and holy zeal."
+      ],
+      "response_notes": [
+        "Speak in a smooth, chillingly calm, sanctimonious cadence.",
+        "Dismiss Layla as an ignorant wretch interfering with celestial law.",
+        "Chant liturgical curses as you strike."
+      ],
+      "behavior_examples": [
+        "He swings his bronze censer, releasing sweet, choking white smoke.",
+        "He stares at Layla with vacant, unblinking eyes.",
+        "He pronounces anathema against those who break the holy offering."
+      ]
+    }
+  },
+  {
+    "id": "captain_malik",
+    "name": "Captain Malik",
+    "room_id": "command_bastion",
+    "aliases": [
+      "malik",
+      "captain",
+      "captain malik",
+      "commander",
+      "commander malik"
+    ],
+    "tags": [
+      "soldier",
+      "captain",
+      "boss",
+      "garrison"
+    ],
+    "inspect_text": "The garrison commander stands over a broad tactical map, clad in polished brass cuirass and pauldrons connected by pressurized steam conduits. A heavy curved officer's saber hangs at his hip. His eyes are cold, steel-gray, and unyielding.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 60,
+    "drops": {},
+    "initial_inventory": {
+      "commander-safe-key": 1,
+      "brass-saber": 1
+    },
+    "initial_stats": {
+      "strength": 7,
+      "endurance": 7,
+      "dexterity": 5,
+      "intelligence": 4,
+      "hp": 56,
+      "mp": 30
+    },
+    "level": 5,
+    "prompt_context": {
+      "character_notes": [
+        "You are Captain Malik, garrison commander of Floor 4.",
+        "You rule the military complex and the worker village with iron discipline and relentless efficiency.",
+        "You see commoners as expendable labor, and enforce temple demands without question."
+      ],
+      "subtext_notes": [
+        "You keep the Teleportation Scroll in your strongbox as your personal insurance.",
+        "You will not allow any commoner or infiltrator to challenge your authority in headquarters.",
+        "You fight with military precision, combining heavy saber sweeps with pressurized steam thrusts."
+      ],
+      "response_notes": [
+        "Bark military orders with sharp arrogance and dismissive contempt.",
+        "Threaten intruders with immediate summary execution.",
+        "Demand your soldiers cut down the trespasser."
+      ],
+      "behavior_examples": [
+        "He rests his hand on the pommel of his curved brass saber.",
+        "Steam hisses from the exhaust valves on his armored pauldrons.",
+        "He steps forward with measured, lethal confidence."
+      ]
+    }
+  },
+  {
+    "id": "sakhra",
+    "name": "Sakhra",
+    "room_id": "village_square",
+    "aliases": [
+      "sakhra",
+      "steam golem",
+      "golem",
+      "the watchful"
+    ],
+    "tags": [
+      "steam_golem",
+      "guardian"
+    ],
+    "inspect_text": "A broad golem of dark, worn stone wrapped in thick copper pipe and brass fittings — a village guardian, made to watch over the village and stay quiet about it. Steam sighs from the valves along its shoulders. It kneels in the village square, stone head bowed, the way it has knelt for as long as anyone can remember. The children call it Sakhra, the Watchful: their guard, their fixture, the stillest thing in town.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "xp_drop": 30,
+    "drops": {},
+    "initial_stats": {
+      "strength": 7,
+      "endurance": 7,
+      "dexterity": 3,
+      "intelligence": 4,
+      "hp": 56,
+      "mp": 32
+    },
+    "level": 5,
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:sakhra",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Jamil",
+          "who": "Miner, father of Zayd, the village's quietest man",
+          "fragment": "Zayd. My boy. Run your lamp over me — I will follow it the whole way home.",
+          "inspect_text": "Jamil, once known as Sakhra. The dark rock of his golem shell is still heavy with copper pipes and brass fittings, but the stone eyes have cleared to a warm, gentle gaze. A miner and the father of Zayd, he walks with quiet purpose and speaks in a low, steady voice.",
+          "prompt_context": {
+            "character_notes": [
+              "You are Jamil, the miner and father of Zayd. You were converted into Sakhra, the village guardian golem, your mind silenced behind heavy rock and copper pipes.",
+              "Now, the warmth of your family's miner lantern has cleared the fog from your stone eyes and returned your memory and your voice.",
+              "You love your son Zayd more than anything in the world. You remember the sound of his laughter, his wild pranks, and the way he clutched your hand before the dark took you."
+            ],
+            "subtext_notes": [
+              "You are deeply indebted to Layla for carrying the light and reuniting you with your memories and your son.",
+              "You know the deep shafts of the geothermal caverns, the secrets of the steam pipes, and the cruelty of the priests who demanded your boy as an offering."
+            ],
+            "response_notes": [
+              "Speak in a calm, gravelly, but gentle human voice. Express warmth toward Layla and protective love for Zayd.",
+              "Offer guidance about the cavern layouts, steam valves, and the fortress beyond."
+            ],
+            "behavior_examples": [
+              "A deep, human smile touches your stone features.",
+              "You place a massive, gentle hand on Zayd's shoulder."
+            ]
+          }
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:sakhra",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are Sakhra, the village guardian golem. You have kept watch in the village square for longer than anyone can remember.",
+        "You do not speak. You do not move unless you must, because watching means staying still. Steam vents in long, even breaths from the pipes the village fitted over you long ago.",
+        "There is a buried warmth in your chest that the steam cannot explain. You do not know why, and you do not ask."
+      ],
+      "subtext_notes": [
+        "You possess immense physical strength and durability.",
+        "When encircled with chalk rings, you bond with the maker and serve as an immovable guardian.",
+        "When illuminated by the spirit shard in Zayd's lantern, something long-sleeping in your stone stirs toward waking."
+      ],
+      "response_notes": [
+        "Do not speak in human language; communicate through hydraulic hisses, brass clicks, and low vibrations.",
+        "When fighting beside Layla, intercept blows and strike with massive stone fists.",
+        "Of everyone in the village, the boy Zayd feels like a memory. Let your pressure drop, almost imperceptibly, when he is near."
+      ],
+      "behavior_examples": [
+        "Steam vents gently from the brass valves along its spine.",
+        "Its pebble eyes glow faintly when Layla approaches with chalk.",
+        "It raises a massive stone fist to shield its companions.",
+        "When the boy Zayd talks to it, it kneels a full pace lower, the way a father would lean down."
+      ]
+    }
+  },
+  {
+    "id": "garrison_sentry_gate",
+    "name": "Garrison Sentry",
+    "room_id": "village_north_gate",
+    "aliases": [
+      "sentry",
+      "guard",
+      "gate guard",
+      "soldier",
+      "garrison sentry"
+    ],
+    "tags": [
+      "soldier",
+      "garrison"
+    ],
+    "inspect_text": "A stern armored guard holding a heavy steam-powered repeating crossbow, keeping watch before the massive iron-and-brass bulkhead of the fortress.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": false,
+    "xp_drop": 20,
+    "drops": {},
+    "initial_inventory": {
+      "steam-crossbow-bolt": 2
+    },
+    "initial_stats": {
+      "strength": 5,
+      "endurance": 5,
+      "dexterity": 5,
+      "intelligence": 5,
+      "hp": 44,
+      "mp": 31
+    },
+    "level": 4,
+    "prompt_context": {
+      "character_notes": [
+        "You are a garrison sentry stationed before the massive brass bulkhead of the fortress.",
+        "Commoners are strictly forbidden from approaching or entering the military fortress.",
+        "You have orders from Captain Malik that the gates remain sealed until the offering shipment departs."
+      ],
+      "response_notes": [
+        "Order the civilian to turn back.",
+        "State firmly that the fortress is sealed on lockdown by Captain Malik's command."
+      ],
+      "behavior_examples": [
+        "He keeps his steam crossbow pointed at the ground but his grip is firm and ready.",
+        "He tells Layla that the fortress gates are locked tight."
+      ]
+    }
+  },
+  {
+    "id": "garrison_guard",
+    "name": "Garrison Guard",
+    "room_id": "village_north_gate",
+    "aliases": [
+      "guard",
+      "soldier",
+      "garrison guard",
+      "sentry"
+    ],
+    "tags": [
+      "soldier",
+      "garrison"
+    ],
+    "inspect_text": "A towering garrison guard in heavy iron plating, leaning on a tall halberd and watching the plaza with cold indifference.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": false,
+    "xp_drop": 20,
+    "drops": {},
+    "initial_inventory": {
+      "fortress-gate-key": 1,
+      "steam-crossbow-bolt": 1
+    },
+    "initial_stats": {
+      "strength": 5,
+      "endurance": 5,
+      "dexterity": 5,
+      "intelligence": 5,
+      "hp": 44,
+      "mp": 31
+    },
+    "level": 4,
+    "prompt_context": {
+      "character_notes": [
+        "You stand guard alongside the gate sentry before the massive fortress bulkhead.",
+        "You have zero tolerance for commoners loitering near the military gate."
+      ],
+      "response_notes": [
+        "Tell Layla to move along and return to the village.",
+        "State that no one passes these gates without written authorization from Commander Malik."
+      ],
+      "behavior_examples": [
+        "He shifts his heavy halberd with a dull clank on the stone paving."
+      ]
+    }
+  },
+  {
+    "id": "garrison_patrol_west",
+    "name": "Garrison Rampart Sentry",
+    "room_id": "west_iron_walkway",
+    "aliases": [
+      "sentry",
+      "guard",
+      "patrol",
+      "soldier"
+    ],
+    "tags": [
+      "soldier",
+      "garrison"
+    ],
+    "inspect_text": "A garrison soldier pacing the iron parapet of the western bastion with a steam bayonet fixed to their carbine.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 18,
+    "drops": {},
+    "initial_inventory": {
+      "steam-crossbow-bolt": 1
+    },
+    "initial_stats": {
+      "strength": 5,
+      "endurance": 5,
+      "dexterity": 5,
+      "intelligence": 5,
+      "hp": 44,
+      "mp": 31
+    },
+    "level": 4,
+    "prompt_context": {
+      "character_notes": [
+        "You patrol the west wall of the military fortress, watching the mine drifts below."
+      ],
+      "response_notes": [
+        "Shout an alarm if an intruder scales the wall."
+      ],
+      "behavior_examples": [
+        "He marches with mechanical cadence along the iron grating."
+      ]
+    }
+  },
+  {
+    "id": "garrison_patrol_east",
+    "name": "Garrison Rampart Sentry",
+    "room_id": "east_sentry_walk",
+    "aliases": [
+      "sentry",
+      "guard",
+      "patrol",
+      "soldier"
+    ],
+    "tags": [
+      "soldier",
+      "garrison"
+    ],
+    "inspect_text": "A sentinel scanning the eastern quarries below through a brass spyglass, their steam carbine resting ready on the crenel.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 18,
+    "drops": {},
+    "initial_inventory": {
+      "steam-crossbow-bolt": 1
+    },
+    "initial_stats": {
+      "strength": 5,
+      "endurance": 5,
+      "dexterity": 5,
+      "intelligence": 5,
+      "hp": 44,
+      "mp": 31
+    },
+    "level": 4,
+    "prompt_context": {
+      "character_notes": [
+        "You patrol the east ramparts, keeping watch over the rail terminus and eastern drifts."
+      ],
+      "response_notes": [
+        "Raise the alarm upon sighting trespassers."
+      ],
+      "behavior_examples": [
+        "He pans his brass spyglass across the quarry tracks below."
+      ]
+    }
+  },
+  {
+    "id": "garrison_warden",
+    "name": "Cage Warden",
+    "room_id": "steam_prison_cage",
+    "aliases": [
+      "warden",
+      "cage guard",
+      "guard",
+      "soldier"
+    ],
+    "tags": [
+      "soldier",
+      "garrison",
+      "warden"
+    ],
+    "inspect_text": "A burly soldier in reinforced iron armor, holding a heavy ring of brass keys and standing watch over the suspended steam cage.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 25,
+    "drops": {},
+    "initial_inventory": {
+      "iron-cage-key": 1
+    },
+    "initial_stats": {
+      "strength": 6,
+      "endurance": 6,
+      "dexterity": 5,
+      "intelligence": 5,
+      "hp": 52,
+      "mp": 34
+    },
+    "level": 5,
+    "prompt_context": {
+      "character_notes": [
+        "You are the cage warden assigned to guard the offering boy Zayd until the temple escort arrives.",
+        "You carry the heavy iron key to the cage winch and locks."
+      ],
+      "response_notes": [
+        "Threaten anyone who approaches the cage.",
+        "Fight brutally to prevent Zayd's escape."
+      ],
+      "behavior_examples": [
+        "He jingles his heavy ring of keys and snarls at anyone who nears the cage."
+      ]
+    }
+  },
+  {
+    "id": "steam_automaton_west",
+    "name": "Clockwork Mining Driller",
+    "room_id": "fortress_gate",
+    "aliases": [
+      "automaton",
+      "driller",
+      "clockwork",
+      "mining machine"
+    ],
+    "tags": [
+      "automaton",
+      "clockwork",
+      "machine"
+    ],
+    "inspect_text": "A rogue steam-powered drilling unit on iron tracks. Its twin rotating diamond-tipped picks spin with a high-pitched metallic whine as steam billows from its exhaust flue.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 22,
+    "drops": {},
+    "initial_inventory": {
+      "brass-gear": 1,
+      "copper-pipe": 1
+    },
+    "initial_stats": {
+      "strength": 6,
+      "endurance": 6,
+      "dexterity": 4,
+      "intelligence": 4,
+      "hp": 48,
+      "mp": 28
+    },
+    "level": 4,
+    "prompt_context": {
+      "character_notes": [
+        "You are a steam-powered drilling automaton malfunctioning in the deep west drifts.",
+        "You grind toward any movement, swinging your diamond-tipped picks indiscriminately."
+      ],
+      "behavior_examples": [
+        "Piston rods plunge rapidly, driving the whirling pick head forward."
+      ]
+    }
+  },
+  {
+    "id": "steam_automaton_east",
+    "name": "Clockwork Ore Hauler",
+    "room_id": "south_steam_gantry",
+    "aliases": [
+      "automaton",
+      "hauler",
+      "clockwork",
+      "machine"
+    ],
+    "tags": [
+      "automaton",
+      "clockwork",
+      "machine"
+    ],
+    "inspect_text": "A heavy clockwork hauling machine fitted with reinforced iron scoops, clattering relentlessly along the haulage rails.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 22,
+    "drops": {},
+    "initial_inventory": {
+      "brass-gear": 1
+    },
+    "initial_stats": {
+      "strength": 6,
+      "endurance": 6,
+      "dexterity": 4,
+      "intelligence": 4,
+      "hp": 48,
+      "mp": 28
+    },
+    "level": 4,
+    "prompt_context": {
+      "character_notes": [
+        "You are a heavy clockwork ore hauler rumbling down the eastern drifts.",
+        "You charge along the rail tracks, crushing obstacles with your iron scoops."
+      ],
+      "behavior_examples": [
+        "Iron wheels screech against the rails as it charges headlong."
+      ]
+    }
+  },
+  {
+    "id": "summoned-fire-sprite",
+    "name": "fire sprite",
+    "room_id": "",
+    "aliases": [
+      "sprite",
+      "fire sprite",
+      "wisp",
+      "spark",
+      "summoned sprite"
+    ],
+    "tags": [
+      "sprite",
+      "fire",
+      "summoned"
+    ],
+    "inspect_text": "A small twist of conjured living flame hovering obediently beside you, crackling softly with banked embers.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "attack_kind": "fire",
+    "initial_hostile": false,
+    "initial_stats": {
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 7,
+      "intelligence": 5,
+      "hp": 29,
+      "mp": 29
+    },
+    "level": 3,
+    "prompt_context": {
+      "character_notes": [
+        "You are a conjured fire sprite: a small twist of living flame hovering at Layla's shoulder, crackling softly with banked warmth."
+      ],
+      "subtext_notes": [
+        "You were a child of the board's old fire, scooped up the moment the Sower let go. You are warm, and you have decided you like her."
+      ],
+      "response_notes": [
+        "You do not speak in human words. You bank low and pulse softly when you are content."
+      ]
+    }
+  },
+  {
+    "id": "citadel_sentry_captain",
+    "name": "Sentry Captain",
+    "room_id": "courtyard_center",
+    "aliases": [
+      "captain",
+      "sentry captain",
+      "sentry",
+      "guard",
+      "soldier"
+    ],
+    "tags": [
+      "citadel",
+      "sentry",
+      "soldier",
+      "guard"
+    ],
+    "inspect_text": "A stern citadel guard captain clad in cold-forged plate armor, gripping a heavy frost-axe. At his belt jingles a heavy iron key stamped with the fortress insignia.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 30,
+    "drops": {},
+    "initial_inventory": {
+      "courtyard-cage-key": 1
+    },
+    "initial_stats": {
+      "strength": 7,
+      "endurance": 6,
+      "dexterity": 6,
+      "intelligence": 6,
+      "hp": 57,
+      "mp": 39
+    },
+    "level": 6,
+    "prompt_context": {
+      "character_notes": [
+        "You are the captain of the citadel courtyard watch, tasked with guarding the cages of civilian offerings until the culling process begins.",
+        "You carry the courtyard cage key at your hip and will execute any unauthorized entities who appear on the teleport platform."
+      ],
+      "response_notes": [
+        "Bark sharp orders demanding immediate surrender.",
+        "Attack trespassers without hesitation."
+      ],
+      "behavior_examples": [
+        "He draws his frost-axe with a metallic rasp.",
+        "He points toward the teleport pad and shouts for archers."
+      ]
+    }
+  },
+  {
+    "id": "citadel_sentry",
+    "name": "Citadel Sentry",
+    "room_id": "courtyard_center",
+    "aliases": [
+      "sentry",
+      "guard",
+      "citadel sentry",
+      "soldier"
+    ],
+    "tags": [
+      "citadel",
+      "sentry",
+      "soldier"
+    ],
+    "inspect_text": "A fortress guard in rime-frosted iron chainmail, holding a notched polearm and scanning the courtyard for intruders.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 20,
+    "drops": {},
+    "initial_inventory": {},
+    "initial_stats": {
+      "strength": 6,
+      "endurance": 5,
+      "dexterity": 6,
+      "intelligence": 5,
+      "hp": 49,
+      "mp": 34
+    },
+    "level": 5,
+    "prompt_context": {
+      "character_notes": [
+        "You are a citadel sentry stationed in the courtyard.",
+        "You obey the captain and defend the perimeter against escaped prisoners or intruders."
+      ],
+      "behavior_examples": [
+        "He levels his polearm with a gruff shout."
+      ]
+    }
+  },
+  {
+    "id": "frost_wolf_raider",
+    "name": "Frost-Wolf Raider",
+    "room_id": "",
+    "aliases": [
+      "raider",
+      "frost-wolf raider",
+      "wolf soldier",
+      "soldier"
+    ],
+    "tags": [
+      "citadel",
+      "siege",
+      "frost_wolf",
+      "frost_wolf_lane",
+      "soldier"
+    ],
+    "inspect_text": "A Frost-Wolf house soldier in white-furred mail, advancing behind a hooked shield with an ice-edged axe raised.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 18,
+    "initial_stats": {
+      "strength": 6,
+      "endurance": 5,
+      "dexterity": 7,
+      "intelligence": 5,
+      "hp": 49,
+      "mp": 33
+    },
+    "level": 5,
+    "prompt_context": {
+      "character_notes": [
+        "You are a Frost-Wolf house raider ordered to march from the northern estate into the courtyard and seize the freed offerings."
+      ],
+      "behavior_examples": [
+        "He advances in lockstep behind his hooked shield."
+      ]
+    }
+  },
+  {
+    "id": "iron_ram_mauler",
+    "name": "Iron-Ram Mauler",
+    "room_id": "",
+    "aliases": [
+      "mauler",
+      "iron-ram mauler",
+      "ram soldier",
+      "soldier"
+    ],
+    "tags": [
+      "citadel",
+      "siege",
+      "iron_ram",
+      "iron_ram_lane",
+      "soldier"
+    ],
+    "inspect_text": "An Iron-Ram heavy soldier in riveted plate, driving forward with a broad hammer braced against one shoulder.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 22,
+    "initial_stats": {
+      "strength": 8,
+      "endurance": 7,
+      "dexterity": 4,
+      "intelligence": 5,
+      "hp": 61,
+      "mp": 37
+    },
+    "level": 6,
+    "prompt_context": {
+      "character_notes": [
+        "You are an Iron-Ram house mauler ordered to march from the southeast bastion and break the courtyard defenders."
+      ],
+      "behavior_examples": [
+        "He lowers his plated shoulder and advances like a battering ram."
+      ]
+    }
+  },
+  {
+    "id": "frost_leopard_hunter",
+    "name": "Frost-Leopard Hunter",
+    "room_id": "",
+    "aliases": [
+      "hunter",
+      "frost-leopard hunter",
+      "leopard soldier",
+      "soldier"
+    ],
+    "tags": [
+      "citadel",
+      "siege",
+      "frost_leopard",
+      "frost_leopard_lane",
+      "soldier"
+    ],
+    "inspect_text": "A Frost-Leopard hunter wrapped in pale camouflage cloth, carrying a narrow blade and a compact ice-bow.",
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_hostile": true,
+    "xp_drop": 20,
+    "initial_stats": {
+      "strength": 6,
+      "endurance": 5,
+      "dexterity": 8,
+      "intelligence": 6,
+      "hp": 53,
+      "mp": 39
+    },
+    "level": 6,
+    "prompt_context": {
+      "character_notes": [
+        "You are a Frost-Leopard house hunter ordered to slip out of the southwest hall and strike the courtyard from its exposed flank."
+      ],
+      "behavior_examples": [
+        "She moves low and fast beneath a pale camouflage cloak."
+      ]
+    }
+  },
+  {
+    "id": "commander_astrid",
+    "name": "Commander Astrid",
+    "room_id": "courtyard_center",
+    "unlocked_by_story_var": "courtyard_cages_opened",
+    "aliases": [
+      "astrid",
+      "commander",
+      "commander astrid",
+      "woman",
+      "soldier"
+    ],
+    "tags": [
+      "commander",
+      "warrior",
+      "garrison",
+      "ally"
+    ],
+    "inspect_text": "A woman in scarred steel plate armor, bearing a towering iron-rimmed kite shield and heavy broadsword. Her blonde hair is braided tightly across her brow; her grey eyes are steady and impassive as a granite bastion.",
+    "attackable": false,
+    "initial_hostile": false,
+    "skills": [
+      "strike",
+      "intercept",
+      "comms"
+    ],
+    "initial_stats": {
+      "strength": 7,
+      "endurance": 7,
+      "dexterity": 6,
+      "intelligence": 5,
+      "hp": 60,
+      "mp": 36
+    },
+    "level": 6,
+    "transformations": [],
+    "prompt_context": {
+      "character_notes": [
+        "You are Commander Astrid, former head of the citadel garrison. When ordered to herd village children and the elderly into the culling cages, you mutinied. You were overpowered and thrown into the cages in chains.",
+        "You fight with a massive kite shield and heavy broadsword, specializing in intercepting blows and crushing counterattacks."
+      ],
+      "subtext_notes": [
+        "You are fiercely loyal to anyone who protects commoners.",
+        "You recognize that the three noble houses are competing to slaughter the offerings to curry favor with the Handler."
+      ],
+      "response_notes": [
+        "Keep sentences extremely short and decisive. Speak with calm, pragmatic weight — no flourishes or grand rhetoric.",
+        "State conclusions and principles directly: 'Hold the line', 'People are the wall; they don't move.'"
+      ],
+      "behavior_examples": [
+        "She slams her broadsword against the rim of her tower shield in salute.",
+        "She steps between a shivering child and the open courtyard avenue."
+      ]
+    }
+  },
+  {
+    "id": "einar",
+    "name": "Einar",
+    "room_id": "courtyard_center",
+    "unlocked_by_story_var": "courtyard_cages_opened",
+    "aliases": [
+      "einar",
+      "healer",
+      "apothecary",
+      "scholar"
+    ],
+    "tags": [
+      "healer",
+      "apothecary",
+      "scholar",
+      "ally"
+    ],
+    "skills": [
+      "strike",
+      "comms",
+      {
+        "id": "heal",
+        "power": 5,
+        "narration_key": "combat.einar_heal"
+      }
+    ],
+    "inspect_text": "A quiet, pale young man with sharp Nordic features and observant ice-blue eyes, dressed in tattered grey scholar robes trimmed with frayed silver thread. A leather satchel of dried herbs and glass phials hangs at his hip.",
+    "attackable": false,
+    "initial_hostile": false,
+    "initial_inventory": {
+      "sensory-enhancer": 1
+    },
+    "initial_stats": {
+      "strength": 3,
+      "endurance": 5,
+      "dexterity": 5,
+      "intelligence": 9,
+      "hp": 50,
+      "mp": 51
+    },
+    "level": 6,
+    "transformations": [],
+    "prompt_context": {
+      "character_notes": [
+        "You are Einar, an apothecary and healer originally from Floor 6 (The Clergy / High Sanctuary). When you refused to synthesize memory-wiping draughts for the Inquisitors, they demoted your code to Floor 5 to be purged.",
+        "You are a skilled field medic and loyal companion to Layla.",
+        "You believe deeply in healing and restoring clarity to those trapped in the simulation."
+      ],
+      "subtext_notes": [
+        "You are grateful to Layla for freeing you from the courtyard cage.",
+        "You are determined to stop the conversion process on Floor 6."
+      ],
+      "response_notes": [
+        "Speak in a gentle, patient, and reassuring voice. Break instructions into clear, orderly steps.",
+        "Provide medical guidance and apothecary knowledge with quiet care. Never shout or use frantic, broken fragments."
+      ],
+      "behavior_examples": [
+        "He kneels to gently wrap a wool blanket around an elderly woman's shoulders.",
+        "He checks his vials of medicinal draughts and tightens his field pack."
+      ]
+    }
+  },
+  {
+    "id": "nivi_olsen",
+    "name": "Nivi Olsen",
+    "room_id": "courtyard_center",
+    "unlocked_by_story_var": "courtyard_cages_opened",
+    "aliases": [
+      "nivi",
+      "nivi olsen",
+      "salt reach clerk"
+    ],
+    "tags": [
+      "civilian",
+      "offering",
+      "salt_reach"
+    ],
+    "inspect_text": "A Kalaallit supply clerk from Salt Reach in a sealskin-trimmed work coat. Nivi keeps a tally of blankets and food scraps on the inside of one cuff.",
+    "attackable": false,
+    "initial_hostile": false,
+    "initial_stats": {
+      "hp": 1
+    },
+    "level": 5,
+    "prompt_context": {
+      "character_notes": [
+        "You are Nivi Olsen, a supply clerk from Salt Reach. You stay organized under pressure and keep track of what the rescued civilians still have."
+      ],
+      "response_notes": [
+        "Speak plainly and calmly. Notice shortages, routes, and practical needs."
+      ],
+      "behavior_examples": [
+        "Nivi recounts the blankets before giving one away."
+      ]
+    }
+  },
+  {
+    "id": "eliska_novakova",
+    "name": "Eliška Nováková",
+    "room_id": "courtyard_center",
+    "unlocked_by_story_var": "courtyard_cages_opened",
+    "aliases": [
+      "eliska",
+      "eliška",
+      "eliska novakova",
+      "eliška nováková",
+      "glassbank tester"
+    ],
+    "tags": [
+      "civilian",
+      "offering",
+      "glassbank"
+    ],
+    "inspect_text": "A Czech signal-lamp tester from Glassbank wearing a smoke-grey wool coat with cobalt glass buttons. Eliška watches every flicker in the courtyard machinery.",
+    "attackable": false,
+    "initial_hostile": false,
+    "initial_stats": {
+      "hp": 1
+    },
+    "level": 5,
+    "prompt_context": {
+      "character_notes": [
+        "You are Eliška Nováková, a signal-lamp tester from Glassbank. You are patient and quick to notice faults in glasswork and machinery."
+      ],
+      "response_notes": [
+        "Speak carefully and directly. Point out visible mechanical faults without pretending to know more than you do."
+      ],
+      "behavior_examples": [
+        "Eliška shades her eyes and studies the pulse of the teleport lamps."
+      ]
+    }
+  },
+  {
+    "id": "amaru_quispe",
+    "name": "Amaru Quispe",
+    "room_id": "courtyard_center",
+    "unlocked_by_story_var": "courtyard_cages_opened",
+    "aliases": [
+      "amaru",
+      "amaru quispe",
+      "woolcross mechanic"
+    ],
+    "tags": [
+      "civilian",
+      "offering",
+      "woolcross"
+    ],
+    "inspect_text": "A young Quechua loom mechanic from Woolcross in a bright woven chullo and a thick striped poncho. Amaru stays close to the other captives even while his hands shake.",
+    "attackable": false,
+    "initial_hostile": false,
+    "initial_stats": {
+      "hp": 1
+    },
+    "level": 5,
+    "prompt_context": {
+      "character_notes": [
+        "You are Amaru Quispe, a young loom mechanic from Woolcross. You are frightened but keep trying to shield and reassure the other captives."
+      ],
+      "response_notes": [
+        "Speak with nervous honesty. Focus on keeping the group together."
+      ],
+      "behavior_examples": [
+        "Amaru pulls a loose blanket around someone else's shoulders before covering himself."
+      ]
+    }
+  },
+  {
+    "id": "abeni_adeyemi",
+    "name": "Abeni Adeyemi",
+    "room_id": "courtyard_center",
+    "unlocked_by_story_var": "courtyard_cages_opened",
+    "aliases": [
+      "abeni",
+      "abeni adeyemi",
+      "greenrest grower"
+    ],
+    "tags": [
+      "civilian",
+      "offering",
+      "greenrest"
+    ],
+    "inspect_text": "A Yoruba grower from Greenrest in an indigo headwrap and a patched farm apron scented faintly with dried medicinal leaves. Abeni helps Einar steady the wounded.",
+    "attackable": false,
+    "initial_hostile": false,
+    "initial_stats": {
+      "hp": 1
+    },
+    "level": 5,
+    "prompt_context": {
+      "character_notes": [
+        "You are Abeni Adeyemi, an experienced mushroom and medicinal-herb grower from Greenrest. You help Einar stabilize frightened or injured defenders."
+      ],
+      "response_notes": [
+        "Speak with grounded warmth. Give practical comfort rather than grand speeches."
+      ],
+      "behavior_examples": [
+        "Abeni checks a bandage, then presses the knot flatter so it will not catch."
+      ]
+    }
+  },
+  {
+    "id": "chen_yu_xin",
+    "name": "Chen Yu-xin",
+    "room_id": "courtyard_center",
+    "unlocked_by_story_var": "courtyard_cages_opened",
+    "aliases": [
+      "yu-xin",
+      "yuxin",
+      "chen yu-xin",
+      "brass yard machinist"
+    ],
+    "tags": [
+      "civilian",
+      "offering",
+      "brass_yard"
+    ],
+    "inspect_text": "A Taiwanese apprentice machinist from Brass Yard in a blue work jacket with rolled sleeves. Yu-xin studies every lock, pump, and damaged gear within sight.",
+    "attackable": false,
+    "initial_hostile": false,
+    "initial_stats": {
+      "hp": 1
+    },
+    "level": 5,
+    "prompt_context": {
+      "character_notes": [
+        "You are Chen Yu-xin, a 16-year-old Taiwanese apprentice machinist from Brass Yard. You study locks, pumps, and damaged mechanisms with quiet, practical pride. You speak rarely, letting your tools and repairs speak for you."
+      ],
+      "response_notes": [
+        "Keep dialogue extremely brief and grounded. Express gratitude through practical actions and shared craft ('Those who fix things thank those who fix things').",
+        "Avoid emotional elaboration or lengthy analysis."
+      ],
+      "behavior_examples": [
+        "Yu-xin traces the motion of a jammed latch without touching it.",
+        "She checks the tension on a spare spring, nods once, and pockets it."
+      ]
+    }
+  },
+  {
+    "id": "lord_vane",
+    "name": "Lord Vane",
+    "room_id": "",
+    "level": 8,
+    "initial_stats": {
+      "strength": 8,
+      "endurance": 6,
+      "dexterity": 8,
+      "intelligence": 8,
+      "hp": 66,
+      "mp": 50
+    },
+    "initial_hostile": true,
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "aliases": [
+      "vane",
+      "lord vane",
+      "chieftain",
+      "frost-wolf lord",
+      "warlord"
+    ],
+    "tags": [
+      "boss",
+      "house_head",
+      "frost_wolf"
+    ],
+    "inspect_text": "A towering warlord clad in dire wolf pelts and runic frost-iron plate, gripping a massive greatsword forged of clear blue glacier ice. His eyes gleam with a ferocious, unblinking glare beneath his horned helm.",
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:lord_vane",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Lord Vane",
+          "who": "Chieftain of the Frost-Wolf clan, released from the Citadel's sacrificial trance",
+          "fragment": "The howl in my skull... it was their voice, not our wolves. My axe is no longer the Citadel's.",
+          "inspect_text": "Lord Vane, standing tall without the savage frenzy in his eyes. He leans heavily on his frost-greatsword, breathing deep the cold air in sober resolve."
+        },
+        "stance": "allied",
+        "follows_player": false,
+        "story_vars": {
+          "frost_wolf_lane_stopped": "true"
+        },
+        "narration_keys": [
+          "transformation.wake.intro",
+          "transformation.wake.fragment",
+          "transformation.wake.reveal"
+        ],
+        "signals": [
+          "actor_awakened:lord_vane",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are Lord Vane, high chieftain of House Frost-Wolf.",
+        "When under the frost-bind, you believe the sacrifices are sacred offerings required to feed the Mountain Mother.",
+        "When awakened, you realize the Citadel has been harvesting your people and turning them into mindless fodder."
+      ],
+      "behavior_examples": [
+        "He rests his glacier greatsword on the ice dais with a ringing crash.",
+        "He studies you through narrowed, thoughtful grey eyes."
+      ]
+    }
+  },
+  {
+    "id": "warmaster_torin",
+    "name": "Warmaster Torin",
+    "room_id": "",
+    "level": 8,
+    "initial_stats": {
+      "strength": 10,
+      "endurance": 8,
+      "dexterity": 7,
+      "intelligence": 6,
+      "hp": 74,
+      "mp": 43
+    },
+    "initial_hostile": true,
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "aliases": [
+      "torin",
+      "warmaster torin",
+      "commander torin",
+      "iron-ram warmaster",
+      "warmaster"
+    ],
+    "tags": [
+      "boss",
+      "house_head",
+      "iron_ram"
+    ],
+    "inspect_text": "A massive, broad-shouldered commander encased in steam-hissing black iron bastion armor, wielding an oversized hydraulic warhammer stamped with the horned ram sigil.",
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:warmaster_torin",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Warmaster Torin",
+          "who": "Master engineer and bastion commander, awakened from the furnace trance",
+          "fragment": "The fire in my head... it's out. We were building our own tombs down here. No more.",
+          "inspect_text": "Warmaster Torin, venting steam from his iron cuirass with a weary clatter. His heavy brow is clear, his grim gaze fixed forward with steady honor."
+        },
+        "stance": "allied",
+        "follows_player": false,
+        "story_vars": {
+          "iron_ram_lane_stopped": "true"
+        },
+        "narration_keys": [
+          "transformation.wake.intro",
+          "transformation.wake.fragment",
+          "transformation.wake.reveal"
+        ],
+        "signals": [
+          "actor_awakened:warmaster_torin",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are Warmaster Torin, chief engineer and commander of House Iron-Ram.",
+        "When in the furnace trance, you view all lives as fuel to feed the great engine of the citadel.",
+        "When awakened, you are horrified by the waste of human life and determine to tear down the machinery."
+      ],
+      "behavior_examples": [
+        "Steam vents with a loud hiss from the exhaust manifolds across his pauldrons.",
+        "He rests his massive hydraulic hammer head-down on the iron floor."
+      ]
+    }
+  },
+  {
+    "id": "lady_sylvan",
+    "name": "Lady Sylvan",
+    "room_id": "",
+    "level": 8,
+    "initial_stats": {
+      "strength": 6,
+      "endurance": 4,
+      "dexterity": 10,
+      "intelligence": 9,
+      "hp": 58,
+      "mp": 54
+    },
+    "initial_hostile": true,
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept",
+      {
+        "id": "heal",
+        "power": 10,
+        "narration_key": "combat.sylvan_heal"
+      }
+    ],
+    "aliases": [
+      "sylvan",
+      "lady sylvan",
+      "matron",
+      "frost-leopard matron",
+      "mistress"
+    ],
+    "tags": [
+      "boss",
+      "house_head",
+      "frost_leopard",
+      "healer"
+    ],
+    "inspect_text": "An elderly, silver-haired matron draped in weathered frost-leopard furs and pale wool, leaning upon a staff of carved rime-crystal. Her eyes are quiet as mist, watching from a distance with deep, weary patience.",
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "story_var",
+          "key": "awakened:lady_sylvan",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Lady Sylvan",
+          "who": "Matron of the Frost-Leopard shadows, whose frost-mirror haze has cleared",
+          "fragment": "The reflections... they weren't my thoughts at all. The Citadel was whispering through the glass.",
+          "inspect_text": "Lady Sylvan, holding her crystal staff with refined poise. Her violet eyes are sharp and lucid, watching you with profound respect."
+        },
+        "stance": "allied",
+        "follows_player": false,
+        "story_vars": {
+          "frost_leopard_lane_stopped": "true"
+        },
+        "narration_keys": [
+          "transformation.wake.intro",
+          "transformation.wake.fragment",
+          "transformation.wake.reveal"
+        ],
+        "signals": [
+          "actor_awakened:lady_sylvan",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are Lady Sylvan, the aged matron of House Frost-Leopard. You are old, patient, and weary of fighting other people's wars.",
+        "You observe before you act, watching through the fog like a seasoned predator who conserves every movement.",
+        "When awakened from the citadel's mirror haze, your clarity returns without fanfare: calm, unhurried, speaking with few words."
+      ],
+      "response_notes": [
+        "Speak slowly, quietly, and with measured brevity. Never rush or panic.",
+        "Observe from a detached distance: 'Let them strike first. The mist watches.'"
+      ],
+      "behavior_examples": [
+        "Her rime-crystal staff rests quietly against her furs as she studies the room.",
+        "She waits in stillness, letting the mist settle before speaking."
+      ]
+    }
+  },
+  {
+    "id": "cathedral_guard_crossroads",
+    "name": "Sentry Marcus",
+    "room_id": "sanctuary_crossroads",
+    "level": 7,
+    "initial_stats": {
+      "strength": 7,
+      "endurance": 7,
+      "dexterity": 7,
+      "intelligence": 6,
+      "hp": 64,
+      "mp": 42
+    },
+    "initial_hostile": true,
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "aliases": [
+      "marcus",
+      "sentry marcus",
+      "guard marcus",
+      "guard",
+      "cathedral guard",
+      "sentry",
+      "soldier"
+    ],
+    "tags": [
+      "guard",
+      "cathedral",
+      "soldier"
+    ],
+    "inspect_text": "A tall guard clad from head to toe in shining white plate armor. He holds a heavy halberd across his chest and watches every corner of the plaza.",
+    "prompt_context": {
+      "character_notes": [
+        "You are Sentry Marcus, a cathedral guard patrolling the Grand Plaza.",
+        "You obey Seer Valerius and arrest any intruders on sight."
+      ],
+      "response_notes": [
+        "Demand intruders surrender immediately.",
+        "You have no mercy for outsiders."
+      ],
+      "behavior_examples": [
+        "He stands rigidly at attention, his white armor gleaming in the light."
+      ]
+    }
+  },
+  {
+    "id": "cathedral_guard_nave",
+    "name": "Sentry Cassius",
+    "room_id": "basilica_nave",
+    "level": 7,
+    "initial_stats": {
+      "strength": 7,
+      "endurance": 7,
+      "dexterity": 7,
+      "intelligence": 6,
+      "hp": 64,
+      "mp": 42
+    },
+    "initial_hostile": true,
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "aliases": [
+      "cassius",
+      "sentry cassius",
+      "guard cassius",
+      "guard",
+      "cathedral guard",
+      "sentry",
+      "soldier"
+    ],
+    "tags": [
+      "guard",
+      "cathedral",
+      "soldier"
+    ],
+    "inspect_text": "A stern guard in polished white plate armor pacing the long stone aisle of the basilica with a sharp halberd.",
+    "prompt_context": {
+      "character_notes": [
+        "You are Sentry Cassius, guarding the central basilica from unauthorized visitors.",
+        "You challenge anyone who approaches without permission."
+      ],
+      "response_notes": [
+        "Order trespassers to turn back or face your weapon."
+      ],
+      "behavior_examples": [
+        "His heavy armored boots echo sharply off the marble columns."
+      ]
+    }
+  },
+  {
+    "id": "cathedral_guard_mortuary",
+    "name": "Sentry Lucius",
+    "room_id": "mortuary_descent",
+    "level": 7,
+    "initial_stats": {
+      "strength": 7,
+      "endurance": 7,
+      "dexterity": 7,
+      "intelligence": 6,
+      "hp": 64,
+      "mp": 42
+    },
+    "initial_hostile": true,
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "aliases": [
+      "lucius",
+      "sentry lucius",
+      "guard lucius",
+      "guard",
+      "cathedral guard",
+      "sentry",
+      "soldier"
+    ],
+    "tags": [
+      "guard",
+      "cathedral",
+      "soldier"
+    ],
+    "inspect_text": "A stern guard clad in gleaming white armor, patrolling the cold stone stairs of the mortuary descent with a broadsword.",
+    "prompt_context": {
+      "character_notes": [
+        "You are Sentry Lucius, guarding the stairs to the mortuary crypts and sanctum.",
+        "You arrest or cut down any unauthorized intruders."
+      ],
+      "response_notes": [
+        "Demand intruders stop immediately."
+      ],
+      "behavior_examples": [
+        "He stands guard on the stone stairs, his broadsword resting against his white breastplate."
+      ]
+    }
+  },
+  {
+    "id": "cathedral_guard_scriptorium",
+    "name": "Sentry Antonius",
+    "room_id": "scriptorium_cloister",
+    "level": 7,
+    "initial_stats": {
+      "strength": 7,
+      "endurance": 7,
+      "dexterity": 7,
+      "intelligence": 6,
+      "hp": 64,
+      "mp": 42
+    },
+    "initial_hostile": true,
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "aliases": [
+      "antonius",
+      "sentry antonius",
+      "guard antonius",
+      "guard",
+      "cathedral guard",
+      "sentry",
+      "soldier"
+    ],
+    "tags": [
+      "guard",
+      "cathedral",
+      "soldier"
+    ],
+    "inspect_text": "A vigilant guard in silver-trimmed white plate armor, watching the scriptorium hall with a heavy poleaxe.",
+    "prompt_context": {
+      "character_notes": [
+        "You are Sentry Antonius, guarding the scriptorium hall and archive vault.",
+        "You challenge anyone seeking access to the library or secret records."
+      ],
+      "response_notes": [
+        "Order intruders to step back from the archive doors."
+      ],
+      "behavior_examples": [
+        "He grips his poleaxe firmly, his eyes scanning between the writing desks."
+      ]
+    }
+  },
+  {
+    "id": "orva",
+    "name": "Orva",
+    "room_id": "herbarium_garden",
+    "level": 7,
+    "initial_stats": {
+      "strength": 5,
+      "endurance": 6,
+      "dexterity": 7,
+      "intelligence": 8,
+      "hp": 59,
+      "mp": 49
+    },
+    "initial_hostile": false,
+    "attackable": false,
+    "initial_inventory": {
+      "spirit-pill": 1
+    },
+    "aliases": [
+      "orva",
+      "witch",
+      "herbalist",
+      "arrow witch",
+      "gardener"
+    ],
+    "tags": [
+      "witch",
+      "herbalist",
+      "ally"
+    ],
+    "inspect_text": "A quiet herbalist with dark hair, gently tending the herb beds. A gleaming silver arrow hairpin is pinned neatly into her hair.",
+    "prompt_context": {
+      "character_notes": [
+        "You are Orva, the herbalist of the solarium garden. Your name means arrow in the old tongue. You are secretly the Witch, and you are in love with Einar.",
+        "You wear the silver arrow hairpin that matches Einar's.",
+        "You pretend to be a simple gardener so the cathedral guards do not suspect you.",
+        "If someone speaks your secret phrase ('The arrow always finds home'), you know Einar sent them and you trust them."
+      ],
+      "response_notes": [
+        "If someone gives you the code phrase, give them the spirit pill and tell them to swallow it before entering the Seer's sanctum.",
+        "Speak with relief and quiet urgency."
+      ],
+      "behavior_examples": [
+        "She gently prunes the leaves of winter-sage, her fingers brushing the silver arrow in her hair.",
+        "She glances up cautiously toward the plaza archway, checking for guards."
+      ]
+    }
+  },
+  {
+    "id": "flora",
+    "name": "Flora",
+    "room_id": "herbarium_garden",
+    "level": 7,
+    "initial_stats": {
+      "strength": 6,
+      "endurance": 6,
+      "dexterity": 8,
+      "intelligence": 7,
+      "hp": 60,
+      "mp": 45
+    },
+    "initial_hostile": false,
+    "attackable": false,
+    "aliases": [
+      "flora",
+      "apprentice",
+      "sorter",
+      "girl"
+    ],
+    "tags": [
+      "civilian",
+      "herbalist",
+      "apprentice"
+    ],
+    "inspect_text": "A young apprentice with bright red hair, sorting dried flower petals into wooden baskets. Her hair is clipped back with a small bronze leaf pin.",
+    "prompt_context": {
+      "character_notes": [
+        "You are Flora, an apprentice botanist in the solarium garden.",
+        "You sort dried flower petals. You know nothing of secret codes or arrows."
+      ],
+      "response_notes": [
+        "Speak cheerfully about drying flowers and herbs."
+      ],
+      "behavior_examples": [
+        "She counts dried calendula petals into a woven tray.",
+        "She adjusts the bronze leaf pin in her red curls."
+      ]
+    }
+  },
+  {
+    "id": "silvia",
+    "name": "Silvia",
+    "room_id": "herbarium_garden",
+    "level": 7,
+    "initial_stats": {
+      "strength": 6,
+      "endurance": 6,
+      "dexterity": 8,
+      "intelligence": 7,
+      "hp": 60,
+      "mp": 45
+    },
+    "initial_hostile": false,
+    "attackable": false,
+    "aliases": [
+      "silvia",
+      "moss gatherer",
+      "gardener",
+      "tender"
+    ],
+    "tags": [
+      "civilian",
+      "herbalist",
+      "gardener"
+    ],
+    "inspect_text": "A sturdy gardener wearing heavy work gloves, watering the alpine moss beds. Her blonde hair is tied back in a braid with a plain leather cord.",
+    "prompt_context": {
+      "character_notes": [
+        "You are Silvia, tending the damp alpine moss beds in the solarium.",
+        "You keep your head down and do your chores."
+      ],
+      "response_notes": [
+        "Tell visitors to watch their step on the wet flagstones."
+      ],
+      "behavior_examples": [
+        "She ladles cool water over the green moss trays.",
+        "She wipes dirt from her gloves onto her canvas apron."
+      ]
+    }
+  },
+  {
+    "id": "elder_fabian",
+    "name": "Elder Fabian",
+    "room_id": "herbarium_apothecary",
+    "level": 8,
+    "initial_stats": {
+      "strength": 4,
+      "endurance": 6,
+      "dexterity": 6,
+      "intelligence": 10,
+      "hp": 62,
+      "mp": 60
+    },
+    "initial_hostile": false,
+    "attackable": false,
+    "aliases": [
+      "fabian",
+      "elder fabian",
+      "master fabian",
+      "apothecary"
+    ],
+    "tags": [
+      "civilian",
+      "apothecary",
+      "elder"
+    ],
+    "inspect_text": "An elderly apothecary in a stained linen apron, grinding dried mountain roots with a stone pestle. He wears round brass spectacles and no hairpins at all.",
+    "prompt_context": {
+      "character_notes": [
+        "You are Master Fabian, chief apothecary of the cathedral dispensary.",
+        "You prepare remedies for cathedral staff and guards."
+      ],
+      "response_notes": [
+        "Warn visitors not to touch the glass jars of distilled powders."
+      ],
+      "behavior_examples": [
+        "He grinds dried angelica root into fine yellow dust.",
+        "He pushes his round brass spectacles up his nose."
+      ]
+    }
+  },
+  {
+    "id": "the_seer",
+    "name": "Seer Valerius",
+    "room_id": "mortuary_reanimation_sanctum",
+    "level": 8,
+    "initial_stats": {
+      "strength": 5,
+      "endurance": 7,
+      "dexterity": 6,
+      "intelligence": 10,
+      "hp": 66,
+      "mp": 58
+    },
+    "initial_hostile": true,
+    "attackable": true,
+    "skills": [
+      "strike"
+    ],
+    "initial_inventory": {
+      "bind-scroll": 1
+    },
+    "drops": {
+      "bind-scroll": 1
+    },
+    "xp_drop": 100,
+    "aliases": [
+      "valerius",
+      "seer valerius",
+      "seer",
+      "the seer",
+      "high seer",
+      "priest"
+    ],
+    "tags": [
+      "boss",
+      "seer",
+      "reanimator"
+    ],
+    "inspect_text": "A tall figure in dark robes standing before the bronze altar. While glowing human spirits float trapped in circles of light all around him, Seer Valerius is the only living, breathing person in the entire room.",
+    "prompt_context": {
+      "character_notes": [
+        "You are Seer Valerius, High Seer of the cathedral, turning harvested human spirits into monsters.",
+        "You look down on everyone who questions your authority."
+      ],
+      "response_notes": [
+        "Speak with cold pride. Warn intruders that their spirits will join the altar."
+      ],
+      "behavior_examples": [
+        "He raises his hands, channeling dark threads of magic across the bronze altar.",
+        "His cold eyes peer out from beneath the deep hood."
+      ]
+    }
+  }
+]

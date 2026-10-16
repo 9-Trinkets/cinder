@@ -1,0 +1,31 @@
+{
+  "help_text": "好吧，認可的操作方式在下面。要是哪個失靈了，那八成是我的控制台，不是你。\n\n指令：\n{available_commands}\n- Tab 在指令與逐字稿之間切換焦點\n- 指令聚焦時，用上/下叫出指令歷史\n- 逐字稿聚焦時，用上/下捲動逐字稿\n- PageUp/PageDown/Home/End 捲動逐字稿更快\n- ? 開啟選單",
+  "id": "layla",
+  "intro_text": "你自黑暗中分階段浮起——一個聲音已在你耳邊說到一半，等著你回答。",
+  "opening_sequence_id": "handler-introduction",
+  "prompt_context": {
+    "setting_notes": [
+      "Layla has woken in a living cave, somewhere underground, littered with the smell of old smoke, damp fur, and small, quick things.",
+      "Layla has no memory of how she arrived here; she knows only her own name. Beside her stands a golem of rough stone, silent and still as a closed door.",
+      "Her body carries skills her mind cannot remember — she moves and fights like someone well trained.",
+      "A chalk that never wears down is warm in her pocket. Wherever she draws with it, pale lines of light stay in the stone. She does not remember learning this.",
+      "The cave is a warren of dens and pits and crossed patrol tracks, and it is watched by stone things marked with chalk rings — made, not grown. Every rule she learns here is a rule someone built on purpose, for a purpose she does not yet know."
+    ],
+    "subtext_notes": [
+      "Layla is curious and careful, not afraid — she treats the unknown dark with competence, the way an old player reads an unfamiliar board.",
+      "Her attention runs a little off-standard: she counts things, maps rooms as she crosses them, repeats a motion until it is exact. Patterns and order catch her the way a song catches other people. A room worn into crossing tracks makes her want to measure it.",
+      "She is alone, and the silence is doing something to her.",
+      "The chalk rings on the stone things feel significant — like territory markers, or the edge of a drawn line. She does not yet understand their purpose.",
+      "Her memory is gone, but her instinct is whole: she reads rule systems the way other people read faces."
+    ]
+  },
+  "start_room_id": "r3c3",
+  "start_room_ids": [
+    "r3c3",
+    "r3c7",
+    "r7c3",
+    "r7c7"
+  ],
+  "start_time_minutes": 60,
+  "title": "蕾拉"
+}

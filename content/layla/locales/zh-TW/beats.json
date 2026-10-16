@@ -1,0 +1,1232 @@
+{
+  "initial_stage_ids": [
+    "mq_hear_gate",
+    "sq_hear_sacrifice",
+    "sq_clean_shaman_listen",
+    "sq_listen_courtyard_cages"
+  ],
+  "stages": [
+    {
+      "id": "mq_hear_gate",
+      "quest_id": "the_way_down",
+      "quest_title": "The Way Down",
+      "quest_kind": "main",
+      "summary": "Find a way past the sealed fortress gate to reach the teleport platform.",
+      "beat_note": "Layla has arrived at the mining village on Floor 4, but hasn't yet learned how to pass beyond the sealed fortress gate or teleport to Floor 5.",
+      "update_message": "The iron bulkhead seals the road north. Ask the villagers how to reach the military complex.",
+      "advance_signals": [
+        "spoken_to:tariq",
+        "spoken_to:garrison_sentry_gate",
+        "spoken_to:garrison_guard",
+        "speech_topic:teleport_scroll",
+        "speech_topic:next_floor",
+        "fortress_gate_opened",
+        "valve_diverted",
+        "room_entered:fortress_gate",
+        "room_entered:fortress_inner_hall",
+        "room_entered:fortress_bastion",
+        "room_entered:teleport_platform",
+        "item_acquired:teleport-scroll",
+        "knows_teleport",
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.fortress_gate_open",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        },
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.knows_teleport",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        },
+        {
+          "signal": "room_entered:courtyard_center",
+          "next_stage_ids": []
+        },
+        {
+          "signal": "room_entered:floor5_start",
+          "next_stage_ids": []
+        },
+        {
+          "signal": "descend_floor_5",
+          "next_stage_ids": []
+        },
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "current_room_id",
+              "operator": "starts_with",
+              "value": "courtyard_"
+            }
+          ],
+          "next_stage_ids": []
+        },
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.anchor_floor5_gate",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "current_room_id",
+              "operator": "not_equal",
+              "value": "teleport_platform"
+            }
+          ],
+          "next_stage_ids": []
+        },
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.anchor_floor5_gate",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "current_room_id",
+              "operator": "not_equal",
+              "value": "teleport_platform"
+            }
+          ],
+          "next_stage_ids": []
+        }
+      ],
+      "next_stage_ids": [
+        "mq_find_scroll"
+      ]
+    },
+    {
+      "id": "mq_find_scroll",
+      "quest_id": "teleport_scroll",
+      "quest_title": "The Teleportation Scroll",
+      "quest_kind": "main",
+      "summary": "Retrieve Commander Malik's Teleportation Scroll from the fortress safe.",
+      "beat_note": "Layla learned that the military fortress gate is locked, but Commander Malik holds an ancient Teleportation Scroll in his safe. She needs to infiltrate the fortress and retrieve it.",
+      "update_message": "The scroll is locked inside Commander Malik's safe within the fortress bastion.",
+      "advance_signals": [
+        "item_acquired:teleport-scroll",
+        "knows_teleport",
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.knows_teleport",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        },
+        {
+          "signal": "room_entered:courtyard_center",
+          "next_stage_ids": []
+        },
+        {
+          "signal": "room_entered:floor5_start",
+          "next_stage_ids": []
+        },
+        {
+          "signal": "descend_floor_5",
+          "next_stage_ids": []
+        },
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "current_room_id",
+              "operator": "starts_with",
+              "value": "courtyard_"
+            }
+          ],
+          "next_stage_ids": []
+        },
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.anchor_floor5_gate",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "current_room_id",
+              "operator": "not_equal",
+              "value": "teleport_platform"
+            }
+          ],
+          "next_stage_ids": []
+        },
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.anchor_floor5_gate",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "current_room_id",
+              "operator": "not_equal",
+              "value": "teleport_platform"
+            }
+          ],
+          "next_stage_ids": []
+        }
+      ],
+      "next_stage_ids": [
+        "mq_use_teleport_platform"
+      ]
+    },
+    {
+      "id": "mq_use_teleport_platform",
+      "quest_id": "teleport_scroll",
+      "quest_title": "The Teleportation Scroll",
+      "quest_kind": "main",
+      "summary": "Activate the teleportation platform in the fortress to teleport to Floor 5.",
+      "beat_note": "Having acquired the knowledge of the Teleportation Sigil, Layla can now reach the teleport platform in the heart of the fortress and teleport to Floor 5.",
+      "update_message": "Trace the Teleportation Sigil on the central platform to activate transit to Floor 5.",
+      "completion_message": "handler.quest.teleport_scroll_complete",
+      "advance_signals": [
+        "room_entered:courtyard_center",
+        "room_entered:floor5_start",
+        "descend_floor_5",
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "current_room_id",
+              "operator": "starts_with",
+              "value": "courtyard_"
+            }
+          ]
+        },
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.anchor_floor5_gate",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "current_room_id",
+              "operator": "not_equal",
+              "value": "teleport_platform"
+            }
+          ]
+        },
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.anchor_floor5_gate",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "current_room_id",
+              "operator": "not_equal",
+              "value": "teleport_platform"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [
+        "mq_free_prisoners"
+      ]
+    },
+    {
+      "id": "sq_listen_courtyard_cages",
+      "summary": "",
+      "beat_note": "Layla has arrived at the Floor 5 courtyard.",
+      "advance_signals": [
+        "room_entered:courtyard_center",
+        "room_entered:floor5_start",
+        "descend_floor_5",
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "current_room_id",
+              "operator": "starts_with",
+              "value": "courtyard_"
+            }
+          ]
+        },
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.anchor_floor5_gate",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "current_room_id",
+              "operator": "not_equal",
+              "value": "teleport_platform"
+            }
+          ]
+        },
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.anchor_floor5_gate",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "current_room_id",
+              "operator": "not_equal",
+              "value": "teleport_platform"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [
+        "mq_free_prisoners"
+      ]
+    },
+    {
+      "id": "mq_free_prisoners",
+      "quest_id": "free_courtyard_prisoners",
+      "quest_title": "What They Put in the Cages",
+      "quest_kind": "main",
+      "summary": "Unlock the culling cages in the Frost Citadel courtyard to free Astrid, Einar, and the offerings.",
+      "beat_note": "Arriving at the Frost Citadel, Layla finds garrison dissenters Commander Astrid and Einar locked in culling cages along with commoner offerings. Defeat the Sentry Captain to obtain the courtyard key and unlock their cages.",
+      "update_message": "The cages are held by the Sentry Captain. Secure the courtyard key to release them.",
+      "completion_message": "handler.quest.free_prisoners_complete",
+      "advance_signals": [
+        "courtyard_cages_unlocked",
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.courtyard_cages_opened",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [
+        "mq_frost_siege",
+        "siege_preparation",
+        "sq_five_offerings"
+      ]
+    },
+    {
+      "id": "mq_frost_siege",
+      "quest_id": "frost_citadel_siege",
+      "quest_title": "The Frost Citadel Siege",
+      "quest_kind": "main",
+      "summary": "Defend the courtyard and break the assault waves of the three rival houses.",
+      "beat_note": "The siege clock is running. Frost-Wolf troops enter through the north approach, Iron-Ram through the southeast approach, and Frost-Leopard through the southwest approach. The house leaders remain sealed in their throne rooms until the final wave, when all three march toward the courtyard.",
+      "update_message": "Guard the north, southeast, and southwest approaches. Neutralize the house leaders to break the siege.",
+      "advance_signals": [
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.frost_wolf_lane_stopped",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "story_vars.values.iron_ram_lane_stopped",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "story_vars.values.frost_leopard_lane_stopped",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [
+        "mq_return_to_courtyard"
+      ]
+    },
+    {
+      "id": "mq_return_to_courtyard",
+      "quest_id": "frost_citadel_siege",
+      "quest_title": "The Frost Citadel Siege",
+      "quest_kind": "main",
+      "summary": "The three assault lanes are broken. Return to the courtyard center and account for the survivors.",
+      "beat_note": "The siege is over, but its conclusion waits until Layla returns to the surviving civilians at courtyard_center.",
+      "update_message": "Return to the courtyard center and check on the survivors.",
+      "narrative_lines": [
+        "The last command signal goes silent. Across the courtyard, the remaining house soldiers break ranks and withdraw. The siege is over."
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "set_story_var",
+          "key": "citadel_siege_resolved",
+          "value": "true"
+        }
+      ],
+      "advance_signals": [
+        "room_entered:courtyard_center",
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.citadel_siege_resolved",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "current_room_id",
+              "operator": "equal",
+              "value": "courtyard_center"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [
+        "mq_secure_courtyard"
+      ]
+    },
+    {
+      "id": "mq_secure_courtyard",
+      "quest_id": "frost_citadel_siege",
+      "quest_title": "The Frost Citadel Siege",
+      "quest_kind": "main",
+      "summary": "The siege is over. Receive the survivors' thanks and prepare for Floor 6.",
+      "beat_note": "Each living civilian thanks Layla and gives her an inactive town token. Using a token consumes it and registers that town with the teleport spell.",
+      "update_message": "The survivors are safe. Their town tokens can now be added to the teleport spell.",
+      "completion_message": "handler.quest.citadel_siege_complete",
+      "narrative_lines": [
+        "The surviving workers gather around the courtyard teleport pad. One by one, they step forward to thank you."
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "set_story_var",
+          "key": "citadel_siege_complete",
+          "value": "true"
+        },
+        {
+          "kind": "resolve_survivor_rewards",
+          "survivor_count_story_var": "five_offerings_survivors",
+          "rewards": [
+            {
+              "actor_id": "nivi_olsen",
+              "unlock_story_var": "town_salt_reach_token_received",
+              "item_id": "salt-reach-transit-seal",
+              "message": "civilian.reward.salt_reach"
+            },
+            {
+              "actor_id": "eliska_novakova",
+              "unlock_story_var": "town_glassbank_token_received",
+              "item_id": "glassbank-transit-prism",
+              "message": "civilian.reward.glassbank"
+            },
+            {
+              "actor_id": "amaru_quispe",
+              "unlock_story_var": "town_woolcross_token_received",
+              "item_id": "woolcross-transit-knot",
+              "message": "civilian.reward.woolcross"
+            },
+            {
+              "actor_id": "abeni_adeyemi",
+              "unlock_story_var": "town_greenrest_token_received",
+              "item_id": "greenrest-transit-seed",
+              "message": "civilian.reward.greenrest"
+            },
+            {
+              "actor_id": "chen_yu_xin",
+              "unlock_story_var": "town_brass_yard_token_received",
+              "item_id": "brass-yard-transit-gear",
+              "message": "civilian.reward.brass_yard"
+            }
+          ]
+        },
+        {
+          "kind": "set_story_var",
+          "key": "citadel_survivor_settlement_complete",
+          "value": "true"
+        }
+      ],
+      "advance_signals": [
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.citadel_survivor_settlement_complete",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [
+        "mq_infiltrate_sanctuary"
+      ],
+      "completion_effects": []
+    },
+    {
+      "id": "mq_infiltrate_sanctuary",
+      "quest_id": "high_sanctuary_infiltration",
+      "quest_title": "The High Sanctuary",
+      "quest_kind": "main",
+      "summary": "Use the clandestine token to infiltrate the High Sanctuary alone.",
+      "beat_note": "Layla enters Floor 6 alone using the clandestine sanctuary token. Her party remains on Floor 5 until the main teleport platform is unlocked.",
+      "update_message": "Infiltrate the High Sanctuary alone using the clandestine token.",
+      "narrative_lines": [
+        "Astrid lowers her great shield and points toward the towering white spire rising through the mountain clouds above.",
+        "Astrid: The Frost Citadel is secure, Layla, but our path to the Royal Core is blocked. High above us sits Floor 6—the High Sanctuary. Its brass gates are sealed from within. Our army cannot storm those walls from the outside. If we want to reach the throne, someone must slip inside and activate their master teleport platform.",
+        "Einar steps forward, his expression grave as he clutches his herbalist satchel.",
+        "Einar: That cathedral is not a place of prayer, Layla. Before they threw me into the cages down here, I worked in their dispensary. The high clergy takes every person executed in this citadel, wipes their memories, and turns them into the monsters you've been fighting all the way up this tower. The man conducting this horror is their high priest, Seer Valerius.",
+        "Einar: Valerius hides the ritual behind thick illusions, but someone inside can help. My partner, Orva, is trapped in the cathedral herb gardens. The priests call her 'the Witch' because she secretly brews remedies to resist their mind-wiping magic. She is also... the woman I love.",
+        "Einar presses a silver token, three bottles of blue invisibility potion, and a silver hairpin shaped like a feathered arrow into your hands.",
+        "Einar: This token can slip only one person through their outer wards. Drink these invisibility potions to walk past the white-armored cathedral guards unseen. Find Orva in the herb garden. Show her this arrow pin and tell her: 'The arrow always finds home.' She will give you the spirit pill to reveal Valerius's ritual and defeat him. Once the Seer falls, activate the master platform so Astrid and the rest of us can join you."
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "grant_item",
+          "item_id": "clandestine-sanctuary-token"
+        },
+        {
+          "kind": "grant_item",
+          "item_id": "invisibility-potion",
+          "count": 3
+        },
+        {
+          "kind": "grant_item",
+          "item_id": "silver-arrow-pin"
+        }
+      ],
+      "advance_signals": [
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.entered_floor6",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [
+        "mq_find_the_witch",
+        "sq_archive_of_the_disappeared"
+      ],
+      "completion_effects": []
+    },
+    {
+      "id": "mq_find_the_witch",
+      "quest_id": "high_sanctuary_infiltration",
+      "quest_title": "The High Sanctuary",
+      "quest_kind": "main",
+      "summary": "Find Orva in the herb garden and speak the code word.",
+      "beat_note": "Layla has slipped into the High Sanctuary. Find Orva in the herb garden, identified by her silver arrow hairpin. Speak the code word: 'The arrow always finds home'.",
+      "update_message": "Find Orva in the herb garden and give her the code word.",
+      "narrative_lines": [
+        "You stand alone on the High Sanctuary terrace. White-armored guards patrol the grand plaza ahead. Drink your invisibility potion to sneak past them to the herb garden in the southwest quarter."
+      ],
+      "on_advance_effects": [],
+      "advance_signals": [
+        "spoken_to:orva",
+        "witch_code_word_spoken",
+        "speech_topic:arrow_code_word",
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.met_witch",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [
+        "mq_slay_the_seer"
+      ],
+      "completion_effects": []
+    },
+    {
+      "id": "mq_slay_the_seer",
+      "quest_id": "high_sanctuary_infiltration",
+      "quest_title": "The High Sanctuary",
+      "quest_kind": "main",
+      "summary": "Swallow the spirit pill and defeat Seer Valerius in the Reanimation Sanctum.",
+      "beat_note": "Orva gave Layla the spirit pill. Swallow it to gain spiritual sight, revealing Seer Valerius as the lone living human among the captive spirits. Defeat him to break the ritual and claim the Bind Scroll.",
+      "update_message": "Swallow the spirit pill and defeat Seer Valerius.",
+      "narrative_lines": [
+        "Orva clutches the silver arrow pin to her chest, her eyes wide with relief. 'Einar... he lives! Take this spirit pill. Swallow it before you face Seer Valerius. Without it, you will only see empty air, but with it, you will see the captive spirits and the Seer directing them. Stop him!'"
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "grant_item",
+          "item_id": "spirit-pill"
+        },
+        {
+          "kind": "set_story_var",
+          "key": "met_witch",
+          "value": "true"
+        }
+      ],
+      "advance_signals": [
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.seer_defeated",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [
+        "mq_activate_sanctuary_platform"
+      ],
+      "completion_effects": []
+    },
+    {
+      "id": "mq_activate_sanctuary_platform",
+      "quest_id": "high_sanctuary_infiltration",
+      "quest_title": "The High Sanctuary",
+      "quest_kind": "main",
+      "summary": "Activate the master resonance anchor on the Sanctuary Platform to bring Astrid and the party through.",
+      "beat_note": "Seer Valerius has fallen, and the Bind Scroll is recovered. Head south from the sanctum to the mountain terrace platform and activate the master resonance anchor.",
+      "update_message": "Activate the master anchor on the platform to bring your party through.",
+      "narrative_lines": [
+        "The dark ritual is broken, and Seer Valerius lies defeated. Head to the outer platform and activate the master resonance anchor to bring Commander Astrid and your companions up to Floor 6."
+      ],
+      "on_advance_effects": [],
+      "advance_signals": [
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.anchor_floor6_platform",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [
+        "mq_prepare_the_ascent"
+      ],
+      "completion_effects": [
+        {
+          "kind": "set_story_var",
+          "key": "floor6_infiltration_complete",
+          "value": "true"
+        }
+      ],
+      "actor_relocations": []
+    },
+    {
+      "id": "mq_prepare_the_ascent",
+      "quest_id": "high_sanctuary_infiltration",
+      "quest_title": "The High Sanctuary",
+      "quest_kind": "main",
+      "summary": "Reunite with your companions on the platform and ascend the white stair to Floor 7.",
+      "beat_note": "Astrid, Einar, and Orva are reunited on the Sanctuary Platform. Commander Astrid will hold the platform while Layla climbs the white stair to Floor 7.",
+      "update_message": "Speak with Commander Astrid and ascend to Floor 7 via the glowing white stair.",
+      "narrative_lines": [
+        "Blue light flashes across the mountain cliff. Commander Astrid and Einar materialize on the stone platform, their weapons drawn. Astrid plants her heavy shield into the flagstones, securing the acropolis perimeter. Einar rushes forward and embraces Orva, their twin silver arrows gleaming in the sunlight.",
+        "Astrid: The acropolis perimeter is secure, Layla. We will hold this platform with our shields so nothing can sneak up behind you. The white stair is open. Ascend to Floor 7 and end this game."
+      ],
+      "on_advance_effects": [],
+      "advance_signals": [
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.entered_floor7",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        },
+        "room_entered:floor7_antechamber"
+      ],
+      "next_stage_ids": [],
+      "completion_effects": [
+        {
+          "kind": "set_story_var",
+          "key": "floor6_ascent_completed",
+          "value": "true"
+        }
+      ],
+      "actor_relocations": [
+        {
+          "actor_id": "commander_astrid",
+          "to_room_id": "sanctuary_main_platform"
+        },
+        {
+          "actor_id": "einar",
+          "to_room_id": "sanctuary_main_platform"
+        },
+        {
+          "actor_id": "orva",
+          "to_room_id": "sanctuary_main_platform"
+        }
+      ]
+    },
+    {
+      "id": "sq_archive_of_the_disappeared",
+      "quest_id": "archive_of_the_disappeared",
+      "quest_title": "The Truth of the Disappeared",
+      "quest_kind": "side",
+      "summary": "Uncover the secret mortuary ledgers in the Scriptorium archive to learn the truth about the dungeon monsters.",
+      "beat_note": "In the hidden archive of the Scriptorium, confidential mortuary ledgers detail the harvest of citizens from Deepwell and Salt Reach and their conversion into dungeon golems and elves.",
+      "update_message": "Inspect the confidential mortuary ledgers in the hidden archive beneath the Scriptorium.",
+      "completion_message": "handler.quest.archive_discovered",
+      "narrative_lines": [
+        "Behind locked doors in the Scriptorium, iron racks hold confidential registries of the disappeared. If you can slip past the scribes and guards, the truth behind the monster creation pipeline awaits."
+      ],
+      "on_advance_effects": [],
+      "advance_signals": [
+        "feature_observed:scriptorium_secret_archive-ledgers",
+        "feature_observed:mortuary_reanimation_sanctum-spirits"
+      ],
+      "next_stage_ids": [],
+      "completion_effects": [
+        {
+          "kind": "set_story_var",
+          "key": "discovered_monster_pipeline",
+          "value": "true"
+        }
+      ],
+      "actor_relocations": []
+    },
+    {
+      "id": "sq_five_offerings",
+      "quest_id": "five_offerings",
+      "quest_title": "The Five Offerings",
+      "quest_kind": "side",
+      "summary": "Keep at least three of the five rescued offerings alive through the siege.",
+      "beat_note": "Five named civilians shelter at the courtyard teleport platform. Hostile siege troops marching into the courtyard attack civilians and party members present in the room. If three civilians fall, the rescue fails.",
+      "update_message": "The center has to stay clear. Three deaths and this rescue fails.",
+      "protection_rule": {
+        "room_id": "courtyard_center",
+        "hostile_tag": "siege",
+        "protected_actor_ids": [
+          "nivi_olsen",
+          "eliska_novakova",
+          "amaru_quispe",
+          "abeni_adeyemi",
+          "chen_yu_xin"
+        ],
+        "breach_minutes": 10,
+        "warning_message": "civilian.breach_warning",
+        "cleared_message": "civilian.breach_cleared",
+        "death_message": "civilian.breach_death",
+        "death_count_story_var": "five_offerings_deaths",
+        "failure_death_count": 3,
+        "failure_story_var": "five_offerings_failed",
+        "failure_signal": "civilian_protection_failed"
+      },
+      "advance_signals": [
+        "civilian_protection_failed",
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.frost_wolf_lane_stopped",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "story_vars.values.iron_ram_lane_stopped",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "story_vars.values.frost_leopard_lane_stopped",
+              "operator": "equal",
+              "value": "true"
+            }
+          ],
+          "next_stage_ids": []
+        }
+      ],
+      "next_stage_ids": [
+        "sq_five_offerings_failed"
+      ]
+    },
+    {
+      "id": "sq_five_offerings_failed",
+      "quest_id": "five_offerings",
+      "quest_title": "The Five Offerings — Failed",
+      "quest_kind": "failed",
+      "summary": "Three offerings have died. Protect whoever remains.",
+      "beat_note": "The protection quest has failed, but surviving civilians can still be saved and will still grant their town tokens after the siege.",
+      "update_message": "The mission is lost. The people who are left are not.",
+      "protection_rule": {
+        "room_id": "courtyard_center",
+        "hostile_tag": "siege",
+        "protected_actor_ids": [
+          "nivi_olsen",
+          "eliska_novakova",
+          "amaru_quispe",
+          "abeni_adeyemi",
+          "chen_yu_xin"
+        ],
+        "breach_minutes": 10,
+        "warning_message": "civilian.breach_warning",
+        "cleared_message": "civilian.breach_cleared",
+        "death_message": "civilian.breach_death",
+        "death_count_story_var": "five_offerings_deaths",
+        "failure_death_count": 3,
+        "failure_story_var": "five_offerings_failed",
+        "failure_signal": ""
+      },
+      "advance_signals": [
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.frost_wolf_lane_stopped",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "story_vars.values.iron_ram_lane_stopped",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "story_vars.values.frost_leopard_lane_stopped",
+              "operator": "equal",
+              "value": "true"
+            }
+          ],
+          "next_stage_ids": []
+        }
+      ],
+      "next_stage_ids": []
+    },
+    {
+      "id": "siege_preparation",
+      "summary": "",
+      "beat_note": "Layla has ten in-game minutes to place defenders and prepare the courtyard before House Frost-Wolf begins the first assault.",
+      "narrative_lines": [
+        "The freed workers crowd around the teleport pad. Astrid points to the north, southeast, and southwest approaches. The house soldiers must pass through those rooms to reach the center. There is still time to place defenders."
+      ],
+      "advance_signals": [
+        "stage_elapsed:10"
+      ],
+      "next_stage_ids": [
+        "siege_wave_1",
+        "frost_wolf_dispatch"
+      ]
+    },
+    {
+      "id": "siege_wave_1",
+      "summary": "",
+      "beat_note": "Wave 1 begins ten in-game minutes after the prisoners are freed. House Frost-Wolf opens and starts the northern assault lane.",
+      "narrative_lines": [
+        "A deep horn sounds from the north. The Frost-Wolf gate lifts, and boots begin striking the frozen avenue in formation."
+      ],
+      "advance_signals": [
+        "stage_elapsed:60"
+      ],
+      "next_stage_ids": [
+        "siege_wave_2",
+        "iron_ram_dispatch"
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "set_story_var",
+          "key": "frost_wolf_access_open",
+          "value": "true"
+        },
+        {
+          "kind": "set_story_var",
+          "key": "citadel_siege_wave",
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "id": "siege_wave_2",
+      "summary": "",
+      "beat_note": "Wave 2 begins sixty in-game minutes after Wave 1 whether or not Frost-Wolf has been neutralized. House Iron-Ram opens its lane.",
+      "narrative_lines": [
+        "A second horn answers from the southeast. The Iron-Ram portcullis rises through a cloud of steam as heavy troops march out."
+      ],
+      "advance_signals": [
+        "stage_elapsed:60"
+      ],
+      "next_stage_ids": [
+        "siege_wave_3",
+        "frost_leopard_dispatch",
+        "frost_wolf_leader_march",
+        "iron_ram_leader_march",
+        "frost_leopard_leader_march"
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "set_story_var",
+          "key": "iron_ram_access_open",
+          "value": "true"
+        },
+        {
+          "kind": "set_story_var",
+          "key": "citadel_siege_wave",
+          "value": "2"
+        }
+      ]
+    },
+    {
+      "id": "siege_wave_3",
+      "summary": "",
+      "beat_note": "Wave 3 begins sixty in-game minutes after Wave 2 whether or not either earlier house has been neutralized. House Frost-Leopard opens its lane.",
+      "narrative_lines": [
+        "A third horn cuts across the courtyard. The Frost-Leopard doors unlock, and shadows move behind the frosted glass."
+      ],
+      "advance_signals": [],
+      "next_stage_ids": [],
+      "on_advance_effects": [
+        {
+          "kind": "set_story_var",
+          "key": "frost_leopard_access_open",
+          "value": "true"
+        },
+        {
+          "kind": "set_story_var",
+          "key": "citadel_final_wave_open",
+          "value": "true"
+        },
+        {
+          "kind": "set_story_var",
+          "key": "citadel_siege_wave",
+          "value": "3"
+        }
+      ]
+    },
+    {
+      "id": "frost_wolf_dispatch",
+      "summary": "",
+      "beat_note": "House Frost-Wolf dispatches ten northern squads of three soldiers at ten-minute intervals.",
+      "actor_spawn_schedule": {
+        "template_id": "frost_wolf_raider",
+        "room_id": "frost_wolf_throne",
+        "batch_size": 3,
+        "interval_minutes": 10,
+        "total_count": 30,
+        "stop_story_var": "frost_wolf_lane_stopped",
+        "rout_on_stop": true,
+        "rout_message": "siege.frost_wolf_rout",
+        "party_order": "deploy courtyard_center"
+      },
+      "advance_signals": [
+        "stage_elapsed:90"
+      ],
+      "next_stage_ids": []
+    },
+    {
+      "id": "iron_ram_dispatch",
+      "summary": "",
+      "beat_note": "House Iron-Ram dispatches ten southeast squads of three soldiers at ten-minute intervals.",
+      "actor_spawn_schedule": {
+        "template_id": "iron_ram_mauler",
+        "room_id": "iron_ram_throne",
+        "batch_size": 3,
+        "interval_minutes": 10,
+        "total_count": 30,
+        "stop_story_var": "iron_ram_lane_stopped",
+        "rout_on_stop": true,
+        "rout_message": "siege.iron_ram_rout",
+        "party_order": "deploy courtyard_center"
+      },
+      "advance_signals": [
+        "stage_elapsed:90"
+      ],
+      "next_stage_ids": []
+    },
+    {
+      "id": "frost_leopard_dispatch",
+      "summary": "",
+      "beat_note": "House Frost-Leopard dispatches ten southwest squads of three soldiers at ten-minute intervals.",
+      "actor_spawn_schedule": {
+        "template_id": "frost_leopard_hunter",
+        "room_id": "frost_leopard_throne",
+        "batch_size": 3,
+        "interval_minutes": 10,
+        "total_count": 30,
+        "stop_story_var": "frost_leopard_lane_stopped",
+        "rout_on_stop": true,
+        "rout_message": "siege.frost_leopard_rout",
+        "party_order": "deploy courtyard_center"
+      },
+      "advance_signals": [
+        "stage_elapsed:90"
+      ],
+      "next_stage_ids": []
+    },
+    {
+      "id": "frost_wolf_leader_march",
+      "summary": "",
+      "beat_note": "Lord Vane leaves the Howling Dais during the final wave and marches toward the courtyard center.",
+      "actor_spawn_schedule": {
+        "template_id": "lord_vane",
+        "room_id": "frost_wolf_throne",
+        "batch_size": 1,
+        "interval_minutes": 10,
+        "total_count": 1,
+        "stop_story_var": "frost_wolf_lane_stopped",
+        "rout_on_stop": false,
+        "party_order": "deploy courtyard_center"
+      },
+      "advance_signals": [],
+      "next_stage_ids": []
+    },
+    {
+      "id": "iron_ram_leader_march",
+      "summary": "",
+      "beat_note": "Warmaster Torin leaves the Anvil Throne during the final wave and marches toward the courtyard center.",
+      "actor_spawn_schedule": {
+        "template_id": "warmaster_torin",
+        "room_id": "iron_ram_throne",
+        "batch_size": 1,
+        "interval_minutes": 10,
+        "total_count": 1,
+        "stop_story_var": "iron_ram_lane_stopped",
+        "rout_on_stop": false,
+        "party_order": "deploy courtyard_center"
+      },
+      "advance_signals": [],
+      "next_stage_ids": []
+    },
+    {
+      "id": "frost_leopard_leader_march",
+      "summary": "",
+      "beat_note": "Lady Sylvan leaves the Opal Throne during the final wave and marches toward the courtyard center.",
+      "actor_spawn_schedule": {
+        "template_id": "lady_sylvan",
+        "room_id": "frost_leopard_throne",
+        "batch_size": 1,
+        "interval_minutes": 10,
+        "total_count": 1,
+        "stop_story_var": "frost_leopard_lane_stopped",
+        "rout_on_stop": false,
+        "party_order": "deploy courtyard_center"
+      },
+      "advance_signals": [],
+      "next_stage_ids": []
+    },
+    {
+      "id": "sq_hear_sacrifice",
+      "summary": "",
+      "beat_note": "Layla hasn't yet heard the dark truth about the village surrendering the orphan boy Zayd as an offering to the garrison.",
+      "advance_signals": [
+        "spoken_to:elder_rashid",
+        "spoken_to:yasmin",
+        "speech_topic:save_zayd",
+        "speech_topic:sacrifice"
+      ],
+      "next_stage_ids": [
+        "sq_save_zayd"
+      ]
+    },
+    {
+      "id": "sq_save_zayd",
+      "quest_id": "save_zayd",
+      "quest_title": "Save the Boy Zayd",
+      "quest_kind": "side",
+      "summary": "Rescue the orphan boy Zayd from the fortress prison cage before he is shipped away.",
+      "beat_note": "Elder Rashid and Yasmin revealed that the village gave Zayd up as an offering. Layla needs to find the boy and rescue him from his iron cage.",
+      "update_message": "The garrison is holding Zayd in an iron cage inside the military complex.",
+      "advance_signals": [
+        "spoken_to:zayd",
+        "zayd_freed",
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.zayd_rescued",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [
+        "sq_return_zayd"
+      ]
+    },
+    {
+      "id": "sq_return_zayd",
+      "quest_id": "save_zayd",
+      "quest_title": "Save the Boy Zayd",
+      "quest_kind": "side",
+      "summary": "Escort Zayd safely back to the village.",
+      "beat_note": "Zayd is rescued from his cage. Escort him back to the safety of the worker village.",
+      "update_message": "Lead Zayd back to Elder Rashid's house in the village square.",
+      "completion_message": "handler.quest.save_zayd_complete",
+      "advance_signals": [
+        "zayd_safe",
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.zayd_safe",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": []
+    },
+    {
+      "id": "sq_clean_shaman_listen",
+      "summary": "",
+      "beat_note": "Layla has not yet engaged the Goblin Shaman on Floor 1.",
+      "advance_signals": [
+        "clean_shaman_started",
+        {
+          "signal": "room_entered:r5c5",
+          "conditions": [
+            {
+              "path": "story_vars.values.layla_attacked_floor_one_mob",
+              "operator": "not_equal",
+              "value": "true"
+            }
+          ]
+        },
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.clean_shaman_started",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [
+        "sq_defeat_clean_shaman"
+      ]
+    },
+    {
+      "id": "sq_defeat_clean_shaman",
+      "quest_id": "clean_shaman",
+      "quest_title": "Trial of the Silent Path",
+      "quest_kind": "secret",
+      "summary": "Defeat the Goblin Shaman on Floor 1 without harming any other creatures.",
+      "beat_note": "Having navigated the labyrinth without striking down any goblins or golems, Layla challenges the Goblin Shaman.",
+      "update_message": "You navigated the labyrinth without drawing blood. Finish the duel with the Goblin Shaman to claim your reward.",
+      "advance_signals": [
+        "item_acquired:shaman-ring"
+      ],
+      "next_stage_ids": []
+    }
+  ],
+  "topic_signals": [
+    {
+      "signals": [
+        "speech_topic:teleport_scroll",
+        "speech_topic:next_floor"
+      ],
+      "keywords": [
+        "teleport",
+        "scroll",
+        "floor 5",
+        "next floor",
+        "platform",
+        "fortress",
+        "conduit",
+        "strongbox"
+      ],
+      "reply_keywords": [
+        "teleport",
+        "scroll",
+        "floor 5",
+        "next floor",
+        "descend",
+        "gate"
+      ]
+    },
+    {
+      "signals": [
+        "speech_topic:save_zayd",
+        "speech_topic:sacrifice"
+      ],
+      "keywords": [
+        "zayd",
+        "sacrifice",
+        "offering",
+        "tithe"
+      ],
+      "reply_keywords": [
+        "zayd",
+        "sacrifice",
+        "offering",
+        "boy"
+      ]
+    },
+    {
+      "signals": [
+        "speech_topic:free_prisoners",
+        "speech_topic:courtyard_cages"
+      ],
+      "keywords": [
+        "cage",
+        "cages",
+        "prisoner",
+        "prisoners",
+        "free",
+        "unlock",
+        "key",
+        "astrid",
+        "einar",
+        "captain"
+      ],
+      "reply_keywords": [
+        "cage",
+        "cages",
+        "prisoner",
+        "prisoners",
+        "free",
+        "unlock",
+        "key",
+        "captain"
+      ]
+    },
+    {
+      "signals": [
+        "witch_code_word_spoken",
+        "speech_topic:arrow_code_word"
+      ],
+      "keywords": [
+        "arrow always finds home",
+        "the arrow always finds home",
+        "arrow always finds",
+        "finds home"
+      ],
+      "reply_keywords": [
+        "arrow",
+        "einar",
+        "witch",
+        "orva",
+        "home"
+      ]
+    }
+  ]
+}

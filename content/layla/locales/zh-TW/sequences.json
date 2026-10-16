@@ -1,0 +1,49 @@
+{
+  "sequences": [
+    {
+      "completion_effects": [
+        {
+          "key": "handler_introduced",
+          "kind": "set_story_var",
+          "value": "true"
+        }
+      ],
+      "id": "handler-introduction",
+      "label": "操作員開場",
+      "steps": [
+        {
+          "channel_id": "handler-comms",
+          "line": "蕾拉。醒了。……沒死，不錯。坐起來。告訴我盤面。",
+          "recipient_id": "player",
+          "speaker_id": "handler",
+          "voice": "channel"
+        },
+        {
+          "channel_id": "handler-comms",
+          "line": "誰？我在哪裡？",
+          "recipient_id": "handler",
+          "speaker_id": "player",
+          "voice": "channel"
+        },
+        {
+          "channel_id": "handler-comms",
+          "line": "操作員。第一層。冷、濕、石頭。環顧四周。",
+          "recipient_id": "player",
+          "speaker_id": "handler",
+          "voice": "channel"
+        },
+        {
+          "line": "黑暗一片片退開。掌心下是冰冷的石頭。陳年煙灰與濕毛皮的氣味。你身旁立著一道形體——一具粗石拼成的造物，眼神平板，像一扇緊閉的門那樣盯著你。你的名字是蕾拉；除此之外，是一面空白的牆。口袋裡，微溫的，一小截魔粉筆。你的手記得你的記憶所遺忘的：怎麼握、怎麼動、怎麼挨打。找出一條路。",
+          "voice": "narrate"
+        },
+        {
+          "channel_id": "handler-comms",
+          "line": "你口袋裡的魔粉筆。是溫的。在有紋的石造單位周圍畫出閉合的環。環一閉上，牠就跟你走。注意每一層的規則。走到最底。",
+          "recipient_id": "player",
+          "speaker_id": "handler",
+          "voice": "channel"
+        }
+      ]
+    }
+  ]
+}
