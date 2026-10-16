@@ -106,3 +106,42 @@ fn layla_zh_tw_presentation_and_ui_are_localized() {
             .any(|item| item.id == "quests")
     );
 }
+
+#[test]
+fn layla_zh_tw_prompts_localized_with_machine_tokens_intact() {
+    let pack = load_named_pack("layla", Some("zh-TW")).expect("layla zh-TW loads and validates");
+    let sys = &pack.system_text;
+
+    // Output-generating prompts instruct Chinese output.
+    assert!(sys.dialogue_system_prompt.contains("繁體中文"));
+    assert!(sys.transition_commentary_system_prompt.contains("繁體中文"));
+    assert!(
+        sys.chapter_script_summary_prompt_template
+            .contains("繁體中文")
+    );
+
+    // Machine-parsed tokens must survive translation.
+    assert!(sys.menu_intent_system_prompt.contains("OPEN"));
+    assert!(sys.menu_intent_system_prompt.contains("PASS"));
+    assert!(
+        sys.transition_commentary_system_prompt
+            .contains("'summary'")
+    );
+    assert!(
+        sys.transition_commentary_system_prompt
+            .contains("'introduction'")
+    );
+    assert!(
+        sys.transition_commentary_prompt_template
+            .contains("\"summary\"")
+    );
+    assert!(sys.actor_turn_act_decision_template.contains("{command}"));
+
+    // Substitution placeholders must survive translation.
+    assert_eq!(sys.prompt_current_room_note, "你在{room_title}。");
+    assert!(
+        sys.actor_turn_move_option_template
+            .contains("{prompt_verb}")
+    );
+    assert!(sys.actor_turn_move_option_template.contains("{room_title}"));
+}
