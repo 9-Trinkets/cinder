@@ -365,7 +365,9 @@ pub(super) fn plan_follow_command(
         });
     let Some(actor) = matched_actor else {
         planned.events.push(WorldEvent::ActionRejected {
-            message: format!("You don't see '{target}' anywhere to follow."),
+            message: content
+                .render_message("error.follow_not_found", &[("target", target)])
+                .unwrap_or_else(|| format!("You don't see '{target}' anywhere to follow.")),
         });
         return false;
     };

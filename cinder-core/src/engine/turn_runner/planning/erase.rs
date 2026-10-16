@@ -22,7 +22,9 @@ pub(super) fn plan_erase_command(
 
     if trace_items.is_empty() {
         planned.events.push(WorldEvent::ActionRejected {
-            message: "There are no chalk sigils to erase here.".to_string(),
+            message: content
+                .render_message("error.erase_nothing", &[])
+                .unwrap_or_else(|| "There are no chalk sigils to erase here.".to_string()),
         });
         return false;
     }
@@ -41,7 +43,11 @@ pub(super) fn plan_erase_command(
             .collect();
         if matched.is_empty() {
             planned.events.push(WorldEvent::ActionRejected {
-                message: format!("There is no sigil matching '{target}' to erase here."),
+                message: content
+                    .render_message("error.erase_no_match", &[("target", target)])
+                    .unwrap_or_else(|| {
+                        format!("There is no sigil matching '{target}' to erase here.")
+                    }),
             });
             return false;
         }
@@ -65,17 +71,21 @@ pub(super) fn plan_erase_command(
     }
 
     let narrative = if to_erase.len() == 1 {
-        format!(
-            "You rub out the {} from the stone floor.",
-            content.item_label(&to_erase[0])
-        )
+        let label = content.item_label(&to_erase[0]);
+        content
+            .render_message("item.erase_one", &[("item", label)])
+            .unwrap_or_else(|| format!("You rub out the {label} from the stone floor."))
     } else {
         let labels = to_erase
             .iter()
             .map(|id| content.item_label(id))
             .collect::<Vec<_>>()
             .join(", ");
-        format!("You rub out the chalk sigils from the stone floor: {labels}.")
+        content
+            .render_message("item.erase_many", &[("labels", labels.as_str())])
+            .unwrap_or_else(|| {
+                format!("You rub out the chalk sigils from the stone floor: {labels}.")
+            })
     };
 
     planned

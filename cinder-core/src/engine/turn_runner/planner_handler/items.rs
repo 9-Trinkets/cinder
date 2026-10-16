@@ -242,7 +242,9 @@ pub(crate) fn plan_use_command(
     let target = target.trim();
     if target.is_empty() {
         planned.events.push(WorldEvent::ActionRejected {
-            message: "What do you want to use?".to_string(),
+            message: content
+                .render_message("error.use_empty", &[])
+                .unwrap_or_else(|| "What do you want to use?".to_string()),
         });
         return false;
     }
@@ -254,16 +256,25 @@ pub(crate) fn plan_use_command(
         .collect::<Vec<_>>();
     if held.len() > 1 {
         planned.events.push(WorldEvent::ActionRejected {
-            message: format!("Which item do you mean by '{target}'?"),
+            message: content
+                .render_message("error.use_ambiguous", &[("target", target)])
+                .unwrap_or_else(|| format!("Which item do you mean by '{target}'?")),
         });
         return false;
     }
     if let Some(item) = held.first().copied() {
         if item.use_hook.is_empty() {
-            let message = if item.kind == crate::content::types::ItemKind::Key {
-                format!("There is nothing to unlock here with the {}.", item.label)
+            let is_key = item.kind == crate::content::types::ItemKind::Key;
+            let message = if is_key {
+                content
+                    .render_message("error.use_no_unlock", &[("item", item.label.as_str())])
+                    .unwrap_or_else(|| {
+                        format!("There is nothing to unlock here with the {}.", item.label)
+                    })
             } else {
-                format!("You cannot use the {}.", item.label)
+                content
+                    .render_message("error.use_cannot", &[("item", item.label.as_str())])
+                    .unwrap_or_else(|| format!("You cannot use the {}.", item.label))
             };
             planned.events.push(WorldEvent::ActionRejected { message });
             return false;
@@ -275,11 +286,15 @@ pub(crate) fn plan_use_command(
     }
     if let Some(item) = candidates.first() {
         planned.events.push(WorldEvent::ActionRejected {
-            message: format!("You are not carrying the {}.", item.label),
+            message: content
+                .render_message("error.use_not_carrying", &[("item", item.label.as_str())])
+                .unwrap_or_else(|| format!("You are not carrying the {}.", item.label)),
         });
     } else {
         planned.events.push(WorldEvent::ActionRejected {
-            message: format!("You don't have '{target}'."),
+            message: content
+                .render_message("error.use_not_have", &[("target", target)])
+                .unwrap_or_else(|| format!("You don't have '{target}'.")),
         });
     }
     false

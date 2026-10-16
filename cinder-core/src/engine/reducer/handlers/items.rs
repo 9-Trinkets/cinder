@@ -96,9 +96,14 @@ pub(crate) fn handle_item_acquired(
                     .room(&evicted_room)
                     .map(|r| r.title.as_str())
                     .unwrap_or(&evicted_room);
-                lines.narration(format!(
-                    "The chalk anchor in {evicted_title} fades away as you draw a new one."
-                ));
+                let anchor_msg = content
+                    .render_message("item.anchor_evicted", &[("room", evicted_title)])
+                    .unwrap_or_else(|| {
+                        format!(
+                            "The chalk anchor in {evicted_title} fades away as you draw a new one."
+                        )
+                    });
+                lines.narration(anchor_msg);
             }
             // An item appearing in a room can complete a surround or trigger placement.
             trigger_surrounded_hooks(state, content, item_id, &room_id, lines);

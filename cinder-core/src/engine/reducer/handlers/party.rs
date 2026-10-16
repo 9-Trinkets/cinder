@@ -241,9 +241,21 @@ pub(crate) fn handle_item_transferred(
     } else {
         let from_name = actor_display_name(state, content, from_actor_id);
         let to_name = actor_display_name(state, content, to_actor_id);
-        lines.narration(format!("{from_name} gives the {item_label} to {to_name}."));
+        let give_msg = content
+            .render_message(
+                "party.npc_give_npc",
+                &[("from", &from_name), ("item", item_label), ("to", &to_name)],
+            )
+            .unwrap_or_else(|| format!("{from_name} gives the {item_label} to {to_name}."));
+        lines.narration(give_msg);
         if auto_equipped {
-            lines.narration(format!("{to_name} equips the {item_label}."));
+            let equip_msg = content
+                .render_message(
+                    "party.give_auto_equipped",
+                    &[("actor", &to_name), ("item", item_label)],
+                )
+                .unwrap_or_else(|| format!("{to_name} equips the {item_label}."));
+            lines.narration(equip_msg);
         }
     }
 
