@@ -977,7 +977,7 @@
   {
     "id": "elf-pawn-5",
     "name": "elf pawn",
-    "room_id": "d7c5",
+    "room_id": "d8c5",
     "aliases": [
       "elf pawn"
     ],
@@ -1063,7 +1063,7 @@
   {
     "id": "elf-pawn-6",
     "name": "elf pawn",
-    "room_id": "d7c6",
+    "room_id": "d8c5",
     "aliases": [
       "elf pawn"
     ],

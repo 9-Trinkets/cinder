@@ -64,7 +64,7 @@ They wear armor fashioned from hardened forest materials: layered broad leaves c
 - **Station:** Row `d7` (`d7c1` through `d7c8`).
 - **Stats:** Level 2 | HP 29 | Str 4 | Def 1 | Int 3 | XP 10.
 - **Weapon & Gear:** `leaf-spear`, `leaf-paste`.
-- **Behavior:** Distributed across the 4 tactical squads. Pawns 1 & 2 follow Knight 2; Pawns 7 & 8 follow Knight 7; Pawns 3 & 4 follow Queen 4; Pawns 5 & 6 guard the entrance to the King's Grove (`d7c5`, `d7c6`).
+- **Behavior:** Distributed across the 4 tactical squads. Pawns 1 & 2 follow Knight 2; Pawns 7 & 8 follow Knight 7; Pawns 3 & 4 follow Queen 4; Pawns 5 & 6 guard the King in the Grove (`d8c5`).
 - **Inspect text:** *"A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline."*
 
 ### Knights (×2 — `elf-knight-2`, `elf-knight-7`)
@@ -119,7 +119,7 @@ Instead of a single monolithic army swarming Layla, the 16 pieces operate as 4 c
    - *Tactic:* Wandering roaming patrol across mid-forest ranks (`d3`–`d6`) on a 4-tick cadence.
 4. **The Royal Court (`elf-royal-court`)**:
    - *Composition:* `elf-king-5` (Leader), `elf-rook-1`, `elf-rook-8`, `elf-pawn-5`, `elf-pawn-6`.
-   - *Tactic:* Stationary fortress defense at `d8c5`. Pawns hold the sentry approaches at `d7c5` and `d7c6`; Rooks stand in `d8c5` intercepting strikes against the King.
+   - *Tactic:* Stationary fortress defense at `d8c5`. Pawns 5 & 6 guard inside `d8c5` alongside the King; Rooks stand in `d8c5` intercepting strikes against the King.
 
 ---
 
