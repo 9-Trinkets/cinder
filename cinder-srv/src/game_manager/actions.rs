@@ -12,13 +12,39 @@ use super::response::{act_closure_data, game_closure_data};
 use super::ui::build_ui_snapshot;
 use super::{CommandResponse, build_runtime_impl, consume_projector_sequence, with_runtime};
 
+/// Reads a player's account-level display-language preference, if set.
+pub async fn load_player_preferred_locale(
+    pool: &PgPool,
+    player_id: &Uuid,
+) -> Result<Option<String>, String> {
+    let preferred = sqlx::query_scalar::<_, Option<String>>(
+        "SELECT preferred_locale FROM players WHERE id = $1",
+    )
+    .bind(player_id)
+    .fetch_optional(pool)
+    .await
+    .map_err(|e| format!("db error: {e}"))?;
+    Ok(preferred
+        .flatten()
+        .filter(|locale| !locale.trim().is_empty()))
+}
+
 pub async fn create_play(
     pool: &PgPool,
     player_id: &str,
     pack_id: &str,
+    locale: Option<&str>,
 ) -> Result<(String, String, String), String> {
     let player_id = parse_uuid(player_id, "player id")?;
-    let content = loader::load_named_pack(pack_id, None)
+    let requested = locale
+        .map(str::trim)
+        .filter(|locale| !locale.is_empty())
+        .map(str::to_string);
+    let effective_locale = match requested {
+        Some(locale) => Some(locale),
+        None => load_player_preferred_locale(pool, &player_id).await?,
+    };
+    let content = loader::load_named_pack(pack_id, effective_locale.as_deref())
         .map_err(|e| format!("failed to load pack '{pack_id}': {e}"))?;
 
     let title = content.opening.title.clone();
@@ -364,6 +390,12 @@ pub async fn set_locale(
         .execute(&mut *tx)
         .await
         .map_err(|e| format!("db update error: {e}"))?;
+        sqlx::query("UPDATE players SET preferred_locale = $1 WHERE id = $2")
+            .bind(&locale)
+            .bind(player_id)
+            .execute(&mut *tx)
+            .await
+            .map_err(|e| format!("db update error: {e}"))?;
         tx.commit()
             .await
             .map_err(|e| format!("db commit error: {e}"))?;

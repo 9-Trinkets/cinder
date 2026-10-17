@@ -20,7 +20,7 @@ pub use self::bookmarks::{
     list_play_bookmarks, resume_bookmark,
 };
 pub use self::response::{CommandResponse, consume_projector_sequence};
-pub use self::ui::UiSnapshot;
+pub use self::ui::{LocaleItem, UiSnapshot};
 
 use db::{
     MAX_PLAY_WRITE_RETRIES, PendingTranscriptEntry, fetch_transcript_lines,

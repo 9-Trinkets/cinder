@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './auth'
+import { I18nProvider } from './i18n'
 import { ToastProvider } from './components/Toast'
 import ErrorBoundary from './components/ErrorBoundary'
 import LoginPage from './pages/LoginPage'
@@ -22,17 +23,19 @@ function RedirectIfLoggedIn() {
 export default function App() {
   return (
     <AuthProvider>
-      <ToastProvider>
-        <ErrorBoundary>
-        <Routes>
-          <Route path="/login" element={<RedirectIfLoggedIn />} />
-          <Route path="/games" element={<ProtectedRoute><GamesPage /></ProtectedRoute>} />
-          <Route path="/games/pack/:packId" element={<ProtectedRoute><PackDetailPage /></ProtectedRoute>} />
-          <Route path="/games/:id" element={<ProtectedRoute><GamePage /></ProtectedRoute>} />
-          <Route path="*" element={<Navigate to="/login" replace />} />
-        </Routes>
-        </ErrorBoundary>
-      </ToastProvider>
+      <I18nProvider>
+        <ToastProvider>
+          <ErrorBoundary>
+            <Routes>
+              <Route path="/login" element={<RedirectIfLoggedIn />} />
+              <Route path="/games" element={<ProtectedRoute><GamesPage /></ProtectedRoute>} />
+              <Route path="/games/pack/:packId" element={<ProtectedRoute><PackDetailPage /></ProtectedRoute>} />
+              <Route path="/games/:id" element={<ProtectedRoute><GamePage /></ProtectedRoute>} />
+              <Route path="*" element={<Navigate to="/login" replace />} />
+            </Routes>
+          </ErrorBoundary>
+        </ToastProvider>
+      </I18nProvider>
     </AuthProvider>
   )
 }

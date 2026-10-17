@@ -1,11 +1,13 @@
 import { useState, type FormEvent } from 'react'
 import { useAuth } from '../auth'
+import { useI18n } from '../i18n'
 import Button from '../components/Button'
 import Input from '../components/Input'
 import { toErrorMessage } from '../utils/error'
 
 export default function LoginPage() {
   const { login, signup } = useAuth()
+  const { t } = useI18n()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -24,7 +26,7 @@ export default function LoginPage() {
         await signup(username.trim(), password)
       }
     } catch (err: unknown) {
-      setError(toErrorMessage(err, 'Request failed'))
+      setError(toErrorMessage(err, t('login.requestFailed')))
     } finally {
       setBusy(false)
     }
@@ -40,22 +42,20 @@ export default function LoginPage() {
           </span>
         </div>
         <span className="font-mono text-[10px] uppercase tracking-widest text-muted">
-          Archive Access
+          {t('login.archiveAccess')}
         </span>
       </header>
 
       <main className="w-full max-w-sm mx-auto my-auto py-8">
         <div className="mb-6 text-center sm:text-left">
           <span className="text-[10px] font-mono uppercase tracking-widest text-muted block mb-1.5">
-            Frontispiece &bull; Access
+            {t('login.frontispiece')}
           </span>
           <h1 className="text-3xl font-bold font-prose text-text tracking-tight">
-            {mode === 'login' ? 'Open the Library' : 'New Reader'}
+            {mode === 'login' ? t('login.headingLogin') : t('login.headingSignup')}
           </h1>
           <p className="text-sm text-muted font-prose mt-1.5 leading-relaxed">
-            {mode === 'login'
-              ? 'Enter your credentials to resume reading your chronicles.'
-              : 'Create your reader identity to begin exploring new worlds.'}
+            {mode === 'login' ? t('login.subLogin') : t('login.subSignup')}
           </p>
         </div>
 
@@ -69,7 +69,7 @@ export default function LoginPage() {
                 : 'border-transparent text-muted hover:text-text'
             }`}
           >
-            Sign In
+            {t('login.tabSignIn')}
           </button>
           <button
             type="button"
@@ -80,7 +80,7 @@ export default function LoginPage() {
                 : 'border-transparent text-muted hover:text-text'
             }`}
           >
-            Register
+            {t('login.tabRegister')}
           </button>
         </div>
 
@@ -93,11 +93,11 @@ export default function LoginPage() {
 
           <div>
             <label className="block text-xs font-mono uppercase tracking-wider text-muted mb-1.5">
-              Username
+              {t('login.username')}
             </label>
             <Input
               type="text"
-              placeholder="Reader name"
+              placeholder={t('login.usernamePlaceholder')}
               value={username}
               onChange={e => setUsername(e.target.value)}
               disabled={busy}
@@ -108,11 +108,11 @@ export default function LoginPage() {
 
           <div>
             <label className="block text-xs font-mono uppercase tracking-wider text-muted mb-1.5">
-              Password
+              {t('login.password')}
             </label>
             <Input
               type="password"
-              placeholder="Passphrase"
+              placeholder={t('login.passwordPlaceholder')}
               value={password}
               onChange={e => setPassword(e.target.value)}
               disabled={busy}
@@ -129,34 +129,34 @@ export default function LoginPage() {
               type="submit"
             >
               {busy
-                ? 'Consulting Library...'
+                ? t('login.busy')
                 : mode === 'login'
-                ? 'Enter Library ›'
-                : 'Create Account ›'}
+                ? t('login.submitLogin')
+                : t('login.submitSignup')}
             </Button>
           </div>
 
           <div className="pt-2 text-center">
             {mode === 'login' ? (
               <p className="text-xs text-muted">
-                New reader?{' '}
+                {t('login.newReaderPrompt')}{' '}
                 <button
                   type="button"
                   onClick={() => { setMode('signup'); setError('') }}
                   className="text-foam hover:underline font-medium cursor-pointer"
                 >
-                  Register an account
+                  {t('login.registerLink')}
                 </button>
               </p>
             ) : (
               <p className="text-xs text-muted">
-                Already have a library account?{' '}
+                {t('login.haveAccountPrompt')}{' '}
                 <button
                   type="button"
                   onClick={() => { setMode('login'); setError('') }}
                   className="text-foam hover:underline font-medium cursor-pointer"
                 >
-                  Sign in
+                  {t('login.signInLink')}
                 </button>
               </p>
             )}
@@ -166,7 +166,7 @@ export default function LoginPage() {
 
       <footer className="w-full max-w-sm mx-auto py-4 text-center">
         <p className="text-[10px] font-mono text-muted/60 tracking-widest uppercase">
-          Cinder &bull; Interactive Fiction System
+          {t('login.footer')}
         </p>
       </footer>
     </div>

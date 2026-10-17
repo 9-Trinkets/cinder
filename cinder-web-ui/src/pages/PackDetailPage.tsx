@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../auth'
+import { useI18n } from '../i18n'
 import * as api from '../api'
 import Button from '../components/Button'
 import ConfirmDialog from '../components/ConfirmDialog'
@@ -9,19 +10,20 @@ import { useToast } from '../components/Toast'
 import { toErrorMessage } from '../utils/error'
 import { themeVars } from '../utils/theme'
 
-function fmtTime(s: string): string {
+function fmtTime(s: string, locale: string): string {
   const n = Number(s)
   if (!isNaN(n) && n > 1e8) {
-    return new Date(n * 1000).toLocaleString()
+    return new Date(n * 1000).toLocaleString(locale)
   }
   const d = new Date(s)
-  if (!isNaN(d.getTime())) return d.toLocaleString()
+  if (!isNaN(d.getTime())) return d.toLocaleString(locale)
   return s
 }
 
 export default function PackDetailPage() {
   const { packId } = useParams<{ packId: string }>()
   const { token, logout } = useAuth()
+  const { locale, t } = useI18n()
   const navigate = useNavigate()
   const location = useLocation()
   const { showToast } = useToast()
@@ -51,7 +53,7 @@ export default function PackDetailPage() {
       setPlays(allPlays.filter(p => p.pack_id === packId))
       setBookmarks(packBookmarks)
     } catch (err) {
-      setError(toErrorMessage(err, 'failed to load'))
+      setError(toErrorMessage(err, t('common.failedToLoad')))
     } finally {
       setLoading(false)
     }
@@ -67,7 +69,7 @@ export default function PackDetailPage() {
       await api.deletePlay(token, playId)
       setPlays(prev => prev.filter(p => p.play_id !== playId))
     } catch (err: unknown) {
-      showToast(toErrorMessage(err, 'failed to delete'), 'error')
+      showToast(toErrorMessage(err, t('pack.failedDelete')), 'error')
     } finally {
       setDeleting(null)
     }
@@ -79,10 +81,10 @@ export default function PackDetailPage() {
     setResumingBookmark(bookmarkId)
     try {
       const res = await api.resumeBookmark(token, bookmarkId)
-      showToast('Returned to bookmark', 'info')
+      showToast(t('pack.toastReturned'), 'info')
       navigate(`/games/${res.play_id}`, { state: { title: res.snapshot?.title } })
     } catch (err: unknown) {
-      showToast(toErrorMessage(err, 'failed to return to bookmark'), 'error')
+      showToast(toErrorMessage(err, t('pack.failedReturn')), 'error')
     } finally {
       setResumingBookmark(null)
     }
@@ -95,9 +97,9 @@ export default function PackDetailPage() {
     try {
       await api.deleteBookmark(token, bookmarkId)
       setBookmarks(prev => prev.filter(b => b.id !== bookmarkId))
-      showToast('Bookmark deleted', 'info')
+      showToast(t('pack.toastBookmarkDeleted'), 'info')
     } catch (err: unknown) {
-      showToast(toErrorMessage(err, 'failed to delete bookmark'), 'error')
+      showToast(toErrorMessage(err, t('pack.failedDeleteBookmark')), 'error')
     } finally {
       setDeletingBookmark(null)
     }
@@ -107,14 +109,17 @@ export default function PackDetailPage() {
     if (!token || !packId) return
     setCreating(true)
     try {
-      const play = await api.createPlay(token, packId)
+      const play = await api.createPlay(token, packId, locale)
       navigate(`/games/${play.play_id}`, { state: { title: play.title, intro_text: play.intro_text } })
     } catch (err: unknown) {
-      showToast(toErrorMessage(err, 'failed to create play'), 'error')
+      showToast(toErrorMessage(err, t('pack.failedCreate')), 'error')
     } finally {
       setCreating(false)
     }
   }
+
+  const supported = pack ? pack.locale_options.some(o => o.code === locale) : true
+  const localeLabel = pack?.locale_options.find(o => o.code === locale)?.label ?? locale
 
   return (
     <div
@@ -127,10 +132,10 @@ export default function PackDetailPage() {
             onClick={() => navigate('/games')}
             className="text-xs font-mono uppercase tracking-widest text-muted hover:text-text cursor-pointer flex items-center gap-1.5 transition-colors"
           >
-            &lsaquo; Library
+            &lsaquo; {t('common.library')}
           </button>
           <Button variant="ghost" size="sm" onClick={logout} className="text-xs text-muted hover:text-text cursor-pointer">
-            Log out
+            {t('common.logout')}
           </Button>
         </div>
       </header>
@@ -141,13 +146,15 @@ export default function PackDetailPage() {
         ) : error ? (
           <p className="text-love text-sm">{error}</p>
         ) : !pack ? (
-          <p className="text-muted italic">Chronicle not found.</p>
+          <p className="text-muted italic">{t('pack.notFound')}</p>
         ) : (
           <>
             <article>
               <div className="mb-2">
                 <span className="text-[10px] font-mono uppercase tracking-widest text-muted">
-                  Story Pack &bull; {pack.tags?.join(' \u2022 ') || 'Interactive Fiction'}
+                  {t('pack.storyPack', {
+                    tags: pack.tags?.join(' \u2022 ') || t('pack.interactiveFiction'),
+                  })}
                 </span>
               </div>
 
@@ -175,21 +182,28 @@ export default function PackDetailPage() {
                       onClick={() => navigate(`/games/${plays[0].play_id}`)}
                       className="px-6 py-2.5 text-sm font-semibold tracking-wide shadow-xs cursor-pointer"
                     >
-                      Resume Reading
+                      {t('pack.resumeReading')}
                     </Button>
                     <span className="text-xs text-muted">
-                      A reading is currently in progress. Delete it below to begin anew.
+                      {t('pack.inProgressNote')}
                     </span>
                   </div>
                 ) : (
-                  <Button
-                    variant="primary"
-                    onClick={create}
-                    disabled={creating}
-                    className="px-6 py-2.5 text-sm font-semibold tracking-wide shadow-xs cursor-pointer"
-                  >
-                    {creating ? 'Opening Chronicle…' : '+ Begin Chronicle'}
-                  </Button>
+                  <div className="flex flex-col gap-2">
+                    <Button
+                      variant="primary"
+                      onClick={create}
+                      disabled={creating || !supported}
+                      className="px-6 py-2.5 text-sm font-semibold tracking-wide shadow-xs cursor-pointer self-start"
+                    >
+                      {creating ? t('pack.opening') : t('pack.begin')}
+                    </Button>
+                    {!supported && (
+                      <span className="text-xs text-muted">
+                        {t('pack.unsupportedNote', { language: localeLabel })}
+                      </span>
+                    )}
+                  </div>
                 )}
               </div>
             </article>
@@ -198,23 +212,23 @@ export default function PackDetailPage() {
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <span className="text-[10px] font-mono uppercase tracking-widest text-muted block mb-0.5">
-                    Reading
+                    {t('pack.reading')}
                   </span>
                   <h2 className="text-xl font-bold font-prose text-text tracking-tight">
-                    Ongoing Reading
+                    {t('pack.ongoing')}
                   </h2>
                 </div>
                 {plays.length > 0 && (
                   <span className="text-[10px] font-mono uppercase tracking-widest text-foam bg-pine/15 px-2.5 py-1 rounded border border-pine/30">
-                    Active
+                    {t('common.active')}
                   </span>
                 )}
               </div>
 
               {plays.length === 0 ? (
                 <div className="text-center py-8 px-4 border border-dashed border-subtle/60 rounded-xl">
-                  <p className="text-muted text-sm italic mb-1.5">No active reading.</p>
-                  <p className="text-faint text-xs">Begin a chronicle above to start.</p>
+                  <p className="text-muted text-sm italic mb-1.5">{t('pack.noActive')}</p>
+                  <p className="text-faint text-xs">{t('pack.beginHint')}</p>
                 </div>
               ) : (
                 <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40">
@@ -231,17 +245,17 @@ export default function PackDetailPage() {
                           <p className="text-sm font-medium text-text group-hover:text-foam transition-colors truncate">
                             {p.current_room_name
                               ? p.current_room_name
-                              : `Started ${fmtTime(p.created_at)}`}
+                              : t('pack.started', { time: fmtTime(p.created_at, locale) })}
                           </p>
                           <p className="text-xs text-muted/70 font-mono mt-0.5">
                             {[
-                              p.day_number !== null && p.day_number !== undefined ? `Day ${p.day_number}` : null,
-                              `Updated ${fmtTime(p.updated_at)}`,
+                              p.day_number !== null && p.day_number !== undefined ? t('pack.day', { day: p.day_number }) : null,
+                              t('pack.updated', { time: fmtTime(p.updated_at, locale) }),
                             ].filter(Boolean).join(' • ')}
                           </p>
                         </div>
                         <span className="text-xs font-medium text-foam group-hover:translate-x-1 transition-transform duration-150 inline-flex items-center gap-1 shrink-0">
-                          Resume &rsaquo;
+                          {t('pack.resume')}
                         </span>
                       </div>
                       <Button
@@ -250,7 +264,7 @@ export default function PackDetailPage() {
                         onClick={() => setConfirmDelete(p.play_id)}
                         disabled={deleting === p.play_id}
                         className="opacity-0 group-hover:opacity-100 text-muted hover:text-love transition-opacity text-xs"
-                        title="Delete reading"
+                        title={t('pack.deleteReadingTitle')}
                       >
                         {deleting === p.play_id ? '…' : '✕'}
                       </Button>
@@ -264,23 +278,25 @@ export default function PackDetailPage() {
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <span className="text-[10px] font-mono uppercase tracking-widest text-muted block mb-0.5">
-                    Bookmarks
+                    {t('pack.bookmarks')}
                   </span>
                   <h2 className="text-xl font-bold font-prose text-text tracking-tight">
-                    Bookmarks
+                    {t('pack.bookmarks')}
                   </h2>
                 </div>
                 {bookmarks.length > 0 && (
                   <span className="text-[10px] font-mono uppercase tracking-widest text-foam bg-pine/15 px-2.5 py-1 rounded border border-pine/30">
-                    {bookmarks.length} {bookmarks.length === 1 ? 'Bookmark' : 'Bookmarks'}
+                    {t(bookmarks.length === 1 ? 'pack.bookmarkOne' : 'pack.bookmarkMany', {
+                      count: bookmarks.length,
+                    })}
                   </span>
                 )}
               </div>
 
               {bookmarks.length === 0 ? (
                 <div className="text-center py-8 px-4 border border-dashed border-subtle/60 rounded-xl">
-                  <p className="text-muted text-sm italic mb-1.5">No bookmarks saved yet.</p>
-                  <p className="text-faint text-xs">You can bookmark any moment from the in-game menu.</p>
+                  <p className="text-muted text-sm italic mb-1.5">{t('pack.noBookmarks')}</p>
+                  <p className="text-faint text-xs">{t('pack.bookmarkHint')}</p>
                 </div>
               ) : (
                 <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40">
@@ -295,19 +311,19 @@ export default function PackDetailPage() {
                       >
                         <div className="min-w-0">
                           <p className="text-sm font-medium text-text group-hover:text-foam transition-colors truncate">
-                            {b.current_room_name || 'Bookmark'}
+                            {b.current_room_name || t('pack.bookmarkFallback')}
                           </p>
                           <p className="text-xs text-muted/70 font-mono mt-0.5">
                             {[
-                              b.day_number !== null && b.day_number !== undefined ? `Day ${b.day_number}` : null,
+                              b.day_number !== null && b.day_number !== undefined ? t('pack.day', { day: b.day_number }) : null,
                               b.time_label,
-                              b.turn_number !== null && b.turn_number !== undefined ? `Turn ${b.turn_number}` : null,
-                              fmtTime(b.created_at),
+                              b.turn_number !== null && b.turn_number !== undefined ? t('pack.turn', { turn: b.turn_number }) : null,
+                              fmtTime(b.created_at, locale),
                             ].filter(Boolean).join(' • ')}
                           </p>
                         </div>
                         <span className="text-xs font-medium text-foam group-hover:translate-x-1 transition-transform duration-150 inline-flex items-center gap-1 shrink-0">
-                          Return to &rsaquo;
+                          {t('pack.returnTo')}
                         </span>
                       </div>
                       <Button
@@ -316,7 +332,7 @@ export default function PackDetailPage() {
                         onClick={() => setConfirmDeleteBookmark(b.id)}
                         disabled={deletingBookmark === b.id}
                         className="opacity-0 group-hover:opacity-100 text-muted hover:text-love transition-opacity text-xs"
-                        title="Delete bookmark"
+                        title={t('pack.deleteBookmarkTitle')}
                       >
                         {deletingBookmark === b.id ? '…' : '✕'}
                       </Button>
@@ -331,9 +347,9 @@ export default function PackDetailPage() {
 
       {confirmDelete && (
         <ConfirmDialog
-          title="Delete Reading"
-          message="Delete this active reading? This cannot be undone."
-          confirmLabel="Delete"
+          title={t('pack.confirmDeleteTitle')}
+          message={t('pack.confirmDeleteMessage')}
+          confirmLabel={t('pack.confirmDelete')}
           onConfirm={() => doDelete(confirmDelete)}
           onCancel={() => setConfirmDelete(null)}
         />
@@ -341,9 +357,9 @@ export default function PackDetailPage() {
 
       {confirmResumeBookmark && (
         <ConfirmDialog
-          title="Return to Bookmark"
-          message="Return to this point in your tale? Your current journey will be set back to this moment."
-          confirmLabel="Return"
+          title={t('pack.confirmResumeTitle')}
+          message={t('pack.confirmResumeMessage')}
+          confirmLabel={t('pack.confirmReturn')}
           onConfirm={() => doResumeBookmark(confirmResumeBookmark)}
           onCancel={() => setConfirmResumeBookmark(null)}
         />
@@ -351,9 +367,9 @@ export default function PackDetailPage() {
 
       {confirmDeleteBookmark && (
         <ConfirmDialog
-          title="Delete Bookmark"
-          message="Delete this bookmark? This cannot be undone."
-          confirmLabel="Delete"
+          title={t('pack.confirmDeleteBookmarkTitle')}
+          message={t('pack.confirmDeleteBookmarkMessage')}
+          confirmLabel={t('pack.confirmDelete')}
           onConfirm={() => doDeleteBookmark(confirmDeleteBookmark)}
           onCancel={() => setConfirmDeleteBookmark(null)}
         />

@@ -11,7 +11,8 @@ use std::sync::Arc;
 use uuid::Uuid;
 
 use crate::auth::{AuthPlayer, auth_middleware, validate_token};
-use crate::game_manager;
+use crate::game_manager::{self, LocaleItem};
+use cinder_core::content::loader;
 
 use super::AppState;
 
@@ -38,10 +39,15 @@ pub struct PlayInfo {
 #[derive(Deserialize)]
 pub struct CreatePlayRequest {
     pub pack_id: String,
+    /// Optional explicit locale for this play. When absent, the player's
+    /// account preference is used, then the pack's own default language.
+    #[serde(default)]
+    pub locale: Option<String>,
 }
 
 pub fn routes(state: Arc<AppState>) -> Router<Arc<AppState>> {
     let auth_routes = Router::new()
+        .route("/api/me", get(get_me).put(update_me))
         .route("/api/packs", get(list_packs))
         .route(
             "/api/packs/{pack_id}/bookmarks",
@@ -96,7 +102,7 @@ pub async fn create_play(
     }
 
     let (play_id, title, intro_text) =
-        game_manager::create_play(&state.pool, &auth.id, &req.pack_id)
+        game_manager::create_play(&state.pool, &auth.id, &req.pack_id, req.locale.as_deref())
             .await
             .map_err(internal)?;
 
@@ -120,6 +126,10 @@ pub struct PackInfo {
     pub description: String,
     pub theme: cinder_core::content::types::ThemeDefinition,
     pub tags: Vec<String>,
+    /// The pack's own default language when no locale is chosen.
+    pub default_language: String,
+    /// Every locale this pack ships, for availability-aware UI.
+    pub locale_options: Vec<LocaleItem>,
 }
 
 pub async fn list_packs() -> Json<Vec<PackInfo>> {
@@ -134,6 +144,12 @@ pub async fn list_packs() -> Json<Vec<PackInfo>> {
                 } else {
                     settings.title
                 };
+                let default_language = if settings.default_language.trim().is_empty() {
+                    cinder_core::content::loader::DEFAULT_LOCALE.to_string()
+                } else {
+                    settings.default_language.clone()
+                };
+                let locale_options = pack_locale_options(&id);
                 PackInfo {
                     id,
                     title,
@@ -141,10 +157,106 @@ pub async fn list_packs() -> Json<Vec<PackInfo>> {
                     description: settings.description,
                     theme: settings.theme,
                     tags: settings.tags,
+                    default_language,
+                    locale_options,
                 }
             })
             .collect(),
     )
+}
+
+/// Locale options for a single pack, or an empty list if the pack is unreadable.
+fn pack_locale_options(pack_id: &str) -> Vec<LocaleItem> {
+    loader::available_locales(&loader::pack_dir(pack_id))
+        .unwrap_or_default()
+        .into_iter()
+        .map(|locale| LocaleItem {
+            code: locale.code,
+            label: locale.label,
+        })
+        .collect()
+}
+
+#[derive(Serialize)]
+pub struct PlayerProfile {
+    pub player_id: String,
+    pub username: String,
+    /// The account-level display-language preference, or null when unset.
+    pub preferred_locale: Option<String>,
+    /// Union of every locale shipped by any pack, for the account picker.
+    pub locale_options: Vec<LocaleItem>,
+}
+
+pub async fn get_me(
+    State(state): State<Arc<AppState>>,
+    auth: AuthPlayer,
+) -> Result<Json<PlayerProfile>, (StatusCode, String)> {
+    let player_uuid = Uuid::parse_str(&auth.id).map_err(internal)?;
+    let row = sqlx::query_as::<_, (String, Option<String>)>(
+        "SELECT username, preferred_locale FROM players WHERE id = $1",
+    )
+    .bind(player_uuid)
+    .fetch_optional(&*state.pool)
+    .await
+    .map_err(internal)?
+    .ok_or_else(|| (StatusCode::NOT_FOUND, "player not found".to_string()))?;
+
+    Ok(Json(PlayerProfile {
+        player_id: auth.id,
+        username: row.0,
+        preferred_locale: row.1.filter(|locale| !locale.trim().is_empty()),
+        locale_options: account_locale_options(),
+    }))
+}
+
+#[derive(Deserialize)]
+pub struct UpdateMeRequest {
+    /// The new preference. An empty string clears it (back to pack defaults).
+    pub preferred_locale: Option<String>,
+}
+
+pub async fn update_me(
+    State(state): State<Arc<AppState>>,
+    auth: AuthPlayer,
+    Json(req): Json<UpdateMeRequest>,
+) -> Result<Json<PlayerProfile>, (StatusCode, String)> {
+    let player_uuid = Uuid::parse_str(&auth.id).map_err(internal)?;
+    let normalized = req
+        .preferred_locale
+        .as_deref()
+        .map(str::trim)
+        .filter(|locale| !locale.is_empty());
+
+    sqlx::query("UPDATE players SET preferred_locale = $1 WHERE id = $2")
+        .bind(normalized)
+        .bind(player_uuid)
+        .execute(&*state.pool)
+        .await
+        .map_err(internal)?;
+
+    get_me(State(state), auth).await
+}
+
+/// Union of every pack's shipped locales, deduplicated by code and ordered with
+/// the default locale first.
+fn account_locale_options() -> Vec<LocaleItem> {
+    let mut options: Vec<LocaleItem> = Vec::new();
+    for pack_id in loader::available_packs() {
+        for locale in pack_locale_options(&pack_id) {
+            if !options.iter().any(|existing| existing.code == locale.code) {
+                options.push(locale);
+            }
+        }
+    }
+    options.sort_by(|left, right| {
+        let default = loader::DEFAULT_LOCALE;
+        match (left.code.as_str(), right.code.as_str()) {
+            (a, b) if a == default && b != default => std::cmp::Ordering::Less,
+            (a, b) if b == default && a != default => std::cmp::Ordering::Greater,
+            _ => left.code.cmp(&right.code),
+        }
+    });
+    options
 }
 
 pub async fn list_plays(
@@ -480,4 +592,59 @@ pub async fn delete_bookmark_handler(
         .await
         .map_err(internal)?;
     Ok(Json(()))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn pack_locale_options_reflect_shipped_locales() {
+        let layla = pack_locale_options("layla");
+        let codes: Vec<&str> = layla.iter().map(|option| option.code.as_str()).collect();
+        assert!(codes.contains(&"en"), "layla must ship en: {codes:?}");
+        assert!(codes.contains(&"zh-TW"), "layla must ship zh-TW: {codes:?}");
+        assert_eq!(codes.first().copied(), Some("en"), "en sorts first");
+
+        let aera = pack_locale_options("aera");
+        assert_eq!(
+            aera.iter()
+                .map(|option| option.code.as_str())
+                .collect::<Vec<_>>(),
+            vec!["en"],
+            "aera ships English only"
+        );
+
+        // A pack without a locales/ directory still reports the default fallback.
+        assert_eq!(
+            pack_locale_options("does-not-exist")
+                .iter()
+                .map(|option| option.code.as_str())
+                .collect::<Vec<_>>(),
+            vec![loader::DEFAULT_LOCALE]
+        );
+    }
+
+    #[test]
+    fn account_locale_options_dedupes_and_puts_default_first() {
+        let options = account_locale_options();
+        assert!(!options.is_empty(), "at least one pack must be readable");
+        assert_eq!(
+            options.first().map(|option| option.code.as_str()),
+            Some(loader::DEFAULT_LOCALE)
+        );
+
+        let mut codes: Vec<&str> = options.iter().map(|option| option.code.as_str()).collect();
+        assert!(
+            codes.contains(&"zh-TW"),
+            "union must include zh-TW: {codes:?}"
+        );
+
+        let unique: std::collections::BTreeSet<&str> = codes.iter().copied().collect();
+        assert_eq!(unique.len(), codes.len(), "no duplicate codes: {codes:?}");
+
+        codes.sort_unstable();
+        codes.dedup();
+        assert_eq!(codes.len(), unique.len());
+    }
 }

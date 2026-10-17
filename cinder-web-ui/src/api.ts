@@ -84,10 +84,10 @@ export interface PlayInfo {
   current_room_name: string
 }
 
-export function createPlay(token: string, packId: string) {
+export function createPlay(token: string, packId: string, locale?: string | null) {
   return reqAuth<PlayInfo>('/games', token, {
     method: 'POST',
-    body: JSON.stringify({ pack_id: packId }),
+    body: JSON.stringify({ pack_id: packId, locale: locale ?? undefined }),
   })
 }
 
@@ -492,10 +492,30 @@ export interface PackInfo {
   description: string
   theme: ThemeDefinition
   tags?: string[]
+  default_language: string
+  locale_options: LocaleItem[]
 }
 
 export function listPacks(token: string) {
   return reqAuth<PackInfo[]>('/packs', token)
+}
+
+export interface PlayerProfile {
+  player_id: string
+  username: string
+  preferred_locale: string | null
+  locale_options: LocaleItem[]
+}
+
+export function getMe(token: string) {
+  return reqAuth<PlayerProfile>('/me', token)
+}
+
+export function updateMe(token: string, preferredLocale: string | null) {
+  return reqAuth<PlayerProfile>('/me', token, {
+    method: 'PUT',
+    body: JSON.stringify({ preferred_locale: preferredLocale }),
+  })
 }
 
 export interface BookmarkInfo {
