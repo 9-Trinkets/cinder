@@ -7,13 +7,6 @@
   ],
   "stages": [
     {
-      "id": "mq_hear_gate",
-      "quest_id": "the_way_down",
-      "quest_title": "The Way Down",
-      "quest_kind": "main",
-      "summary": "Find a way past the sealed fortress gate to reach the teleport platform.",
-      "beat_note": "Layla has arrived at the mining village on Floor 4, but hasn't yet learned how to pass beyond the sealed fortress gate or teleport to Floor 5.",
-      "update_message": "The iron bulkhead seals the road north. Ask the villagers how to reach the military complex.",
       "advance_signals": [
         "spoken_to:tariq",
         "spoken_to:garrison_sentry_gate",
@@ -29,464 +22,479 @@
         "item_acquired:teleport-scroll",
         "knows_teleport",
         {
-          "signal": "command_used",
           "conditions": [
             {
+              "operator": "equal",
               "path": "story_vars.values.fortress_gate_open",
-              "operator": "equal",
               "value": "true"
             }
-          ]
+          ],
+          "signal": "command_used"
         },
         {
-          "signal": "command_used",
           "conditions": [
             {
+              "operator": "equal",
               "path": "story_vars.values.knows_teleport",
-              "operator": "equal",
               "value": "true"
             }
-          ]
+          ],
+          "signal": "command_used"
         },
         {
-          "signal": "room_entered:courtyard_center",
-          "next_stage_ids": []
+          "next_stage_ids": [],
+          "signal": "room_entered:courtyard_center"
         },
         {
-          "signal": "room_entered:floor5_start",
-          "next_stage_ids": []
+          "next_stage_ids": [],
+          "signal": "room_entered:floor5_start"
         },
         {
-          "signal": "descend_floor_5",
-          "next_stage_ids": []
+          "next_stage_ids": [],
+          "signal": "descend_floor_5"
         },
         {
-          "signal": "command_used",
           "conditions": [
             {
-              "path": "current_room_id",
               "operator": "starts_with",
+              "path": "current_room_id",
               "value": "courtyard_"
             }
           ],
-          "next_stage_ids": []
+          "next_stage_ids": [],
+          "signal": "command_used"
         },
         {
-          "signal": "command_used",
           "conditions": [
             {
-              "path": "story_vars.values.anchor_floor5_gate",
               "operator": "equal",
+              "path": "story_vars.values.anchor_floor5_gate",
               "value": "true"
             },
             {
-              "path": "current_room_id",
               "operator": "not_equal",
+              "path": "current_room_id",
               "value": "teleport_platform"
             }
           ],
-          "next_stage_ids": []
+          "next_stage_ids": [],
+          "signal": "command_used"
         },
         {
-          "signal": "story_vars_changed",
           "conditions": [
             {
-              "path": "story_vars.values.anchor_floor5_gate",
               "operator": "equal",
+              "path": "story_vars.values.anchor_floor5_gate",
               "value": "true"
             },
             {
-              "path": "current_room_id",
               "operator": "not_equal",
+              "path": "current_room_id",
               "value": "teleport_platform"
             }
           ],
-          "next_stage_ids": []
+          "next_stage_ids": [],
+          "signal": "story_vars_changed"
         }
       ],
+      "beat_note": "蕾拉已抵達第四層的礦村，但還沒找到越過封閉要塞閘門、傳送到第五層的方法。",
+      "id": "mq_hear_gate",
       "next_stage_ids": [
         "mq_find_scroll"
-      ]
+      ],
+      "quest_id": "the_way_down",
+      "quest_kind": "main",
+      "quest_title": "下行之路",
+      "summary": "找到越過封閉要塞閘門的方法，抵達傳送平台。",
+      "update_message": "鐵閘封住了通往北方的路。向村民打聽如何抵達軍事區。"
     },
     {
-      "id": "mq_find_scroll",
-      "quest_id": "teleport_scroll",
-      "quest_title": "The Teleportation Scroll",
-      "quest_kind": "main",
-      "summary": "Retrieve Commander Malik's Teleportation Scroll from the fortress safe.",
-      "beat_note": "Layla learned that the military fortress gate is locked, but Commander Malik holds an ancient Teleportation Scroll in his safe. She needs to infiltrate the fortress and retrieve it.",
-      "update_message": "The scroll is locked inside Commander Malik's safe within the fortress bastion.",
       "advance_signals": [
         "item_acquired:teleport-scroll",
         "knows_teleport",
         {
-          "signal": "command_used",
           "conditions": [
             {
-              "path": "story_vars.values.knows_teleport",
               "operator": "equal",
+              "path": "story_vars.values.knows_teleport",
               "value": "true"
             }
-          ]
+          ],
+          "signal": "command_used"
         },
         {
-          "signal": "room_entered:courtyard_center",
-          "next_stage_ids": []
+          "next_stage_ids": [],
+          "signal": "room_entered:courtyard_center"
         },
         {
-          "signal": "room_entered:floor5_start",
-          "next_stage_ids": []
+          "next_stage_ids": [],
+          "signal": "room_entered:floor5_start"
         },
         {
-          "signal": "descend_floor_5",
-          "next_stage_ids": []
+          "next_stage_ids": [],
+          "signal": "descend_floor_5"
         },
         {
-          "signal": "command_used",
           "conditions": [
             {
-              "path": "current_room_id",
               "operator": "starts_with",
+              "path": "current_room_id",
               "value": "courtyard_"
             }
           ],
-          "next_stage_ids": []
+          "next_stage_ids": [],
+          "signal": "command_used"
         },
         {
-          "signal": "command_used",
           "conditions": [
             {
-              "path": "story_vars.values.anchor_floor5_gate",
               "operator": "equal",
+              "path": "story_vars.values.anchor_floor5_gate",
               "value": "true"
             },
             {
-              "path": "current_room_id",
               "operator": "not_equal",
+              "path": "current_room_id",
               "value": "teleport_platform"
             }
           ],
-          "next_stage_ids": []
+          "next_stage_ids": [],
+          "signal": "command_used"
         },
         {
-          "signal": "story_vars_changed",
           "conditions": [
             {
-              "path": "story_vars.values.anchor_floor5_gate",
               "operator": "equal",
+              "path": "story_vars.values.anchor_floor5_gate",
               "value": "true"
             },
             {
-              "path": "current_room_id",
               "operator": "not_equal",
+              "path": "current_room_id",
               "value": "teleport_platform"
             }
           ],
-          "next_stage_ids": []
+          "next_stage_ids": [],
+          "signal": "story_vars_changed"
         }
       ],
+      "beat_note": "蕾拉得知軍事要塞的閘門已鎖上，但馬利克指揮官的保險箱裡藏有一卷古老的傳送卷軸。她必須潛入要塞將其取回。",
+      "id": "mq_find_scroll",
       "next_stage_ids": [
         "mq_use_teleport_platform"
-      ]
-    },
-    {
-      "id": "mq_use_teleport_platform",
+      ],
       "quest_id": "teleport_scroll",
-      "quest_title": "The Teleportation Scroll",
       "quest_kind": "main",
-      "summary": "Activate the teleportation platform in the fortress to teleport to Floor 5.",
-      "beat_note": "Having acquired the knowledge of the Teleportation Sigil, Layla can now reach the teleport platform in the heart of the fortress and teleport to Floor 5.",
-      "update_message": "Trace the Teleportation Sigil on the central platform to activate transit to Floor 5.",
+      "quest_title": "傳送卷軸",
+      "summary": "從要塞的保險箱取回馬利克指揮官的傳送卷軸。",
+      "update_message": "卷軸鎖在要塞稜堡內、馬利克指揮官的保險箱裡。"
+    },
+    {
+      "advance_signals": [
+        "room_entered:courtyard_center",
+        "room_entered:floor5_start",
+        "descend_floor_5",
+        {
+          "conditions": [
+            {
+              "operator": "starts_with",
+              "path": "current_room_id",
+              "value": "courtyard_"
+            }
+          ],
+          "signal": "command_used"
+        },
+        {
+          "conditions": [
+            {
+              "operator": "equal",
+              "path": "story_vars.values.anchor_floor5_gate",
+              "value": "true"
+            },
+            {
+              "operator": "not_equal",
+              "path": "current_room_id",
+              "value": "teleport_platform"
+            }
+          ],
+          "signal": "command_used"
+        },
+        {
+          "conditions": [
+            {
+              "operator": "equal",
+              "path": "story_vars.values.anchor_floor5_gate",
+              "value": "true"
+            },
+            {
+              "operator": "not_equal",
+              "path": "current_room_id",
+              "value": "teleport_platform"
+            }
+          ],
+          "signal": "story_vars_changed"
+        }
+      ],
+      "beat_note": "掌握了傳送紋印的知識後，蕾拉如今能抵達要塞核心的傳送平台，傳送到第五層。",
       "completion_message": "handler.quest.teleport_scroll_complete",
-      "advance_signals": [
-        "room_entered:courtyard_center",
-        "room_entered:floor5_start",
-        "descend_floor_5",
-        {
-          "signal": "command_used",
-          "conditions": [
-            {
-              "path": "current_room_id",
-              "operator": "starts_with",
-              "value": "courtyard_"
-            }
-          ]
-        },
-        {
-          "signal": "command_used",
-          "conditions": [
-            {
-              "path": "story_vars.values.anchor_floor5_gate",
-              "operator": "equal",
-              "value": "true"
-            },
-            {
-              "path": "current_room_id",
-              "operator": "not_equal",
-              "value": "teleport_platform"
-            }
-          ]
-        },
-        {
-          "signal": "story_vars_changed",
-          "conditions": [
-            {
-              "path": "story_vars.values.anchor_floor5_gate",
-              "operator": "equal",
-              "value": "true"
-            },
-            {
-              "path": "current_room_id",
-              "operator": "not_equal",
-              "value": "teleport_platform"
-            }
-          ]
-        }
-      ],
+      "id": "mq_use_teleport_platform",
       "next_stage_ids": [
         "mq_free_prisoners"
-      ]
-    },
-    {
-      "id": "sq_listen_courtyard_cages",
-      "summary": "",
-      "beat_note": "Layla has arrived at the Floor 5 courtyard.",
-      "advance_signals": [
-        "room_entered:courtyard_center",
-        "room_entered:floor5_start",
-        "descend_floor_5",
-        {
-          "signal": "command_used",
-          "conditions": [
-            {
-              "path": "current_room_id",
-              "operator": "starts_with",
-              "value": "courtyard_"
-            }
-          ]
-        },
-        {
-          "signal": "command_used",
-          "conditions": [
-            {
-              "path": "story_vars.values.anchor_floor5_gate",
-              "operator": "equal",
-              "value": "true"
-            },
-            {
-              "path": "current_room_id",
-              "operator": "not_equal",
-              "value": "teleport_platform"
-            }
-          ]
-        },
-        {
-          "signal": "story_vars_changed",
-          "conditions": [
-            {
-              "path": "story_vars.values.anchor_floor5_gate",
-              "operator": "equal",
-              "value": "true"
-            },
-            {
-              "path": "current_room_id",
-              "operator": "not_equal",
-              "value": "teleport_platform"
-            }
-          ]
-        }
       ],
-      "next_stage_ids": [
-        "mq_free_prisoners"
-      ]
-    },
-    {
-      "id": "mq_free_prisoners",
-      "quest_id": "free_courtyard_prisoners",
-      "quest_title": "What They Put in the Cages",
+      "quest_id": "teleport_scroll",
       "quest_kind": "main",
-      "summary": "Unlock the culling cages in the Frost Citadel courtyard to free Astrid, Einar, and the offerings.",
-      "beat_note": "Arriving at the Frost Citadel, Layla finds garrison dissenters Commander Astrid and Einar locked in culling cages along with commoner offerings. Defeat the Sentry Captain to obtain the courtyard key and unlock their cages.",
-      "update_message": "The cages are held by the Sentry Captain. Secure the courtyard key to release them.",
-      "completion_message": "handler.quest.free_prisoners_complete",
+      "quest_title": "傳送卷軸",
+      "summary": "啟動要塞中的傳送平台，傳送到第五層。",
+      "update_message": "在中央平台上描繪傳送紋印，啟動前往第五層的傳送。"
+    },
+    {
+      "advance_signals": [
+        "room_entered:courtyard_center",
+        "room_entered:floor5_start",
+        "descend_floor_5",
+        {
+          "conditions": [
+            {
+              "operator": "starts_with",
+              "path": "current_room_id",
+              "value": "courtyard_"
+            }
+          ],
+          "signal": "command_used"
+        },
+        {
+          "conditions": [
+            {
+              "operator": "equal",
+              "path": "story_vars.values.anchor_floor5_gate",
+              "value": "true"
+            },
+            {
+              "operator": "not_equal",
+              "path": "current_room_id",
+              "value": "teleport_platform"
+            }
+          ],
+          "signal": "command_used"
+        },
+        {
+          "conditions": [
+            {
+              "operator": "equal",
+              "path": "story_vars.values.anchor_floor5_gate",
+              "value": "true"
+            },
+            {
+              "operator": "not_equal",
+              "path": "current_room_id",
+              "value": "teleport_platform"
+            }
+          ],
+          "signal": "story_vars_changed"
+        }
+      ],
+      "beat_note": "蕾拉已抵達第五層的中庭。",
+      "id": "sq_listen_courtyard_cages",
+      "next_stage_ids": [
+        "mq_free_prisoners"
+      ],
+      "summary": ""
+    },
+    {
       "advance_signals": [
         "courtyard_cages_unlocked",
         {
-          "signal": "command_used",
           "conditions": [
             {
-              "path": "story_vars.values.courtyard_cages_opened",
               "operator": "equal",
+              "path": "story_vars.values.courtyard_cages_opened",
               "value": "true"
             }
-          ]
+          ],
+          "signal": "command_used"
         }
       ],
+      "beat_note": "抵達霜堡時，蕾拉發現駐軍中的異議者艾絲翠德指揮官與艾納，與平民祭品一同被鎖在撲殺籠裡。擊敗哨兵隊長以取得中庭鑰匙，打開他們的牢籠。",
+      "completion_message": "handler.quest.free_prisoners_complete",
+      "id": "mq_free_prisoners",
       "next_stage_ids": [
         "mq_frost_siege",
         "siege_preparation",
         "sq_five_offerings"
-      ]
+      ],
+      "quest_id": "free_courtyard_prisoners",
+      "quest_kind": "main",
+      "quest_title": "他們關進籠裡的東西",
+      "summary": "打開霜堡中庭的撲殺籠，救出艾絲翠德、艾納與祭品。",
+      "update_message": "牢籠由哨兵隊長看守。取得中庭鑰匙才能釋放他們。"
     },
     {
-      "id": "mq_frost_siege",
-      "quest_id": "frost_citadel_siege",
-      "quest_title": "The Frost Citadel Siege",
-      "quest_kind": "main",
-      "summary": "Defend the courtyard and break the assault waves of the three rival houses.",
-      "beat_note": "The siege clock is running. Frost-Wolf troops enter through the north approach, Iron-Ram through the southeast approach, and Frost-Leopard through the southwest approach. The house leaders remain sealed in their throne rooms until the final wave, when all three march toward the courtyard.",
-      "update_message": "Guard the north, southeast, and southwest approaches. Neutralize the house leaders to break the siege.",
       "advance_signals": [
         {
-          "signal": "story_vars_changed",
           "conditions": [
             {
+              "operator": "equal",
               "path": "story_vars.values.frost_wolf_lane_stopped",
-              "operator": "equal",
               "value": "true"
             },
             {
+              "operator": "equal",
               "path": "story_vars.values.iron_ram_lane_stopped",
-              "operator": "equal",
               "value": "true"
             },
             {
-              "path": "story_vars.values.frost_leopard_lane_stopped",
               "operator": "equal",
+              "path": "story_vars.values.frost_leopard_lane_stopped",
               "value": "true"
             }
-          ]
+          ],
+          "signal": "story_vars_changed"
         }
       ],
+      "beat_note": "圍城倒數已經開始。霜狼家的部隊從北面通道進入，鐵羊家走東南通道，霜豹家走西南通道。家族首領在最後一波之前都閉守於各自的主座廳；屆時三方會一同向中庭進軍。",
+      "id": "mq_frost_siege",
       "next_stage_ids": [
         "mq_return_to_courtyard"
-      ]
+      ],
+      "quest_id": "frost_citadel_siege",
+      "quest_kind": "main",
+      "quest_title": "霜堡圍城",
+      "summary": "守住中庭，擊潰三個敵對家族的攻勢波次。",
+      "update_message": "守住北面、東南與西南通道。瓦解家族首領即可結束圍城。"
     },
     {
-      "id": "mq_return_to_courtyard",
-      "quest_id": "frost_citadel_siege",
-      "quest_title": "The Frost Citadel Siege",
-      "quest_kind": "main",
-      "summary": "The three assault lanes are broken. Return to the courtyard center and account for the survivors.",
-      "beat_note": "The siege is over, but its conclusion waits until Layla returns to the surviving civilians at courtyard_center.",
-      "update_message": "Return to the courtyard center and check on the survivors.",
-      "narrative_lines": [
-        "The last command signal goes silent. Across the courtyard, the remaining house soldiers break ranks and withdraw. The siege is over."
-      ],
-      "on_advance_effects": [
-        {
-          "kind": "set_story_var",
-          "key": "citadel_siege_resolved",
-          "value": "true"
-        }
-      ],
       "advance_signals": [
         "room_entered:courtyard_center",
         {
-          "signal": "story_vars_changed",
           "conditions": [
             {
-              "path": "story_vars.values.citadel_siege_resolved",
               "operator": "equal",
+              "path": "story_vars.values.citadel_siege_resolved",
               "value": "true"
             },
             {
-              "path": "current_room_id",
               "operator": "equal",
+              "path": "current_room_id",
               "value": "courtyard_center"
             }
-          ]
+          ],
+          "signal": "story_vars_changed"
         }
+      ],
+      "beat_note": "圍城已結束，但要等蕾拉回到 courtyard_center 的生還平民那裡，才算真正落幕。",
+      "id": "mq_return_to_courtyard",
+      "narrative_lines": [
+        "The last command signal goes silent. Across the courtyard, the remaining house soldiers break ranks and withdraw. The siege is over."
       ],
       "next_stage_ids": [
         "mq_secure_courtyard"
-      ]
-    },
-    {
-      "id": "mq_secure_courtyard",
-      "quest_id": "frost_citadel_siege",
-      "quest_title": "The Frost Citadel Siege",
-      "quest_kind": "main",
-      "summary": "The siege is over. Receive the survivors' thanks and prepare for Floor 6.",
-      "beat_note": "Each living civilian thanks Layla and gives her an inactive town token. Using a token consumes it and registers that town with the teleport spell.",
-      "update_message": "The survivors are safe. Their town tokens can now be added to the teleport spell.",
-      "completion_message": "handler.quest.citadel_siege_complete",
-      "narrative_lines": [
-        "The surviving workers gather around the courtyard teleport pad. One by one, they step forward to thank you."
       ],
       "on_advance_effects": [
         {
+          "key": "citadel_siege_resolved",
           "kind": "set_story_var",
-          "key": "citadel_siege_complete",
-          "value": "true"
-        },
-        {
-          "kind": "resolve_survivor_rewards",
-          "survivor_count_story_var": "five_offerings_survivors",
-          "rewards": [
-            {
-              "actor_id": "nivi_olsen",
-              "unlock_story_var": "town_salt_reach_token_received",
-              "item_id": "salt-reach-transit-seal",
-              "message": "civilian.reward.salt_reach"
-            },
-            {
-              "actor_id": "eliska_novakova",
-              "unlock_story_var": "town_glassbank_token_received",
-              "item_id": "glassbank-transit-prism",
-              "message": "civilian.reward.glassbank"
-            },
-            {
-              "actor_id": "amaru_quispe",
-              "unlock_story_var": "town_woolcross_token_received",
-              "item_id": "woolcross-transit-knot",
-              "message": "civilian.reward.woolcross"
-            },
-            {
-              "actor_id": "abeni_adeyemi",
-              "unlock_story_var": "town_greenrest_token_received",
-              "item_id": "greenrest-transit-seed",
-              "message": "civilian.reward.greenrest"
-            },
-            {
-              "actor_id": "chen_yu_xin",
-              "unlock_story_var": "town_brass_yard_token_received",
-              "item_id": "brass-yard-transit-gear",
-              "message": "civilian.reward.brass_yard"
-            }
-          ]
-        },
-        {
-          "kind": "set_story_var",
-          "key": "citadel_survivor_settlement_complete",
           "value": "true"
         }
       ],
+      "quest_id": "frost_citadel_siege",
+      "quest_kind": "main",
+      "quest_title": "霜堡圍城",
+      "summary": "三條進攻通道皆已潰散。回到中庭中央，清點生還者。",
+      "update_message": "回到中庭中央，探視生還者。"
+    },
+    {
       "advance_signals": [
         {
-          "signal": "story_vars_changed",
           "conditions": [
             {
-              "path": "story_vars.values.citadel_survivor_settlement_complete",
               "operator": "equal",
+              "path": "story_vars.values.citadel_survivor_settlement_complete",
               "value": "true"
             }
-          ]
+          ],
+          "signal": "story_vars_changed"
         }
+      ],
+      "beat_note": "每一位生還的平民都會向蕾拉道謝，並交給她一枚未啟用的城鎮令牌。使用令牌會消耗它，並將該城鎮登錄到傳送法術中。",
+      "completion_effects": [],
+      "completion_message": "handler.quest.citadel_siege_complete",
+      "id": "mq_secure_courtyard",
+      "narrative_lines": [
+        "The surviving workers gather around the courtyard teleport pad. One by one, they step forward to thank you."
       ],
       "next_stage_ids": [
         "mq_infiltrate_sanctuary"
       ],
-      "completion_effects": []
+      "on_advance_effects": [
+        {
+          "key": "citadel_siege_complete",
+          "kind": "set_story_var",
+          "value": "true"
+        },
+        {
+          "kind": "resolve_survivor_rewards",
+          "rewards": [
+            {
+              "actor_id": "nivi_olsen",
+              "item_id": "salt-reach-transit-seal",
+              "message": "civilian.reward.salt_reach",
+              "unlock_story_var": "town_salt_reach_token_received"
+            },
+            {
+              "actor_id": "eliska_novakova",
+              "item_id": "glassbank-transit-prism",
+              "message": "civilian.reward.glassbank",
+              "unlock_story_var": "town_glassbank_token_received"
+            },
+            {
+              "actor_id": "amaru_quispe",
+              "item_id": "woolcross-transit-knot",
+              "message": "civilian.reward.woolcross",
+              "unlock_story_var": "town_woolcross_token_received"
+            },
+            {
+              "actor_id": "abeni_adeyemi",
+              "item_id": "greenrest-transit-seed",
+              "message": "civilian.reward.greenrest",
+              "unlock_story_var": "town_greenrest_token_received"
+            },
+            {
+              "actor_id": "chen_yu_xin",
+              "item_id": "brass-yard-transit-gear",
+              "message": "civilian.reward.brass_yard",
+              "unlock_story_var": "town_brass_yard_token_received"
+            }
+          ],
+          "survivor_count_story_var": "five_offerings_survivors"
+        },
+        {
+          "key": "citadel_survivor_settlement_complete",
+          "kind": "set_story_var",
+          "value": "true"
+        }
+      ],
+      "quest_id": "frost_citadel_siege",
+      "quest_kind": "main",
+      "quest_title": "霜堡圍城",
+      "summary": "圍城已結束。接受生還者的道謝，並為第六層做準備。",
+      "update_message": "生還者已安全。他們的城鎮令牌現在可以加入傳送法術。"
     },
     {
+      "advance_signals": [
+        {
+          "conditions": [
+            {
+              "operator": "equal",
+              "path": "story_vars.values.entered_floor6",
+              "value": "true"
+            }
+          ],
+          "signal": "story_vars_changed"
+        }
+      ],
+      "beat_note": "蕾拉使用秘密聖所令牌獨自進入第六層。在主要傳送平台開啟之前，她的隊伍仍留在第五層。",
+      "completion_effects": [],
       "id": "mq_infiltrate_sanctuary",
-      "quest_id": "high_sanctuary_infiltration",
-      "quest_title": "The High Sanctuary",
-      "quest_kind": "main",
-      "summary": "Use the clandestine token to infiltrate the High Sanctuary alone.",
-      "beat_note": "Layla enters Floor 6 alone using the clandestine sanctuary token. Her party remains on Floor 5 until the main teleport platform is unlocked.",
-      "update_message": "Infiltrate the High Sanctuary alone using the clandestine token.",
       "narrative_lines": [
         "Astrid lowers her great shield and points toward the towering white spire rising through the mountain clouds above.",
         "Astrid: The Frost Citadel is secure, Layla, but our path to the Royal Core is blocked. High above us sits Floor 6—the High Sanctuary. Its brass gates are sealed from within. Our army cannot storm those walls from the outside. If we want to reach the throne, someone must slip inside and activate their master teleport platform.",
@@ -496,180 +504,139 @@
         "Einar presses a silver token, three bottles of blue invisibility potion, and a silver hairpin shaped like a feathered arrow into your hands.",
         "Einar: This token can slip only one person through their outer wards. Drink these invisibility potions to walk past the white-armored cathedral guards unseen. Find Orva in the herb garden. Show her this arrow pin and tell her: 'The arrow always finds home.' She will give you the spirit pill to reveal Valerius's ritual and defeat him. Once the Seer falls, activate the master platform so Astrid and the rest of us can join you."
       ],
-      "on_advance_effects": [
-        {
-          "kind": "grant_item",
-          "item_id": "clandestine-sanctuary-token"
-        },
-        {
-          "kind": "grant_item",
-          "item_id": "invisibility-potion",
-          "count": 3
-        },
-        {
-          "kind": "grant_item",
-          "item_id": "silver-arrow-pin"
-        }
-      ],
-      "advance_signals": [
-        {
-          "signal": "story_vars_changed",
-          "conditions": [
-            {
-              "path": "story_vars.values.entered_floor6",
-              "operator": "equal",
-              "value": "true"
-            }
-          ]
-        }
-      ],
       "next_stage_ids": [
         "mq_find_the_witch",
         "sq_archive_of_the_disappeared"
       ],
-      "completion_effects": []
+      "on_advance_effects": [
+        {
+          "item_id": "clandestine-sanctuary-token",
+          "kind": "grant_item"
+        },
+        {
+          "count": 3,
+          "item_id": "invisibility-potion",
+          "kind": "grant_item"
+        },
+        {
+          "item_id": "silver-arrow-pin",
+          "kind": "grant_item"
+        }
+      ],
+      "quest_id": "high_sanctuary_infiltration",
+      "quest_kind": "main",
+      "quest_title": "至高聖所",
+      "summary": "使用秘密令牌，獨自潛入至高聖所。",
+      "update_message": "使用秘密令牌，獨自潛入至高聖所。"
     },
     {
-      "id": "mq_find_the_witch",
-      "quest_id": "high_sanctuary_infiltration",
-      "quest_title": "The High Sanctuary",
-      "quest_kind": "main",
-      "summary": "Find Orva in the herb garden and speak the code word.",
-      "beat_note": "Layla has slipped into the High Sanctuary. Find Orva in the herb garden, identified by her silver arrow hairpin. Speak the code word: 'The arrow always finds home'.",
-      "update_message": "Find Orva in the herb garden and give her the code word.",
-      "narrative_lines": [
-        "You stand alone on the High Sanctuary terrace. White-armored guards patrol the grand plaza ahead. Drink your invisibility potion to sneak past them to the herb garden in the southwest quarter."
-      ],
-      "on_advance_effects": [],
       "advance_signals": [
         "spoken_to:orva",
         "witch_code_word_spoken",
         "speech_topic:arrow_code_word",
         {
-          "signal": "story_vars_changed",
           "conditions": [
             {
-              "path": "story_vars.values.met_witch",
               "operator": "equal",
+              "path": "story_vars.values.met_witch",
               "value": "true"
             }
-          ]
+          ],
+          "signal": "story_vars_changed"
         }
+      ],
+      "beat_note": "蕾拉已潛入至高聖所。在藥草園找到歐瓦——認準她別著的銀箭髮簪。說出暗語：「箭，終究會找到歸處。」",
+      "completion_effects": [],
+      "id": "mq_find_the_witch",
+      "narrative_lines": [
+        "You stand alone on the High Sanctuary terrace. White-armored guards patrol the grand plaza ahead. Drink your invisibility potion to sneak past them to the herb garden in the southwest quarter."
       ],
       "next_stage_ids": [
         "mq_slay_the_seer"
       ],
-      "completion_effects": []
+      "on_advance_effects": [],
+      "quest_id": "high_sanctuary_infiltration",
+      "quest_kind": "main",
+      "quest_title": "至高聖所",
+      "summary": "在藥草園找到歐瓦，說出暗語。",
+      "update_message": "在藥草園找到歐瓦，對她說出暗語。"
     },
     {
-      "id": "mq_slay_the_seer",
-      "quest_id": "high_sanctuary_infiltration",
-      "quest_title": "The High Sanctuary",
-      "quest_kind": "main",
-      "summary": "Swallow the spirit pill and defeat Seer Valerius in the Reanimation Sanctum.",
-      "beat_note": "Orva gave Layla the spirit pill. Swallow it to gain spiritual sight, revealing Seer Valerius as the lone living human among the captive spirits. Defeat him to break the ritual and claim the Bind Scroll.",
-      "update_message": "Swallow the spirit pill and defeat Seer Valerius.",
-      "narrative_lines": [
-        "Orva clutches the silver arrow pin to her chest, her eyes wide with relief. 'Einar... he lives! Take this spirit pill. Swallow it before you face Seer Valerius. Without it, you will only see empty air, but with it, you will see the captive spirits and the Seer directing them. Stop him!'"
-      ],
-      "on_advance_effects": [
-        {
-          "kind": "grant_item",
-          "item_id": "spirit-pill"
-        },
-        {
-          "kind": "set_story_var",
-          "key": "met_witch",
-          "value": "true"
-        }
-      ],
       "advance_signals": [
         {
-          "signal": "story_vars_changed",
           "conditions": [
             {
-              "path": "story_vars.values.seer_defeated",
               "operator": "equal",
+              "path": "story_vars.values.seer_defeated",
               "value": "true"
             }
-          ]
+          ],
+          "signal": "story_vars_changed"
         }
+      ],
+      "beat_note": "歐瓦把通靈丹交給了蕾拉。吞下它便能獲得靈視，看清先知瓦勒里烏斯是受困亡魂之中唯一活著的人類。擊敗他，破除儀式，奪取縛紋卷軸。",
+      "completion_effects": [],
+      "id": "mq_slay_the_seer",
+      "narrative_lines": [
+        "Orva clutches the silver arrow pin to her chest, her eyes wide with relief. 'Einar... he lives! Take this spirit pill. Swallow it before you face Seer Valerius. Without it, you will only see empty air, but with it, you will see the captive spirits and the Seer directing them. Stop him!'"
       ],
       "next_stage_ids": [
         "mq_activate_sanctuary_platform"
       ],
-      "completion_effects": []
+      "on_advance_effects": [
+        {
+          "item_id": "spirit-pill",
+          "kind": "grant_item"
+        },
+        {
+          "key": "met_witch",
+          "kind": "set_story_var",
+          "value": "true"
+        }
+      ],
+      "quest_id": "high_sanctuary_infiltration",
+      "quest_kind": "main",
+      "quest_title": "至高聖所",
+      "summary": "吞下通靈丹，在返魂聖殿擊敗先知瓦勒里烏斯。",
+      "update_message": "吞下通靈丹，擊敗先知瓦勒里烏斯。"
     },
     {
-      "id": "mq_activate_sanctuary_platform",
-      "quest_id": "high_sanctuary_infiltration",
-      "quest_title": "The High Sanctuary",
-      "quest_kind": "main",
-      "summary": "Activate the master resonance anchor on the Sanctuary Platform to bring Astrid and the party through.",
-      "beat_note": "Seer Valerius has fallen, and the Bind Scroll is recovered. Head south from the sanctum to the mountain terrace platform and activate the master resonance anchor.",
-      "update_message": "Activate the master anchor on the platform to bring your party through.",
-      "narrative_lines": [
-        "The dark ritual is broken, and Seer Valerius lies defeated. Head to the outer platform and activate the master resonance anchor to bring Commander Astrid and your companions up to Floor 6."
-      ],
-      "on_advance_effects": [],
+      "actor_relocations": [],
       "advance_signals": [
         {
-          "signal": "story_vars_changed",
           "conditions": [
             {
-              "path": "story_vars.values.anchor_floor6_platform",
               "operator": "equal",
+              "path": "story_vars.values.anchor_floor6_platform",
               "value": "true"
             }
-          ]
+          ],
+          "signal": "story_vars_changed"
         }
+      ],
+      "beat_note": "先知瓦勒里烏斯已倒下，縛紋卷軸也已奪回。從聖殿往南走到山間台地的平台，啟動主共鳴錨點。",
+      "completion_effects": [
+        {
+          "key": "floor6_infiltration_complete",
+          "kind": "set_story_var",
+          "value": "true"
+        }
+      ],
+      "id": "mq_activate_sanctuary_platform",
+      "narrative_lines": [
+        "The dark ritual is broken, and Seer Valerius lies defeated. Head to the outer platform and activate the master resonance anchor to bring Commander Astrid and your companions up to Floor 6."
       ],
       "next_stage_ids": [
         "mq_prepare_the_ascent"
       ],
-      "completion_effects": [
-        {
-          "kind": "set_story_var",
-          "key": "floor6_infiltration_complete",
-          "value": "true"
-        }
-      ],
-      "actor_relocations": []
+      "on_advance_effects": [],
+      "quest_id": "high_sanctuary_infiltration",
+      "quest_kind": "main",
+      "quest_title": "至高聖所",
+      "summary": "啟動聖所平台上的主共鳴錨點，將艾絲翠德與隊伍傳送過來。",
+      "update_message": "啟動平台上的主錨點，將你的隊伍傳送過來。"
     },
     {
-      "id": "mq_prepare_the_ascent",
-      "quest_id": "high_sanctuary_infiltration",
-      "quest_title": "The High Sanctuary",
-      "quest_kind": "main",
-      "summary": "Reunite with your companions on the platform and ascend the white stair to Floor 7.",
-      "beat_note": "Astrid, Einar, and Orva are reunited on the Sanctuary Platform. Commander Astrid will hold the platform while Layla climbs the white stair to Floor 7.",
-      "update_message": "Speak with Commander Astrid and ascend to Floor 7 via the glowing white stair.",
-      "narrative_lines": [
-        "Blue light flashes across the mountain cliff. Commander Astrid and Einar materialize on the stone platform, their weapons drawn. Astrid plants her heavy shield into the flagstones, securing the acropolis perimeter. Einar rushes forward and embraces Orva, their twin silver arrows gleaming in the sunlight.",
-        "Astrid: The acropolis perimeter is secure, Layla. We will hold this platform with our shields so nothing can sneak up behind you. The white stair is open. Ascend to Floor 7 and end this game."
-      ],
-      "on_advance_effects": [],
-      "advance_signals": [
-        {
-          "signal": "story_vars_changed",
-          "conditions": [
-            {
-              "path": "story_vars.values.entered_floor7",
-              "operator": "equal",
-              "value": "true"
-            }
-          ]
-        },
-        "room_entered:floor7_antechamber"
-      ],
-      "next_stage_ids": [],
-      "completion_effects": [
-        {
-          "kind": "set_story_var",
-          "key": "floor6_ascent_completed",
-          "value": "true"
-        }
-      ],
       "actor_relocations": [
         {
           "actor_id": "commander_astrid",
@@ -683,100 +650,106 @@
           "actor_id": "orva",
           "to_room_id": "sanctuary_main_platform"
         }
-      ]
+      ],
+      "advance_signals": [
+        {
+          "conditions": [
+            {
+              "operator": "equal",
+              "path": "story_vars.values.entered_floor7",
+              "value": "true"
+            }
+          ],
+          "signal": "story_vars_changed"
+        },
+        "room_entered:floor7_antechamber"
+      ],
+      "beat_note": "艾絲翠德、艾納與歐瓦在聖所平台上會合。艾絲翠德指揮官將留守平台，讓蕾拉登上白色階梯前往第七層。",
+      "completion_effects": [
+        {
+          "key": "floor6_ascent_completed",
+          "kind": "set_story_var",
+          "value": "true"
+        }
+      ],
+      "id": "mq_prepare_the_ascent",
+      "narrative_lines": [
+        "Blue light flashes across the mountain cliff. Commander Astrid and Einar materialize on the stone platform, their weapons drawn. Astrid plants her heavy shield into the flagstones, securing the acropolis perimeter. Einar rushes forward and embraces Orva, their twin silver arrows gleaming in the sunlight.",
+        "Astrid: The acropolis perimeter is secure, Layla. We will hold this platform with our shields so nothing can sneak up behind you. The white stair is open. Ascend to Floor 7 and end this game."
+      ],
+      "next_stage_ids": [],
+      "on_advance_effects": [],
+      "quest_id": "high_sanctuary_infiltration",
+      "quest_kind": "main",
+      "quest_title": "至高聖所",
+      "summary": "在平台上與同伴會合，登上白色階梯前往第七層。",
+      "update_message": "與艾絲翠德指揮官交談，經由發光的白色階梯登上第七層。"
     },
     {
-      "id": "sq_archive_of_the_disappeared",
-      "quest_id": "archive_of_the_disappeared",
-      "quest_title": "The Truth of the Disappeared",
-      "quest_kind": "side",
-      "summary": "Uncover the secret mortuary ledgers in the Scriptorium archive to learn the truth about the dungeon monsters.",
-      "beat_note": "In the hidden archive of the Scriptorium, confidential mortuary ledgers detail the harvest of citizens from Deepwell and Salt Reach and their conversion into dungeon golems and elves.",
-      "update_message": "Inspect the confidential mortuary ledgers in the hidden archive beneath the Scriptorium.",
-      "completion_message": "handler.quest.archive_discovered",
-      "narrative_lines": [
-        "Behind locked doors in the Scriptorium, iron racks hold confidential registries of the disappeared. If you can slip past the scribes and guards, the truth behind the monster creation pipeline awaits."
-      ],
-      "on_advance_effects": [],
+      "actor_relocations": [],
       "advance_signals": [
         "feature_observed:scriptorium_secret_archive-ledgers",
         "feature_observed:mortuary_reanimation_sanctum-spirits"
       ],
-      "next_stage_ids": [],
+      "beat_note": "在繕寫室的隱密檔案庫裡，機密的死者名冊詳細記載了從深井鎮與鹽灘徵集而來的居民，以及他們被轉化為地城魔像與妖精的過程。",
       "completion_effects": [
         {
-          "kind": "set_story_var",
           "key": "discovered_monster_pipeline",
+          "kind": "set_story_var",
           "value": "true"
         }
       ],
-      "actor_relocations": []
+      "completion_message": "handler.quest.archive_discovered",
+      "id": "sq_archive_of_the_disappeared",
+      "narrative_lines": [
+        "Behind locked doors in the Scriptorium, iron racks hold confidential registries of the disappeared. If you can slip past the scribes and guards, the truth behind the monster creation pipeline awaits."
+      ],
+      "next_stage_ids": [],
+      "on_advance_effects": [],
+      "quest_id": "archive_of_the_disappeared",
+      "quest_kind": "side",
+      "quest_title": "失蹤者的真相",
+      "summary": "在繕寫室的檔案庫中揭開秘密的死者名冊，查明地城怪物的真相。",
+      "update_message": "檢視繕寫室下方隱密檔案庫中的機密死者名冊。"
     },
     {
-      "id": "sq_five_offerings",
-      "quest_id": "five_offerings",
-      "quest_title": "The Five Offerings",
-      "quest_kind": "side",
-      "summary": "Keep at least three of the five rescued offerings alive through the siege.",
-      "beat_note": "Five named civilians shelter at the courtyard teleport platform. Hostile siege troops marching into the courtyard attack civilians and party members present in the room. If three civilians fall, the rescue fails.",
-      "update_message": "The center has to stay clear. Three deaths and this rescue fails.",
-      "protection_rule": {
-        "room_id": "courtyard_center",
-        "hostile_tag": "siege",
-        "protected_actor_ids": [
-          "nivi_olsen",
-          "eliska_novakova",
-          "amaru_quispe",
-          "abeni_adeyemi",
-          "chen_yu_xin"
-        ],
-        "breach_minutes": 10,
-        "warning_message": "civilian.breach_warning",
-        "cleared_message": "civilian.breach_cleared",
-        "death_message": "civilian.breach_death",
-        "death_count_story_var": "five_offerings_deaths",
-        "failure_death_count": 3,
-        "failure_story_var": "five_offerings_failed",
-        "failure_signal": "civilian_protection_failed"
-      },
       "advance_signals": [
         "civilian_protection_failed",
         {
-          "signal": "story_vars_changed",
           "conditions": [
             {
+              "operator": "equal",
               "path": "story_vars.values.frost_wolf_lane_stopped",
-              "operator": "equal",
               "value": "true"
             },
             {
+              "operator": "equal",
               "path": "story_vars.values.iron_ram_lane_stopped",
-              "operator": "equal",
               "value": "true"
             },
             {
-              "path": "story_vars.values.frost_leopard_lane_stopped",
               "operator": "equal",
+              "path": "story_vars.values.frost_leopard_lane_stopped",
               "value": "true"
             }
           ],
-          "next_stage_ids": []
+          "next_stage_ids": [],
+          "signal": "story_vars_changed"
         }
       ],
+      "beat_note": "五名有名字的平民在中庭傳送平台避難。進軍中庭的敵方圍城部隊會攻擊房內的在場平民與隊伍成員。若有三名平民倒下，救援即告失敗。",
+      "id": "sq_five_offerings",
       "next_stage_ids": [
         "sq_five_offerings_failed"
-      ]
-    },
-    {
-      "id": "sq_five_offerings_failed",
-      "quest_id": "five_offerings",
-      "quest_title": "The Five Offerings — Failed",
-      "quest_kind": "failed",
-      "summary": "Three offerings have died. Protect whoever remains.",
-      "beat_note": "The protection quest has failed, but surviving civilians can still be saved and will still grant their town tokens after the siege.",
-      "update_message": "The mission is lost. The people who are left are not.",
+      ],
       "protection_rule": {
-        "room_id": "courtyard_center",
+        "breach_minutes": 10,
+        "cleared_message": "civilian.breach_cleared",
+        "death_count_story_var": "five_offerings_deaths",
+        "death_message": "civilian.breach_death",
+        "failure_death_count": 3,
+        "failure_signal": "civilian_protection_failed",
+        "failure_story_var": "five_offerings_failed",
         "hostile_tag": "siege",
         "protected_actor_ids": [
           "nivi_olsen",
@@ -785,64 +758,90 @@
           "abeni_adeyemi",
           "chen_yu_xin"
         ],
-        "breach_minutes": 10,
-        "warning_message": "civilian.breach_warning",
-        "cleared_message": "civilian.breach_cleared",
-        "death_message": "civilian.breach_death",
-        "death_count_story_var": "five_offerings_deaths",
-        "failure_death_count": 3,
-        "failure_story_var": "five_offerings_failed",
-        "failure_signal": ""
+        "room_id": "courtyard_center",
+        "warning_message": "civilian.breach_warning"
       },
+      "quest_id": "five_offerings",
+      "quest_kind": "side",
+      "quest_title": "五名祭品",
+      "summary": "在整場圍城中，讓五名獲救祭品中至少三人存活。",
+      "update_message": "中央必須保持淨空。死三個人，這場救援就失敗了。"
+    },
+    {
       "advance_signals": [
         {
-          "signal": "story_vars_changed",
           "conditions": [
             {
+              "operator": "equal",
               "path": "story_vars.values.frost_wolf_lane_stopped",
-              "operator": "equal",
               "value": "true"
             },
             {
+              "operator": "equal",
               "path": "story_vars.values.iron_ram_lane_stopped",
-              "operator": "equal",
               "value": "true"
             },
             {
-              "path": "story_vars.values.frost_leopard_lane_stopped",
               "operator": "equal",
+              "path": "story_vars.values.frost_leopard_lane_stopped",
               "value": "true"
             }
           ],
-          "next_stage_ids": []
+          "next_stage_ids": [],
+          "signal": "story_vars_changed"
         }
       ],
-      "next_stage_ids": []
+      "beat_note": "護衛任務已經失敗，但倖存的平民仍能獲救，並會在圍城結束後給予城鎮令牌。",
+      "id": "sq_five_offerings_failed",
+      "next_stage_ids": [],
+      "protection_rule": {
+        "breach_minutes": 10,
+        "cleared_message": "civilian.breach_cleared",
+        "death_count_story_var": "five_offerings_deaths",
+        "death_message": "civilian.breach_death",
+        "failure_death_count": 3,
+        "failure_signal": "",
+        "failure_story_var": "five_offerings_failed",
+        "hostile_tag": "siege",
+        "protected_actor_ids": [
+          "nivi_olsen",
+          "eliska_novakova",
+          "amaru_quispe",
+          "abeni_adeyemi",
+          "chen_yu_xin"
+        ],
+        "room_id": "courtyard_center",
+        "warning_message": "civilian.breach_warning"
+      },
+      "quest_id": "five_offerings",
+      "quest_kind": "failed",
+      "quest_title": "五名祭品——失敗",
+      "summary": "已有三名祭品死亡。保護剩下的人。",
+      "update_message": "任務沒了。剩下的人還在。"
     },
     {
-      "id": "siege_preparation",
-      "summary": "",
-      "beat_note": "Layla has ten in-game minutes to place defenders and prepare the courtyard before House Frost-Wolf begins the first assault.",
-      "narrative_lines": [
-        "The freed workers crowd around the teleport pad. Astrid points to the north, southeast, and southwest approaches. The house soldiers must pass through those rooms to reach the center. There is still time to place defenders."
-      ],
       "advance_signals": [
         "stage_elapsed:10"
+      ],
+      "beat_note": "在霜狼家發動第一波攻勢前，蕾拉有遊戲內十分鐘的時間部署守軍、準備中庭。",
+      "id": "siege_preparation",
+      "narrative_lines": [
+        "The freed workers crowd around the teleport pad. Astrid points to the north, southeast, and southwest approaches. The house soldiers must pass through those rooms to reach the center. There is still time to place defenders."
       ],
       "next_stage_ids": [
         "siege_wave_1",
         "frost_wolf_dispatch"
-      ]
+      ],
+      "summary": ""
     },
     {
-      "id": "siege_wave_1",
-      "summary": "",
-      "beat_note": "Wave 1 begins ten in-game minutes after the prisoners are freed. House Frost-Wolf opens and starts the northern assault lane.",
-      "narrative_lines": [
-        "A deep horn sounds from the north. The Frost-Wolf gate lifts, and boots begin striking the frozen avenue in formation."
-      ],
       "advance_signals": [
         "stage_elapsed:60"
+      ],
+      "beat_note": "第一波在囚犯獲釋後遊戲內十分鐘開始。霜狼家開啟並啟動北面的進攻通道。",
+      "id": "siege_wave_1",
+      "narrative_lines": [
+        "A deep horn sounds from the north. The Frost-Wolf gate lifts, and boots begin striking the frozen avenue in formation."
       ],
       "next_stage_ids": [
         "siege_wave_2",
@@ -850,26 +849,26 @@
       ],
       "on_advance_effects": [
         {
-          "kind": "set_story_var",
           "key": "frost_wolf_access_open",
+          "kind": "set_story_var",
           "value": "true"
         },
         {
-          "kind": "set_story_var",
           "key": "citadel_siege_wave",
+          "kind": "set_story_var",
           "value": "1"
         }
-      ]
+      ],
+      "summary": ""
     },
     {
-      "id": "siege_wave_2",
-      "summary": "",
-      "beat_note": "Wave 2 begins sixty in-game minutes after Wave 1 whether or not Frost-Wolf has been neutralized. House Iron-Ram opens its lane.",
-      "narrative_lines": [
-        "A second horn answers from the southeast. The Iron-Ram portcullis rises through a cloud of steam as heavy troops march out."
-      ],
       "advance_signals": [
         "stage_elapsed:60"
+      ],
+      "beat_note": "無論霜狼家是否已被瓦解，第二波在第一波後遊戲內六十分鐘開始。鐵羊家開啟其通道。",
+      "id": "siege_wave_2",
+      "narrative_lines": [
+        "A second horn answers from the southeast. The Iron-Ram portcullis rises through a cloud of steam as heavy troops march out."
       ],
       "next_stage_ids": [
         "siege_wave_3",
@@ -880,270 +879,267 @@
       ],
       "on_advance_effects": [
         {
-          "kind": "set_story_var",
           "key": "iron_ram_access_open",
+          "kind": "set_story_var",
           "value": "true"
         },
         {
-          "kind": "set_story_var",
           "key": "citadel_siege_wave",
+          "kind": "set_story_var",
           "value": "2"
         }
-      ]
+      ],
+      "summary": ""
     },
     {
+      "advance_signals": [],
+      "beat_note": "無論先前任一家族是否已被瓦解，第三波在第二波後遊戲內六十分鐘開始。霜豹家開啟其通道。",
       "id": "siege_wave_3",
-      "summary": "",
-      "beat_note": "Wave 3 begins sixty in-game minutes after Wave 2 whether or not either earlier house has been neutralized. House Frost-Leopard opens its lane.",
       "narrative_lines": [
         "A third horn cuts across the courtyard. The Frost-Leopard doors unlock, and shadows move behind the frosted glass."
       ],
-      "advance_signals": [],
       "next_stage_ids": [],
       "on_advance_effects": [
         {
-          "kind": "set_story_var",
           "key": "frost_leopard_access_open",
+          "kind": "set_story_var",
           "value": "true"
         },
         {
-          "kind": "set_story_var",
           "key": "citadel_final_wave_open",
+          "kind": "set_story_var",
           "value": "true"
         },
         {
-          "kind": "set_story_var",
           "key": "citadel_siege_wave",
+          "kind": "set_story_var",
           "value": "3"
         }
-      ]
+      ],
+      "summary": ""
     },
     {
-      "id": "frost_wolf_dispatch",
-      "summary": "",
-      "beat_note": "House Frost-Wolf dispatches ten northern squads of three soldiers at ten-minute intervals.",
       "actor_spawn_schedule": {
-        "template_id": "frost_wolf_raider",
-        "room_id": "frost_wolf_throne",
         "batch_size": 3,
         "interval_minutes": 10,
-        "total_count": 30,
-        "stop_story_var": "frost_wolf_lane_stopped",
-        "rout_on_stop": true,
+        "party_order": "deploy courtyard_center",
+        "room_id": "frost_wolf_throne",
         "rout_message": "siege.frost_wolf_rout",
-        "party_order": "deploy courtyard_center"
-      },
-      "advance_signals": [
-        "stage_elapsed:90"
-      ],
-      "next_stage_ids": []
-    },
-    {
-      "id": "iron_ram_dispatch",
-      "summary": "",
-      "beat_note": "House Iron-Ram dispatches ten southeast squads of three soldiers at ten-minute intervals.",
-      "actor_spawn_schedule": {
-        "template_id": "iron_ram_mauler",
-        "room_id": "iron_ram_throne",
-        "batch_size": 3,
-        "interval_minutes": 10,
-        "total_count": 30,
-        "stop_story_var": "iron_ram_lane_stopped",
         "rout_on_stop": true,
-        "rout_message": "siege.iron_ram_rout",
-        "party_order": "deploy courtyard_center"
-      },
-      "advance_signals": [
-        "stage_elapsed:90"
-      ],
-      "next_stage_ids": []
-    },
-    {
-      "id": "frost_leopard_dispatch",
-      "summary": "",
-      "beat_note": "House Frost-Leopard dispatches ten southwest squads of three soldiers at ten-minute intervals.",
-      "actor_spawn_schedule": {
-        "template_id": "frost_leopard_hunter",
-        "room_id": "frost_leopard_throne",
-        "batch_size": 3,
-        "interval_minutes": 10,
-        "total_count": 30,
-        "stop_story_var": "frost_leopard_lane_stopped",
-        "rout_on_stop": true,
-        "rout_message": "siege.frost_leopard_rout",
-        "party_order": "deploy courtyard_center"
-      },
-      "advance_signals": [
-        "stage_elapsed:90"
-      ],
-      "next_stage_ids": []
-    },
-    {
-      "id": "frost_wolf_leader_march",
-      "summary": "",
-      "beat_note": "Lord Vane leaves the Howling Dais during the final wave and marches toward the courtyard center.",
-      "actor_spawn_schedule": {
-        "template_id": "lord_vane",
-        "room_id": "frost_wolf_throne",
-        "batch_size": 1,
-        "interval_minutes": 10,
-        "total_count": 1,
         "stop_story_var": "frost_wolf_lane_stopped",
-        "rout_on_stop": false,
-        "party_order": "deploy courtyard_center"
+        "template_id": "frost_wolf_raider",
+        "total_count": 30
       },
-      "advance_signals": [],
-      "next_stage_ids": []
+      "advance_signals": [
+        "stage_elapsed:90"
+      ],
+      "beat_note": "霜狼家每隔十分鐘派出十支三人小隊，從北方進逼。",
+      "id": "frost_wolf_dispatch",
+      "next_stage_ids": [],
+      "summary": ""
     },
     {
-      "id": "iron_ram_leader_march",
-      "summary": "",
-      "beat_note": "Warmaster Torin leaves the Anvil Throne during the final wave and marches toward the courtyard center.",
       "actor_spawn_schedule": {
-        "template_id": "warmaster_torin",
+        "batch_size": 3,
+        "interval_minutes": 10,
+        "party_order": "deploy courtyard_center",
         "room_id": "iron_ram_throne",
-        "batch_size": 1,
-        "interval_minutes": 10,
-        "total_count": 1,
+        "rout_message": "siege.iron_ram_rout",
+        "rout_on_stop": true,
         "stop_story_var": "iron_ram_lane_stopped",
-        "rout_on_stop": false,
-        "party_order": "deploy courtyard_center"
+        "template_id": "iron_ram_mauler",
+        "total_count": 30
       },
-      "advance_signals": [],
-      "next_stage_ids": []
+      "advance_signals": [
+        "stage_elapsed:90"
+      ],
+      "beat_note": "鐵羊家每隔十分鐘派出十支三人小隊，從東南進逼。",
+      "id": "iron_ram_dispatch",
+      "next_stage_ids": [],
+      "summary": ""
     },
     {
-      "id": "frost_leopard_leader_march",
-      "summary": "",
-      "beat_note": "Lady Sylvan leaves the Opal Throne during the final wave and marches toward the courtyard center.",
       "actor_spawn_schedule": {
-        "template_id": "lady_sylvan",
+        "batch_size": 3,
+        "interval_minutes": 10,
+        "party_order": "deploy courtyard_center",
         "room_id": "frost_leopard_throne",
+        "rout_message": "siege.frost_leopard_rout",
+        "rout_on_stop": true,
+        "stop_story_var": "frost_leopard_lane_stopped",
+        "template_id": "frost_leopard_hunter",
+        "total_count": 30
+      },
+      "advance_signals": [
+        "stage_elapsed:90"
+      ],
+      "beat_note": "霜豹家每隔十分鐘派出十支三人小隊，從西南進逼。",
+      "id": "frost_leopard_dispatch",
+      "next_stage_ids": [],
+      "summary": ""
+    },
+    {
+      "actor_spawn_schedule": {
         "batch_size": 1,
         "interval_minutes": 10,
-        "total_count": 1,
-        "stop_story_var": "frost_leopard_lane_stopped",
+        "party_order": "deploy courtyard_center",
+        "room_id": "frost_wolf_throne",
         "rout_on_stop": false,
-        "party_order": "deploy courtyard_center"
+        "stop_story_var": "frost_wolf_lane_stopped",
+        "template_id": "lord_vane",
+        "total_count": 1
       },
       "advance_signals": [],
-      "next_stage_ids": []
+      "beat_note": "范恩領主在最後一波時離開嚎嘯高台，向中庭中央進軍。",
+      "id": "frost_wolf_leader_march",
+      "next_stage_ids": [],
+      "summary": ""
     },
     {
-      "id": "sq_hear_sacrifice",
-      "summary": "",
-      "beat_note": "Layla hasn't yet heard the dark truth about the village surrendering the orphan boy Zayd as an offering to the garrison.",
+      "actor_spawn_schedule": {
+        "batch_size": 1,
+        "interval_minutes": 10,
+        "party_order": "deploy courtyard_center",
+        "room_id": "iron_ram_throne",
+        "rout_on_stop": false,
+        "stop_story_var": "iron_ram_lane_stopped",
+        "template_id": "warmaster_torin",
+        "total_count": 1
+      },
+      "advance_signals": [],
+      "beat_note": "托林戰帥在最後一波時離開鐵砧王座，向中庭中央進軍。",
+      "id": "iron_ram_leader_march",
+      "next_stage_ids": [],
+      "summary": ""
+    },
+    {
+      "actor_spawn_schedule": {
+        "batch_size": 1,
+        "interval_minutes": 10,
+        "party_order": "deploy courtyard_center",
+        "room_id": "frost_leopard_throne",
+        "rout_on_stop": false,
+        "stop_story_var": "frost_leopard_lane_stopped",
+        "template_id": "lady_sylvan",
+        "total_count": 1
+      },
+      "advance_signals": [],
+      "beat_note": "希爾文夫人在最後一波時離開蛋白石王座，向中庭中央進軍。",
+      "id": "frost_leopard_leader_march",
+      "next_stage_ids": [],
+      "summary": ""
+    },
+    {
       "advance_signals": [
         "spoken_to:elder_rashid",
         "spoken_to:yasmin",
         "speech_topic:save_zayd",
         "speech_topic:sacrifice"
       ],
+      "beat_note": "蕾拉尚未聽聞那個黑暗的真相：村莊將孤兒小宰德交出去，作為獻給駐軍的祭品。",
+      "id": "sq_hear_sacrifice",
       "next_stage_ids": [
         "sq_save_zayd"
-      ]
+      ],
+      "summary": ""
     },
     {
-      "id": "sq_save_zayd",
-      "quest_id": "save_zayd",
-      "quest_title": "Save the Boy Zayd",
-      "quest_kind": "side",
-      "summary": "Rescue the orphan boy Zayd from the fortress prison cage before he is shipped away.",
-      "beat_note": "Elder Rashid and Yasmin revealed that the village gave Zayd up as an offering. Layla needs to find the boy and rescue him from his iron cage.",
-      "update_message": "The garrison is holding Zayd in an iron cage inside the military complex.",
       "advance_signals": [
         "spoken_to:zayd",
         "zayd_freed",
         {
-          "signal": "command_used",
           "conditions": [
             {
-              "path": "story_vars.values.zayd_rescued",
               "operator": "equal",
+              "path": "story_vars.values.zayd_rescued",
               "value": "true"
             }
-          ]
+          ],
+          "signal": "command_used"
         }
       ],
+      "beat_note": "拉希德長老與雅絲敏透露，村莊把小宰德交出去當作祭品。蕾拉必須找到這名男孩，將他從鐵籠中救出。",
+      "id": "sq_save_zayd",
       "next_stage_ids": [
         "sq_return_zayd"
-      ]
+      ],
+      "quest_id": "save_zayd",
+      "quest_kind": "side",
+      "quest_title": "拯救男孩小宰德",
+      "summary": "在被送走之前，從要塞的囚籠救出孤兒小宰德。",
+      "update_message": "駐軍把小宰德關在軍事區內的鐵籠裡。"
     },
     {
-      "id": "sq_return_zayd",
-      "quest_id": "save_zayd",
-      "quest_title": "Save the Boy Zayd",
-      "quest_kind": "side",
-      "summary": "Escort Zayd safely back to the village.",
-      "beat_note": "Zayd is rescued from his cage. Escort him back to the safety of the worker village.",
-      "update_message": "Lead Zayd back to Elder Rashid's house in the village square.",
-      "completion_message": "handler.quest.save_zayd_complete",
       "advance_signals": [
         "zayd_safe",
         {
-          "signal": "command_used",
           "conditions": [
             {
-              "path": "story_vars.values.zayd_safe",
               "operator": "equal",
+              "path": "story_vars.values.zayd_safe",
               "value": "true"
             }
-          ]
+          ],
+          "signal": "command_used"
         }
       ],
-      "next_stage_ids": []
+      "beat_note": "小宰德已從籠中獲救。護送他回到工人村的安全之處。",
+      "completion_message": "handler.quest.save_zayd_complete",
+      "id": "sq_return_zayd",
+      "next_stage_ids": [],
+      "quest_id": "save_zayd",
+      "quest_kind": "side",
+      "quest_title": "拯救男孩小宰德",
+      "summary": "護送小宰德平安返回村莊。",
+      "update_message": "帶領小宰德回到村莊廣場上拉希德長老的住處。"
     },
     {
-      "id": "sq_clean_shaman_listen",
-      "summary": "",
-      "beat_note": "Layla has not yet engaged the Goblin Shaman on Floor 1.",
       "advance_signals": [
         "clean_shaman_started",
         {
-          "signal": "room_entered:r5c5",
           "conditions": [
             {
-              "path": "story_vars.values.layla_attacked_floor_one_mob",
               "operator": "not_equal",
+              "path": "story_vars.values.layla_attacked_floor_one_mob",
               "value": "true"
             }
-          ]
+          ],
+          "signal": "room_entered:r5c5"
         },
         {
-          "signal": "command_used",
           "conditions": [
             {
-              "path": "story_vars.values.clean_shaman_started",
               "operator": "equal",
+              "path": "story_vars.values.clean_shaman_started",
               "value": "true"
             }
-          ]
+          ],
+          "signal": "command_used"
         }
       ],
+      "beat_note": "蕾拉尚未在第一層與哥布林薩滿交手。",
+      "id": "sq_clean_shaman_listen",
       "next_stage_ids": [
         "sq_defeat_clean_shaman"
-      ]
+      ],
+      "summary": ""
     },
     {
-      "id": "sq_defeat_clean_shaman",
-      "quest_id": "clean_shaman",
-      "quest_title": "Trial of the Silent Path",
-      "quest_kind": "secret",
-      "summary": "Defeat the Goblin Shaman on Floor 1 without harming any other creatures.",
-      "beat_note": "Having navigated the labyrinth without striking down any goblins or golems, Layla challenges the Goblin Shaman.",
-      "update_message": "You navigated the labyrinth without drawing blood. Finish the duel with the Goblin Shaman to claim your reward.",
       "advance_signals": [
         "item_acquired:shaman-ring"
       ],
-      "next_stage_ids": []
+      "beat_note": "在迷宮中一路前行、未擊倒任何哥布林或魔像之後，蕾拉向哥布林薩滿發起挑戰。",
+      "id": "sq_defeat_clean_shaman",
+      "next_stage_ids": [],
+      "quest_id": "clean_shaman",
+      "quest_kind": "secret",
+      "quest_title": "寂靜之徑的試煉",
+      "summary": "在第一層擊敗哥布林薩滿，且不傷害其他任何生物。",
+      "update_message": "你一路穿越迷宮，未曾見血。與哥布林薩滿一決勝負，領取你的獎賞。"
     }
   ],
   "topic_signals": [
     {
-      "signals": [
-        "speech_topic:teleport_scroll",
-        "speech_topic:next_floor"
-      ],
       "keywords": [
         "teleport",
         "scroll",
@@ -1161,13 +1157,13 @@
         "next floor",
         "descend",
         "gate"
+      ],
+      "signals": [
+        "speech_topic:teleport_scroll",
+        "speech_topic:next_floor"
       ]
     },
     {
-      "signals": [
-        "speech_topic:save_zayd",
-        "speech_topic:sacrifice"
-      ],
       "keywords": [
         "zayd",
         "sacrifice",
@@ -1179,13 +1175,13 @@
         "sacrifice",
         "offering",
         "boy"
+      ],
+      "signals": [
+        "speech_topic:save_zayd",
+        "speech_topic:sacrifice"
       ]
     },
     {
-      "signals": [
-        "speech_topic:free_prisoners",
-        "speech_topic:courtyard_cages"
-      ],
       "keywords": [
         "cage",
         "cages",
@@ -1207,13 +1203,13 @@
         "unlock",
         "key",
         "captain"
+      ],
+      "signals": [
+        "speech_topic:free_prisoners",
+        "speech_topic:courtyard_cages"
       ]
     },
     {
-      "signals": [
-        "witch_code_word_spoken",
-        "speech_topic:arrow_code_word"
-      ],
       "keywords": [
         "arrow always finds home",
         "the arrow always finds home",
@@ -1226,6 +1222,10 @@
         "witch",
         "orva",
         "home"
+      ],
+      "signals": [
+        "witch_code_word_spoken",
+        "speech_topic:arrow_code_word"
       ]
     }
   ]
