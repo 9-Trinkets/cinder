@@ -384,7 +384,7 @@
       "beat_note": "圍城已結束，但要等蕾拉回到 courtyard_center 的生還平民那裡，才算真正落幕。",
       "id": "mq_return_to_courtyard",
       "narrative_lines": [
-        "The last command signal goes silent. Across the courtyard, the remaining house soldiers break ranks and withdraw. The siege is over."
+        "最後一道指令訊號靜了下來。中庭另一頭，剩下的家族士兵散開隊形撤退。圍城結束了。"
       ],
       "next_stage_ids": [
         "mq_secure_courtyard"
@@ -420,7 +420,7 @@
       "completion_message": "handler.quest.citadel_siege_complete",
       "id": "mq_secure_courtyard",
       "narrative_lines": [
-        "The surviving workers gather around the courtyard teleport pad. One by one, they step forward to thank you."
+        "倖存的工人聚在中庭的傳送台旁。他們一個接一個走上前向你道謝。"
       ],
       "next_stage_ids": [
         "mq_infiltrate_sanctuary"
@@ -496,13 +496,13 @@
       "completion_effects": [],
       "id": "mq_infiltrate_sanctuary",
       "narrative_lines": [
-        "Astrid lowers her great shield and points toward the towering white spire rising through the mountain clouds above.",
-        "Astrid: The Frost Citadel is secure, Layla, but our path to the Royal Core is blocked. High above us sits Floor 6—the High Sanctuary. Its brass gates are sealed from within. Our army cannot storm those walls from the outside. If we want to reach the throne, someone must slip inside and activate their master teleport platform.",
-        "Einar steps forward, his expression grave as he clutches his herbalist satchel.",
-        "Einar: That cathedral is not a place of prayer, Layla. Before they threw me into the cages down here, I worked in their dispensary. The high clergy takes every person executed in this citadel, wipes their memories, and turns them into the monsters you've been fighting all the way up this tower. The man conducting this horror is their high priest, Seer Valerius.",
-        "Einar: Valerius hides the ritual behind thick illusions, but someone inside can help. My partner, Orva, is trapped in the cathedral herb gardens. The priests call her 'the Witch' because she secretly brews remedies to resist their mind-wiping magic. She is also... the woman I love.",
-        "Einar presses a silver token, three bottles of blue invisibility potion, and a silver hairpin shaped like a feathered arrow into your hands.",
-        "Einar: This token can slip only one person through their outer wards. Drink these invisibility potions to walk past the white-armored cathedral guards unseen. Find Orva in the herb garden. Show her this arrow pin and tell her: 'The arrow always finds home.' She will give you the spirit pill to reveal Valerius's ritual and defeat him. Once the Seer falls, activate the master platform so Astrid and the rest of us can join you."
+        "艾絲翠德放下她的巨盾，指向穿透山間雲層、高聳直立的白色尖塔。",
+        "艾絲翠德：霜之城已拿下，蕾拉，但通往王座核心的路被封住了。我們上方坐著第六層——至高聖所。它的黃銅閘門從內部封死。我們的軍隊無法從外頭強攻那些牆。若想抵達王座，得有人潛進去，啟動他們的主傳送台。",
+        "艾納走上前，緊抱著他的藥草師背包，神情凝重。",
+        "艾納：那座大教堂不是禱告的地方，蕾拉。在他們把我丟進這裡的籠子之前，我在他們的藥房工作。高階聖職者把每個在這座城塞被處決的人帶走，抹去記憶，變成你一路打上這座塔的那些怪物。主持這樁恐怖的是他們的大祭司，先知瓦勒里烏斯。",
+        "艾納：瓦勒里烏斯用厚重的幻象藏住儀式，但裡頭有人能幫忙。我的夥伴歐瓦，被困在大教堂的藥草園裡。祭司們叫她「女巫」，因為她偷偷調配能抵抗他們抹除記憶之法的藥。她也是……我愛的女人。",
+        "艾納把一枚銀色令牌、三瓶藍色隱形藥水，以及一支形似羽箭的銀髮簪，按進你手裡。",
+        "艾納：這枚令牌只能讓一個人穿過他們的外圍結界。喝下這些隱形藥水，無聲走過白甲大教堂守衛。到藥草園找歐瓦。把這支箭簪給她看，對她說：「箭，終究會找到歸處。」她會給你通靈丹，用來揭穿瓦勒里烏斯的儀式並擊敗他。先知一倒，啟動主傳送台，好讓艾絲翠德和我們其他人與你會合。"
       ],
       "next_stage_ids": [
         "mq_find_the_witch",
@@ -549,7 +549,7 @@
       "completion_effects": [],
       "id": "mq_find_the_witch",
       "narrative_lines": [
-        "You stand alone on the High Sanctuary terrace. White-armored guards patrol the grand plaza ahead. Drink your invisibility potion to sneak past them to the herb garden in the southwest quarter."
+        "你獨自站在至高聖所的台地上。白甲守衛在前方的大廣場巡邏。喝下你的隱形藥水，悄悄越過他們，前往西南區的藥草園。"
       ],
       "next_stage_ids": [
         "mq_slay_the_seer"
@@ -578,7 +578,7 @@
       "completion_effects": [],
       "id": "mq_slay_the_seer",
       "narrative_lines": [
-        "Orva clutches the silver arrow pin to her chest, her eyes wide with relief. 'Einar... he lives! Take this spirit pill. Swallow it before you face Seer Valerius. Without it, you will only see empty air, but with it, you will see the captive spirits and the Seer directing them. Stop him!'"
+        "歐瓦把銀箭髮簪緊抱在胸前，眼裡滿是寬慰。「艾納……他還活著！拿著這顆通靈丹。面對先知瓦勒里烏斯之前先吞下。沒有它，你只會看見空無一物；有了它，你就能看見受困的亡魂，以及操縱他們的先知。阻止他！」"
       ],
       "next_stage_ids": [
         "mq_activate_sanctuary_platform"
@@ -624,7 +624,7 @@
       ],
       "id": "mq_activate_sanctuary_platform",
       "narrative_lines": [
-        "The dark ritual is broken, and Seer Valerius lies defeated. Head to the outer platform and activate the master resonance anchor to bring Commander Astrid and your companions up to Floor 6."
+        "黑暗的儀式已破，先知瓦勒里烏斯敗倒。前往外側平台，啟動主共鳴錨點，把艾絲翠德指揮官與你的同伴帶上第六層。"
       ],
       "next_stage_ids": [
         "mq_prepare_the_ascent"
@@ -674,8 +674,8 @@
       ],
       "id": "mq_prepare_the_ascent",
       "narrative_lines": [
-        "Blue light flashes across the mountain cliff. Commander Astrid and Einar materialize on the stone platform, their weapons drawn. Astrid plants her heavy shield into the flagstones, securing the acropolis perimeter. Einar rushes forward and embraces Orva, their twin silver arrows gleaming in the sunlight.",
-        "Astrid: The acropolis perimeter is secure, Layla. We will hold this platform with our shields so nothing can sneak up behind you. The white stair is open. Ascend to Floor 7 and end this game."
+        "藍光閃過山崖。艾絲翠德指揮官與艾納在石台上現形，武器在手。艾絲翠德把重盾扎根進石板，穩住衛城周邊。艾納衝上前抱住歐瓦，兩人成對的銀箭在陽光下閃亮。",
+        "艾絲翠德：衛城周邊已穩住，蕾拉。我們會用盾守住這座平台，不讓任何東西從背後偷襲你。白色階梯已開。登上第七層，結束這場遊戲。"
       ],
       "next_stage_ids": [],
       "on_advance_effects": [],
@@ -702,7 +702,7 @@
       "completion_message": "handler.quest.archive_discovered",
       "id": "sq_archive_of_the_disappeared",
       "narrative_lines": [
-        "Behind locked doors in the Scriptorium, iron racks hold confidential registries of the disappeared. If you can slip past the scribes and guards, the truth behind the monster creation pipeline awaits."
+        "在抄經院鎖住的門後，鐵架上放著失蹤者的機密登記簿。若你能悄悄越過抄寫員與衛兵，怪物製造流程背後的真相就在等著。"
       ],
       "next_stage_ids": [],
       "on_advance_effects": [],
@@ -826,7 +826,7 @@
       "beat_note": "在霜狼家發動第一波攻勢前，蕾拉有遊戲內十分鐘的時間部署守軍、準備中庭。",
       "id": "siege_preparation",
       "narrative_lines": [
-        "The freed workers crowd around the teleport pad. Astrid points to the north, southeast, and southwest approaches. The house soldiers must pass through those rooms to reach the center. There is still time to place defenders."
+        "獲釋的工人圍在中庭傳送台旁。艾絲翠德指向北、東南與西南三個入口。家族士兵必須穿過那些房間才能抵達中央。還有時間布置守衛。"
       ],
       "next_stage_ids": [
         "siege_wave_1",
@@ -841,7 +841,7 @@
       "beat_note": "第一波在囚犯獲釋後遊戲內十分鐘開始。霜狼家開啟並啟動北面的進攻通道。",
       "id": "siege_wave_1",
       "narrative_lines": [
-        "A deep horn sounds from the north. The Frost-Wolf gate lifts, and boots begin striking the frozen avenue in formation."
+        "北邊傳來一聲深沉的號角。霜狼家的閘門升起，靴聲開始齊整地敲上冰凍的大道。"
       ],
       "next_stage_ids": [
         "siege_wave_2",
@@ -868,7 +868,7 @@
       "beat_note": "無論霜狼家是否已被瓦解，第二波在第一波後遊戲內六十分鐘開始。鐵羊家開啟其通道。",
       "id": "siege_wave_2",
       "narrative_lines": [
-        "A second horn answers from the southeast. The Iron-Ram portcullis rises through a cloud of steam as heavy troops march out."
+        "東南邊回應第二聲號角。鐵公羊家的閘門穿過一團蒸汽升起，重裝部隊開出。"
       ],
       "next_stage_ids": [
         "siege_wave_3",
@@ -896,7 +896,7 @@
       "beat_note": "無論先前任一家族是否已被瓦解，第三波在第二波後遊戲內六十分鐘開始。霜豹家開啟其通道。",
       "id": "siege_wave_3",
       "narrative_lines": [
-        "A third horn cuts across the courtyard. The Frost-Leopard doors unlock, and shadows move behind the frosted glass."
+        "第三聲號角切過中庭。霜豹家的門解鎖，霜玻璃後有影子移動。"
       ],
       "next_stage_ids": [],
       "on_advance_effects": [

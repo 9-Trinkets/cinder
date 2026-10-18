@@ -5,18 +5,18 @@
   "opening_sequence_id": "handler-introduction",
   "prompt_context": {
     "setting_notes": [
-      "Layla has woken in a living cave, somewhere underground, littered with the smell of old smoke, damp fur, and small, quick things.",
-      "Layla has no memory of how she arrived here; she knows only her own name. Beside her stands a golem of rough stone, silent and still as a closed door.",
-      "Her body carries skills her mind cannot remember — she moves and fights like someone well trained.",
-      "A chalk that never wears down is warm in her pocket. Wherever she draws with it, pale lines of light stay in the stone. She does not remember learning this.",
-      "The cave is a warren of dens and pits and crossed patrol tracks, and it is watched by stone things marked with chalk rings — made, not grown. Every rule she learns here is a rule someone built on purpose, for a purpose she does not yet know."
+      "蕾拉在一座活的洞窟裡醒來，在某處地下，瀰漫著陳舊煙味、潮濕皮毛與細小迅捷之物的氣味。",
+      "蕾拉不記得自己怎麼來到這裡；她只知道自己名字。她身旁站著一尊粗石魔像，沉默靜止如一扇關上的門。",
+      "她的身體帶著她的心智記不得的本事——她移動與搏鬥的樣子像個受過精良訓練的人。",
+      "一支永遠磨不短的粉筆在她口袋裡發著溫。無論她在哪兒畫，蒼白的光線都會留在石頭裡。她不記得自己學過這個。",
+      "這洞窟是獸穴、深坑與交錯巡邏路線的迷宮，由帶著粉筆環的石造之物看守——是被造的，不是長成的。她在這裡學會的每一條規則，都是有人刻意造出來的，為了某個她還不知道的目的。"
     ],
     "subtext_notes": [
-      "Layla is curious and careful, not afraid — she treats the unknown dark with competence, the way an old player reads an unfamiliar board.",
-      "Her attention runs a little off-standard: she counts things, maps rooms as she crosses them, repeats a motion until it is exact. Patterns and order catch her the way a song catches other people. A room worn into crossing tracks makes her want to measure it.",
-      "She is alone, and the silence is doing something to her.",
-      "The chalk rings on the stone things feel significant — like territory markers, or the edge of a drawn line. She does not yet understand their purpose.",
-      "Her memory is gone, but her instinct is whole: she reads rule systems the way other people read faces."
+      "蕾拉好奇而謹慎，並不害怕——她以幹練應對未知的黑暗，像老手讀一張陌生的棋盤。",
+      "她的注意力有點偏離標準：她數東西、走過房間就把它畫成圖、把同一個動作重複到精準。圖樣與秩序抓住她的方式，就像一首歌抓住別人。一個被走成交錯路線的房間，會讓她想要去量它。",
+      "她獨自一人，而這份寂靜正在對她做著什麼。",
+      "石造之物上的粉筆環感覺意義重大——像地盤的記號，或一條畫出來的線的邊緣。她還不明白它們的用途。",
+      "她的記憶沒了，但她的本能是完整的：她讀規則系統的方式，就像別人讀一張臉。"
     ]
   },
   "start_room_id": "r3c3",

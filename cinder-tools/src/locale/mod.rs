@@ -37,6 +37,15 @@ const PROSE_KEYS: &[&str] = &[
     "update_message",
     "text",
     "description",
+    "character_notes",
+    "subtext_notes",
+    "response_notes",
+    "behavior_examples",
+    "setting_notes",
+    "narrative_lines",
+    "opening_narrative_lines",
+    "fragment",
+    "who",
 ];
 
 pub(crate) fn escape_segment(seg: &str) -> String {
@@ -113,6 +122,9 @@ fn walk_prose(value: &Value, pointer: &str, out: &mut Vec<(String, String)>) {
                             out.push((child, s.clone()));
                         }
                     }
+                    Value::Array(_) if PROSE_KEYS.contains(&k.as_str()) => {
+                        collect_string_leaves(v, &child, out);
+                    }
                     _ => walk_prose(v, &child, out),
                 }
             }
@@ -123,6 +135,27 @@ fn walk_prose(value: &Value, pointer: &str, out: &mut Vec<(String, String)>) {
                 walk_prose(v, &child, out);
             }
         }
+        _ => {}
+    }
+}
+
+/// Collects every string leaf (recursing through arrays and objects), used for
+/// prose keys whose value is a list of strings.
+fn collect_string_leaves(value: &Value, pointer: &str, out: &mut Vec<(String, String)>) {
+    match value {
+        Value::Object(map) => {
+            for (k, v) in map {
+                let child = format!("{pointer}/{}", escape_segment(k));
+                collect_string_leaves(v, &child, out);
+            }
+        }
+        Value::Array(arr) => {
+            for (i, v) in arr.iter().enumerate() {
+                let child = format!("{pointer}/{i}");
+                collect_string_leaves(v, &child, out);
+            }
+        }
+        Value::String(s) => out.push((pointer.to_string(), s.clone())),
         _ => {}
     }
 }

@@ -23,6 +23,13 @@ fn has_ascii_letters(s: &str) -> bool {
     s.chars().any(|c| c.is_ascii_alphabetic())
 }
 
+/// Whether the text contains at least one CJK ideograph. Used to assert
+/// prompt-facing prose was actually translated: an untranslated English string
+/// carries no CJK at all.
+fn has_cjk(s: &str) -> bool {
+    s.chars().any(|c| ('\u{4e00}'..='\u{9fff}').contains(&c))
+}
+
 #[test]
 fn layla_zh_tw_locale_loads_and_names_itself() {
     let pack = load_named_pack("layla", Some("zh-TW")).expect("layla zh-TW loads and validates");
@@ -144,4 +151,138 @@ fn layla_zh_tw_prompts_localized_with_machine_tokens_intact() {
             .contains("{prompt_verb}")
     );
     assert!(sys.actor_turn_move_option_template.contains("{room_title}"));
+}
+
+#[test]
+fn layla_zh_tw_prompt_context_and_narrative_lines_are_localized() {
+    let pack = load_named_pack("layla", Some("zh-TW")).expect("layla zh-TW loads and validates");
+
+    let mut untranslated: Vec<String> = Vec::new();
+    let mut checked = 0usize;
+
+    fn check(untranslated: &mut Vec<String>, checked: &mut usize, origin: &str, text: &str) {
+        if text.trim().is_empty() {
+            return;
+        }
+        *checked += 1;
+        if !has_cjk(text) {
+            untranslated.push(format!("{origin}: {text}"));
+        }
+    }
+
+    fn check_notes(
+        untranslated: &mut Vec<String>,
+        checked: &mut usize,
+        origin: &str,
+        notes: &[String],
+    ) {
+        for note in notes {
+            check(untranslated, checked, origin, note);
+        }
+    }
+
+    for actor in &pack.actors {
+        let ctx = &actor.prompt_context;
+        let origin = || format!("actor {}", actor.id);
+        check_notes(
+            &mut untranslated,
+            &mut checked,
+            &format!("{} character_notes", origin()),
+            &ctx.character_notes,
+        );
+        check_notes(
+            &mut untranslated,
+            &mut checked,
+            &format!("{} subtext_notes", origin()),
+            &ctx.subtext_notes,
+        );
+        check_notes(
+            &mut untranslated,
+            &mut checked,
+            &format!("{} response_notes", origin()),
+            &ctx.response_notes,
+        );
+        check_notes(
+            &mut untranslated,
+            &mut checked,
+            &format!("{} behavior_examples", origin()),
+            &ctx.behavior_examples,
+        );
+
+        for stage in &actor.transformations {
+            let Some(rename) = &stage.rename else {
+                continue;
+            };
+            check(
+                &mut untranslated,
+                &mut checked,
+                &format!("{} rename.who", origin()),
+                &rename.who,
+            );
+            check(
+                &mut untranslated,
+                &mut checked,
+                &format!("{} rename.fragment", origin()),
+                &rename.fragment,
+            );
+            if let Some(rn_ctx) = &rename.prompt_context {
+                check_notes(
+                    &mut untranslated,
+                    &mut checked,
+                    &format!("{} rename.character_notes", origin()),
+                    &rn_ctx.character_notes,
+                );
+                check_notes(
+                    &mut untranslated,
+                    &mut checked,
+                    &format!("{} rename.subtext_notes", origin()),
+                    &rn_ctx.subtext_notes,
+                );
+                check_notes(
+                    &mut untranslated,
+                    &mut checked,
+                    &format!("{} rename.response_notes", origin()),
+                    &rn_ctx.response_notes,
+                );
+                check_notes(
+                    &mut untranslated,
+                    &mut checked,
+                    &format!("{} rename.behavior_examples", origin()),
+                    &rn_ctx.behavior_examples,
+                );
+            }
+        }
+    }
+
+    let opening_ctx = &pack.opening.prompt_context;
+    check_notes(
+        &mut untranslated,
+        &mut checked,
+        "opening setting_notes",
+        &opening_ctx.setting_notes,
+    );
+    check_notes(
+        &mut untranslated,
+        &mut checked,
+        "opening subtext_notes",
+        &opening_ctx.subtext_notes,
+    );
+
+    for stage in &pack.beats.stages {
+        for line in &stage.narrative_lines {
+            check(
+                &mut untranslated,
+                &mut checked,
+                &format!("beat {} narrative_lines", stage.id),
+                line,
+            );
+        }
+    }
+
+    assert!(checked > 0, "no prompt-context or narrative text found");
+    assert!(
+        untranslated.is_empty(),
+        "untranslated zh-TW prompt/narrative text ({}):\n{untranslated:#?}",
+        untranslated.len()
+    );
 }
