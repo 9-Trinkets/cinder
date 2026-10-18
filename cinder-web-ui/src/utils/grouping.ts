@@ -33,8 +33,8 @@ function localizeCommandGroup(group: string, uiText: api.UiSnapshot['ui_text']):
 export function groupLookOptions(
   options: api.LookOptionData[],
   uiText: api.UiSnapshot['ui_text'],
+  t: Translate,
   party?: api.PartyMember[],
-  t?: Translate,
 ): [string, api.LookOptionData[]][] {
   const grouped: [string, api.LookOptionData[]][] = []
 
@@ -54,7 +54,7 @@ export function groupLookOptions(
       grouped.push([uiText.look_group_people, roomActors])
     }
     if (partyActors.length > 0) {
-      grouped.push([uiText.look_group_party || (t ? t('hud.partyMembers') : 'Party Members'), partyActors])
+      grouped.push([uiText.look_group_party || t('hud.partyMembers'), partyActors])
     }
   }
 
@@ -73,7 +73,7 @@ export function groupLookOptions(
 
 export function groupTeleportOptions(
   options: api.PanelOptionData[],
-  t?: Translate,
+  t: Translate,
 ): [string, api.PanelOptionData[]][] {
   const permanent = options.filter(
     opt => opt.group === 'permanent' || opt.subtitle === 'permanent' || opt.subtitle === 'Permanent Anchor',
@@ -89,8 +89,8 @@ export function groupTeleportOptions(
   const other = options.filter(opt => !seen.has(opt.id))
 
   const grouped: [string, api.PanelOptionData[]][] = []
-  if (permanent.length > 0) grouped.push([t ? t('hud.permanent') : 'Permanent', permanent])
-  if (ephemeral.length > 0) grouped.push([t ? t('hud.ephemeral') : 'Ephemeral', ephemeral])
-  if (other.length > 0) grouped.push([t ? t('hud.other') : 'Other', other])
+  if (permanent.length > 0) grouped.push([t('hud.permanent'), permanent])
+  if (ephemeral.length > 0) grouped.push([t('hud.ephemeral'), ephemeral])
+  if (other.length > 0) grouped.push([t('hud.other'), other])
   return grouped
 }

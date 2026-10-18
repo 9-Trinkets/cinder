@@ -108,7 +108,7 @@ const QuickActionPanel = memo(function QuickActionPanel({
             (uiSnapshot.look_options ?? []).length === 0 ? (
               <p className="text-muted italic text-sm px-1">{t('hud.nothingInteresting')}</p>
             ) : (
-              groupLookOptions(uiSnapshot.look_options, uiSnapshot.ui_text, uiSnapshot.party, t).map(([group, options]) => (
+              groupLookOptions(uiSnapshot.look_options, uiSnapshot.ui_text, t, uiSnapshot.party).map(([group, options]) => (
                 <div key={group} className="space-y-2">
                   <p className="text-[11px] text-muted uppercase tracking-wider px-1">{group}</p>
                   <div className="grid gap-2 sm:grid-cols-2">
