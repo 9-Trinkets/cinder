@@ -1,4 +1,10 @@
 import { Component } from 'react'
+import { useI18n } from '../i18n'
+
+function ErrorFallback() {
+  const { t } = useI18n()
+  return <p className="text-love">{t('hud.errorReload')}</p>
+}
 
 export default class ErrorBoundary extends Component<{ children: React.ReactNode }, { error: Error | null }> {
   state = { error: null }
@@ -7,7 +13,7 @@ export default class ErrorBoundary extends Component<{ children: React.ReactNode
     if (this.state.error) {
       return (
         <div className="min-h-dvh flex items-center justify-center bg-surface text-text p-8">
-          <p className="text-love">Something went wrong. Please reload the page.</p>
+          <ErrorFallback />
         </div>
       )
     }

@@ -1,4 +1,5 @@
 import * as api from '../api'
+import { useI18n } from '../i18n'
 
 const CELL = 18
 const PADDING = 10
@@ -11,6 +12,7 @@ export default function Minimap({
   map: api.MinimapData
   uiText: api.UiSnapshot['ui_text']
 }) {
+  const { t } = useI18n()
   const positions = new Map(map.rooms.map(room => [room.id, room]))
   const xs = map.rooms.map(room => room.x)
   const ys = map.rooms.map(room => room.y)
@@ -44,14 +46,14 @@ export default function Minimap({
           role="img"
           aria-label={
             map.fully_revealed && map.total_count !== null
-              ? `${map.label} minimap. ${map.visited_count} of ${map.total_count} rooms visited.`
-              : `${map.label} minimap. ${map.visited_count} rooms charted.`
+              ? t('hud.minimapAriaFull', { label: map.label, visited: map.visited_count, total: map.total_count })
+              : t('hud.minimapAriaPartial', { label: map.label, visited: map.visited_count })
           }
         >
           <desc>
             {map.fully_revealed
-              ? 'The complete floor is revealed.'
-              : 'Only rooms you have visited are shown.'}
+              ? t('hud.minimapDescFull')
+              : t('hud.minimapDescPartial')}
           </desc>
           <g
             fill="none"
@@ -235,18 +237,18 @@ export default function Minimap({
           {map.has_teleports && (
             <span className="inline-flex items-center gap-1.5">
               <span className="inline-block h-2 w-2 rounded-full border border-dashed border-[var(--color-foam)] bg-[var(--color-foam)]/30" />
-              <span>Portal</span>
+              <span>{t('hud.portal')}</span>
             </span>
           )}
           {map.entity_tracking && (
             <>
               <span className="inline-flex items-center gap-1.5">
                 <span className="inline-block h-2 w-2 rounded-full bg-[var(--color-pine)]" />
-                <span>Allies</span>
+                <span>{t('hud.allies')}</span>
               </span>
               <span className="inline-flex items-center gap-1.5">
                 <span className="inline-block h-2 w-2 rounded-full bg-[var(--color-love)]" />
-                <span>Hostiles</span>
+                <span>{t('hud.hostiles')}</span>
               </span>
             </>
           )}

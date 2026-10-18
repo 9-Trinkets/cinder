@@ -1,6 +1,7 @@
 import { memo } from 'react'
 import * as api from '../api'
 import { titleize } from '../utils/text'
+import { useI18n } from '../i18n'
 
 export function getActionMeta(actionId: string, label: string): { borderClass: string; textClass: string; bgClass: string } {
   const id = actionId.toLowerCase()
@@ -51,6 +52,7 @@ export const ActionBar = memo(function ActionBar({
   onAction,
   onToggleOverflow,
 }: ActionBarProps) {
+  const { t } = useI18n()
   return (
     <div className="border-t border-subtle/50 bg-surface/90">
       <div className="max-w-2xl mx-auto flex flex-wrap items-center gap-1.5 px-4 py-2">
@@ -63,7 +65,7 @@ export const ActionBar = memo(function ActionBar({
               key={action.id}
               onClick={() => onAction(action)}
               disabled={busy || gameOver}
-              title={`Shortcut: ${shortcutNum ? `Ctrl+${shortcutNum}` : 'Action'}`}
+              title={shortcutNum ? t('hud.shortcut', { n: shortcutNum }) : t('hud.action')}
               className={`px-2.5 py-1 rounded-md border text-xs sm:text-sm font-medium flex items-center gap-1 transition-all duration-150 active:scale-[0.97] disabled:opacity-50 cursor-pointer ${meta.borderClass} ${meta.bgClass} ${meta.textClass}`}
             >
               <span>{label}</span>
@@ -80,8 +82,8 @@ export const ActionBar = memo(function ActionBar({
           <button
             onClick={onToggleOverflow}
             disabled={busy || gameOver}
-            aria-label="More actions"
-            title="More actions (Shortcut: Ctrl+0)"
+            aria-label={t('hud.moreActions')}
+            title={t('hud.moreActionsShortcut')}
             className="px-2.5 py-1 rounded-md bg-overlay hover:bg-highlight-low border border-subtle text-muted hover:text-text text-xs sm:text-sm font-medium transition-all duration-150 active:scale-[0.97] disabled:opacity-50 cursor-pointer flex items-center gap-1"
           >
             <span className="font-mono text-xs tracking-widest px-0.5">&hellip;</span>

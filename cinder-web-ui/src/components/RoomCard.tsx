@@ -1,5 +1,6 @@
 import { memo } from 'react'
 import { HighlightedText } from './TranscriptLine'
+import { useI18n } from '../i18n'
 
 export interface RoomCardProps {
   title: string
@@ -16,6 +17,7 @@ export const RoomCard = memo(function RoomCard({
   craftedLabels,
   interactableLabels,
 }: RoomCardProps) {
+  const { t } = useI18n()
   const cleanTitle = title.replace(/^==\s*|\s*==$/g, '').trim()
 
   return (
@@ -23,7 +25,7 @@ export const RoomCard = memo(function RoomCard({
       <header className="mb-4">
         <div className="flex items-center gap-2 mb-1.5">
           <span className="text-[10px] font-mono uppercase tracking-widest text-muted">
-            Location
+            {t('hud.location')}
           </span>
         </div>
         <h2 className="text-xl sm:text-2xl font-bold font-prose text-text tracking-tight">

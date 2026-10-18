@@ -1,13 +1,15 @@
 import * as api from '../api'
 import Section from './Section'
+import { useI18n } from '../i18n'
 
 const HEARTS = 5
 
 export default function RelationshipChart({ pairs }: { pairs: api.RelationshipPair[] }) {
+  const { t } = useI18n()
   if (pairs.length === 0) return null
 
   return (
-    <Section title="Relationships" defaultOpen>
+    <Section title={t('hud.relationships')} defaultOpen>
       {pairs.map((pair, i) => {
         const filled = Math.round((pair.attraction / 10) * HEARTS)
         return (

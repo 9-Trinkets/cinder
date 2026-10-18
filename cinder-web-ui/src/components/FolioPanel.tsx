@@ -1,5 +1,6 @@
 import type * as api from '../api'
 import StatusPanel from './StatusPanel'
+import { useI18n } from '../i18n'
 
 interface FolioPanelProps {
   uiSnapshot: api.UiSnapshot
@@ -16,21 +17,22 @@ export default function FolioPanel({
   onGiveToMember,
   onOpenPanel,
 }: FolioPanelProps) {
+  const { t } = useI18n()
   return (
     <div>
       <div className="pb-3 border-b border-subtle/50 mb-1">
         <span className="text-[10px] font-mono uppercase tracking-widest text-muted block mb-1">
-          Current Location
+          {t('hud.currentLocation')}
         </span>
         <h3 className="text-xl font-bold font-prose text-text tracking-tight">
           {uiSnapshot.current_room_name}
         </h3>
         <div className="flex items-center gap-2.5 text-xs text-muted mt-1 font-mono">
-          <span>Day {uiSnapshot.day_number}{uiSnapshot.time_label ? ` — ${uiSnapshot.time_label}` : ''}</span>
+          <span>{t('hud.day', { day: uiSnapshot.day_number })}{uiSnapshot.time_label ? ` — ${uiSnapshot.time_label}` : ''}</span>
           {uiSnapshot.followed_actor_name && (
             <>
               <span className="text-muted/40">&bull;</span>
-              <span className="text-foam">Following {uiSnapshot.followed_actor_name}</span>
+              <span className="text-foam">{t('hud.followingActor', { name: uiSnapshot.followed_actor_name })}</span>
             </>
           )}
         </div>

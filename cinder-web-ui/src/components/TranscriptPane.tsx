@@ -4,6 +4,7 @@ import TranscriptLine, { type Line } from './TranscriptLine'
 import RoomCard from './RoomCard'
 import ActClosureModal from './ActClosureModal'
 import Skeleton from './Skeleton'
+import { useI18n } from '../i18n'
 
 type TranscriptItem =
   | {
@@ -82,6 +83,7 @@ const TranscriptPane = memo(function TranscriptPane({
   craftedLabels: string[]
   interactableLabels?: string[]
 }) {
+  const { t } = useI18n()
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
 
@@ -100,16 +102,16 @@ const TranscriptPane = memo(function TranscriptPane({
               type="text"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search transcript..."
+              placeholder={t('hud.searchTranscriptPlaceholder')}
               autoFocus
               className="flex-1 px-3 py-1.5 rounded bg-overlay border border-subtle text-text text-sm placeholder-muted focus:outline-none focus:border-pine"
             />
             {searchQuery && (
-              <span className="text-xs text-muted shrink-0">{matchCount} match{matchCount !== 1 ? 'es' : ''}</span>
+              <span className="text-xs text-muted shrink-0">{matchCount === 1 ? t('hud.matchOne', { count: matchCount }) : t('hud.matchMany', { count: matchCount })}</span>
             )}
             <button
               onClick={() => { setSearchOpen(false); setSearchQuery('') }}
-              aria-label="Close search"
+              aria-label={t('hud.closeSearch')}
               className="text-muted hover:text-text text-lg leading-none cursor-pointer"
             >
               &times;
@@ -122,7 +124,7 @@ const TranscriptPane = memo(function TranscriptPane({
         ref={transcriptRef}
         onScroll={onScroll}
         aria-live="polite"
-        aria-label="Transcript"
+        aria-label={t('hud.transcript')}
         className="flex-1 overflow-y-auto px-4 sm:px-6 py-6"
       >
         <div className="max-w-2xl mx-auto w-full space-y-4">
@@ -130,10 +132,10 @@ const TranscriptPane = memo(function TranscriptPane({
             <div className="sticky top-0 z-10 flex justify-end">
               <button
                 onClick={() => setSearchOpen(true)}
-                aria-label="Search transcript"
+                aria-label={t('hud.search')}
                 className="text-muted hover:text-text text-xs bg-surface/90 backdrop-blur-sm px-2.5 py-1 rounded-md border border-subtle cursor-pointer shadow-xs transition-colors"
               >
-                Search
+                {t('hud.search')}
               </button>
             </div>
           )}
@@ -171,7 +173,7 @@ const TranscriptPane = memo(function TranscriptPane({
             <ActClosureModal actClosure={gameClosure} onDismiss={onDismissGameClosure} />
           )}
           {gameOver && !actClosure && !gameClosure && (
-            <p className="text-love font-semibold text-center pt-4">The End</p>
+            <p className="text-love font-semibold text-center pt-4">{t('hud.theEnd')}</p>
           )}
           <div ref={bottomRef} />
         </div>

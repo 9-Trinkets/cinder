@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import * as api from '../api'
+import { useI18n } from '../i18n'
 
 export default function MovieModal({ movie, frame, onAdvance, onClose }: {
   movie: api.MovieData
@@ -7,6 +8,7 @@ export default function MovieModal({ movie, frame, onAdvance, onClose }: {
   onAdvance: () => void
   onClose: () => void
 }) {
+  const { t } = useI18n()
   const f = movie.frames[frame]
   const isLast = frame >= movie.frames.length - 1
   const dialogRef = useRef<HTMLDivElement>(null)
@@ -38,7 +40,7 @@ export default function MovieModal({ movie, frame, onAdvance, onClose }: {
           <h2 className="text-base font-semibold text-text">{movie.title}</h2>
           <div className="flex items-center gap-2">
             <span className="text-xs text-muted">{frame + 1} / {movie.frames.length}</span>
-            <button onClick={onClose} aria-label="Close" className="text-muted hover:text-text text-lg leading-none cursor-pointer">&times;</button>
+            <button onClick={onClose} aria-label={t('hud.close')} className="text-muted hover:text-text text-lg leading-none cursor-pointer">&times;</button>
           </div>
         </div>
         <pre className="text-pine text-xs leading-none whitespace-pre-wrap font-mono bg-black/40 rounded-lg p-4 max-h-[60vh] overflow-y-auto border border-subtle select-none">
@@ -49,7 +51,7 @@ export default function MovieModal({ movie, frame, onAdvance, onClose }: {
             onClick={onClose}
             className="w-full text-center text-muted text-sm mt-3 animate-pulse cursor-pointer hover:text-text"
           >
-            Click or tap to continue...
+            {t('hud.clickToContinue')}
           </button>
         )}
       </div>

@@ -1,4 +1,5 @@
 import { useEffect, useRef, type ReactNode } from 'react'
+import { useI18n } from '../i18n'
 
 export default function Modal({
   title,
@@ -9,6 +10,7 @@ export default function Modal({
   onClose: () => void
   children: ReactNode
 }) {
+  const { t } = useI18n()
   const dialogRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -43,7 +45,7 @@ export default function Modal({
           <h2 className="text-base font-bold font-prose text-text tracking-tight">{title}</h2>
           <button
             onClick={onClose}
-            aria-label="Close"
+            aria-label={t('hud.close')}
             className="text-muted hover:text-text text-xl leading-none transition duration-200 active:scale-95 cursor-pointer"
           >
             &times;

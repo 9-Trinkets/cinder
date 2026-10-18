@@ -3,6 +3,7 @@ import * as api from '../api'
 import { groupLookOptions, groupOverflowActions, groupTeleportOptions } from '../utils/grouping'
 import { titleize } from '../utils/text'
 import type { QuickPanel } from '../hooks/playUtils'
+import { useI18n } from '../i18n'
 
 const QuickActionPanel = memo(function QuickActionPanel({
   panel,
@@ -23,6 +24,7 @@ const QuickActionPanel = memo(function QuickActionPanel({
   onSelectOption: (panel: string, option: api.PanelOptionData) => void
   onOverflow: (action: api.OverflowAction) => void
 }) {
+  const { t } = useI18n()
   const [selectedGiveItem, setSelectedGiveItem] = useState<{ id: string; title: string } | null>(null)
 
   // Reset give selection whenever panel switches or closes
@@ -43,7 +45,7 @@ const QuickActionPanel = memo(function QuickActionPanel({
   const deployMemberId = isDeploySubpanel ? panel.slice('party-order-deploy:'.length) : null
 
   const title = isGiveStep2
-    ? `Give ${titleize(selectedGiveItem.title)}`
+    ? t('hud.giveItem', { item: titleize(selectedGiveItem.title) })
     : (panelConfig?.title
       ?? (panel === 'look'
         ? uiSnapshot.ui_text.look_panel_title
@@ -52,7 +54,7 @@ const QuickActionPanel = memo(function QuickActionPanel({
           : panel))
 
   const prompt = isGiveStep2
-    ? 'Choose a companion to receive this'
+    ? t('hud.chooseCompanion')
     : panelConfig?.prompt
 
   const handleClose = () => {
@@ -70,19 +72,19 @@ const QuickActionPanel = memo(function QuickActionPanel({
                 type="button"
                 onClick={() => setSelectedGiveItem(null)}
                 className="text-xs text-muted hover:text-text px-2 py-0.5 rounded-md border border-subtle hover:border-muted cursor-pointer transition-colors"
-                title="Choose a different item"
+                title={t('hud.chooseDifferentItem')}
               >
-                &larr; Back
+                &larr; {t('hud.back')}
               </button>
             )}
             {isDeploySubpanel && (
               <button
                 type="button"
-                onClick={() => onSelectOption(panel, { id: 'back', title: 'Back', panel: `party-order:${deployMemberId}` })}
+                onClick={() => onSelectOption(panel, { id: 'back', title: t('hud.back'), panel: `party-order:${deployMemberId}` })}
                 className="text-xs text-muted hover:text-text px-2 py-0.5 rounded-md border border-subtle hover:border-muted cursor-pointer transition-colors"
-                title="Back to orders"
+                title={t('hud.backToOrders')}
               >
-                &larr; Back
+                &larr; {t('hud.back')}
               </button>
             )}
             <div>
@@ -94,7 +96,7 @@ const QuickActionPanel = memo(function QuickActionPanel({
           </div>
           <button
             onClick={handleClose}
-            aria-label="Close"
+            aria-label={t('hud.close')}
             className="text-muted hover:text-text text-lg leading-none transition duration-200 active:scale-95 cursor-pointer"
           >
             &times;
@@ -104,9 +106,9 @@ const QuickActionPanel = memo(function QuickActionPanel({
         <div className="max-h-[40dvh] overflow-y-auto p-3 space-y-3">
           {panel === 'look' && (
             (uiSnapshot.look_options ?? []).length === 0 ? (
-              <p className="text-muted italic text-sm px-1">Nothing of particular interest here.</p>
+              <p className="text-muted italic text-sm px-1">{t('hud.nothingInteresting')}</p>
             ) : (
-              groupLookOptions(uiSnapshot.look_options, uiSnapshot.ui_text, uiSnapshot.party).map(([group, options]) => (
+              groupLookOptions(uiSnapshot.look_options, uiSnapshot.ui_text, uiSnapshot.party, t).map(([group, options]) => (
                 <div key={group} className="space-y-2">
                   <p className="text-[11px] text-muted uppercase tracking-wider px-1">{group}</p>
                   <div className="grid gap-2 sm:grid-cols-2">
@@ -185,7 +187,7 @@ const QuickActionPanel = memo(function QuickActionPanel({
 
           {panel === 'give' && !isGiveStep2 && (
             genericOptions.length === 0 ? (
-              <p className="text-muted italic text-sm px-1">You have no items to give.</p>
+              <p className="text-muted italic text-sm px-1">{t('hud.noItemsToGive')}</p>
             ) : (
               <div className="grid gap-2 sm:grid-cols-2">
                 {genericOptions.map(opt => (
@@ -218,7 +220,7 @@ const QuickActionPanel = memo(function QuickActionPanel({
           )}
 
           {panel !== 'look' && panel !== 'overflow' && panel !== 'give' && genericOptions.length === 0 && (
-            <p className="text-muted italic text-sm px-1">Nothing available here.</p>
+            <p className="text-muted italic text-sm px-1">{t('hud.nothingAvailable')}</p>
           )}
 
           {panel !== 'look' && panel !== 'overflow' && panel !== 'give' && genericOptions.length > 0 && (() => {
@@ -246,7 +248,7 @@ const QuickActionPanel = memo(function QuickActionPanel({
                         <span className="block text-muted text-xs mt-0.5">{opt.subtitle}</span>
                       )}
                     </span>
-                    {opt.selected && <span className="text-gold text-sm" aria-label="Current order">✓</span>}
+                    {opt.selected && <span className="text-gold text-sm" aria-label={t('hud.currentOrder')}>✓</span>}
                   </span>
                 </button>
               )
@@ -256,7 +258,7 @@ const QuickActionPanel = memo(function QuickActionPanel({
                   <div className="space-y-4">
                     <div className="space-y-2">
                       <p className="text-[11px] font-semibold text-muted uppercase tracking-wider px-1">
-                        In This Room
+                        {t('hud.inThisRoom')}
                       </p>
                       <div className="grid gap-2 sm:grid-cols-2">
                         {roomActors.map(renderButton)}
@@ -264,7 +266,7 @@ const QuickActionPanel = memo(function QuickActionPanel({
                     </div>
                     <div className="space-y-2">
                       <p className="text-[11px] font-semibold text-muted uppercase tracking-wider px-1">
-                        Party Members
+                        {t('hud.partyMembers')}
                       </p>
                       <div className="grid gap-2 sm:grid-cols-2">
                         {partyActors.map(renderButton)}
@@ -276,7 +278,7 @@ const QuickActionPanel = memo(function QuickActionPanel({
             }
 
             if (panel === 'teleport') {
-              const groups = groupTeleportOptions(genericOptions)
+              const groups = groupTeleportOptions(genericOptions, t)
               if (groups.length > 0) {
                 return (
                   <div className="space-y-4">
@@ -305,7 +307,7 @@ const QuickActionPanel = memo(function QuickActionPanel({
                                     <span className="block text-muted text-xs mt-0.5">{opt.subtitle}</span>
                                   )}
                                 </span>
-                                {opt.selected && <span className="text-gold text-sm" aria-label="Current order">✓</span>}
+                                {opt.selected && <span className="text-gold text-sm" aria-label={t('hud.currentOrder')}>✓</span>}
                               </span>
                             </button>
                           ))}
@@ -338,7 +340,7 @@ const QuickActionPanel = memo(function QuickActionPanel({
                           <span className="block text-muted text-xs mt-0.5">{opt.subtitle}</span>
                         )}
                       </span>
-                      {opt.selected && <span className="text-gold text-sm" aria-label="Current order">✓</span>}
+                      {opt.selected && <span className="text-gold text-sm" aria-label={t('hud.currentOrder')}>✓</span>}
                     </span>
                   </button>
                 ))}

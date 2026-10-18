@@ -5,6 +5,7 @@ import ConfirmDialog from './ConfirmDialog'
 import * as api from '../api'
 import type { BookmarkInfo, UiSnapshot } from '../api'
 import type { MenuView } from '../hooks/playUtils'
+import { useI18n } from '../i18n'
 
 interface ShellMenuProps {
   ui: UiSnapshot
@@ -70,12 +71,13 @@ export default function ShellMenu({
   onResumeBookmark,
   onDeleteBookmark,
 }: ShellMenuProps) {
+  const { t: i18n } = useI18n()
   const t = ui.ui_text
   const items = flattenItems(t).filter(item => item.id !== 'quests' || ui.sidebar_sections.includes('quests'))
 
   if (view === 'rooms') {
     return (
-      <Modal title={t.room_switcher_title || 'Travel'} onClose={onClose}>
+      <Modal title={t.room_switcher_title || i18n('hud.travel')} onClose={onClose}>
         <MenuBackButton onClick={() => onViewChange('main')} />
         <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40">
           {ui.rooms.map((r) => (
@@ -92,7 +94,7 @@ export default function ShellMenu({
                   <span className="text-xs text-muted">{r.menu_text}</span>
                 )}
               </div>
-              <span className="text-xs text-foam opacity-0 group-hover:opacity-100 transition-opacity">Travel &rsaquo;</span>
+              <span className="text-xs text-foam opacity-0 group-hover:opacity-100 transition-opacity">{i18n('hud.travelTo')}</span>
             </button>
           ))}
         </div>
@@ -102,7 +104,7 @@ export default function ShellMenu({
 
   if (view === 'follow') {
     return (
-      <Modal title={t.follow_actor_title || 'Companions'} onClose={onClose}>
+      <Modal title={t.follow_actor_title || i18n('hud.companions')} onClose={onClose}>
         <MenuBackButton onClick={() => onViewChange('main')} />
         <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40">
           {ui.follow_options.map((a) => {
@@ -122,7 +124,7 @@ export default function ShellMenu({
                 </div>
                 {isFollowing && (
                   <span className="text-xs font-mono uppercase tracking-wider text-foam bg-pine/15 px-2 py-0.5 rounded border border-pine/30">
-                    Active
+                    {i18n('common.active')}
                   </span>
                 )}
               </button>
@@ -135,7 +137,7 @@ export default function ShellMenu({
 
   if (view === 'language') {
     return (
-      <Modal title={t.language_modal_title || 'Language'} onClose={onClose}>
+      <Modal title={t.language_modal_title || i18n('hud.language')} onClose={onClose}>
         <MenuBackButton onClick={() => onViewChange('main')} />
         <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40">
           {ui.locale_options.map((l) => (
@@ -151,7 +153,7 @@ export default function ShellMenu({
               <span className="text-sm">{l.label}</span>
               {l.code === ui.current_locale && (
                 <span className="text-xs font-mono uppercase tracking-wider text-foam bg-pine/15 px-2 py-0.5 rounded border border-pine/30">
-                  Active
+                  {i18n('common.active')}
                 </span>
               )}
             </button>
@@ -163,12 +165,12 @@ export default function ShellMenu({
 
   if (view === 'quests') {
     const groups = [
-      { status: 'active', label: (t.quests_active_label as string) || 'Active' },
-      { status: 'completed', label: (t.quests_completed_label as string) || 'Completed' },
-      { status: 'failed', label: (t.quests_failed_label as string) || 'Failed' },
+      { status: 'active', label: (t.quests_active_label as string) || i18n('common.active') },
+      { status: 'completed', label: (t.quests_completed_label as string) || i18n('hud.completed') },
+      { status: 'failed', label: (t.quests_failed_label as string) || i18n('hud.failed') },
     ] as const
     return (
-      <Modal title={(t.quests_menu_title as string) || 'Quest Log'} onClose={onClose}>
+      <Modal title={(t.quests_menu_title as string) || i18n('hud.questLog')} onClose={onClose}>
         <MenuBackButton onClick={() => onViewChange('main')} />
         {ui.quests.length > 0 ? (
           <div className="space-y-5">
@@ -226,7 +228,7 @@ export default function ShellMenu({
           </div>
         ) : (
           <p className="border-y border-subtle/40 py-5 text-center text-sm text-muted">
-            {(t.quests_empty as string) || 'No quests have been recorded yet.'}
+            {(t.quests_empty as string) || i18n('hud.noQuestsRecorded')}
           </p>
         )}
       </Modal>
@@ -281,6 +283,7 @@ function MainMenu({
   onExit,
   busy,
 }: MainMenuProps) {
+  const { t: i18n } = useI18n()
   const [submenu, setSubmenu] = useState<{ id: string; label: string }[] | null>(null)
   const [submenuTitle, setSubmenuTitle] = useState('')
 
@@ -306,7 +309,7 @@ function MainMenu({
   }
 
   return (
-    <Modal title={t.shell_menu_title || 'Menu'} onClose={onClose}>
+    <Modal title={t.shell_menu_title || i18n('hud.menu')} onClose={onClose}>
       <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40 my-1">
         {items.map((item) => {
           const packItem = t.shell_menu.items.find(i => i.id === item.id)
@@ -325,7 +328,7 @@ function MainMenu({
                     {item.label}
                   </span>
                   <span className="text-xs text-muted">
-                    Leave chronicle and return to library
+                    {i18n('hud.leaveChronicleSubtitle')}
                   </span>
                 </div>
                 <span className="text-muted group-hover:text-love group-hover:translate-x-1 transition-transform">
@@ -336,13 +339,13 @@ function MainMenu({
           }
 
           let subtitle = ''
-          if (item.id === 'rooms') subtitle = 'Travel to discovered chambers'
-          else if (item.id === 'follow') subtitle = ui.followed_actor_name ? `Accompanying ${ui.followed_actor_name}` : 'Travel unaccompanied'
+          if (item.id === 'rooms') subtitle = i18n('hud.travelToChambers')
+          else if (item.id === 'follow') subtitle = ui.followed_actor_name ? i18n('hud.accompanying', { name: ui.followed_actor_name }) : i18n('hud.travelUnaccompanied')
           else if (item.id === 'quests') {
             const activeCount = ui.quests.filter(quest => quest.status === 'active').length
-            subtitle = activeCount === 1 ? '1 active quest' : `${activeCount} active quests`
+            subtitle = activeCount === 1 ? i18n('hud.activeQuestOne') : i18n('hud.activeQuests', { count: activeCount })
           }
-          else if (item.id === 'bookmarks') subtitle = 'Leave a bookmark or return to an earlier moment'
+          else if (item.id === 'bookmarks') subtitle = i18n('hud.bookmarkSubtitle')
           else if (item.id === 'language') subtitle = ui.locale_options.find(l => l.code === ui.current_locale)?.label || ui.current_locale
 
           if (hasChildren) {
@@ -396,13 +399,14 @@ function MainMenu({
 }
 
 function MenuBackButton({ onClick }: { onClick: () => void }) {
+  const { t: i18n } = useI18n()
   return (
     <button
       type="button"
       onClick={onClick}
       className="text-xs font-mono uppercase tracking-widest text-muted hover:text-text cursor-pointer flex items-center gap-1.5 mb-3 transition-colors"
     >
-      &lsaquo; Back
+      &lsaquo; {i18n('hud.back')}
     </button>
   )
 }
@@ -454,6 +458,7 @@ function BookmarksView({
   onDeleteBookmark,
   busy,
 }: BookmarksViewProps) {
+  const { t: i18n } = useI18n()
   const [bookmarks, setBookmarks] = useState<BookmarkInfo[]>([])
   const [loading, setLoading] = useState(true)
   const [creating, setCreating] = useState(false)
@@ -521,7 +526,7 @@ function BookmarksView({
   }
 
   return (
-    <Modal title={(t.bookmark_modal_title as string) || 'Bookmarks'} onClose={onClose}>
+    <Modal title={(t.bookmark_modal_title as string) || i18n('hud.bookmarks')} onClose={onClose}>
       <MenuBackButton onClick={() => onViewChange('main')} />
 
       <div className="mb-4">
@@ -533,15 +538,15 @@ function BookmarksView({
           disabled={creating || busy || actionBusy || !onCreateBookmark}
           className="w-full py-2 text-xs font-semibold tracking-wide cursor-pointer flex items-center justify-center gap-1.5"
         >
-          {creating ? 'Placing Bookmark…' : ((t.create_bookmark_label as string) || '+ Bookmark This Moment')}
+          {creating ? i18n('hud.placingBookmark') : ((t.create_bookmark_label as string) || i18n('hud.createBookmark'))}
         </Button>
       </div>
 
       {loading ? (
-        <div className="py-6 text-center text-xs text-muted">Loading bookmarks…</div>
+        <div className="py-6 text-center text-xs text-muted">{i18n('hud.loadingBookmarks')}</div>
       ) : bookmarks.length === 0 ? (
         <p className="border-y border-subtle/40 py-6 text-center text-xs text-muted">
-          {(t.bookmark_empty as string) || 'No bookmarks saved yet. Tap above to bookmark this moment.'}
+          {(t.bookmark_empty as string) || i18n('hud.noBookmarksTap')}
         </p>
       ) : (
         <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40 max-h-72 overflow-y-auto">
@@ -550,17 +555,17 @@ function BookmarksView({
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium text-text truncate">
-                    {b.current_room_name || 'Bookmark'}
+                    {b.current_room_name || i18n('hud.bookmark')}
                   </span>
                   {b.day_number !== null && b.day_number !== undefined && (
                     <span className="text-[10px] font-mono uppercase tracking-wider text-foam bg-pine/15 px-1.5 py-0.5 rounded border border-pine/30">
-                      Day {b.day_number}
+                      {i18n('hud.day', { day: b.day_number })}
                     </span>
                   )}
                 </div>
                 <p className="text-xs text-muted mt-0.5 truncate">
                   {[
-                    b.turn_number !== null && b.turn_number !== undefined ? `Turn ${b.turn_number}` : null,
+                    b.turn_number !== null && b.turn_number !== undefined ? i18n('hud.turnN', { n: b.turn_number }) : null,
                     b.time_label,
                     fmtBookmarkDate(b.created_at),
                   ].filter(Boolean).join(' • ')}
@@ -573,14 +578,14 @@ function BookmarksView({
                   disabled={busy || actionBusy}
                   className="px-2.5 py-1 text-xs font-semibold rounded text-foam hover:bg-pine/20 border border-pine/30 transition-colors cursor-pointer"
                 >
-                  Return to &rsaquo;
+                  {i18n('hud.returnTo')}
                 </button>
                 <button
                   type="button"
                   onClick={() => setConfirmDeleteId(b.id)}
                   disabled={busy || actionBusy}
                   className="px-2 py-1 text-xs rounded text-muted hover:text-love transition-colors cursor-pointer"
-                  title="Delete bookmark"
+                  title={i18n('hud.deleteBookmarkTitle')}
                 >
                   ✕
                 </button>
@@ -592,9 +597,9 @@ function BookmarksView({
 
       {confirmResumeId && (
         <ConfirmDialog
-          title="Return to Bookmark"
-          message="Return to this point in your tale? Your current journey will be set back to this moment."
-          confirmLabel="Return"
+          title={i18n('hud.confirmResumeTitle')}
+          message={i18n('hud.confirmResumeMessage')}
+          confirmLabel={i18n('hud.confirmReturnLabel')}
           onConfirm={() => handleResume(confirmResumeId)}
           onCancel={() => setConfirmResumeId(null)}
         />
@@ -602,9 +607,9 @@ function BookmarksView({
 
       {confirmDeleteId && (
         <ConfirmDialog
-          title="Delete Bookmark"
-          message="Are you sure you want to delete this bookmark? This cannot be undone."
-          confirmLabel="Delete"
+          title={i18n('hud.confirmDeleteBookmarkTitle')}
+          message={i18n('hud.confirmDeleteBookmarkMessage')}
+          confirmLabel={i18n('hud.confirmDeleteLabel')}
           onConfirm={() => handleDelete(confirmDeleteId)}
           onCancel={() => setConfirmDeleteId(null)}
         />

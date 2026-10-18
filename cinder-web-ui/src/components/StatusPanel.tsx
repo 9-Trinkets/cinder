@@ -4,17 +4,7 @@ import Minimap from './Minimap'
 import Section from './Section'
 import RelationshipChart from './RelationshipChart'
 import { titleize } from '../utils/text'
-
-const orderLabel = (order: string) => {
-  const known: Record<string, string> = { guard: 'Guarding', follow: 'Following', patrol: 'Patrolling' }
-  if (known[order]) return known[order]
-  if (order.startsWith('deploy ') || order.startsWith('deploy:')) {
-    const target = order.replace(/^deploy[:\s]+/, '').trim()
-    return target ? `Deploying to ${titleize(target)}` : 'Deployed'
-  }
-  if (order === 'deploy') return 'Deployed'
-  return `Order: ${order}`
-}
+import { useI18n } from '../i18n'
 
 const skillKindClasses: Record<api.SkillKind, string> = {
   attack: 'border-rose/30 bg-rose/10 text-rose',
@@ -42,13 +32,29 @@ export default function StatusPanel({
 }) {
   const player = uiSnapshot.player
   const levelsRevealed = uiSnapshot.sidebar_sections.includes('level')
+  const { t } = useI18n()
+
+  const orderLabel = (order: string) => {
+    const known: Record<string, string> = {
+      guard: t('hud.orderGuard'),
+      follow: t('hud.orderFollow'),
+      patrol: t('hud.orderPatrol'),
+    }
+    if (known[order]) return known[order]
+    if (order.startsWith('deploy ') || order.startsWith('deploy:')) {
+      const target = order.replace(/^deploy[:\s]+/, '').trim()
+      return target ? t('hud.deployingTo', { target: titleize(target) }) : t('hud.deployed')
+    }
+    if (order === 'deploy') return t('hud.deployed')
+    return t('hud.order', { order })
+  }
 
   const renderers: Record<string, () => ReactNode> = {
     location: () => (
-      <Section title="Location" defaultOpen>
+      <Section title={t('hud.location')} defaultOpen>
         <p className="text-text font-medium">{uiSnapshot.current_room_name}</p>
         <p className="text-text text-xs">
-          Day {uiSnapshot.day_number}
+          {t('hud.day', { day: uiSnapshot.day_number })}
           {uiSnapshot.time_label ? <span className="text-muted ml-1">— {uiSnapshot.time_label}</span> : null}
         </p>
       </Section>
@@ -56,15 +62,15 @@ export default function StatusPanel({
 
     map: () =>
       uiSnapshot.minimap ? (
-        <Section title={uiSnapshot.ui_text.minimap_sidebar_label || 'Map'} defaultOpen>
+        <Section title={uiSnapshot.ui_text.minimap_sidebar_label || t('hud.map')} defaultOpen>
           <Minimap map={uiSnapshot.minimap} uiText={uiSnapshot.ui_text} />
         </Section>
       ) : null,
 
     vitals: () => (
-      <Section title="Vitals" defaultOpen>
+      <Section title={t('hud.vitals')} defaultOpen>
         <div className="flex items-baseline justify-between text-xs">
-          <span className="text-text">HP</span>
+          <span className="text-text">{t('hud.hp')}</span>
           <span className="text-muted">{player.hp}/{player.hp_max}</span>
         </div>
         <div className="h-1.5 w-full rounded-full bg-overlay overflow-hidden">
@@ -79,7 +85,7 @@ export default function StatusPanel({
         {player.mp !== undefined && player.mp_max !== undefined && (
           <>
             <div className="flex items-baseline justify-between text-xs mt-1.5">
-              <span className="text-text">MP</span>
+              <span className="text-text">{t('hud.mp')}</span>
               <span className="text-muted">{player.mp}/{player.mp_max}</span>
             </div>
             <div className="h-1.5 w-full rounded-full bg-overlay overflow-hidden">
@@ -97,13 +103,13 @@ export default function StatusPanel({
           <div className="grid grid-cols-2 gap-2 text-xs pt-1.5 pb-1 border-t border-overlay/40">
             {player.attack !== undefined && (
               <div className="flex justify-between">
-                <span className="text-muted">Attack</span>
+                <span className="text-muted">{t('hud.attack')}</span>
                 <span className="text-text font-medium">{player.attack}</span>
               </div>
             )}
             {player.defense !== undefined && (
               <div className="flex justify-between">
-                <span className="text-muted">Defense</span>
+                <span className="text-muted">{t('hud.defense')}</span>
                 <span className="text-text font-medium">{player.defense}</span>
               </div>
             )}
@@ -123,11 +129,11 @@ export default function StatusPanel({
     ),
 
     level: () => (
-      <Section title="Level" defaultOpen>
+      <Section title={t('hud.level')} defaultOpen>
         <div className="flex items-baseline justify-between text-xs">
-          <span className="text-text font-medium">Level {player.level}</span>
+          <span className="text-text font-medium">{t('hud.levelN', { n: player.level })}</span>
           <span className="text-muted">
-            {player.xp_max > 0 ? `${player.xp} / ${player.xp_max} XP` : 'MAX'}
+            {player.xp_max > 0 ? t('hud.xpOfMax', { current: player.xp, max: player.xp_max }) : t('hud.max')}
           </span>
         </div>
         <div className="h-1.5 w-full rounded-full bg-overlay overflow-hidden">
@@ -148,7 +154,7 @@ export default function StatusPanel({
 
     skills: () =>
       uiSnapshot.skills && uiSnapshot.skills.length > 0 ? (
-        <Section title="Skills" defaultOpen>
+        <Section title={t('hud.skills')} defaultOpen>
           <ul className="space-y-2">
             {uiSnapshot.skills.map(skill => {
               const isMax = skill.level >= 10
@@ -163,10 +169,10 @@ export default function StatusPanel({
                   <div className="flex items-baseline justify-between">
                     <span className="font-medium text-text">
                       {skill.label}
-                      <span className="ml-1.5 text-[10px] font-mono text-pine">Lv {skill.level}</span>
+                      <span className="ml-1.5 text-[10px] font-mono text-pine">{t('hud.lv', { n: skill.level })}</span>
                     </span>
                     <span className="text-[10px] tabular-nums text-muted font-mono">
-                      {isMax ? 'MAX' : `${skill.sp} / ${skill.sp_level_max} SP`}
+                      {isMax ? t('hud.max') : t('hud.spOfMax', { sp: skill.sp, max: skill.sp_level_max })}
                     </span>
                   </div>
                   <div className="mt-1 h-1.5 w-full rounded-full bg-overlay overflow-hidden">
@@ -196,7 +202,7 @@ export default function StatusPanel({
 
     party: () =>
       uiSnapshot.party.length > 0 ? (
-        <Section title="Party" defaultOpen>
+        <Section title={t('hud.party')} defaultOpen>
           <ul className="space-y-2">
             {uiSnapshot.party.map(member => (
               <li key={member.id} className="rounded-lg border border-subtle bg-surface/40 p-2.5 transition duration-200">
@@ -209,8 +215,8 @@ export default function StatusPanel({
                     <span className="min-w-0">
                       <span className="block truncate text-xs font-medium text-text">{member.label}</span>
                       <span className="mt-0.5 block text-[10px] uppercase tracking-[0.14em] text-pine">
-                        {member.order ? orderLabel(member.order) : 'No order'}
-                        {levelsRevealed ? ` · Lv ${member.level}` : ''}
+                        {member.order ? orderLabel(member.order) : t('hud.noOrder')}
+                        {levelsRevealed ? ` · ${t('hud.lv', { n: member.level })}` : ''}
                       </span>
                     </span>
                     <span className="text-muted transition-transform duration-200 group-hover:translate-x-0.5">›</span>
@@ -228,13 +234,13 @@ export default function StatusPanel({
 
                 {member.skills && member.skills.length > 0 && (
                   <ul
-                    aria-label={`${member.label} skills`}
+                    aria-label={t('hud.memberSkills', { name: member.label })}
                     className="mt-2 flex flex-wrap gap-1"
                   >
                     {member.skills.map(skill => (
                       <li
                         key={skill.id}
-                        title={skill.kind ? `${titleize(skill.kind)} skill` : 'Skill'}
+                        title={skill.kind ? `${titleize(skill.kind)} ${t('hud.skill')}` : t('hud.skill')}
                         className={`max-w-full truncate rounded-full border px-1.5 py-0.5 text-[9px] font-medium leading-none ${
                           skill.kind
                             ? skillKindClasses[skill.kind]
@@ -243,7 +249,7 @@ export default function StatusPanel({
                       >
                         {skill.label}
                         {levelsRevealed && skill.level !== undefined
-                          ? ` Lv ${skill.level}`
+                          ? ` ${t('hud.lv', { n: skill.level })}`
                           : ''}
                       </li>
                     ))}
@@ -252,7 +258,7 @@ export default function StatusPanel({
 
                 {member.equipped_items && member.equipped_items.length > 0 && (
                   <div className="mt-2 pt-2 border-t border-subtle/50 text-[11px]">
-                    <div className="text-[10px] uppercase tracking-wider text-muted font-mono mb-1">Equipped</div>
+                    <div className="text-[10px] uppercase tracking-wider text-muted font-mono mb-1">{t('hud.equipped')}</div>
                     <ul className="space-y-0.5 pl-1">
                       {member.equipped_items.map((item, i) => (
                         <li key={i} className="text-text">
@@ -265,7 +271,7 @@ export default function StatusPanel({
 
                 {member.inventory && member.inventory.length > 0 && (
                   <div className="mt-2 pt-1.5 border-t border-subtle/50 text-[11px]">
-                    <div className="text-[10px] uppercase tracking-wider text-muted font-mono mb-1">Carrying</div>
+                    <div className="text-[10px] uppercase tracking-wider text-muted font-mono mb-1">{t('hud.carrying')}</div>
                     <ul className="space-y-0.5 pl-1">
                       {member.inventory.map((item, i) => (
                         <li key={i} className="text-text">
@@ -283,7 +289,7 @@ export default function StatusPanel({
 
     equipped: () =>
       uiSnapshot.equipped_items.length > 0 ? (
-        <Section title="Equipped">
+        <Section title={t('hud.equipped')}>
           <ul className="space-y-0.5">
             {uiSnapshot.equipped_items.map((item, i) => (
               <li key={i} className="text-text text-xs">
@@ -296,7 +302,7 @@ export default function StatusPanel({
 
     inventory: () =>
       uiSnapshot.inventory.length > 0 ? (
-        <Section title="Inventory">
+        <Section title={t('hud.inventory')}>
           <ul className="space-y-0.5">
             {uiSnapshot.inventory.map((item, i) => (
               <li key={i} className="text-text text-xs">
@@ -310,7 +316,7 @@ export default function StatusPanel({
 
     room_items: () =>
       uiSnapshot.current_room_items.length > 0 ? (
-        <Section title={uiSnapshot.ui_text.room_items_sidebar_label || 'On the ground'}>
+        <Section title={uiSnapshot.ui_text.room_items_sidebar_label || t('hud.onTheGround')}>
           <ul className="space-y-0.5">
             {uiSnapshot.current_room_items.map((item, i) => (
               <li key={i} className="text-text text-xs">
@@ -321,7 +327,7 @@ export default function StatusPanel({
                       onClick={() => onTakeItem(item.id!)}
                       className="hover:opacity-80 cursor-pointer text-left"
                     >
-                      Take {titleize(item.label)}
+                      {t('hud.takeItem', { item: titleize(item.label) })}
                       {item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}
                     </button>
                   )
@@ -339,7 +345,7 @@ export default function StatusPanel({
 
     room_consumables: () =>
       uiSnapshot.room_consumables.length > 0 ? (
-        <Section title="Available">
+        <Section title={t('hud.available')}>
           {uiSnapshot.room_consumables.map((group, gi) => (
             <div key={gi}>
               <p className="text-text text-xs font-medium">{group.feature_label}</p>
@@ -361,13 +367,13 @@ export default function StatusPanel({
 
     secrets: () =>
       uiSnapshot.secrets_total > 0 ? (
-        <Section title="Secrets Found">
+        <Section title={t('hud.secretsFound')}>
           <p className="text-text font-medium">{uiSnapshot.secrets_found} / {uiSnapshot.secrets_total}</p>
         </Section>
       ) : null,
 
     quests: () => (
-      <Section title="Quests" defaultOpen>
+      <Section title={t('hud.quests')} defaultOpen>
         {uiSnapshot.objectives && uiSnapshot.objectives.length > 0 ? (
           <div className="space-y-2.5">
             {uiSnapshot.objectives.map((obj, idx) => {
@@ -380,7 +386,7 @@ export default function StatusPanel({
                   <div key={obj.stage_id || idx} className="rounded-lg bg-overlay/60 p-2.5 border border-subtle">
                     <div className="flex items-center justify-between gap-2 mb-1">
                       <span className="font-semibold text-text text-xs">
-                        {obj.quest_title || (isMain ? 'Main Quest' : 'Side Quest')}
+                        {obj.quest_title || (isMain ? t('hud.mainQuest') : t('hud.sideQuest'))}
                       </span>
                       {obj.quest_kind && (
                         <span className={`text-[10px] px-1.5 py-0.5 rounded font-semibold uppercase tracking-wider ${
@@ -414,7 +420,7 @@ export default function StatusPanel({
           </div>
         ) : (
           <p className="text-text text-xs leading-relaxed">
-            {uiSnapshot.objective_message || 'No active quests.'}
+            {uiSnapshot.objective_message || t('hud.noActiveQuests')}
           </p>
         )}
       </Section>

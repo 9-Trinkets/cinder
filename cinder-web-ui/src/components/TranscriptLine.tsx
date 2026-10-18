@@ -1,5 +1,6 @@
 import { memo, type CSSProperties } from 'react'
 import type { LineKind } from '../api'
+import { useI18n } from '../i18n'
 
 export type { LineKind }
 
@@ -193,6 +194,8 @@ const TranscriptLine = memo(function TranscriptLine({
   craftedLabels?: string[]
   interactableLabels?: string[]
 }) {
+  const { t } = useI18n()
+
   // 1. Room Transition Banner (Heading)
   if (line.kind === 'heading') {
     const cleanHeading = line.text.replace(/^==\s*|\s*==$/g, '').trim()
@@ -200,7 +203,7 @@ const TranscriptLine = memo(function TranscriptLine({
       <div className="pt-8 pb-3 my-2">
         <div className="flex items-center gap-2 mb-1.5">
           <span className="text-[10px] font-mono uppercase tracking-widest text-muted">
-            Location
+            {t('hud.location')}
           </span>
         </div>
         <h2 className="text-xl sm:text-2xl font-bold font-prose text-text tracking-tight">
@@ -219,13 +222,13 @@ const TranscriptLine = memo(function TranscriptLine({
   // 2. Channel / Handler Comms
   if (line.kind === 'channel') {
     const match = line.text.match(/^([^:]+):\s*(.*)$/s)
-    const speaker = match ? match[1].trim() : 'Comms'
+    const speaker = match ? match[1].trim() : t('hud.comms')
     const content = match ? match[2].trim() : line.text
 
     return (
       <div className="my-3.5 pl-4 border-l-2 border-rose/60 font-prose">
         <span className="font-mono text-[10px] font-semibold tracking-widest uppercase text-rose block mb-1">
-          Dispatch &bull; {speaker}
+          {t('hud.dispatch', { speaker })}
         </span>
         <div className="text-text text-base leading-[1.8] italic">
           <HighlightedText
@@ -306,7 +309,7 @@ const TranscriptLine = memo(function TranscriptLine({
             </span>
             {target && (
               <span className="font-prose text-xs text-muted italic">
-                (to {target})
+                {t('hud.toTarget', { target })}
               </span>
             )}
           </div>

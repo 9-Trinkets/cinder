@@ -3,6 +3,7 @@ import { useParams, useLocation } from 'react-router-dom'
 import { useAuth } from '../auth'
 import * as api from '../api'
 import { useToast } from '../components/Toast'
+import { useI18n } from '../i18n'
 import { useNpcTicks } from './useNpcTicks'
 import { toErrorMessage } from '../utils/error'
 import type { Line } from '../components/TranscriptLine'
@@ -19,6 +20,7 @@ export function usePlay() {
   const { id } = useParams<{ id: string }>()
   const { token, logout } = useAuth()
   const { showToast } = useToast()
+  const { t } = useI18n()
   const location = useLocation()
   const playState = location.state as { title?: string; intro_text?: string } | null
 
@@ -61,20 +63,20 @@ export function usePlay() {
 
   const busy = initializing || commandPending || panelBusy
   const tickLabel = tickSpeaker
-    ? `${tickSpeaker} is thinking · · ·`
-    : 'Thinking · · ·'
+    ? t('hud.isThinking', { speaker: tickSpeaker })
+    : t('hud.thinking')
   const busyLabel = commandPending
-    ? 'Sending…'
+    ? t('hud.sending')
     : panelBusy
-      ? 'Updating…'
+      ? t('hud.updating')
       : initializing
-        ? 'Loading…'
+        ? t('hud.loading')
         : tickGenerating
           ? tickLabel
           : null
-  const activeMenuTitle = activeMenu?.prompt?.trim() || uiSnapshot?.ui_text.menu_option_list_title || 'Choose'
+  const activeMenuTitle = activeMenu?.prompt?.trim() || uiSnapshot?.ui_text.menu_option_list_title || t('hud.choose')
 
-  const getPanelConfig = (panelName: string) => findPanelConfig(uiSnapshot, panelName)
+  const getPanelConfig = (panelName: string) => findPanelConfig(uiSnapshot, panelName, t)
 
   function focusInputToEnd() {
     requestAnimationFrame(() => {
@@ -160,7 +162,7 @@ export function usePlay() {
       const res = await api.runCommand(token, id, cmd)
       applyCommandResponse(res, 'smooth')
     } catch (err: unknown) {
-      showToast(toErrorMessage(err, 'request failed'), 'error')
+      showToast(toErrorMessage(err, t('hud.requestFailed')), 'error')
     } finally {
       setCommandPending(false)
     }
@@ -182,7 +184,7 @@ export function usePlay() {
       const res = await api.runCommand(token, id, `toggle:${optionId}`)
       applyCommandResponse(res, 'smooth')
     } catch (err: unknown) {
-      showToast(toErrorMessage(err, 'request failed'), 'error')
+      showToast(toErrorMessage(err, t('hud.requestFailed')), 'error')
     } finally {
       setCommandPending(false)
     }
@@ -212,7 +214,7 @@ export function usePlay() {
       const res = await command(token, id)
       applyCommandResponse(res, 'smooth')
     } catch (err: unknown) {
-      showToast(toErrorMessage(err, 'request failed'), 'error')
+      showToast(toErrorMessage(err, t('hud.requestFailed')), 'error')
     } finally {
       setPanelBusy(false)
     }
@@ -243,10 +245,10 @@ export function usePlay() {
     if (!token || !id) return null
     try {
       const b = await api.createBookmark(token, id, label)
-      showToast('Bookmark placed', 'info')
+      showToast(t('hud.bookmarkPlaced'), 'info')
       return b
     } catch (err: unknown) {
-      showToast(toErrorMessage(err, 'failed to place bookmark'), 'error')
+      showToast(toErrorMessage(err, t('hud.failedPlaceBookmark')), 'error')
       return null
     }
   }
@@ -261,10 +263,10 @@ export function usePlay() {
       setActiveMenu(res.snapshot.active_menu ?? null)
       setGameOver(res.snapshot.game_closure !== null)
       setShowMenu(false)
-      showToast('Returned to bookmark', 'info')
+      showToast(t('hud.bookmarkReturned'), 'info')
       return true
     } catch (err: unknown) {
-      showToast(toErrorMessage(err, 'failed to return to bookmark'), 'error')
+      showToast(toErrorMessage(err, t('hud.failedReturnBookmark')), 'error')
       return false
     } finally {
       setPanelBusy(false)
@@ -275,10 +277,10 @@ export function usePlay() {
     if (!token) return false
     try {
       await api.deleteBookmark(token, bookmarkId)
-      showToast('Bookmark deleted', 'info')
+      showToast(t('hud.bookmarkDeleted'), 'info')
       return true
     } catch (err: unknown) {
-      showToast(toErrorMessage(err, 'failed to delete bookmark'), 'error')
+      showToast(toErrorMessage(err, t('hud.failedDeleteBookmark')), 'error')
       return false
     }
   }
@@ -322,7 +324,7 @@ export function usePlay() {
     if (!trimmed) {
       if (activeMenu && (activeMenu.max_selections ?? 0) > 0 && menuSelections.size >= (activeMenu.min_selections || 1)) {
         setInput('')
-        await execCommand('done', 'Done')
+        await execCommand('done', t('hud.done'))
       }
       return
     }
@@ -448,7 +450,7 @@ export function usePlay() {
             applyCommandResponse(res, 'auto')
           })
           .catch(err => {
-            showToast(toErrorMessage(err, 'failed to load'), 'error')
+            showToast(toErrorMessage(err, t('hud.failedToLoad')), 'error')
           })
           .finally(() => setInitializing(false))
       })

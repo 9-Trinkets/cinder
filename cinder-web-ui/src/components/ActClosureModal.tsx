@@ -1,5 +1,6 @@
 import { memo } from 'react'
 import * as api from '../api'
+import { useI18n } from '../i18n'
 
 const ActClosureModal = memo(function ActClosureModal({
   actClosure,
@@ -8,6 +9,7 @@ const ActClosureModal = memo(function ActClosureModal({
   actClosure: api.ActClosureData
   onDismiss: () => void
 }) {
+  const { t } = useI18n()
   return (
     <div className="fixed inset-0 bg-canvas/80 flex items-center justify-center z-50">
       <div className="bg-surface rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl max-h-[80dvh] flex flex-col">
@@ -41,7 +43,7 @@ const ActClosureModal = memo(function ActClosureModal({
           className="mt-4 w-full py-2 bg-love text-white rounded-lg font-semibold hover:opacity-90 cursor-pointer shrink-0"
           onClick={onDismiss}
         >
-          OK
+          {t('hud.ok')}
         </button>
       </div>
     </div>

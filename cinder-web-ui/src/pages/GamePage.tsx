@@ -12,10 +12,12 @@ import ConfirmDialog from '../components/ConfirmDialog'
 import { themeVars } from '../utils/theme'
 import { usePlay } from '../hooks/usePlay'
 import ActionBar from '../components/ActionBar'
+import { useI18n } from '../i18n'
 
 export default function GamePage() {
   const navigate = useNavigate()
   const { logout } = useAuth()
+  const { t } = useI18n()
   const play = usePlay()
   const {
     uiSnapshot,
@@ -175,12 +177,12 @@ export default function GamePage() {
         if (!allowShortcut) return
 
         const num = parseInt(e.key, 10)
-        const actions = uiSnapshot?.action_bar_actions ?? [
-          { id: 'look', label: 'Look', shortcut: 1 },
-          { id: 'move', label: 'Move', shortcut: 2 },
-          { id: 'follow', label: 'Follow', shortcut: 3 },
+        const fallbackActions = [
+          { id: 'look', label: t('hud.actionLook'), shortcut: 1 },
+          { id: 'move', label: t('hud.actionMove'), shortcut: 2 },
+          { id: 'follow', label: t('hud.actionFollow'), shortcut: 3 },
         ]
-
+        const actions: any[] = uiSnapshot?.action_bar_actions ?? fallbackActions
         const hasExplicitShortcuts = actions.some(a => a.shortcut !== undefined)
         const targetAction = hasExplicitShortcuts
           ? actions.find(a => a.shortcut === num)
@@ -264,13 +266,13 @@ export default function GamePage() {
     >
       <header className="sticky top-0 z-10 bg-surface flex items-center justify-between gap-3 px-4 py-3 border-b border-subtle shrink-0">
         <div className="flex items-center gap-2">
-          <button onClick={() => navigate(`/games/pack/${uiSnapshot?.pack_id}`)} className="text-sm text-muted hover:text-text cursor-pointer">&larr; Back</button>
+          <button onClick={() => navigate(`/games/pack/${uiSnapshot?.pack_id}`)} className="text-sm text-muted hover:text-text cursor-pointer">&larr; {t('hud.back')}</button>
           <button
             type="button"
             onClick={openMenu}
             disabled={busy}
             className="text-sm px-2.5 py-1 rounded bg-overlay border border-subtle text-text transition duration-200 hover:brightness-110 active:scale-[0.98] disabled:opacity-50 cursor-pointer"
-          >Menu</button>
+          >{t('hud.menu')}</button>
         </div>
         <div className="flex items-center gap-3">
           <button
@@ -281,11 +283,11 @@ export default function GamePage() {
                 ? 'border-pine/40 text-foam bg-pine/10'
                 : 'border-subtle text-muted hover:text-text'
             }`}
-            title={showSidebar ? 'Hide folio sidebar' : 'Show folio sidebar'}
+            title={showSidebar ? t('hud.hideFolioSidebar') : t('hud.showFolioSidebar')}
           >
-            Folio
+            {t('hud.folio')}
           </button>
-          <button onClick={logout} className="text-sm text-muted transition duration-200 hover:text-love active:scale-[0.98] cursor-pointer">Log out</button>
+          <button onClick={logout} className="text-sm text-muted transition duration-200 hover:text-love active:scale-[0.98] cursor-pointer">{t('hud.logout')}</button>
         </div>
       </header>
 
@@ -294,23 +296,23 @@ export default function GamePage() {
           type="button"
           onClick={() => setShowFolio(true)}
           className="lg:hidden w-full text-left px-4 py-2.5 border-b border-subtle/60 bg-canvas/60 hover:bg-overlay/40 transition-colors cursor-pointer flex items-center justify-between"
-          aria-label="Open status folio"
+          aria-label={t('hud.openStatusFolio')}
         >
           <div className="flex items-center gap-2 text-xs text-muted truncate">
             <span className="font-semibold text-text truncate">{uiSnapshot.current_room_name}</span>
             <span className="text-muted/40 font-mono">&bull;</span>
             <span className="font-mono text-muted shrink-0">
-              Day {uiSnapshot.day_number}{uiSnapshot.time_label ? ` — ${uiSnapshot.time_label}` : ''}
+              {t('hud.day', { day: uiSnapshot.day_number })}{uiSnapshot.time_label ? ` — ${uiSnapshot.time_label}` : ''}
             </span>
             {uiSnapshot.followed_actor_name && (
               <>
                 <span className="text-muted/40 font-mono">&bull;</span>
-                <span className="text-foam truncate">With {uiSnapshot.followed_actor_name}</span>
+                <span className="text-foam truncate">{t('hud.withActor', { name: uiSnapshot.followed_actor_name })}</span>
               </>
             )}
           </div>
           <span className="text-xs font-mono uppercase tracking-widest text-muted/70 pl-2 shrink-0">
-            Folio &rsaquo;
+            {t('hud.folio')} &rsaquo;
           </span>
         </button>
       )}
@@ -378,9 +380,9 @@ export default function GamePage() {
             />
           <ActionBar
             actions={uiSnapshot?.action_bar_actions ?? [
-              { id: 'look', label: 'Look' },
-              { id: 'move', label: 'Move' },
-              { id: 'follow', label: 'Follow' },
+              { id: 'look', label: t('hud.actionLook') },
+              { id: 'move', label: t('hud.actionMove') },
+              { id: 'follow', label: t('hud.actionFollow') },
             ]}
             roomItems={uiSnapshot?.current_room_items}
             hasOverflow={Boolean(uiSnapshot && uiSnapshot.overflow_actions?.length > 0)}
@@ -395,7 +397,7 @@ export default function GamePage() {
           {uiSnapshot?.show_player_input !== false && (
           <div className="border-t border-subtle shrink-0 relative">
               {atSuggestions && atSuggestions.length > 0 && (
-                <div role="listbox" aria-label="Talk to" className="absolute bottom-full left-4 right-4 mb-1">
+                <div role="listbox" aria-label={t('hud.talkTo')} className="absolute bottom-full left-4 right-4 mb-1">
                   <div className="max-w-2xl mx-auto rounded border border-subtle bg-overlay shadow-lg overflow-hidden">
                     {atSuggestions.map((opt, idx) => {
                       const safeIdx = selectedSuggestionIndex < atSuggestions.length ? selectedSuggestionIndex : 0
@@ -433,7 +435,7 @@ export default function GamePage() {
                 <input
                   ref={inputRef}
                   className="flex-1 px-3 py-2 rounded bg-overlay border border-subtle text-text placeholder-faint focus:outline-none focus:border-pine text-sm font-mono"
-                  placeholder={gameOver ? 'The tale has ended.' : 'What do you do?'}
+                  placeholder={gameOver ? t('hud.placeholderEnded') : t('hud.placeholder')}
                   value={input}
                   onChange={e => {
                     const val = e.target.value
@@ -512,7 +514,7 @@ export default function GamePage() {
                   type="submit"
                   disabled={busy || gameOver || !input.trim()}
                   className="px-4 py-2 rounded bg-pine text-surface text-sm font-semibold transition duration-200 hover:brightness-110 active:scale-[0.98] disabled:opacity-50 cursor-pointer"
-                >Send</button>
+                >{t('hud.send')}</button>
               </form>
             </div>
           )}
@@ -549,7 +551,7 @@ export default function GamePage() {
       )}
 
       {showFolio && uiSnapshot && (
-        <Modal title="Traveler’s Folio" onClose={() => setShowFolio(false)}>
+        <Modal title={t('hud.travelersFolio')} onClose={() => setShowFolio(false)}>
           <FolioPanel
             uiSnapshot={uiSnapshot}
             onTakeItem={itemId => void execCommand(`take ${itemId}`)}
@@ -562,7 +564,7 @@ export default function GamePage() {
         <Modal title={activeMenuTitle} onClose={() => setActiveMenu(null)}>
           {activeMenu.max_selections && activeMenu.max_selections > 0 && (
             <p className="text-xs text-muted mb-2">
-              Select up to {activeMenu.max_selections} option{activeMenu.max_selections === 1 ? '' : 's'}
+              {activeMenu.max_selections === 1 ? t('hud.selectUpToOne', { max: activeMenu.max_selections }) : t('hud.selectUpToMany', { max: activeMenu.max_selections })}
               {activeMenu.min_selections && activeMenu.min_selections > 0
                 ? ` (at least ${activeMenu.min_selections})`
                 : ''}
@@ -570,7 +572,7 @@ export default function GamePage() {
             </p>
           )}
           {activeMenu.options.length === 0 ? (
-            <p className="text-muted italic">No options available.</p>
+            <p className="text-muted italic">{t('hud.noOptions')}</p>
           ) : (
             activeMenu.options.map((opt, i) => {
               const isMultiSelect = (activeMenu.max_selections ?? 0) > 0
@@ -615,12 +617,12 @@ export default function GamePage() {
           {(activeMenu.max_selections ?? 0) > 0 && (
             <button
               onClick={async () => {
-                await execCommand('done', 'Done')
+                await execCommand('done', t('hud.done'))
               }}
               disabled={busy || menuSelections.size === 0}
               className="mt-3 w-full px-3 py-2 rounded bg-pine text-surface text-sm font-semibold transition duration-200 hover:brightness-110 active:scale-[0.98] disabled:opacity-50 cursor-pointer"
             >
-              Done
+              {t('hud.done')}
             </button>
           )}
         </Modal>
@@ -643,8 +645,8 @@ export default function GamePage() {
 
       {showExitConfirm && (
         <ConfirmDialog
-          title={uiSnapshot?.ui_text?.exit_confirm_title || 'Leave Chronicle?'}
-          message={uiSnapshot?.ui_text?.exit_confirm_body || 'Return to the library? Your journey is saved.'}
+          title={uiSnapshot?.ui_text?.exit_confirm_title || t('hud.leaveChronicle')}
+          message={uiSnapshot?.ui_text?.exit_confirm_body || t('hud.leaveBody')}
           onConfirm={() => navigate('/games')}
           onCancel={() => setShowExitConfirm(false)}
         />
