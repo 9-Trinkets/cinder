@@ -18,7 +18,7 @@ pub(super) use overflow::build_overflow_actions;
 pub(super) use runtime::{
     build_active_menu, build_interactable_labels, build_look_options, build_talk_options,
 };
-pub(super) use shared::{panel_config_data, title_case};
+pub(super) use shared::{msg, msg_fmt, panel_config_data, title_case};
 
 #[cfg(test)]
 mod panel_tests;

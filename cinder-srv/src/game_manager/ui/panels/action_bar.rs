@@ -1,5 +1,5 @@
 use super::super::{ActionBarAction, PanelOptionData, PartyMember, droppable_inventory_items};
-use super::{panel_config_data, title_case};
+use super::{msg, msg_fmt, panel_config_data, title_case};
 use cinder_core::content::types::ContentPack;
 use cinder_core::engine::state::WorldState;
 use cinder_core::engine::turn_policies::action_is_available;
@@ -58,7 +58,7 @@ pub(crate) fn build_action_bar_items(
         for (item_id, _) in &loose {
             let title = title_case(content.item_label(item_id));
             let subtitle = if has_companion_items {
-                Some("On the ground".to_string())
+                Some(msg(content, "ui.on_the_ground", "On the ground"))
             } else {
                 None
             };
@@ -80,7 +80,12 @@ pub(crate) fn build_action_bar_items(
                 options.push(PanelOptionData {
                     id: format!("member_inv:{}:{item_ref}", member.id),
                     title: title_case(&item.label),
-                    subtitle: Some(format!("From {}", member.label)),
+                    subtitle: Some(msg_fmt(
+                        content,
+                        "ui.from_actor",
+                        &format!("From {}", member.label),
+                        &[("actor", &member.label)],
+                    )),
                     command: Some(format!("take {item_ref} from {}", member.id)),
                     disabled: false,
                     selected: false,
@@ -93,7 +98,12 @@ pub(crate) fn build_action_bar_items(
                 options.push(PanelOptionData {
                     id: format!("member_equip:{}:{item_ref}", member.id),
                     title: title_case(&item.label),
-                    subtitle: Some(format!("From {} ({})", member.label, item.slot)),
+                    subtitle: Some(msg_fmt(
+                        content,
+                        "ui.from_actor_equipped",
+                        &format!("From {} ({})", member.label, item.slot),
+                        &[("actor", &member.label), ("slot", &item.slot)],
+                    )),
                     command: Some(format!("take {item_ref} from {}", member.id)),
                     disabled: false,
                     selected: false,
@@ -215,14 +225,27 @@ pub(crate) fn build_use_panel_options(
                     (title_case(label), None)
                 }
             } else if item_id.ends_with("-scroll") || label.ends_with("scroll") {
-                (format!("Read {}", title_case(label)), None)
+                (
+                    msg_fmt(
+                        content,
+                        "ui.read_item",
+                        &format!("Read {}", title_case(label)),
+                        &[("item", &title_case(label))],
+                    ),
+                    None,
+                )
             } else {
                 (title_case(label), None)
             };
 
             let count = state.item_count(&item_id);
             let title = if count > 1 {
-                format!("{title} ×{count}")
+                msg_fmt(
+                    content,
+                    "ui.item_times",
+                    &format!("{title} ×{count}"),
+                    &[("title", &title), ("count", &count.to_string())],
+                )
             } else {
                 title
             };

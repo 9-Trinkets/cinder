@@ -2,7 +2,7 @@ use cinder_core::content::types::ContentPack;
 use cinder_core::engine::state::WorldState;
 use std::collections::BTreeSet;
 
-use super::{PanelOptionData, title_case};
+use super::{PanelOptionData, msg_fmt, title_case};
 
 /// Builds one bounded equipment picker from held and equipped items.
 pub(crate) fn build_equipment_panel_options(
@@ -24,7 +24,12 @@ pub(crate) fn build_equipment_panel_options(
         options.push(PanelOptionData {
             id: format!("unequip:{item_id}"),
             title: title_case(&item.label),
-            subtitle: Some(format!("Unequip: {}", item.occupied_slots().join(" + "))),
+            subtitle: Some(msg_fmt(
+                content,
+                "ui.unequip_slots",
+                &format!("Unequip: {}", item.occupied_slots().join(" + ")),
+                &[("slots", &item.occupied_slots().join(" + "))],
+            )),
             command: Some(format!("unequip {item_id}")),
             disabled: false,
             selected: false,
@@ -53,14 +58,24 @@ pub(crate) fn build_equipment_panel_options(
                 .map(|id| content.item_label(id).to_string())
                 .collect::<Vec<_>>()
                 .join(", ");
-            format!(" | replaces {labels}")
+            msg_fmt(
+                content,
+                "ui.equip_replaces",
+                &format!(" | replaces {labels}"),
+                &[("labels", &labels)],
+            )
         };
         options.push(PanelOptionData {
             id: format!("equip:{item_id}"),
             title: title_case(&item.label),
-            subtitle: Some(format!(
-                "Equip: {}{replacement}",
-                item.occupied_slots().join(" + ")
+            subtitle: Some(msg_fmt(
+                content,
+                "ui.equip_slots",
+                &format!("Equip: {}{replacement}", item.occupied_slots().join(" + ")),
+                &[
+                    ("slots", &item.occupied_slots().join(" + ")),
+                    ("replacement", &replacement),
+                ],
             )),
             command: Some(format!("equip {item_id}")),
             disabled: false,

@@ -1,4 +1,5 @@
 use super::super::PanelConfigData;
+use cinder_core::content::types::ContentPack;
 use cinder_core::content::types::PanelConfig;
 
 pub(crate) fn panel_config_data(pc: &PanelConfig) -> PanelConfigData {
@@ -31,4 +32,21 @@ pub(crate) fn title_case(s: &str) -> String {
         }
     }
     result
+}
+
+pub(crate) fn msg(content: &ContentPack, key: &str, fallback: &str) -> String {
+    content
+        .render_message(key, &[])
+        .unwrap_or_else(|| fallback.to_string())
+}
+
+pub(crate) fn msg_fmt(
+    content: &ContentPack,
+    key: &str,
+    fallback: &str,
+    replacements: &[(&str, &str)],
+) -> String {
+    content
+        .render_message(key, replacements)
+        .unwrap_or_else(|| fallback.to_string())
 }

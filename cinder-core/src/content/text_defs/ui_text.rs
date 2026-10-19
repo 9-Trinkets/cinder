@@ -152,6 +152,16 @@ pub struct UiTextDefinition {
     /// Verb label for the generic `drop <item>` action/panel.
     #[serde(default = "default_drop_label")]
     pub drop_label: String,
+    #[serde(default = "default_give_label")]
+    pub give_label: String,
+    #[serde(default = "default_give_panel_title")]
+    pub give_panel_title: String,
+    #[serde(default = "default_equipment_label")]
+    pub equipment_label: String,
+    #[serde(default = "default_equipment_prompt")]
+    pub equipment_prompt: String,
+    #[serde(default = "default_give_prompt")]
+    pub give_prompt: String,
     #[serde(default)]
     pub act_closure: ActClosureDefinition,
     #[serde(default)]
@@ -461,4 +471,24 @@ pub(super) fn default_use_label() -> String {
 
 pub(super) fn default_drop_label() -> String {
     "Drop".to_string()
+}
+
+pub(super) fn default_give_label() -> String {
+    "Give".to_string()
+}
+
+pub(super) fn default_give_panel_title() -> String {
+    "Give to Companion".to_string()
+}
+
+pub(super) fn default_equipment_label() -> String {
+    "Equipment".to_string()
+}
+
+pub(super) fn default_equipment_prompt() -> String {
+    "Choose an item to equip or stow.".to_string()
+}
+
+pub(super) fn default_give_prompt() -> String {
+    "Choose an item to give".to_string()
 }

@@ -243,7 +243,7 @@ fn build_deploy_targets_for_player(
                 .unwrap_or_else(|| room_id.clone());
             let is_current = *room_id == state.current_room_id;
             let subtitle = if is_current {
-                Some("Current room".to_string())
+                Some(super::msg(content, "ui.current_room", "Current room"))
             } else {
                 None
             };
@@ -264,7 +264,7 @@ fn build_deploy_targets_for_player(
         targets.push(DeployTargetInfo {
             id: state.current_room_id.clone(),
             title,
-            subtitle: Some("Current room".to_string()),
+            subtitle: Some(super::msg(content, "ui.current_room", "Current room")),
         });
     }
 
@@ -338,8 +338,12 @@ pub(super) fn build_party_order_panels(
         let deploy_options: Vec<PanelOptionData> = if deploy_targets.is_empty() {
             vec![PanelOptionData {
                 id: "none".to_string(),
-                title: "No destinations available".to_string(),
-                subtitle: Some("Explore the floor to unlock deployment positions".to_string()),
+                title: super::msg(content, "ui.no_destinations", "No destinations available"),
+                subtitle: Some(super::msg(
+                    content,
+                    "ui.explore_for_deploy",
+                    "Explore the floor to unlock deployment positions",
+                )),
                 command: None,
                 disabled: true,
                 selected: false,

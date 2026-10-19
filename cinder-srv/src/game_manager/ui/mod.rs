@@ -14,6 +14,7 @@ use cinder_core::engine::state::{GamePhase, WorldState};
 use super::response;
 
 use self::minimap::build_minimap;
+pub(crate) use self::panels::shared::msg;
 use self::panels::{
     build_action_bar_items, build_active_menu, build_drop_panel_options,
     build_equipment_panel_options, build_interactable_labels, build_look_options,

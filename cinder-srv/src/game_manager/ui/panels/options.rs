@@ -1,5 +1,5 @@
 use super::super::{PanelOptionData, PanelOptionGroups, UiContext};
-use super::title_case;
+use super::{msg, msg_fmt, title_case};
 use cinder_core::content::types::{
     ActionDefinition, CommandEffect, ContentPack, ItemStorageTarget, PanelDataSource,
 };
@@ -192,11 +192,24 @@ pub(crate) fn craftable_item_panel_options(
                     let subtitle = if already_traced {
                         Some(content.ui_text.trace_mark_present_label.clone())
                     } else if at_instance_limit {
-                        Some("Max summons active".to_string())
+                        Some(msg(content, "ui.craft_max_summons", "Max summons active"))
                     } else if insufficient_mp {
-                        Some(format!("{mp_cost} MP (have {player_mp})"))
+                        Some(msg_fmt(
+                            content,
+                            "ui.craft_mp_of",
+                            &format!("{mp_cost} MP (have {player_mp})"),
+                            &[
+                                ("mp", &mp_cost.to_string()),
+                                ("mp_max", &player_mp.to_string()),
+                            ],
+                        ))
                     } else if mp_cost > 0 {
-                        Some(format!("{mp_cost} MP"))
+                        Some(msg_fmt(
+                            content,
+                            "ui.craft_mp",
+                            &format!("{mp_cost} MP"),
+                            &[("mp", &mp_cost.to_string())],
+                        ))
                     } else {
                         None
                     };
@@ -227,17 +240,26 @@ pub(crate) fn craftable_item_panel_options(
 
                 if !trace_in_room.is_empty() {
                     let title = if trace_in_room.len() == 1 {
-                        format!(
-                            "Erase {}",
-                            title_case(content.item_label(&trace_in_room[0]))
+                        msg_fmt(
+                            content,
+                            "ui.erase_sigil_one",
+                            &format!(
+                                "Erase {}",
+                                title_case(content.item_label(&trace_in_room[0]))
+                            ),
+                            &[("item", &title_case(content.item_label(&trace_in_room[0])))],
                         )
                     } else {
-                        "Erase Sigils".to_string()
+                        msg(content, "ui.erase_sigils_many", "Erase Sigils")
                     };
                     options.push(PanelOptionData {
                         id: "erase".to_string(),
                         title,
-                        subtitle: Some("Wipe chalk marks from this room".to_string()),
+                        subtitle: Some(msg(
+                            content,
+                            "ui.erase_sigil_help",
+                            "Wipe chalk marks from this room",
+                        )),
                         command: Some("erase".to_string()),
                         disabled: false,
                         selected: false,
@@ -247,8 +269,12 @@ pub(crate) fn craftable_item_panel_options(
                 } else {
                     options.push(PanelOptionData {
                         id: "erase".to_string(),
-                        title: "Erase Sigil".to_string(),
-                        subtitle: Some("No sigils in this room".to_string()),
+                        title: msg(content, "ui.erase_sigil_empty_title", "Erase Sigil"),
+                        subtitle: Some(msg(
+                            content,
+                            "ui.erase_sigil_none",
+                            "No sigils in this room",
+                        )),
                         command: None,
                         disabled: true,
                         selected: false,

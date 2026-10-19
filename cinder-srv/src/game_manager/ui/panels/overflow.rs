@@ -41,6 +41,11 @@ enum TextSource {
     TakeLabel,
     UseLabel,
     DropLabel,
+    GiveLabel,
+    GivePanelTitle,
+    EquipmentLabel,
+    GivePrompt,
+    EquipmentPrompt,
     Literal(&'static str),
 }
 
@@ -50,6 +55,11 @@ impl TextSource {
             TextSource::TakeLabel => ui_text.take_label.clone(),
             TextSource::UseLabel => ui_text.use_label.clone(),
             TextSource::DropLabel => ui_text.drop_label.clone(),
+            TextSource::GiveLabel => ui_text.give_label.clone(),
+            TextSource::GivePanelTitle => ui_text.give_panel_title.clone(),
+            TextSource::EquipmentLabel => ui_text.equipment_label.clone(),
+            TextSource::GivePrompt => ui_text.give_prompt.clone(),
+            TextSource::EquipmentPrompt => ui_text.equipment_prompt.clone(),
             TextSource::Literal(text) => text.to_string(),
         }
     }
@@ -97,11 +107,11 @@ const GENERIC_ITEM_ACTIONS: &[GenericItemAction] = &[
     },
     GenericItemAction {
         id: "give",
-        label: TextSource::Literal("Give"),
+        label: TextSource::GiveLabel,
         usage: "give <item> to <companion>",
         panel: "give",
-        panel_title: TextSource::Literal("Give to Companion"),
-        prompt: TextSource::Literal("Choose an item to give"),
+        panel_title: TextSource::GivePanelTitle,
+        prompt: TextSource::GivePrompt,
         group: "items",
         data_source: PanelDataSource::InventoryItems,
         anchor: InsertAnchor::Before(&["drop"]),
@@ -119,11 +129,11 @@ const GENERIC_ITEM_ACTIONS: &[GenericItemAction] = &[
     },
     GenericItemAction {
         id: "equipment",
-        label: TextSource::Literal("Equipment"),
+        label: TextSource::EquipmentLabel,
         usage: "equip <item> / unequip <item>",
         panel: "equipment",
-        panel_title: TextSource::Literal("Equipment"),
-        prompt: TextSource::Literal("Choose an item to equip or stow."),
+        panel_title: TextSource::EquipmentLabel,
+        prompt: TextSource::EquipmentPrompt,
         group: "",
         data_source: PanelDataSource::InventoryItems,
         anchor: InsertAnchor::End,

@@ -70,5 +70,10 @@
   "shell_menu_title": "選單",
   "things_to_do_empty": "唯一往前的方法，是往黑暗更深處走。",
   "things_to_do_label": "待辦事項",
-  "trace_mark_present_label": "這裡已描過紋"
+  "trace_mark_present_label": "這裡已描過紋",
+  "give_label": "給予",
+  "give_panel_title": "交給隊友",
+  "equipment_label": "裝備",
+  "equipment_prompt": "選擇要裝備或收起的物品。",
+  "give_prompt": "選擇要送出的物品"
 }
