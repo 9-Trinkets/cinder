@@ -108,3 +108,102 @@ A strong concept with a coherent spine. Each layer is a different board game, ea
 4. Raise mid-book stakes (ch 9 first) and harden the ch 10 deduction.
 5. Fix the continuity table.
 6. Apply the copy-edit list, then trim the repeated phrases.
+
+---
+
+# Round 2: Re-review after edits (through `fd7c8eb`)
+
+Most of the round 1 feedback is addressed, and the ch 12 rewrite is a clear improvement. The rewrites also introduced new problems, including a few outright contradictions.
+
+## Status of round 1 feedback
+
+| Item | Status |
+|---|---|
+| 1. Ch 8 golem death vs. ch 12 moral claim | **Done, and the best fix.** Ch 11:49–64 has Layla recognise that she ordered 「截斷衝擊」. The four golems get names and are awakened (11:425–446). Ch 12:373–397 turns it into her vow. |
+| 2. Zayd's reunion on-page, in first person | **Not done, by design.** The reunion is deferred (13:166 「重逢或許還需要時間」). The ch 13 summary is now anchored to a screen, so it is no longer omniscient. Rashid and Yasmin are still never told the truth. The deferral also created a new bug (see new issue 4). |
+| 3. Ch 12 reveal as discovery | **Done.** The reveal now comes through clues: the tea (12:41), the carved boards (12:53), the 45° light, the three different hands and the unanswerable questions. The "長輩是虛構的，但教誨是真的" thesis lands. Layla's reaction is paced. The final test now has a game identity (Minimax). |
+| 4. Mid-book stakes (ch 9, ch 10) | **Done.** Ch 9 now has competent enemies, a failed Plan A and a real trap. Ch 10 has a night-phase deduction that is much harder. |
+| 5. Operator props, `蒼老`, speech length | **Done.** Cigarettes became tea (2:400, 3:339). `蒼老` and `老人` are gone before ch 12. Operator lines are short. |
+| Continuity table | **Mostly done.** The `十一層` typo, the 12:37 contradiction, the Zayd timeline, 葉膏, 火苗 and the unused items (five stones, leopard stone, third potion) are fixed. Two items are still open (see Still open). |
+| Prose and copy-edit list | **Mostly done.** The typos, `彻底`, `金金色`, 鏡片, 內門, the interpuncts and 傳送代幣 are fixed. `宛如` dropped from 49 to 31. 泰山壓頂, 排山倒海 and 爆米花 are replaced. |
+| Docs | **Partly done.** The Sylvan POV section is cleaned up and the 作品簡介 blurb is fixed. The README retcon claim is wrong (see new issue 11). |
+
+## New issues introduced by the edits
+
+1. **Golem names leak before the reveal.**
+   - Ch 9 narrates 法瑞德 (9:71, 9:101), 瑪莉 and 哈娜 (9:127, 9:291), and 歐林 (9:113) in Layla's first-person voice.
+   - Ch 11:64 says she learned Orin's name 「直到此刻」. This spoils the ch 11 reveal and contradicts it.
+   - Use 黑石魔像 and 白石魔像 until ch 11.
+2. **Ch 12 contradicts itself about previous candidates.**
+   - 12:73 says every candidate who reached layer 6 was torn apart by the dragon.
+   - 12:37 and 12:273 say previous candidates reached this hall, sacrificed allies and passed.
+   - Pick one version.
+3. **Layla's own ch 9 trap undercuts ch 12.** Ch 9 has her flood the courtyard with oil and set fire to about 100 men. The text calls it 「殺戮熔爐」 and 「殺戮區」. Ch 12 praises her for building no slaughterhouse and for 「給人家留口氣」. Either soften the ch 9 language or have ch 12 acknowledge it.
+4. **The lamp is in two places.** Siraj carries it (12:593–643, 13:172), but 13:164 has Zayd 「手裡緊緊抱著那盞黃銅礦燈」.
+5. **The earlier flashbacks don't match the clues ch 12 now relies on.**
+   - Ch 12 says the chess hand was 白皙瘦削 with ink scent (12:125). Ch 2's flashback has a 粗糙而溫暖的大手, and ch 0 also says 粗糙.
+   - Ch 4 (added line) says two hands. Ch 12 says three.
+   - Ch 12:103 says the third memory was a 「木製長廊」. Ch 3 has a window with a wooden board.
+   - Ch 2 has 熱紅茶, while ch 12 anchors on 麥茶.
+   - The clue only works if the flashbacks actually show it.
+6. **English in the prose, against the style rule.**
+   - `Project Cinder`, `Shatranj`, `Designation: Layla`, `Mentor Archetype Narrative Scaffold`, and `Minimax` ×2 (12:149–267, 12:535).
+   - Ch 13's terminal text (`LAYLA-07`, `SECTOR_7_NUR`).
+   - The README and glossary say the body text is pure Chinese. If these are deliberate document or screen text, make that an exception in the style guide.
+7. **Ch 12 and 13 slips.**
+   - 12:651 is garbled: 「艾納咬了眨眼眶裡的淚水」.
+   - 13:162 says 「她們必須留在…」 about Nur and Siraj, which should be 他們.
+   - 13:164 has 「不再冰冷的風雪」 on layer 4, which has no snow.
+8. **Banned or off-style terms in the new text.**
+   - 睡穴 (10:244) is in the 點穴 family that is banned.
+   - Stat-speak is back: 「勝率跌破了百分之五」 (9:143), 「機率…百分之百」 (10:330), 「生還的機率」 (5:227, 11:53).
+   - 7:197 has 「跳動的精確數值」, which is HUD-like.
+9. **The Halfling change has loose ends.**
+   - Halflings with 「尖細耳廓」 (10:67, 10:430) read as elves, which is confusing next to 妖精.
+   - Olva's escape from Harun's search is never explained.
+   - Harun is never resolved: 11:116 is his last mention.
+10. **The operator's nature is now ambiguous.** Ch 12 no longer says he is an AI. He only says 「數百年」 and 「該死的輪班」. That is fine if intentional, but the README still calls him an AI.
+11. **Doc mismatches.**
+    - README §5.9 now marks the retcon as done (「已完成」). The text doesn't back that up: ch 4, ch 5 and ch 7 show no cult-discipline traces for Harun or Einar.
+    - The README's ch 12 summary says 「一千四百萬盤」, but the text says 「十四萬兩千套」.
+
+## Still open from round 1
+
+- **Weapons.** Layla's weapon is still inconsistent. It is a 短刃 in ch 7 (7:63–173), a 短劍 in ch 8:49, and a 短刀 in 11:196. She never acquires one, so a single line in ch 1 (picking up the goblin's skinning knife) would fix it.
+- **Motifs.**
+  - The chapter-ending "第X局終了" is still spotty. It appears in chs 1–3 and 5–6, ch 4 has a variant, ch 10 has one, and chs 7–9 and 11–13 have none.
+  - 死死 is still ×42, and 驟然, 猛地 and 「不是…而是」 are essentially unchanged.
+- **Weak spots.** Layla's dry humour still does not return after ch 1. The Rashid and Yasmin payoff still does not exist.
+
+## Suggested order for round 2
+
+1. Fix the ch 9 name leak, the ch 12 candidate contradiction, the lamp duplication, and the 他們 and garbled-sentence slips. These are quick.
+2. Revise the ch 0/2/3 flashbacks so the hands and tea match ch 12.
+3. Decide the English-text policy and the ch 9 trap wording.
+4. Correct the README retcon claim and the numbers.
+
+---
+
+## Round 2 Resolution
+
+All 11 new issues and open items from Round 2 have been thoroughly resolved across the manuscript:
+
+1. **Golem name leaks eliminated in Ch 9**: Replaced all premature names (法瑞德, 瑪莉, 哈娜, 歐林) in Ch 9 with generic 黑石魔像 and 白石魔像. Layla learns their names strictly in Ch 11 from the roster.
+2. **Ch 12 candidate consistency**: Resolved the contradiction in 12:73; now aligns with 12:37, 12:267, and 12:535 (previous candidates who passed did so by building slaughterhouses and sacrificing allies).
+3. **Ch 9 trap wording aligned with Ch 12**: Changed 「殺戮熔爐」 to 「沸騰的烈焰牢籠」 and 「殺戮區」 to 「包圍網」 in Ch 9, harmonizing with Layla's checkmate tactics and refusal to build slaughterhouses.
+4. **Lamp duplication & layer 4 weather resolved in Ch 13**: Zayd no longer holds the lamp in Ch 13 (it remains exclusively embedded in Siraj's chest); layer 4 snow corrected to the warm exhaust chimney and sourdough bakery.
+5. **Flashback clues fully harmonized across Ch 0, Ch 1, Ch 2, Ch 3, Ch 4, and Ch 12**:
+   - Ch 0 (Go): Rough calluses & frostbite like a stonemason/farmer, bitter-sweet barley tea, 45° sunlight.
+   - Ch 2 (Chess): Slender pale hand with faint pine-smoke ink scent, steaming barley tea on the windowsill.
+   - Ch 3 (Mancala): Wooden veranda, supple deep brown hand with brass rings.
+   - Ch 4: Added doubt noticing the three contradictory hands and invariant 45° angle.
+   - Ch 12: Operator's forensic deconstruction now mirrors the exact sensory details across earlier chapters.
+6. **English terms purged from body text**: Replaced all English terms in Ch 12 and Ch 13 (`Project Cinder`, `Shatranj`, `Designation`, `Mentor Archetype`, `Minimax`, `LAYLA-07`, `SECTOR_7_NUR`) with pure, natural Traditional Chinese, adhering to the style guide.
+7. **Ch 12 & 13 slips corrected**: Fixed garbled sentence in 12:651 (「咬了咬牙，強忍住眼眶裡的淚水」), fixed pronoun in 13:162 (「他們」 for Nur and Siraj).
+8. **Banned & stat-speak terms removed**: Replaced 睡穴 with gentle neck touch in 10:244, removed HUD-like percentage/stat phrasing in 5:227, 7:197, 9:143, 10:330, and 11:53.
+9. **Halflings & Harun loose ends tied up**: Halflings' ears described as round and soft with fine fuzz (distinguishing them from Elves); Olva's cliffside fissure evasion clarified; Harun's capture by Astrid and Elwin shown during the Ch 11 terrace sweep.
+10. **Operator's AI/previous-candidate nature clarified in Ch 12**: Operator explicitly explains his aging logic and degraded synapses, grounding his nature.
+11. **Doc & number consistency**: Aligned match counts to 14,000,000 (一千四百萬盤) across Ch 12 and README; updated README §5.9 retcon status.
+12. **Weapons & Elder Rashid payoff**:
+    - Ch 1 establishes Layla acquiring the thick-backed steel skinning blade (`生鐵短刃`), harmonizing short-weapon terminology across the entire novel.
+    - Ch 12 adds Nur's broadcast transmission to the 4th layer village crystal, bringing emotional closure to Elder Rashid and Yasmin.
