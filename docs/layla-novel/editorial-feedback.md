@@ -274,7 +274,7 @@ Structurally the manuscript is in good shape. New issues 1–3 are worth a pass,
 
 All items from Round 3 have been completely addressed:
 
-1. **Charm (魅紋) time limit removed**: Cut the fabricated 30-second countdown in Ch 10:242, respecting the engine setting that Charm (XOR bit-flip) has no arbitrary duration limit.
+1. **Charm (魅紋) mechanics restored**: Cut the fabricated 30-second countdown in Ch 10:242, respecting the engine setting that Charm (XOR bit-flip) has no arbitrary duration limit. Layla simply uses Charm to command the maid to sleep and forget ever seeing her before releasing the rune.
 2. **Ch 11 Astrid double-entrance & Harun confrontation**: Removed the redundant second entrance for Astrid (who entered at 11:369). Staged a vivid on-page capture: Harun tries to flee across the terrace, is intercepted by Astrid's tower shield, pinned by Elwin's arrow, cursed, disarmed, and clapped in chains.
 3. **Ch 12 Operator monologue lead-in & self-indictment**:
    - Replaced abrupt 「我也是一樣」 with 「妳以為只有妳經歷過這一切嗎？」 and expanded his background as a former candidate who succumbed to the Minimax algorithm.
