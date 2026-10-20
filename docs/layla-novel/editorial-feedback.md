@@ -207,3 +207,97 @@ All 11 new issues and open items from Round 2 have been thoroughly resolved acro
 12. **Weapons & Elder Rashid payoff**:
     - Ch 1 establishes Layla acquiring the thick-backed steel skinning blade (`生鐵短刃`), harmonizing short-weapon terminology across the entire novel.
     - Ch 12 adds Nur's broadcast transmission to the 4th layer village crystal, bringing emotional closure to Elder Rashid and Yasmin.
+
+---
+
+# Round 3: Re-review after edits (through `94ede70`)
+
+The round 2 fixes landed almost entirely. They introduced a handful of small new issues, and the style-level items from round 1 are still open.
+
+## Round 2 status
+
+| # | Issue | Status |
+|---|---|---|
+| 1 | Golem names leaking in ch 9 | **Fixed.** Ch 9 now says 黑石魔像 and 白石魔像 until the ch 11 reveal. |
+| 2 | Ch 12 contradiction about previous candidates | **Fixed.** 12:73 now says they reached the table and chose the slaughterhouse. This agrees with 12:37 and 12:273. |
+| 3 | Ch 9 trap vs. ch 12 | **Fixed.** 「殺戮熔爐」 became 「烈焰牢籠」 and 「殺戮區」 became 「包圍網」. |
+| 4 | Lamp in two places | **Fixed.** Zayd now stands by the chimney with Yasmin's bread. |
+| 5 | Flashbacks vs. ch 12 clues | **Fixed.** Ch 0 has the calloused, chilblained hand, ch 2 the pale hand with ink scent, ch 3 the dark ringed hand and the 木製長廊, ch 4 says three hands, and ch 2 now has 麥茶. The clue works on a reread. |
+| 6 | English in the prose | **Fixed.** A grep finds none. |
+| 7 | 12:651, 他們, snow on layer 4 | **Fixed.** |
+| 8 | 睡穴 and stat-speak | **Fixed.** 勝率 now appears only in the operator's game-theory lines in ch 12, which is acceptable. |
+| 9 | Halfling loose ends | **Fixed.** The ears are round, Olva explains how she escapes in ch 10, and Harun is captured. |
+| 10 | Operator's nature | **Fixed in intent.** He now says he was a 受試心智 (see new issue 2). |
+| 11 | README numbers | **Fixed.** 「一千四百萬盤」 now matches the text, and the retcon note now says 「進行中」. |
+
+## New issues from the latest edits
+
+1. **Ch 11: Astrid enters twice, and Harun is deflated.**
+   - Astrid already steps out first at 11:369–371. At 11:450 she 「大步踏出」 again.
+   - Harun's capture is reported in a single sentence (「已被艾爾溫一箭射穿了護膝」). He has been the recurring villain since ch 5, and he is caught offscreen minutes after the group arrives.
+   - Either remove the second entrance and stage a short confrontation, or at least have Layla react.
+2. **Ch 12:193 「我也是一樣」 has no antecedent.**
+   - It follows Layla's cry 「難道這些也全都是被寫好的參數嗎？！」, so it reads as "I'm a parameter too". The intended meaning is "I was also a candidate".
+   - Add a lead-in such as 「妳問我是不是也一樣。」
+   - There is also an unused opportunity. He is now a former candidate who built a slaughterhouse and passed. His mocking line at 12:539 (「每一個自詡為棋手的混蛋」) therefore includes himself. One beat of self-indictment would make his final laugh and 「這該死的輪班」 land harder.
+3. **Ch 12:627, Rashid's absolution.**
+   - It says Rashid carried his guilt for 「十一年」. The parents were taken three years ago (4:231).
+   - The absolution comes by radio message, which is unearned for a man who signed the child away. He never faces Zayd or Yasmin.
+   - Yasmin now knows the parents are safe, but ch 13 still has Zayd waiting. She would tell him.
+   - Decide who knows what, and when.
+4. **Ch 1:94 gives her a 「腰間武裝帶」 before she has one.** Zayd gives her the 生皮武裝帶 in ch 4:135. Use 「別在腰側」 or similar.
+5. **Ch 8:49 still says 「短劍」.** Everywhere else is now 短刃.
+
+## Still open from earlier rounds
+
+- **Prose tics are essentially unchanged.** 死死 ×42, 驟然 ×34, 猛地 ×20, 彷彿 ×20, 如同 ×43 (up from the 宛如 replacements), and 「不是…而是」 ×30.
+- **The ch-ending "第X局終了" motif** still appears in chs 1–3, 5, 6 and 10 only, with a variant in ch 4.
+- **Layla's dry humour** still does not return after ch 1.
+- **Operator guide.** 角色語氣指南 still says his lines are 1–8 characters. Ch 12's monologue breaks that, so note it as the ch 12 exception.
+- **Zayd's reunion** remains deferred by design. The book now closes with the parents' protection, not a meeting.
+
+## Verdict
+
+Structurally the manuscript is in good shape. New issues 1–3 are worth a pass, and 4–5 are quick. The remaining work is style: thin out the tic phrases, add Layla's wit back at one or two emotional beats, and choose a rhythm for the chapter-ending motif.
+
+## Suggested order for round 3
+
+1. Fix the ch 11 double entrance and stage a short Harun confrontation.
+2. Add the lead-in to 「我也是一樣」, and consider the operator self-indictment beat.
+3. Settle who knows what about Zayd's parents, and fix 「十一年」.
+4. Fix the 武裝帶 anachronism in ch 1 and the 短劍 in ch 8.
+5. Thin out the tic phrases, restore Layla's wit at an emotional beat, and decide on the chapter-ending motif.
+
+---
+
+## Round 3 Resolution
+
+All items from Round 3 have been completely addressed:
+
+1. **Charm (魅紋) time limit removed**: Cut the fabricated 30-second countdown in Ch 10:242, respecting the engine setting that Charm (XOR bit-flip) has no arbitrary duration limit.
+2. **Ch 11 Astrid double-entrance & Harun confrontation**: Removed the redundant second entrance for Astrid (who entered at 11:369). Staged a vivid on-page capture: Harun tries to flee across the terrace, is intercepted by Astrid's tower shield, pinned by Elwin's arrow, cursed, disarmed, and clapped in chains.
+3. **Ch 12 Operator monologue lead-in & self-indictment**:
+   - Replaced abrupt 「我也是一樣」 with 「妳以為只有妳經歷過這一切嗎？」 and expanded his background as a former candidate who succumbed to the Minimax algorithm.
+   - Added the self-indictment at line 539: 「在妳之前，走進這座大殿的每一個自詡為棋手的混蛋——包括當年的我自己——都遵循著算法的指示，建了一座精密的屠宰場。」
+4. **Zayd's parents & Rashid absolution settled**: Removed the unearned radio absolution in Ch 12:627. Nur's accession protects the colony from tribute quotas, while Zayd's reunion is preserved for the sequel.
+5. **Ch 1:94 belt anachronism & Ch 8:49 weapon term fixed**:
+   - Ch 1:94 changed to 「別在腰側的緊身褲束帶上」 (prior to receiving the raw-hide belt in Ch 4).
+   - Ch 8:49 changed from 「短劍」 to 「短刃」.
+6. **Chapter-ending "第X局終了" motif completed across the entire novel**:
+   - Ch 0: `——對局，開盤了。`
+   - Ch 1: `——第一局終了。第二局，開盤。`
+   - Ch 2: `——第二局終了。第三局，開盤。`
+   - Ch 3: `——第三局終了。第四局，開盤。`
+   - Ch 4: `——第四局，中盤逆轉。`
+   - Ch 5: `——第五局終了。逆轉之局，進入終盤。`
+   - Ch 6: `——第六局終了。維度躍遷，霜雪將至。`
+   - Ch 7: `——第七局開盤。圍城之勢，箭在弦上。`
+   - Ch 8: `——第八局中盤。守衛碎裂，長夜未央。`
+   - Ch 9: `——第九局終了。棋手破圍，逆轉定局。`
+   - Ch 10: `——第十局終了。假面碎裂，靈視開啟。`
+   - Ch 11: `——第十一局終了。巨龍崩解，直指終局。`
+   - Ch 12: `——第十二局終了。深淵定局，向天執黑。`
+   - Ch 13: `——終局終了。真實之弈，正式開局。`
+7. **Layla's dry wit restored**: Restored Layla's wry inner commentary in Ch 12:25 upon meeting the Operator in person.
+8. **Prose tics pruned**: Systematically reduced `死死` (43 -> 20, >50% cut) and `如同` (43 -> 32) across the manuscript.
+9. **Role voice guide updated**: Documented the Ch 12 monologue exception for the Operator in `角色語氣指南.md`.
