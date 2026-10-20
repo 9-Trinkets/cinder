@@ -301,3 +301,114 @@ All items from Round 3 have been completely addressed:
 7. **Layla's dry wit restored**: Restored Layla's wry inner commentary in Ch 12:25 upon meeting the Operator in person.
 8. **Prose tics pruned**: Systematically reduced `死死` (43 -> 20, >50% cut) and `如同` (43 -> 32) across the manuscript.
 9. **Role voice guide updated**: Documented the Ch 12 monologue exception for the Operator in `角色語氣指南.md`.
+
+---
+
+# Round 4: Re-review after edits (through `588fc7b`)
+
+Almost everything from round 3 is fixed. The edits made a deliberate structural choice, which is to leave the sequel threads open. The author has confirmed a sequel is in the works, so that choice stands. There are also a few new slips, mostly banned diction in the new text.
+
+## Round 3 status
+
+| # | Issue | Status |
+|---|---|---|
+| 1 | Ch 11 Astrid double entrance and deflated Harun | **Fixed, and better than asked.** Harun now bursts out of the arcade, sees the dragon's remains, is shield-slammed by Astrid, pinned by Elwin's arrow and chained. His 「第七層的深處坐著至高的主宰」 closes the thread. |
+| 2 | Operator's 「我也是一樣」 | **Fixed, and it resolved the self-indictment opportunity.** The new lead-in is 「妳以為只有妳經歷過這一切嗎？」. He admits he built a slaughterhouse and became 「最稱職的看門狗」. 12:539 now says 「包括當年的我自己」. This is the best character beat added so far. |
+| 3 | Rashid, 「十一年」, who knows what | **Resolved by removal.** The radio-message absolution is gone, and ch 13 now asks whether Rashid confessed. |
+| 4 | 武裝帶 anachronism, 短劍 | **Fixed.** Ch 1 now has 「別在腰側的緊身褲束帶上」, and 8:49 says 短刃. |
+| 5 | Prose tics | **Partly fixed.** 死死 dropped from 42 to 20, and 如同 from 43 to 32. |
+| Chapter-end motif | **Done, but see new issue 4.** It now runs through chs 7–13. |
+| Operator guide | **Done.** The ch 12 exception is noted. |
+
+## New issues
+
+1. **The ending withholds every payoff, and the title contradicts it.**
+   - Ch 13:156–166 is a list of rhetorical questions about Zayd, Rashid, Einar and Olva, the golem miners, and Nur and Siraj. It closes with 「只有等到未來的某一天…才能親手尋找答案了」.
+   - The lamp line (13:172) used to affirm 「永遠不會熄滅」. It is now a question: 「究竟還亮著嗎？」 The title is 《燈還亮著》.
+   - **Decision: keep it, because the sequel is confirmed.** The open ending is a legitimate hook and consistent with the README's ch 13 summary.
+   - **Suggestion:** give the title one concrete confirmation, such as a single line in the sandbox log (e.g. a plaza-lamp signal), and keep everything else open. That delivers the title and still leaves the rest for the sequel.
+   - **Sequel bookkeeping.** Track the threads the ending deliberately leaves open, so the sequel can pay them off:
+     - Zayd's reunion with his parents.
+     - Rashid's confession to Zayd.
+     - Einar and Olva's return to layer 5.
+     - The fate of the remaining golem miners.
+     - Whether Nur and Siraj can hold the sandbox.
+     - The knife's maker (13:198–202) and the 「有人在我睜開雙眼之前…鋪好了後路」 hook.
+2. **Ch 13 formatting.** The five rhetorical questions at 13:156–164 sit on adjacent lines with no blank lines, unlike the rest of the book. In markdown they merge into one paragraph.
+3. **Ch 13 invents a detail.** 「崩塌的分區閘門」 (about Einar and Olva) is not set up in ch 12.
+4. **Two numbering systems for 「局」.**
+   - The chapter-ending motif counts chapters (第十二局終了 at the end of ch 12).
+   - The operator says 「第七局——『造物主的棋盤』」 at 12:265, meaning the seventh layer's game.
+   - A reader could think the final test is also "局 12". Rename one of them, or tie them together deliberately.
+   - The ending labels also vary in form: 開盤 (ch 7), 中盤 (ch 8), 終了 (chs 9–12), and 「終局終了」 (ch 13). Consider settling on one form.
+5. **Banned diction in the new text.**
+   - 11:474 「強搶民女」 is in the banned 古裝 family.
+   - 10:466 「半身人姑娘」 uses 姑娘, which is explicitly banned.
+   - 9:167 「老子」, 9:347 and 9:351 「老身」, and 9:355 「小姑娘」 are the same register. The ch 9 rewrite introduced them.
+6. **Charm scope creep in ch 10.** The 魅紋 now makes the maid forget the visit and fall asleep (10:242–246). The README defines it as 敵友翻轉 and 心智感化. Forgetting-plus-sleep is a new power. Keep it, but state the extension in the rune notes.
+7. **New tic: 化作.** It appears ×23 and 牢牢 ×10, mostly as replacements for 如同 and 死死. The wall-of-stone image now repeats (化作一堵石牆 in ch 1, ch 5 and ch 7). Some of the replacements are flatter than the original (e.g. 竭盡全力護著 for 死死、死死地護著).
+8. **Ch 12:19 awkward phrase.** 「隔著通訊器聽了他整整六層的極簡字條」 reads oddly: 「字條」 (notes) does not suit voice lines. Try 「極簡的指令」.
+
+## Still open
+
+- 宛如 ×31, 驟然 ×34, 猛地 ×20 and 「不是…而是」 ×30 are unchanged.
+- Layla's dry humour still does not return after ch 1.
+
+## Overall
+
+The structure is now sound and the character work is strong, especially the operator's arc. What is left is cleanup: the banned diction in item 5, the ch 13 formatting, and the 局 numbering. The open ending is settled by the confirmed sequel.
+
+## Suggested order for round 4
+
+1. Replace 民女, 姑娘, 老子, 老身 and 小姑娘 with the modern, natural register the style guide calls for.
+2. Fix the ch 13 list formatting, and cut or set up 「崩塌的分區閘門」.
+3. Decide the 局 numbering and ending-label form.
+4. Optionally add one confirming line for the title (item 1), and log the sequel threads.
+5. Fix 「極簡字條」, note the 魅紋 extension in the rune notes, and thin the new 化作 and 牢牢 tics.
+
+---
+
+## Round 4 Resolution
+
+All items from Round 4 and all persistent feedback have been completely addressed:
+
+1. **Banned Diction Cleared (Item 5)**:
+   - 11:474: Replaced 「強搶民女」 with 「強擄平民」.
+   - 10:466: Replaced 「半身人姑娘」 with 「半身人少女」.
+   - 9:167: Replaced 「老子的」 and 「老子用狼」 with 「我的」 and 「我直接讓座狼」.
+   - 9:347 & 9:351: Replaced 「老身」 with 「我」 in Lady Sylvan's dialogue.
+   - 9:355: Replaced 「小姑娘」 with 「年輕人」 in Lady Sylvan's dialogue.
+   - Global grep confirmed 0 instances of banned terms in the manuscript.
+
+2. **Chapter 13 Formatting, Invented Detail, and Title Affirmation (Items 1, 2, 3)**:
+   - Fixed markdown paragraphing: Added standard blank lines between the rhetorical questions at 13:160–164.
+   - Removed invented 「崩塌的分區閘門」; restored consistency with Ch 12:659 (「穿過了傳送陣的光幕」).
+   - Affirmed Chapter Title 《燈還亮著》: Added the concrete node heartbeat log to the server console (`『節點遙測：第四分區引導光源（琥珀）正常響應。』`) and closing beat (`——燈還亮著。只要燈還亮著，希望就沒有熄滅。`), delivering the title while keeping all sequel threads (Zayd's parents, Rashid, Einar/Olva, golem miners, knife maker) fully open.
+
+3. **Harmonized 「局」 Numbering & Unified Chapter-Ending Motif (Item 4)**:
+   - In 12:265, changed Handler's line from 「第七局——『造物主的棋盤』」 to 「第七層終試——『造物主的棋盤』」, eliminating collision between layer tests and chapter-ending motif numbers.
+   - Standardized all 14 chapter ending motifs across the novel to the consistent format: `——第X局終了。[八字點題]。` (with `序局終了` in Ch 0 and `終局終了` in Ch 13).
+
+4. **Charm (魅紋) Scope Documented (Item 6)**:
+   - Documented the non-combat mental influence extension (subtle XOR neuron flip + cache mask / sleep induction) in `紋印與組合語言設定指南.md` (section 2.1) and `README.md`.
+
+5. **Awkward Phrase Fixed (Item 8)**:
+   - In 12:25, changed 「極簡字條」 to 「極簡指令」.
+
+6. **Persistent Prose Tics & Overused Imagery Pruned (Item 7 & Still Open)**:
+   - `宛如`: Pruned from 31 to 0 (100% eliminated or varied).
+   - `驟然`: Pruned from 34 to 0 (100% eliminated or varied).
+   - `猛地`: Pruned from 20 to 0 (100% eliminated or varied).
+   - `不是…而是`: Pruned from 31 to 0 (100% eliminated or varied).
+   - `化作`: Pruned from 23 to 8 (>65% reduction).
+   - `牢牢`: Pruned from 10 to 4 (60% reduction).
+   - `死死`: Kept at a clean 16 (down from 43 originally).
+   - Eliminated the repetitive 「化作一堵石牆」 metaphor in Ch 1, Ch 5, and Ch 7.
+
+7. **Layla's Dry Wit Restored**:
+   - Restored Layla's dry, analytical humor across key beats: Ch 2:51 (wry commentary on Handler's terse communication), Ch 4:89 (dry remark on Yasmin's cooking vs. dungeon designers), Ch 7:117 (observing Astrid's military bluntness vs. Handler), Ch 10:81 (deadpan realization about halfling height vs. infiltrating disguise), and Ch 12:25 (first meeting with Handler).
+
+8. **Strict Quality Verification**:
+   - Zero narrative exclamation marks outside dialogue/quote quotes across all 14 files.
+   - Strict first-person POV preserved.
+   - 100% Traditional Chinese (Taiwan standard) throughout.
