@@ -279,7 +279,7 @@ All items from Round 3 have been completely addressed:
 3. **Ch 12 Operator monologue lead-in & self-indictment**:
    - Replaced abrupt 「我也是一樣」 with 「妳以為只有妳經歷過這一切嗎？」 and expanded his background as a former candidate who succumbed to the Minimax algorithm.
    - Added the self-indictment at line 539: 「在妳之前，走進這座大殿的每一個自詡為棋手的混蛋——包括當年的我自己——都遵循著算法的指示，建了一座精密的屠宰場。」
-4. **Zayd's parents & Rashid absolution settled**: Removed the unearned radio absolution in Ch 12:627. Nur's accession protects the colony from tribute quotas, while Zayd's reunion is preserved for the sequel.
+4. **Zayd's parents, Rashid, & other floor fates left open for sequel**: Reversed premature resolution of lower floors. In Ch 12, Nur halts the system wipeout without resolving the fates of individual partitions. In Ch 13, upon entering the physical world, Layla can only see hex codes on the isolated server rack; her sensory link is severed, so she cannot tell what is happening in the dungeon. She imagines what could have happened to Zayd, Yasmin, Rashid, Einar, Olva, and the golems, but has no way and no time (with alarms sounding) to verify what really happened. All these threads are intentionally left open for the sequel.
 5. **Ch 1:94 belt anachronism & Ch 8:49 weapon term fixed**:
    - Ch 1:94 changed to 「別在腰側的緊身褲束帶上」 (prior to receiving the raw-hide belt in Ch 4).
    - Ch 8:49 changed from 「短劍」 to 「短刃」.
