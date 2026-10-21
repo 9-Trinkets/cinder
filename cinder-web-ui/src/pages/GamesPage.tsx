@@ -21,7 +21,7 @@ export default function GamesPage() {
     if (!token) return
     Promise.all([
       api.listPacks(token, locale),
-      api.listPlays(token).catch(() => [] as api.PlayInfo[]),
+      api.listPlays(token, locale).catch(() => [] as api.PlayInfo[]),
     ])
       .then(([packList, playList]) => {
         setPacks(packList)

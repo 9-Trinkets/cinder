@@ -153,15 +153,19 @@ pub async fn create_bookmark(
     })
 }
 
+/// Lists a player's bookmarks for a pack. Room names are resolved from the
+/// stored room id in `locale` (when given), so bookmarks made in another
+/// language still read in the viewer's language.
 pub async fn list_pack_bookmarks(
     pool: &PgPool,
     player_id: &str,
     pack_id: &str,
+    locale: Option<&str>,
 ) -> Result<Vec<BookmarkInfo>, String> {
     let player_uuid = parse_uuid(player_id, "player id")?;
 
-    let rows = sqlx::query_as::<_, (String, String, Option<String>, String, i32, String, i32, String, i64)>(
-        "SELECT id::text, pack_id, play_id::text, label, turn_number, current_room_name, day_number, time_label, EXTRACT(EPOCH FROM created_at)::bigint
+    let rows = sqlx::query_as::<_, (String, String, Option<String>, String, i32, String, String, i32, String, i64)>(
+        "SELECT id::text, pack_id, play_id::text, label, turn_number, current_room_id, current_room_name, day_number, time_label, EXTRACT(EPOCH FROM created_at)::bigint
          FROM bookmarks
          WHERE player_id = $1 AND pack_id = $2
          ORDER BY created_at DESC",
@@ -172,6 +176,10 @@ pub async fn list_pack_bookmarks(
     .await
     .map_err(|e| format!("db list bookmarks error: {e}"))?;
 
+    let localized_pack = locale
+        .filter(|code| !code.trim().is_empty())
+        .and_then(|code| loader::load_named_pack(pack_id, Some(code)).ok());
+
     Ok(rows
         .into_iter()
         .map(
@@ -181,11 +189,17 @@ pub async fn list_pack_bookmarks(
                 play_id,
                 label,
                 turn_number,
-                current_room_name,
+                current_room_id,
+                stored_room_name,
                 day_number,
                 time_label,
                 created_at,
             )| {
+                let current_room_name = localized_pack
+                    .as_ref()
+                    .and_then(|pack| pack.room(&current_room_id))
+                    .map(|room| room.title.clone())
+                    .unwrap_or(stored_room_name);
                 BookmarkInfo {
                     id,
                     pack_id,
@@ -206,6 +220,7 @@ pub async fn list_play_bookmarks(
     pool: &PgPool,
     play_id: &str,
     player_id: &str,
+    locale: Option<&str>,
 ) -> Result<Vec<BookmarkInfo>, String> {
     let play_uuid = parse_uuid(play_id, "play id")?;
     let player_uuid = parse_uuid(player_id, "player id")?;
@@ -220,7 +235,7 @@ pub async fn list_play_bookmarks(
     .map_err(|e| format!("db error: {e}"))?
     .ok_or_else(|| "play not found".to_string())?;
 
-    list_pack_bookmarks(pool, player_id, &pack_id).await
+    list_pack_bookmarks(pool, player_id, &pack_id, locale).await
 }
 
 pub async fn delete_bookmark(

@@ -145,10 +145,7 @@ pub async fn list_packs(
     auth: AuthPlayer,
     Query(query): Query<ListPacksQuery>,
 ) -> Json<Vec<PackInfo>> {
-    let requested = match query.locale.filter(|code| !code.trim().is_empty()) {
-        Some(code) => Some(code),
-        None => account_locale(&state, &auth).await,
-    };
+    let requested = display_locale(&state, &auth, query.locale).await;
     Json(
         cinder_core::content::loader::available_packs()
             .into_iter()
@@ -183,6 +180,18 @@ pub async fn list_packs(
             })
             .collect(),
     )
+}
+
+/// The locale to display in: an explicit request, else the account preference.
+async fn display_locale(
+    state: &AppState,
+    auth: &AuthPlayer,
+    requested: Option<String>,
+) -> Option<String> {
+    match requested.filter(|code| !code.trim().is_empty()) {
+        Some(code) => Some(code),
+        None => account_locale(state, auth).await,
+    }
 }
 
 /// The signed-in account's saved display-language preference, if any.
@@ -295,7 +304,9 @@ fn account_locale_options() -> Vec<LocaleItem> {
 pub async fn list_plays(
     State(state): State<Arc<AppState>>,
     auth: AuthPlayer,
+    Query(query): Query<ListPacksQuery>,
 ) -> Result<Json<Vec<PlayInfo>>, (StatusCode, String)> {
+    let locale = display_locale(&state, &auth, query.locale).await;
     let rows = sqlx::query_as::<_, (String, String, i64, i64, Option<String>, Option<i64>)>(
         "SELECT id::text, pack_id, EXTRACT(EPOCH FROM created_at)::bigint, EXTRACT(EPOCH FROM updated_at)::bigint, \
          state_json->>'current_room_id', (state_json->>'current_time_minutes')::bigint \
@@ -321,14 +332,17 @@ pub async fn list_plays(
                     let current_room_name = room_id
                         .map(|room_id| {
                             let titles = room_titles.entry(pack_id.clone()).or_insert_with(|| {
-                                cinder_core::content::loader::load_named_pack(&pack_id, None)
-                                    .map(|pack| {
-                                        pack.rooms
-                                            .into_iter()
-                                            .map(|room| (room.id, room.title))
-                                            .collect()
-                                    })
-                                    .unwrap_or_default()
+                                cinder_core::content::loader::load_named_pack(
+                                    &pack_id,
+                                    locale.as_deref(),
+                                )
+                                .map(|pack| {
+                                    pack.rooms
+                                        .into_iter()
+                                        .map(|room| (room.id, room.title))
+                                        .collect()
+                                })
+                                .unwrap_or_default()
                             });
                             titles.get(&room_id).cloned().unwrap_or(room_id)
                         })
@@ -597,10 +611,13 @@ pub async fn list_play_bookmarks_handler(
     State(state): State<Arc<AppState>>,
     auth: AuthPlayer,
     Path(play_id): Path<String>,
+    Query(query): Query<ListPacksQuery>,
 ) -> Result<Json<Vec<game_manager::BookmarkInfo>>, (StatusCode, String)> {
-    let bookmarks = game_manager::list_play_bookmarks(&state.pool, &play_id, &auth.id)
-        .await
-        .map_err(internal)?;
+    let locale = display_locale(&state, &auth, query.locale).await;
+    let bookmarks =
+        game_manager::list_play_bookmarks(&state.pool, &play_id, &auth.id, locale.as_deref())
+            .await
+            .map_err(internal)?;
     Ok(Json(bookmarks))
 }
 
@@ -608,10 +625,13 @@ pub async fn list_pack_bookmarks_handler(
     State(state): State<Arc<AppState>>,
     auth: AuthPlayer,
     Path(pack_id): Path<String>,
+    Query(query): Query<ListPacksQuery>,
 ) -> Result<Json<Vec<game_manager::BookmarkInfo>>, (StatusCode, String)> {
-    let bookmarks = game_manager::list_pack_bookmarks(&state.pool, &auth.id, &pack_id)
-        .await
-        .map_err(internal)?;
+    let locale = display_locale(&state, &auth, query.locale).await;
+    let bookmarks =
+        game_manager::list_pack_bookmarks(&state.pool, &auth.id, &pack_id, locale.as_deref())
+            .await
+            .map_err(internal)?;
     Ok(Json(bookmarks))
 }
 

@@ -91,8 +91,9 @@ export function createPlay(token: string, packId: string, locale?: string | null
   })
 }
 
-export function listPlays(token: string) {
-  return reqAuth<PlayInfo[]>('/games', token)
+export function listPlays(token: string, locale?: string | null) {
+  const query = locale ? `?locale=${encodeURIComponent(locale)}` : ''
+  return reqAuth<PlayInfo[]>(`/games${query}`, token)
 }
 
 export interface MovieFrameData {
@@ -537,12 +538,14 @@ export interface ResumeBookmarkResponse {
   lines: NarrativeLine[]
 }
 
-export function listGameBookmarks(token: string, playId: string) {
-  return reqAuth<BookmarkInfo[]>(`/games/${playId}/bookmarks`, token)
+export function listGameBookmarks(token: string, playId: string, locale?: string | null) {
+  const query = locale ? `?locale=${encodeURIComponent(locale)}` : ''
+  return reqAuth<BookmarkInfo[]>(`/games/${playId}/bookmarks${query}`, token)
 }
 
-export function listPackBookmarks(token: string, packId: string) {
-  return reqAuth<BookmarkInfo[]>(`/packs/${packId}/bookmarks`, token)
+export function listPackBookmarks(token: string, packId: string, locale?: string | null) {
+  const query = locale ? `?locale=${encodeURIComponent(locale)}` : ''
+  return reqAuth<BookmarkInfo[]>(`/packs/${packId}/bookmarks${query}`, token)
 }
 
 export function createBookmark(token: string, playId: string, label?: string) {

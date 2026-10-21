@@ -473,7 +473,7 @@ function BookmarksView({
     }
     let active = true
     setLoading(true)
-    api.listGameBookmarks(token, playId)
+    api.listGameBookmarks(token, playId, locale)
       .then(items => {
         if (active) setBookmarks(items)
       })
@@ -482,7 +482,7 @@ function BookmarksView({
         if (active) setLoading(false)
       })
     return () => { active = false }
-  }, [token, playId])
+  }, [token, playId, locale])
 
   async function handleCreate() {
     if (!onCreateBookmark || creating || busy || actionBusy) return

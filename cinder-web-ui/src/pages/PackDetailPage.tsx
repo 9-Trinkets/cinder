@@ -46,8 +46,8 @@ export default function PackDetailPage() {
     try {
       const [packs, allPlays, packBookmarks] = await Promise.all([
         api.listPacks(token, locale),
-        api.listPlays(token),
-        api.listPackBookmarks(token, packId).catch(() => [] as api.BookmarkInfo[]),
+        api.listPlays(token, locale),
+        api.listPackBookmarks(token, packId, locale).catch(() => [] as api.BookmarkInfo[]),
       ])
       setPack(packs.find(p => p.id === packId) ?? null)
       setPlays(allPlays.filter(p => p.pack_id === packId))
