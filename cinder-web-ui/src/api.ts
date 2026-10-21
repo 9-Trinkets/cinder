@@ -122,10 +122,10 @@ export interface CommandResponse {
   ui_snapshot: UiSnapshot | null
 }
 
-export function runCommand(token: string, playId: string, input: string) {
+export function runCommand(token: string, playId: string, input: string, display?: string) {
   return reqAuth<CommandResponse>(`/games/${playId}/command`, token, {
     method: 'POST',
-    body: JSON.stringify({ input }),
+    body: JSON.stringify({ input, display }),
   })
 }
 

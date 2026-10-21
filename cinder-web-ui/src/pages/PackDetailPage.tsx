@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../auth'
-import { useI18n } from '../i18n'
+import { LOCALE_LABELS, quote, formatClockLabel, useI18n } from '../i18n'
 import * as api from '../api'
 import Button from '../components/Button'
 import ConfirmDialog from '../components/ConfirmDialog'
@@ -119,7 +119,7 @@ export default function PackDetailPage() {
   }
 
   const supported = pack ? pack.locale_options.some(o => o.code === locale) : true
-  const localeLabel = pack?.locale_options.find(o => o.code === locale)?.label ?? locale
+  const localeLabel = LOCALE_LABELS[locale] ?? locale
 
   return (
     <div
@@ -164,7 +164,7 @@ export default function PackDetailPage() {
 
               {pack.tagline && (
                 <blockquote className="my-4 pl-4 border-l-2 border-rose/60 text-base sm:text-lg italic text-text/90 font-prose leading-relaxed">
-                  &ldquo;{pack.tagline}&rdquo;
+                  {quote(pack.tagline, locale)}
                 </blockquote>
               )}
 
@@ -316,7 +316,7 @@ export default function PackDetailPage() {
                           <p className="text-xs text-muted/70 font-mono mt-0.5">
                             {[
                               b.day_number !== null && b.day_number !== undefined ? t('pack.day', { day: b.day_number }) : null,
-                              b.time_label,
+                              formatClockLabel(b.time_label, locale),
                               b.turn_number !== null && b.turn_number !== undefined ? t('pack.turn', { turn: b.turn_number }) : null,
                               fmtTime(b.created_at, locale),
                             ].filter(Boolean).join(' • ')}

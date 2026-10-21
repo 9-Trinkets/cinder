@@ -99,12 +99,13 @@ fn render_features(content: &ContentPack, room: &RoomDefinition) -> String {
         &content.presentation.presentation_text.features,
         &[(
             "features",
-            &room
-                .features
-                .iter()
-                .map(|feature| feature.label.as_str())
-                .collect::<Vec<_>>()
-                .join(", "),
+            &content.join_list(
+                &room
+                    .features
+                    .iter()
+                    .map(|feature| feature.label.as_str())
+                    .collect::<Vec<_>>(),
+            ),
         )],
     )
 }
@@ -127,7 +128,7 @@ fn render_exits(content: &ContentPack, state: &WorldState, room: &RoomDefinition
     } else {
         content.render_template(
             &content.presentation.presentation_text.exits,
-            &[("exits", &visible_exits.join(", "))],
+            &[("exits", &content.join_list(&visible_exits))],
         )
     }
 }
@@ -170,7 +171,7 @@ fn render_items(content: &ContentPack, state: &WorldState, room_id: &str) -> Str
     if !plain.is_empty() {
         out.push_str(&content.render_template(
             &content.presentation.presentation_text.loose_items,
-            &[("items", &plain.join(", "))],
+            &[("items", &content.join_list(&plain))],
         ));
     }
     out
@@ -214,7 +215,7 @@ fn render_occupants(content: &ContentPack, state: &WorldState, room_id: &str) ->
         let refs = names.iter().map(String::as_str).collect::<Vec<_>>();
         content.render_template(
             &content.presentation.presentation_text.people,
-            &[("people", &refs.join(", "))],
+            &[("people", &content.join_list(&refs))],
         )
     };
 
@@ -234,7 +235,7 @@ fn render_occupants(content: &ContentPack, state: &WorldState, room_id: &str) ->
         } else {
             &content.presentation.presentation_text.party
         };
-        content.render_template(party_template, &[("party", &refs.join(", "))])
+        content.render_template(party_template, &[("party", &content.join_list(&refs))])
     };
 
     if content
@@ -311,7 +312,7 @@ pub(super) fn render_feature_consumables_line(
         &content.presentation.presentation_text.feature_consumables,
         &[
             ("feature_label", feature.label.as_str()),
-            ("items", &available.join(", ")),
+            ("items", &content.join_list(&available)),
         ],
     ))
 }

@@ -12,12 +12,12 @@ import ConfirmDialog from '../components/ConfirmDialog'
 import { themeVars } from '../utils/theme'
 import { usePlay } from '../hooks/usePlay'
 import ActionBar from '../components/ActionBar'
-import { useI18n } from '../i18n'
+import { formatClockLabel, useI18n } from '../i18n'
 
 export default function GamePage() {
   const navigate = useNavigate()
   const { logout } = useAuth()
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
   const play = usePlay()
   const {
     uiSnapshot,
@@ -104,7 +104,7 @@ export default function GamePage() {
         return
       }
     }
-    void execCommand(action.id)
+    void execCommand(action.id, action.label)
   }, [busy, gameOver, uiSnapshot, handleSelectPanelOption, setQuickPanel, execCommand])
 
   const handleTakeItem = useCallback((item: api.InventoryItem) => {
@@ -302,7 +302,7 @@ export default function GamePage() {
             <span className="font-semibold text-text truncate">{uiSnapshot.current_room_name}</span>
             <span className="text-muted/40 font-mono">&bull;</span>
             <span className="font-mono text-muted shrink-0">
-              {t('hud.day', { day: uiSnapshot.day_number })}{uiSnapshot.time_label ? ` — ${uiSnapshot.time_label}` : ''}
+              {t('hud.day', { day: uiSnapshot.day_number })}{uiSnapshot.time_label ? ` — ${formatClockLabel(uiSnapshot.time_label, locale)}` : ''}
             </span>
             {uiSnapshot.followed_actor_name && (
               <>
@@ -375,7 +375,7 @@ export default function GamePage() {
                   }
                 }
                 setQuickPanel(null)
-                void execCommand(action.id)
+                void execCommand(action.id, action.label)
               }}
             />
           <ActionBar

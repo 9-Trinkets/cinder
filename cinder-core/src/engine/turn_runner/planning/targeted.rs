@@ -114,7 +114,7 @@ pub(super) fn plan_targeted_state_command(
                         message: content
                             .render_message(
                                 "error.target_required",
-                                &[("actors", names.join(", ").as_str())],
+                                &[("actors", content.join_list(&names).as_str())],
                             )
                             .unwrap_or_default(),
                     });

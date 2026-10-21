@@ -627,6 +627,36 @@ impl ContentPack {
             .into()
     }
 
+    /// Joins display labels with the locale's list separator (`, ` in English,
+    /// `、` in Chinese).
+    pub fn join_list<S: AsRef<str>>(&self, items: &[S]) -> String {
+        let separator = self.message("list.separator").unwrap_or(", ");
+        items
+            .iter()
+            .map(AsRef::as_ref)
+            .collect::<Vec<_>>()
+            .join(separator)
+    }
+
+    /// Joins labels as natural prose ("a and b", "a, b, and c"), using the
+    /// locale's `list.*` messages for the conjunctions.
+    pub fn join_list_natural(&self, mut items: Vec<String>) -> Option<String> {
+        match items.len() {
+            0 => None,
+            1 => items.pop(),
+            2 => {
+                let template = self.message("list.pair").unwrap_or("{a} and {b}");
+                Some(self.render_template(template, &[("a", &items[0]), ("b", &items[1])]))
+            }
+            _ => {
+                let last = items.pop().expect("non-empty list");
+                let template = self.message("list.last").unwrap_or("{rest}, and {last}");
+                let rest = self.join_list(&items);
+                Some(self.render_template(template, &[("rest", &rest), ("last", &last)]))
+            }
+        }
+    }
+
     pub fn render_template(&self, template: &str, replacements: &[(&str, &str)]) -> String {
         let mut rendered = template.to_string();
         for (key, value) in replacements {

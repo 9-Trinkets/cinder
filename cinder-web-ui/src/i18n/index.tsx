@@ -131,3 +131,22 @@ export function useI18n(): I18nValue {
 }
 
 export { LOCALE_LABELS } from './strings'
+
+/** Wraps a pull-quote in the locale's quotation marks (「」 for Chinese). */
+export function quote(text: string, locale: string): string {
+  return locale.startsWith('zh') ? `「${text}」` : `\u201c${text}\u201d`
+}
+
+/**
+ * Localizes the server's 12-hour clock label (e.g. `1:00 AM`). Chinese reads
+ * the time of day first: 凌晨 1:00, 上午 9:30, 下午 3:00, 晚上 8:15.
+ */
+export function formatClockLabel(label: string, locale: string): string {
+  const match = /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i.exec(label.trim())
+  if (!match || !locale.startsWith('zh')) return label
+  const hour12 = Number(match[1]) % 12
+  const hour24 = match[3].toUpperCase() === 'PM' ? hour12 + 12 : hour12
+  const period =
+    hour24 < 6 ? '凌晨' : hour24 < 12 ? '上午' : hour24 < 18 ? '下午' : '晚上'
+  return `${period} ${match[1]}:${match[2]}`
+}

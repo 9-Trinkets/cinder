@@ -159,7 +159,7 @@ export function usePlay() {
     queueScroll('smooth')
     setLines(prev => [...prev, cmdLine])
     try {
-      const res = await api.runCommand(token, id, cmd)
+      const res = await api.runCommand(token, id, cmd, displayCmd)
       applyCommandResponse(res, 'smooth')
     } catch (err: unknown) {
       showToast(toErrorMessage(err, t('hud.requestFailed')), 'error')
@@ -294,6 +294,16 @@ export function usePlay() {
     refreshSnapshot()
   }
 
+  /** A readable echo for a panel pick (e.g. 攻擊 白石魔像) instead of the raw command id. */
+  function describePanelPick(panelName: string, option: api.PanelOptionData): string | undefined {
+    const title = option.title?.trim()
+    if (!title) return undefined
+    const action =
+      uiSnapshot?.action_bar_actions.find(a => a.panel === panelName || a.id === panelName) ??
+      uiSnapshot?.overflow_actions.find(a => a.panel === panelName || a.id === panelName)
+    return action?.label ? `${action.label} ${title}` : title
+  }
+
   function handleSelectPanelOption(panelName: string, option: api.PanelOptionData) {
     if (option.panel) {
       setQuickPanel(option.panel)
@@ -302,12 +312,12 @@ export function usePlay() {
     const config = getPanelConfig(panelName)
     setQuickPanel(null)
     if (!config) {
-      if (option.command) void execCommand(option.command)
+      if (option.command) void execCommand(option.command, describePanelPick(panelName, option))
       return
     }
     switch (config.on_select) {
       case 'execute_command':
-        if (option.command) void execCommand(option.command)
+        if (option.command) void execCommand(option.command, describePanelPick(panelName, option))
         break
       case 'prefill_input':
         setInput(`@${option.title} `)

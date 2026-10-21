@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth'
-import { useI18n } from '../i18n'
+import { LOCALE_LABELS, quote, useI18n } from '../i18n'
 import * as api from '../api'
 import Button from '../components/Button'
 import Skeleton from '../components/Skeleton'
@@ -76,7 +76,7 @@ export default function GamesPage() {
               const packPlays = plays.filter(p => p.pack_id === pack.id)
               const latestPlay = packPlays[0]
               const supported = pack.locale_options.some(o => o.code === locale)
-              const localeLabel = pack.locale_options.find(o => o.code === locale)?.label ?? locale
+              const localeLabel = LOCALE_LABELS[locale] ?? locale
 
               return (
                 <article
@@ -122,7 +122,7 @@ export default function GamesPage() {
 
                   {pack.tagline && (
                     <blockquote className="my-3 pl-3.5 border-l-2 border-subtle/60 text-sm sm:text-base italic text-text/80 leading-relaxed font-prose">
-                      &ldquo;{pack.tagline}&rdquo;
+                      {quote(pack.tagline, locale)}
                     </blockquote>
                   )}
 

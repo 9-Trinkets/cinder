@@ -120,10 +120,15 @@ pub async fn run_command(
     play_id: &str,
     player_id: &str,
     input: &str,
+    display: Option<&str>,
 ) -> Result<CommandResponse, String> {
     let play_id = parse_uuid(play_id, "play id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     let input_owned = input.to_string();
+    let transcript_text = display
+        .map(str::trim)
+        .filter(|text| !text.is_empty() && text.chars().count() <= 200)
+        .map_or_else(|| input_owned.clone(), str::to_string);
     with_runtime(
         pool,
         &play_id,
@@ -218,7 +223,7 @@ pub async fn run_command(
             let transcript_entries = {
                 let mut entries = vec![PendingTranscriptEntry {
                     role: "player".to_string(),
-                    text: input_owned.clone(),
+                    text: transcript_text.clone(),
                 }];
                 for line in &narrative {
                     let trimmed = line.text.trim();

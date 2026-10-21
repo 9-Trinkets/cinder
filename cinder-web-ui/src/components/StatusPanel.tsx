@@ -4,7 +4,7 @@ import Minimap from './Minimap'
 import Section from './Section'
 import RelationshipChart from './RelationshipChart'
 import { titleize } from '../utils/text'
-import { useI18n } from '../i18n'
+import { formatClockLabel, useI18n } from '../i18n'
 
 const skillKindClasses: Record<api.SkillKind, string> = {
   attack: 'border-rose/30 bg-rose/10 text-rose',
@@ -32,7 +32,7 @@ export default function StatusPanel({
 }) {
   const player = uiSnapshot.player
   const levelsRevealed = uiSnapshot.sidebar_sections.includes('level')
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
 
   const orderLabel = (order: string) => {
     const known: Record<string, string> = {
@@ -55,7 +55,7 @@ export default function StatusPanel({
         <p className="text-text font-medium">{uiSnapshot.current_room_name}</p>
         <p className="text-text text-xs">
           {t('hud.day', { day: uiSnapshot.day_number })}
-          {uiSnapshot.time_label ? <span className="text-muted ml-1">— {uiSnapshot.time_label}</span> : null}
+          {uiSnapshot.time_label ? <span className="text-muted ml-1">— {formatClockLabel(uiSnapshot.time_label, locale)}</span> : null}
         </p>
       </Section>
     ),

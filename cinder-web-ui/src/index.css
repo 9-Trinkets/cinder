@@ -73,3 +73,9 @@ body {
 :lang(zh-TW) .italic {
   font-style: normal;
 }
+
+/* The 10-11px eyebrow labels are fine for Latin caps but too small for CJK. */
+:lang(zh-TW) .text-\[10px\],
+:lang(zh-TW) .text-\[11px\] {
+  font-size: 12px;
+}

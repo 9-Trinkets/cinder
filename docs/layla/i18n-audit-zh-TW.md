@@ -87,9 +87,16 @@ Done in this pass:
 - **Web UI**: `<html lang>` follows the UI locale, CJK-aware tracking/italic/line-height rules, pack list refetches on locale change, server error strings mapped to localized messages, and `strings.ts` zh-TW rewritten away from the library/chronicle jargon.
 - **Tooling and tests**: `cinder-tools locale check` now also reports overlay-file coverage; new tests assert that zh-TW UI text, items, skills, actions and settings contain no English and that Chinese phrases load beside the English ones.
 
+Visual pass (headless Chromium driven by Playwright, since the browser extension was unavailable; desktop 1280px and mobile 390px; login, library, pack page, game, the look/move/trace/attack/talk panels, menu, language picker, quests, folio): after the fixes below no Latin-letter text remains on any screen except the `English` language label and the other packs' own English metadata.
+- Language badge showed the raw code (`尚無ZH-TW版本`); it now uses the language name.
+- Pull-quote taglines use 「」 in Chinese; 10-11px eyebrow labels are bumped to 12px for CJK.
+- The `12-hour` clock (`1:00 AM`) is shown as 凌晨 1:00 / 下午 3:00.
+- Handler/comms headers read `通訊 • 通訊` because the speaker split only recognized an ASCII colon; it now accepts `：`.
+- Clicking a panel option echoed the raw command (`attack golem-pale-se`) in the transcript, and the server stored that text; the UI now sends a readable echo (`攻擊 白石魔像`) that is also what the transcript saves.
+- Lists (exits, items, people, party, drops) joined with `, ` and `and`; they now use `、` and `和` in Chinese through `list.*` messages.
+
 Still open:
-- The visual pass of the web UI (browser extension was unavailable).
-- Aera, Ella and Isla still show English pack metadata in zh-TW (Ella ships zh-TW content but no settings overlay).
+- Aera and Isla still show English pack metadata in zh-TW (they ship no zh-TW locale; Ella now has a settings overlay).
 - `act_cast.rs` act headers and the book-recommender flow (Isla/Aera) still contain English strings.
 - Layla's Orva is now 奧爾娃 in the game zh-TW, matching the novel.
 - Typed give commands still need the English word `to` (`給予 藥水 to 小宰德`).

@@ -377,7 +377,7 @@ fn render_aggregate(
         .iter()
         .map(|outcome| outcome.actor().to_string())
         .collect::<Vec<_>>();
-    let actors = summarize_actor_names(&actor_names).unwrap_or_default();
+    let actors = summarize_actor_names(content, &actor_names).unwrap_or_default();
     let count = group.len().to_string();
     let mut values = values.to_vec();
     values.extend([("actors", actors.as_str()), ("count", count.as_str())]);

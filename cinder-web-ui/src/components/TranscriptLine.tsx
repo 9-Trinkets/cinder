@@ -221,7 +221,7 @@ const TranscriptLine = memo(function TranscriptLine({
 
   // 2. Channel / Handler Comms
   if (line.kind === 'channel') {
-    const match = line.text.match(/^([^:]+):\s*(.*)$/s)
+    const match = line.text.match(/^([^:：]+)[:：]\s*(.*)$/s)
     const speaker = match ? match[1].trim() : t('hud.comms')
     const content = match ? match[2].trim() : line.text
 

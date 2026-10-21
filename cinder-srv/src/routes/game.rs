@@ -352,6 +352,10 @@ pub async fn list_plays(
 #[derive(Deserialize)]
 pub struct CommandRequest {
     pub input: String,
+    /// Readable text to record in the transcript instead of `input`, for
+    /// commands issued by UI controls (e.g. `attack golem-pale-se`).
+    #[serde(default)]
+    pub display: Option<String>,
 }
 
 pub async fn run_command(
@@ -360,9 +364,15 @@ pub async fn run_command(
     Path(play_id): Path<String>,
     Json(req): Json<CommandRequest>,
 ) -> Result<Json<game_manager::CommandResponse>, (StatusCode, String)> {
-    let resp = game_manager::run_command(&state.pool, &play_id, &auth.id, &req.input)
-        .await
-        .map_err(internal)?;
+    let resp = game_manager::run_command(
+        &state.pool,
+        &play_id,
+        &auth.id,
+        &req.input,
+        req.display.as_deref(),
+    )
+    .await
+    .map_err(internal)?;
     Ok(Json(resp))
 }
 

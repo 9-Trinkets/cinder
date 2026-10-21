@@ -5,7 +5,7 @@ import ConfirmDialog from './ConfirmDialog'
 import * as api from '../api'
 import type { BookmarkInfo, UiSnapshot } from '../api'
 import type { MenuView } from '../hooks/playUtils'
-import { useI18n } from '../i18n'
+import { formatClockLabel, useI18n } from '../i18n'
 
 interface ShellMenuProps {
   ui: UiSnapshot
@@ -458,7 +458,7 @@ function BookmarksView({
   onDeleteBookmark,
   busy,
 }: BookmarksViewProps) {
-  const { t: i18n } = useI18n()
+  const { t: i18n, locale } = useI18n()
   const [bookmarks, setBookmarks] = useState<BookmarkInfo[]>([])
   const [loading, setLoading] = useState(true)
   const [creating, setCreating] = useState(false)
@@ -566,7 +566,7 @@ function BookmarksView({
                 <p className="text-xs text-muted mt-0.5 truncate">
                   {[
                     b.turn_number !== null && b.turn_number !== undefined ? i18n('hud.turnN', { n: b.turn_number }) : null,
-                    b.time_label,
+                    formatClockLabel(b.time_label, locale),
                     fmtBookmarkDate(b.created_at),
                   ].filter(Boolean).join(' • ')}
                 </p>

@@ -152,7 +152,7 @@ pub(in crate::engine::reducer) fn apply_attack_target(
                     None
                 };
             if let Some(key) = group_key
-                && let Some(actors) = summarize_actor_names(&actor_names)
+                && let Some(actors) = summarize_actor_names(content, &actor_names)
             {
                 let count = count.to_string();
                 let damage = total_damage.to_string();

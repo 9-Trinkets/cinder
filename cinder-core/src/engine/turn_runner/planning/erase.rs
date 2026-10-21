@@ -76,11 +76,12 @@ pub(super) fn plan_erase_command(
             .render_message("item.erase_one", &[("item", label)])
             .unwrap_or_else(|| format!("You rub out the {label} from the stone floor."))
     } else {
-        let labels = to_erase
-            .iter()
-            .map(|id| content.item_label(id))
-            .collect::<Vec<_>>()
-            .join(", ");
+        let labels = content.join_list(
+            &to_erase
+                .iter()
+                .map(|id| content.item_label(id))
+                .collect::<Vec<_>>(),
+        );
         content
             .render_message("item.erase_many", &[("labels", labels.as_str())])
             .unwrap_or_else(|| {

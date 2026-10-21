@@ -192,7 +192,7 @@ pub(in crate::engine::reducer) fn award_defeat_xp(
             None
         };
         if let Some(key) = key {
-            let actors = summarize_actor_names(&actor_names).unwrap_or_default();
+            let actors = summarize_actor_names(content, &actor_names).unwrap_or_default();
             let count = count.to_string();
             let level = new_level.to_string();
             push_message(
@@ -307,7 +307,7 @@ pub(in crate::engine::reducer) fn spawn_defeat_drops(
             "combat.defeat_drop",
             &[
                 ("actor", actor_name.as_str()),
-                ("items", dropped_labels.join(", ").as_str()),
+                ("items", content.join_list(&dropped_labels).as_str()),
                 ("room", room_id),
             ],
         ) {

@@ -131,5 +131,8 @@
   "help.group.book": "書籍",
   "help.group.service": "服務",
   "help.group.act": "行動",
-  "help.group.general": "一般"
+  "help.group.general": "一般",
+  "list.separator": "、",
+  "list.pair": "{a}和{b}",
+  "list.last": "{rest}和{last}"
 }

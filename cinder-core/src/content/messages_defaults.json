@@ -131,5 +131,8 @@
   "help.group.book": "Book",
   "help.group.service": "Service",
   "help.group.act": "Act",
-  "help.group.general": "General"
+  "help.group.general": "General",
+  "list.separator": ", ",
+  "list.pair": "{a} and {b}",
+  "list.last": "{rest}, and {last}"
 }

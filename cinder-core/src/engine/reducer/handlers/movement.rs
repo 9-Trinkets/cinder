@@ -179,7 +179,7 @@ pub(crate) fn sync_followers_to_room(
     let count = moved_actor_names.len();
     let group_key = follower_group_message_key(content, count);
     if let Some(key) = group_key
-        && let Some(actors) = summarize_actor_names(&moved_actor_names)
+        && let Some(actors) = summarize_actor_names(content, &moved_actor_names)
     {
         let count = count.to_string();
         push_message(

@@ -136,7 +136,7 @@ pub(crate) fn command_unavailable_message(
             .render_message("error.command_not_now", &[("verb", verb.as_str())])
             .unwrap_or_default(),
         CommandAvailabilityIssue::MissingObjectiveProgress(labels) => {
-            let labels_text = labels.join(", ");
+            let labels_text = content.join_list(labels);
             content
                 .render_message(
                     "error.command_needs_more",
@@ -145,7 +145,7 @@ pub(crate) fn command_unavailable_message(
                 .unwrap_or_default()
         }
         CommandAvailabilityIssue::BlockedByObjectiveProgress(labels) => {
-            let labels_text = labels.join(", ");
+            let labels_text = content.join_list(labels);
             content
                 .render_message(
                     "error.command_blocked_by_progress",
