@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Button from './Button'
 import Modal from './Modal'
 import { useI18n } from '../i18n'
 import { LOCALE_LABELS } from '../i18n/strings'
@@ -32,14 +33,15 @@ export default function LanguagePicker() {
 
   return (
     <>
-      <button
-        type="button"
+      <Button
+        variant="ghost"
+        size="sm"
         onClick={() => setOpen(true)}
-        className="text-xs font-mono uppercase tracking-widest text-muted hover:text-text transition-colors cursor-pointer"
+        className="text-xs text-muted hover:text-text cursor-pointer"
         title={t('games.languagePickerTitle')}
       >
         {t('games.language')}: {currentLabel}
-      </button>
+      </Button>
 
       {open && (
         <Modal title={t('games.languagePickerTitle')} onClose={() => setOpen(false)}>
