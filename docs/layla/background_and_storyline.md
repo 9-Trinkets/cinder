@@ -253,8 +253,8 @@ The working foundation of the kingdom. Simple stone villages, mushroom farms, an
 - **The Ticking Clock:** Zayd is held in the fortress cage awaiting the scheduled batch transit window to Floor 5. Layla races against time to free him before he is shipped.
 
 **The truth of the offering (settled canon).** The "sacrifice" taken away is not a ritual — it is the **reprogramming itself**. The temple's conversion works wipe a person's memory and bind their spirit into a monster shell or dungeon piece: the goblin shaman's golems, the elf army's ranks, the town guardians, and the village's "disappeared" were all the same source. Zayd's parents, who the village believes died in a "steam drill collapse," are among the finished pieces:
-- **Sakhra** — the village's guardian golem — is **Zayd's father (Jamil)**, magically converted into a stone golem and fitted with steam pistons. He has guarded the village, and his own son, since Zayd could walk. On Floor 4, Zayd's Lantern causes a subtle resonance and a deep steam sigh, but Sakhra remains unawakened. Full awakening occurs on Floor 6 when Layla obtains the **Bind Sigil** (`bind-sigil`) and channels the memories preserved in the lantern back into Sakhra's core.
-- **`elf-queen-4`** — the elf chess queen on Floor 2 — is **Zayd's mother**, the piece nearest waking of any in the dungeon. She wanders the ranks searching for a son she cannot name; she is awakened on Floor 6 through Zayd's voice and the Bind Sigil.
+- **Sakhra** — the village's guardian golem — is **Zayd's father (Siraj)**, magically converted into a stone golem and fitted with steam pistons. He has guarded the village, and his own son, since Zayd could walk. On Floor 4, Zayd's Lantern causes a subtle resonance and a deep steam sigh, but Sakhra remains unawakened. Full awakening occurs on Floor 6 when Layla obtains the **Bind Sigil** (`bind-sigil`) and channels the memories preserved in the lantern back into Sakhra's core.
+- **`elf-queen-4`** — the elf chess queen on Floor 2 — is **Zayd's mother (Nur)**, the piece nearest waking of any in the dungeon. She wanders the ranks searching for a son she cannot name; she is awakened on Floor 6 through Zayd's voice and the Bind Sigil.
 - Freeing Zayd (side quest "Save the Boy Zayd") and eventually restoring his parents on Floor 6 constitutes the secret quest arc, **"Return the Light."** The queen **may be destroyed by chance** (she is a booked boss fight) — that is a sanctioned easter egg, and the parent thread resolves as long as *either* parent wakes.
 
 #### Level 5 — The Frost Citadel (The Hexagon Courtyard & The Three Houses)
@@ -295,7 +295,7 @@ To break this mind-wipe and restore an offering's humanity, Layla must perform t
 
 When a monster's spirit shard is bound:
 - The mind-wipe shatters and their lost memories flood back.
-- Their generic monster name reverts to their true human name (e.g. `golem-dark-nw` → *Orin*, `sakhra` → *Jamil*, `elf-queen-4` → *Nazira*).
+- Their generic monster name reverts to their true human name (e.g. `golem-dark-nw` → *Orin*, `sakhra` → *Siraj*, `elf-queen-4` → *Nur*).
 - Full human speech (`speak`) unlocks: they remember their past life, provide lore and guidance, and become loyal, free companions.
 
 > [!NOTE]
@@ -310,7 +310,7 @@ Per-piece awakening storylines (who each surviving golem/elf was, and what they 
     1. Layla must have **at least one awakened party member** in her company.
     2. During the trial, Layla **does not deploy any party members** into the dungeon. She faces the Handler alone and **purely runs away and evades** him until a secret exit appears.
   - **The Choice:** Entering the secret exit leads outside the simulation into the real world. However, to keep the virtual world from collapsing, Layla must choose one of her awakened companions to stay behind and take her place as the new Dungeon Master.
-  - **Rebranding:** Layla escapes into freedom. The game itself renames from *Layla* to the name of whoever replaced her (e.g., *Jamil*, *Astrid*, *Orin*).
+  - **Rebranding:** Layla escapes into freedom. The game itself renames from *Layla* to the name of whoever replaced her (e.g., *Siraj*, *Astrid*, *Orin*).
 
 ## The Unresolved Threads (deliberately open)
 

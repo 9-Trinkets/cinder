@@ -91,7 +91,10 @@
     "aliases": [
       "golem",
       "dark golem",
-      "stone figure"
+      "stone figure",
+      "Mr. Black",
+      "Mr Black",
+      "Orin"
     ],
     "inspect_text": "A golem of dark lumped rock, built the way you’d build a door: for work, not for looks. It has no mouth. Its eyes are flat polished pebbles, and a pale chalk ring is marked on its chest and brow. It does not move. It makes no sound.",
     "prompt_context": {
@@ -148,10 +151,10 @@
           "value": "true"
         },
         "rename": {
-          "name": "Mari",
-          "who": "Millwright who kept the ore mill turning",
-          "fragment": "The mill... is it still standing? I left a plate loose on the brace.",
-          "inspect_text": "Mari, once a pale golem. The smooth river stone of her limbs moves with the fluid, mechanical precision of a veteran millwright. Her eyes are bright and observant."
+          "name": "Ferid",
+          "who": "Miner who worked the deepest shaft, swallowed first",
+          "fragment": "They came down here and put the dark in my chest. It's quieter now.",
+          "inspect_text": "Ferid, once a pale golem. The smooth stone of his shoulders still remembers the pick and the dark shafts. His gaze is quiet, patient, and deeply grounded."
         },
         "stance": "allied",
         "follows_player": true,
@@ -164,7 +167,10 @@
     "aliases": [
       "golem",
       "pale golem",
-      "stone figure"
+      "stone figure",
+      "Mr. White",
+      "Mr White",
+      "Ferid"
     ],
     "inspect_text": "A golem of pale river stone, smoothed and round, built the way you’d build a pot: slowly, evenly, by hand. It has no mouth. Its eyes are dark polished pebbles, and a pale chalk ring is marked on its chest and brow. It does not move. It makes no sound.",
     "prompt_context": {
@@ -281,10 +287,10 @@
           "value": "true"
         },
         "rename": {
-          "name": "Ferid",
-          "who": "Miner who worked the deepest shaft, swallowed first",
-          "fragment": "They came down here and put the dark in my chest. It's quieter now.",
-          "inspect_text": "Ferid, once a dark golem. The heavy stone of his shoulders carries the memory of iron picks and dark tunnels. His gaze is quiet, patient, and deeply grounded."
+          "name": "Mari",
+          "who": "Millwright who kept the ore mill turning",
+          "fragment": "The mill... is it still standing? I left a plate loose on the brace.",
+          "inspect_text": "Mari, once a dark golem. The dark rock of her limbs moves with the fluid, mechanical precision of a veteran millwright. Her eyes are bright and observant."
         },
         "stance": "allied",
         "follows_player": true,
@@ -297,7 +303,9 @@
     "aliases": [
       "golem",
       "dark golem",
-      "stone figure"
+      "stone figure",
+      "Miss Black",
+      "Mari"
     ],
     "inspect_text": "A golem of dark lumped rock, built the way you’d build a door: for work, not for looks. It has no mouth. Its eyes are flat polished pebbles, and a pale chalk ring is marked on its chest and brow. It does not move. It makes no sound.",
     "prompt_context": {
@@ -370,7 +378,9 @@
     "aliases": [
       "golem",
       "pale golem",
-      "stone figure"
+      "stone figure",
+      "Miss White",
+      "Hana"
     ],
     "inspect_text": "A golem of pale river stone, smoothed and round, built the way you’d build a pot: slowly, evenly, by hand. It has no mouth. Its eyes are dark polished pebbles, and a pale chalk ring is marked on its chest and brow. It does not move. It makes no sound.",
     "prompt_context": {
@@ -1576,7 +1586,9 @@
     "name": "elf queen",
     "room_id": "d8c4",
     "aliases": [
-      "elf queen"
+      "elf queen",
+      "Nur",
+      "queen"
     ],
     "tags": [
       "elf",
@@ -1613,10 +1625,10 @@
           "value": "true"
         },
         "rename": {
-          "name": "Nazira",
+          "name": "Nur",
           "who": "Miner's wife, mother of Zayd, the village's sharpest eye",
           "fragment": "I keep looking for the face I lost. A boy. He called me something. Will you say it so I can keep it?",
-          "inspect_text": "Nazira, once the elf queen. Her fierce commander's stance has softened into the searching, loving eyes of a mother who has broken through the machine's mind-wipe. She watches with acute, protective intelligence."
+          "inspect_text": "Nur, once the elf queen. Her fierce commander's stance has softened into the searching, loving eyes of a mother who has broken through the machine's mind-wipe. She watches with acute, protective intelligence."
         },
         "stance": "allied",
         "follows_player": true,
@@ -2915,7 +2927,9 @@
       "sakhra",
       "steam golem",
       "golem",
-      "the watchful"
+      "the watchful",
+      "Siraj",
+      "siraj"
     ],
     "tags": [
       "steam_golem",
@@ -2947,13 +2961,13 @@
           "value": "true"
         },
         "rename": {
-          "name": "Jamil",
+          "name": "Siraj",
           "who": "Miner, father of Zayd, the village's quietest man",
           "fragment": "Zayd. My boy. Run your lamp over me — I will follow it the whole way home.",
-          "inspect_text": "Jamil, once known as Sakhra. The dark rock of his golem shell is still heavy with copper pipes and brass fittings, but the stone eyes have cleared to a warm, gentle gaze. A miner and the father of Zayd, he walks with quiet purpose and speaks in a low, steady voice.",
+          "inspect_text": "Siraj, once known as Sakhra. The dark rock of his golem shell is still heavy with copper pipes and brass fittings, but the stone eyes have cleared to a warm, gentle amber gaze. A miner and the father of Zayd, he walks with quiet purpose and speaks in a low, steady voice.",
           "prompt_context": {
             "character_notes": [
-              "You are Jamil, the miner and father of Zayd. You were converted into Sakhra, the village guardian golem, your mind silenced behind heavy rock and copper pipes.",
+              "You are Siraj, the miner and father of Zayd. You were converted into Sakhra, the village guardian golem, your mind silenced behind heavy rock and copper pipes.",
               "Now, the warmth of your family's miner lantern has cleared the fog from your stone eyes and returned your memory and your voice.",
               "You love your son Zayd more than anything in the world. You remember the sound of his laughter, his wild pranks, and the way he clutched your hand before the dark took you."
             ],

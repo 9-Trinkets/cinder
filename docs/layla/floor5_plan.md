@@ -89,7 +89,7 @@ Looking up past the high battlements, she sees sheer snowy peaks, hanging glacie
    - `BLOCK 03 — WOOLCROSS`
    - `BLOCK 05 — GREENREST`
    - `BLOCK 06 — BRASS YARD`
-   Town 04 is **Deepwell**, the mining and steam-work town Layla visited on Floor 4. Its people include Zayd, Rashid, Yasmin, Tariq, and Jamil/Sakhra, so Layla already knows its teleport anchor.
+   Town 04 is **Deepwell**, the mining and steam-work town Layla visited on Floor 4. Its people include Zayd, Rashid, Yasmin, Tariq, and Siraj/Sakhra, so Layla already knows its teleport anchor.
 3. **The Ambush:** The courtyard sentries spot her instantly: *"Unsanctioned entity on the pad! Neutralize!"*
 4. **The Battle:** Layla fights off the initial wave of sentries.
 5. **The Key:** The defeated sentry captain drops the **Courtyard Cage Key** (`courtyard-cage-key`).

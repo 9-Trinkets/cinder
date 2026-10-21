@@ -149,7 +149,7 @@ The scavenged truth: with Zayd safe, the clues begin to align — the silent old
   1. *Kill the offering* (strips secular flesh, releases the spirit).
   2. *Spawn a monster shell* using the **Spawn Sigil** (`spawn-sigil`).
   3. *Bind the spirit into the shell* using the **Bind Sigil** (`bind-sigil`).
-  After defeating the high clergy and mastering the **Bind Sigil**, Layla learns to reverse the spiritual enslavement. By channeling the **Bind Sigil** through **Zayd's Lantern**, she binds the preserved memories and spirit shards back into Sakhra's core, awakening **Jamil** as a conscious ally (without altering his stone shell), and restoring Queen Nazira on Floor 2 via Zayd's voice and lantern.
+  After defeating the high clergy and mastering the **Bind Sigil**, Layla learns to reverse the spiritual enslavement. By channeling the **Bind Sigil** through **Zayd's Lantern**, she binds the preserved memories and spirit shards back into Sakhra's core, awakening **Siraj** as a conscious ally (without altering his stone shell), and restoring Queen Nur on Floor 2 via Zayd's voice and lantern.
 
 - **The payoff.** The awakened parents become free allies who remember the flavor of bread and the weight of their child — the living proof that the dungeon's reprogramming can be undone.
 
@@ -178,11 +178,11 @@ Only pieces that were **not destroyed** can wake, and only when their preserved 
 
 | Piece (actor id) | Woken name | Who they were | Fragment on waking |
 |---|---|---|---|
-| `golem-dark-nw` | Orin | Stonecutter who helped build the first guard rooms | *"I remember the rings. I was ringing the stone before they rang me."* |
-| `golem-pale-ne` | Mari | Millwright who kept the ore mill turning | *"The mill... is it still standing? I left a plate loose on the brace."* |
-| `golem-dark-sw` | Ferid | Miner who worked the deepest shaft, swallowed first | *"They came down here and put the dark in my chest. It's quieter now."* |
-| `golem-pale-se` | Hana | Weaver of the village's first cloth | *"I was counting threads. They Counted me instead."* |
-| `sakhra` | (Zayd's father) — Jamil | Miner, father of Zayd, the village's quietest man | *"Zayd. My boy. Run your lamp over me — I will follow it the whole way home."* |
+| `golem-dark-nw` | Orin (Mr. Black) | Stonecutter who helped build the first guard rooms | *"I remember the rings. I was ringing the stone before they rang me."* |
+| `golem-dark-sw` | Mari (Miss Black) | Millwright who kept the ore mill turning | *"The mill... is it still standing? I left a plate loose on the brace."* |
+| `golem-pale-ne` | Ferid (Mr. White) | Miner who worked the deepest shaft, swallowed first | *"They came down here and put the dark in my chest. It's quieter now."* |
+| `golem-pale-se` | Hana (Miss White) | Weaver of the village's first cloth | *"I was counting threads. They Counted me instead."* |
+| `sakhra` | (Zayd's father) — Siraj | Miner, father of Zayd, the village's quietest man | *"Zayd. My boy. Run your lamp over me — I will follow it the whole way home."* |
 | `elf-pawn-1` | Ays | Stoker's girl who ran hot coal buckets | *"I was small and fast. They made me fast where it hurt."* |
 | `elf-pawn-2` | Barak | Apprentice machinist, never off the steam drill | *"Hiss and ping and clank — I know that drum. That's a boiler, not a heart."* |
 | `elf-pawn-3` | Dunya | Seed keeper of the mushroom beds | *"I used to know which dark grows grass. This dark grows orders."* |
@@ -240,9 +240,9 @@ With recruited party members, players can issue tactical commands to coordinate 
 - **Follower Awakening Mechanic (Spirit Shards & True Names):**
   - Added transformation model and `transformations` property to `ActorDefinition`.
   - Added `transformed_stages` and `actor_name_overrides` tracking to `WorldState`, dynamic name override in `actor_display_name` and `display_actor_name`, and awakened inspect text and prompt context overrides.
-  - Authored awakening definitions across surviving Floor 1-3 pieces: `sakhra` (Jamil, father of Zayd), `golem-dark-nw` (Orin), `golem-pale-ne` (Mari), `golem-dark-sw` (Ferid), `golem-pale-se` (Hana), and `elf-queen-4` (Nazira, mother of Zayd).
-  - Placed `sakhra` in `village_square` (starts neutral to prevent premature party following on Floor 1). Carrying `zayd-lantern` near Sakhra creates a deep steam sigh and bedrock resonance. Sakhra's full awakening into Jamil occurs when Layla masters the Bind Sigil on Floor 6, channeling the lantern's preserved spirit shard back into his core to restore his voice and memory.
-  - Temporarily removed the authored hand-off `sq_return_zayd` → `sq_awaken_father` ("Return the Light"): the quest cannot be completed without the Bind Sigil, so it returns once the **Bind Sigil → Zayd's Lantern → Sakhra (Jamil)** path is implemented.
+  - Authored awakening definitions across surviving Floor 1-3 pieces: `sakhra` (Siraj, father of Zayd), `golem-dark-nw` (Orin), `golem-dark-sw` (Mari), `golem-pale-ne` (Ferid), `golem-pale-se` (Hana), and `elf-queen-4` (Nur, mother of Zayd).
+  - Placed `sakhra` in `village_square` (starts neutral to prevent premature party following on Floor 1). Carrying `zayd-lantern` near Sakhra creates a deep steam sigh and bedrock resonance. Sakhra's full awakening into Siraj occurs when Layla masters the Bind Sigil on Floor 6, channeling the lantern's preserved spirit shard back into his core to restore his voice and memory.
+  - Temporarily removed the authored hand-off `sq_return_zayd` → `sq_awaken_father` ("Return the Light"): the quest cannot be completed without the Bind Sigil, so it returns once the **Bind Sigil → Zayd's Lantern → Sakhra (Siraj)** path is implemented.
   - Enforced hard limits: `goblin-shaman` and `elf-king-5` cannot awaken.
   - Verified via full end-to-end integration tests `cinder-core/tests/layla_floor4_awakening.rs`.
 - **Command Bastion Confrontation & Commander Malik Safe (`command_bastion`):**

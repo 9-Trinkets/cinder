@@ -7,7 +7,7 @@ use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::WorldState;
 
 #[test]
-fn sakhra_awakens_into_jamil_when_awakening_triggered() {
+fn sakhra_awakens_into_siraj_when_awakening_triggered() {
     let pack = load_named_pack("layla", Some("en")).expect("pack loads");
     let mut state = WorldState::new(&pack);
 
@@ -40,16 +40,16 @@ fn sakhra_awakens_into_jamil_when_awakening_triggered() {
         "awakening fragment present: {text}"
     );
     assert!(
-        text.contains("Sakhra is now Jamil"),
+        text.contains("Sakhra is now Siraj"),
         "awakening name change narrated: {text}"
     );
 
     let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
 
-    // After awakening: display name is now Jamil
+    // After awakening: display name is now Siraj
     assert_eq!(
         runtime.actor_display_name("sakhra").unwrap().as_deref(),
-        Some("Jamil")
+        Some("Siraj")
     );
 
     let s = runtime.export_state().unwrap();
@@ -58,12 +58,12 @@ fn sakhra_awakens_into_jamil_when_awakening_triggered() {
         s.story_vars.get("transformed:sakhra:awakening"),
         Some("true")
     );
-    assert!(s.follows_player("sakhra"), "awakened Jamil follows player");
+    assert!(s.follows_player("sakhra"), "awakened Siraj follows player");
 
-    // Inspecting Jamil shows awakened inspect text
-    let inspect_out = runtime.run_turn("look at jamil").expect("look at jamil");
+    // Inspecting Siraj shows awakened inspect text
+    let inspect_out = runtime.run_turn("look at siraj").expect("look at siraj");
     assert!(
-        inspect_out.text().contains("Jamil, once known as Sakhra")
+        inspect_out.text().contains("Siraj, once known as Sakhra")
             || inspect_out.text().contains("father of Zayd"),
         "awakened inspect text: {}",
         inspect_out.text()
@@ -77,14 +77,14 @@ fn awakening_persists_once_triggered() {
 
     state.current_room_id = "village_square".to_string();
 
-    // 1. Awaken Sakhra -> Jamil
+    // 1. Awaken Sakhra -> Siraj
     state.story_vars.set_unchecked("awakened:sakhra", "true");
     let mut lines = NarrativeLines::default();
     maybe_apply_transformations(&mut state, &pack, "sakhra", &mut lines);
 
     assert_eq!(
         state.actor_display_name(&pack, "sakhra").as_deref(),
-        Some("Jamil")
+        Some("Siraj")
     );
     assert!(state.is_actor_awakened("sakhra"));
 
@@ -171,7 +171,7 @@ fn transformation_with_empty_fragment_omits_empty_quotes() {
                 value: "true".to_string(),
             },
             rename: Some(cinder_core::content::types::TransformationRename {
-                name: "Jamil".to_string(),
+                name: "Siraj".to_string(),
                 fragment: String::new(),
                 ..Default::default()
             }),

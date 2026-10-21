@@ -143,7 +143,7 @@ Each companion, leader, and civilian has a distinct linguistic fingerprint drawn
 - **Taboos:** Battlefield triage yelling, frantic broken fragments, or cold clinical technobabble.
 - **Key principles:** Clearly explains steps and sensations so the patient is not afraid (*"Swallow it. It will restart your head once — it makes you dizzy, don't be afraid. Once it clears, you will see..."*).
 
-### 3. Queen Nazira (`queen-elf-boss` / `Nazira`)
+### 3. Queen Nur (`queen-elf-boss` / `Nur`)
 - **Archetype:** Grief-stricken mother searching through shattered memory.
 - **Sentence length:** Broken phrases, gentle repetitions, pauses (`...`).
 - **Tone:** Tender, hesitant, sorrowful, and fragmented.

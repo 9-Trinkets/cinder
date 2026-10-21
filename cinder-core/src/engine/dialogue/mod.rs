@@ -128,7 +128,7 @@ pub trait DialogueGenerator: Send + Sync {
 }
 
 /// Sanitizes generated comms dispatch text by:
-/// 1. Stripping speaker prefixes (e.g. "Jamil: ")
+/// 1. Stripping speaker prefixes (e.g. "Siraj: ")
 /// 2. Removing markdown italic stage directions/sound effects (*mechanical rumble...*)
 /// 3. Removing parenthetical sound effects or stage directions ((hisses), (grunts))
 /// 4. Removing bracketed meta tags ([GIVE: ...])
@@ -141,7 +141,7 @@ pub fn sanitize_comms_dispatch(raw: &str, reporter_name: &str) -> String {
         .trim()
         .to_string();
 
-    // Strip speaker prefix if present (e.g. "Jamil: ...")
+    // Strip speaker prefix if present (e.g. "Siraj: ...")
     let prefix = format!("{reporter_name}:");
     if let Some(stripped) = text.strip_prefix(&prefix) {
         text = stripped.trim().to_string();
@@ -205,7 +205,7 @@ mod tests {
     #[test]
     fn test_sanitize_comms_dispatch_strips_stage_directions_and_rumble() {
         let raw = "*Low mechanical rumble, the sound of stone grinding against stone, and a sharp brass hiss*—Heavy wounds weaken us at Frost-Leopard. Three foes remain; stand firm, shield the fragile.";
-        let cleaned = sanitize_comms_dispatch(raw, "Jamil");
+        let cleaned = sanitize_comms_dispatch(raw, "Siraj");
         assert_eq!(
             cleaned,
             "Heavy wounds weaken us at Frost-Leopard. Three foes remain; stand firm, shield the fragile."

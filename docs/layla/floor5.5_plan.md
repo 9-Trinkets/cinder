@@ -47,14 +47,14 @@ The cull runs one step ahead of Layla the whole time.
 This is the quiet horror the player carries into Floor 6: every beast in the kingdom came from a town like these.
 
 ### The Six Worker Towns
-Six worker towns exist below the mountain fortress. Town 04 (**Deepwell**) is the mining town Layla already explored on Floor 4 with Zayd, Rashid, and Jamil. The other five towns make up Floor 5.5:
+Six worker towns exist below the mountain fortress. Town 04 (**Deepwell**) is the mining town Layla already explored on Floor 4 with Zayd, Rashid, and Siraj. The other five towns make up Floor 5.5:
 
 | Block | Town Name | Work | Rescued Friend from Floor 5 |
 |---|---|---|---|
 | **Block 01** | **Salt Reach** | Salt pans & cold-sea fishing | **Nivi Olsen** (Supply Clerk) |
 | **Block 02** | **Glassbank** | Glass kilns & colored signal lamps | **Eliška Nováková** (Signal Tester) |
 | **Block 03** | **Woolcross** | Mountain wool & climbing ropes | **Amaru Quispe** (Loom Mechanic) |
-| *Block 04* | *Deepwell* | *Ore mines & steam boilers* | *(Zayd, Jamil — Floor 4)* |
+| *Block 04* | *Deepwell* | *Ore mines & steam boilers* | *(Zayd, Siraj — Floor 4)* |
 | **Block 05** | **Greenrest** | Warm cave gardens & healing herbs | **Abeni Adeyemi** (Grower) |
 | **Block 06** | **Brass Yard** | Clocks, pumps, cranes & gears | **Chen Yu-xin** (Machinist) |
 
@@ -483,7 +483,7 @@ What Layla learns: the water-gate timers that trap fleeing miners are the machin
 
 The emotions planted in the towns are collected in Floor 6's soul vaults.
 
-In the binding ledger beneath the High Sanctuary, converted people are listed the way a shipping clerk lists goods: name, town, trade, and the shell their spirit was bound into. Higher on the same page are older entries the player has already met — **Jamil of Deepwell**, bound into a guardian golem and woken by Zayd's lantern; **Nazira**, bound into an elf queen and woken by her son's voice.
+In the binding ledger beneath the High Sanctuary, converted people are listed the way a shipping clerk lists goods: name, town, trade, and the shell their spirit was bound into. Higher on the same page are older entries the player has already met — **Siraj of Deepwell**, bound into a guardian golem and woken by Zayd's lantern; **Nur**, bound into an elf queen and woken by her son's voice.
 
 Lower on the page are the five the player will recognize by name if they did the town quests:
 

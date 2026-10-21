@@ -106,7 +106,7 @@ Cumulative growth from Level 1 to 10 adds **+27 primary stat points** (+6 STR, +
 | `zayd` | Zayd | 3 | 2 | 3 | 2 | 5 | 5 | 3 | 25 | 27 |
 | `steam_automaton_west` | Driller Automaton | 4 | 4 | 6 | 6 | 4 | 4 | 4 | 48 | 28 |
 | `garrison_sentry_gate` | Garrison Sentry | 4 | 4 | 5 | 5 | 5 | 5 | 4 | 44 | 31 |
-| `sakhra` | Sakhra (Jamil) | 4 | 5 | 7 | 7 | 3 | 4 | 6 | 56 | 32 |
+| `sakhra` | Sakhra (Siraj) | 4 | 5 | 7 | 7 | 3 | 4 | 6 | 56 | 32 |
 | `captain_malik` | Captain Malik | 4 | 5 | 7 | 7 | 5 | 4 | 4 | 56 | 30 |
 | `commander_astrid` | Astrid | 5 | 6 | 7 | 7 | 6 | 5 | 5 | 60 | 36 |
 | `einar` | Einar | 5 | 6 | 3 | 5 | 5 | 9 | 8 | 50 | 51 |

@@ -45,8 +45,8 @@ Up until Floor 6, the player has encountered monsters as combat obstacles and se
 
 ### The Truth of the Disappeared
 In the High Sanctuary’s soul vaults and binding records, Layla finds the ledger of transitions:
-- **Sakhra** (Zayd's father, Jamil) was a miner from Deepwell, his spirit bound into steam-driven stone to guard his home town.
-- **The Elf Queen** on Floor 2 was Zayd's mother, her spirit bound into an elf chess piece.
+- **Sakhra** (Zayd's father, Siraj) was a miner from Deepwell, his spirit bound into steam-driven stone to guard his home town.
+- **The Elf Queen (Nur)** on Floor 2 was Zayd's mother, her spirit bound into an elf chess piece.
 - **The Goblin Golems** on Floor 1 were early batches of workers bound to stone to guard the borders.
 - Every monster on the board and in the kingdom was once a living person from the worker towns.
 
@@ -131,8 +131,8 @@ Floor 6 cuts out complicated shift schedules and trivia tests in favor of direct
    - Seer Valerius drops the **Bind Sigil Scroll**, teaching Layla the `bind-sigil`.
    - **Mastering Creation & Reclaiming True Names:**
      With both the **Spawn Sigil** (`spawn-sigil`, learned on Floor 3) and the **Bind Sigil** (`bind-sigil`), Layla masters the complete arcane lifecycle. Rather than enslaving souls into mindless constructs, she reverses the High Sanctuary's corruption:
-     - By channeling the **Bind Sigil** through **Zayd's Lantern**, she binds the lingering memory shards and spirits of Zayd's parents back into Sakhra's core, awakening **Jamil** as a conscious ally (without physical change to his stone shell).
-     - Similarly, she can awaken Queen Nazira (`elf-queen-4`) on Floor 2 via Zayd's voice and the Bind Sigil.
+     - By channeling the **Bind Sigil** through **Zayd's Lantern**, she binds the lingering memory shards and spirits of Zayd's parents back into Sakhra's core, awakening **Siraj** as a conscious ally (without physical change to his stone shell).
+     - Similarly, she can awaken Queen Nur (`elf-queen-4`) on Floor 2 via Zayd's voice and the Bind Sigil.
      - She can bind fallen friendly spirits into summoned shells to sustain her party.
 
 ---

@@ -166,7 +166,7 @@ This is the standard ending—the one the corporation designed her to achieve.
 This is the true, secret ending. It resolves the mystery at the heart of the story: *Is Layla a corporate machine, or a person with a heart?*
 
 #### How to trigger it (All three conditions required):
-1. **At Least One Awakened Companion in Party:** Layla must have restored the soul of at least one companion during her journey (such as Jamil from Floor 4, or Keld, Miloš, Yana, Dayo, or Chen Ming-de from Floor 5.5). If Layla has no awakened allies, she has no one capable of taking the Master's Seat with human empathy to keep the simulation alive, so the escape backdoor cannot open.
+1. **At Least One Awakened Companion in Party:** Layla must have restored the soul of at least one companion during her journey (such as Siraj from Floor 4, or Keld, Miloš, Yana, Dayo, or Chen Ming-de from Floor 5.5). If Layla has no awakened allies, she has no one capable of taking the Master's Seat with human empathy to keep the simulation alive, so the escape backdoor cannot open.
 2. **Zero Party Deployed:** Layla does **not** deploy Astrid, Einar, Sakhra, or any other companion into the dungeon rooms. She leaves them safely behind in the antechamber. She refuses to use her friends as meat shields or disposable pawns.
 3. **Pure Running:** Layla never attacks the Handler. She relies purely on her own agility, maze layout, and quick movement to stay one step ahead of him, running from room to room until the timer runs out.
 
@@ -200,12 +200,12 @@ flowchart TD
 ```
 
 #### The Permanent Rebranding:
-When Layla selects her successor (for example, Jamil, Chen Ming-de, Yana, or Keld):
+When Layla selects her successor (for example, Siraj, Chen Ming-de, Yana, or Keld):
 - The chosen companion steps up to the console with pride and gratitude:
   > *"Go, Layla. Run into the daylight. We'll keep the lights on down here."*
 - Layla walks through the exit into the outside world, finally free.
 - **The game itself permanently updates its name:**
-  - If the player chose **Jamil**, the title screen, game banner, and save files change from **Layla** to **Jamil**.
+  - If the player chose **Siraj**, the title screen, game banner, and save files change from **Layla** to **Siraj**.
   - If the player chose **Chen Ming-de**, the game changes to **Chen Ming-de**.
   - If the player chose **Yana**, the game changes to **Yana**.
   - The cycle continues—not as a meat grinder for a greedy corporation, but as a living world guided by a person who remembers love.
@@ -248,8 +248,8 @@ When Ending 2 completes:
 - The game engine writes the chosen successor's name into the session's active manifest:
   ```json
   {
-    "game_title": "Jamil",
-    "active_protagonist": "jamil",
+    "game_title": "Siraj",
+    "active_protagonist": "siraj",
     "completed_campaign": "layla"
   }
   ```
@@ -273,5 +273,5 @@ When Ending 2 completes:
    - Defeat the Handler or outlast the timer.
    - Assert Handler withers, golden archway opens, and Layla takes the Master's Seat.
 5. **Secret Escape Condition (Ending 2):**
-   - Case A (Escape Success): Party has at least one awakened companion (e.g. Jamil), zero companions deployed into the trial, and Layla outruns the Handler until the timer expires. Assert backdoor opens, successor prompt lists only awakened companions, and game title renames successfully upon choice.
+   - Case A (Escape Success): Party has at least one awakened companion (e.g. Siraj), zero companions deployed into the trial, and Layla outruns the Handler until the timer expires. Assert backdoor opens, successor prompt lists only awakened companions, and game title renames successfully upon choice.
    - Case B (No Awakened Companion): Zero companions deployed and Layla outruns the Handler, but party has zero awakened companions. Assert backdoor does not open (cannot leave core unattended), prompting Layla to take the Master's Seat (Ending 1).
