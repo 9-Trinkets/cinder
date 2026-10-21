@@ -91,5 +91,5 @@ Still open:
 - The visual pass of the web UI (browser extension was unavailable).
 - Aera, Ella and Isla still show English pack metadata in zh-TW (Ella ships zh-TW content but no settings overlay).
 - `act_cast.rs` act headers and the book-recommender flow (Isla/Aera) still contain English strings.
-- Layla's Orva is 歐瓦 in the game and 奧爾娃 in the novel; decide which wins.
+- Layla's Orva is now 奧爾娃 in the game zh-TW, matching the novel.
 - Typed give commands still need the English word `to` (`給予 藥水 to 小宰德`).
