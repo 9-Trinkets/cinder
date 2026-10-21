@@ -1,13 +1,13 @@
 mod bundled;
 mod fs;
 mod index;
+mod overlay;
 mod validation;
 
-use crate::content::loader::bundled::{read_messages, read_system_text};
-use crate::content::loader::fs::{
-    LocalizedPaths, read_json, read_optional_json, read_optional_json_raw,
-};
+use crate::content::loader::bundled::{read_messages, read_system_text, read_ui_text};
+use crate::content::loader::fs::{LocalizedPaths, read_json, read_optional_json};
 use crate::content::loader::index::{build_index, collect_act_cast};
+use crate::content::loader::overlay::read_with_overlay;
 use crate::content::types::{
     ActionsDefinition, ActorDefinition, BeatObjectivesDefinition, BeatsDefinition,
     BehaviorDefinition, ContentPack, ContentSettingsDefinition, ItemDefinition, LevelingDefinition,
@@ -69,9 +69,28 @@ pub fn available_packs() -> Vec<String> {
 }
 
 pub fn load_pack_settings(pack_id: &str) -> Result<ContentSettingsDefinition, Box<dyn Error>> {
-    let mut settings =
-        read_optional_json::<ContentSettingsDefinition>(&pack_dir(pack_id), "settings.json")?
-            .unwrap_or_default();
+    load_pack_settings_for_locale(pack_id, None)
+}
+
+/// Loads a pack's settings with the locale's `settings.json` overlay applied
+/// (title, tagline, description, tags and channel labels), falling back to the
+/// pack-root values when the locale ships no overlay.
+pub fn load_pack_settings_for_locale(
+    pack_id: &str,
+    locale: Option<&str>,
+) -> Result<ContentSettingsDefinition, Box<dyn Error>> {
+    let mut settings = match locale.map(str::trim).filter(|code| !code.is_empty()) {
+        Some(code) => read_with_overlay::<ContentSettingsDefinition>(
+            &pack_dir(pack_id),
+            code,
+            "settings.json",
+        )?
+        .unwrap_or_default(),
+        None => {
+            read_optional_json::<ContentSettingsDefinition>(&pack_dir(pack_id), "settings.json")?
+                .unwrap_or_default()
+        }
+    };
     if let Some(parties) =
         read_optional_json::<Vec<PartyDefinition>>(&pack_dir(pack_id), "parties.json")?
     {
@@ -88,20 +107,23 @@ pub fn load_pack_from_dir_with_locale(
     path: &Path,
     locale: Option<&str>,
 ) -> Result<ContentPack, Box<dyn Error>> {
-    let mut settings =
+    let base_settings =
         read_optional_json::<ContentSettingsDefinition>(path, "settings.json")?.unwrap_or_default();
+    let effective_locale = match locale {
+        Some(locale) if !locale.trim().is_empty() => locale.to_string(),
+        _ if !base_settings.default_language.trim().is_empty() => {
+            base_settings.default_language.clone()
+        }
+        _ => DEFAULT_LOCALE.to_string(),
+    };
+    let mut settings =
+        read_with_overlay::<ContentSettingsDefinition>(path, &effective_locale, "settings.json")?
+            .unwrap_or_default();
     if let Some(parties) = read_optional_json::<Vec<PartyDefinition>>(path, "parties.json")? {
         settings.parties = parties;
     }
-    let effective_locale = match locale {
-        Some(locale) if !locale.trim().is_empty() => locale.to_string(),
-        _ if !settings.default_language.trim().is_empty() => settings.default_language.clone(),
-        _ => DEFAULT_LOCALE.to_string(),
-    };
     let paths = LocalizedPaths::new(path, &effective_locale);
-    let ui_text = paths
-        .read_optional::<UiTextDefinition>("ui.json")?
-        .unwrap_or_default();
+    let ui_text = read_ui_text(&paths)?;
     let system_text = read_system_text(&paths)?;
     let opening = paths.read_required::<OpeningDefinition>("opening.json")?;
     let beats = paths
@@ -135,15 +157,13 @@ pub fn load_pack_from_dir_with_locale(
     let act_cast = collect_act_cast(&actors);
     let stats = read_optional_json::<StatsDefinition>(path, "stats.json")?.unwrap_or_default();
 
-    let mut actions = if let Some(actions_json) = read_optional_json_raw(path, "actions.json")? {
-        let actions_def: ActionsDefinition =
-            serde_json::from_str(&actions_json).map_err(|e| format!("actions.json: {e}"))?;
-        actions_def.actions
-    } else {
-        Vec::new()
-    };
+    let mut actions =
+        read_with_overlay::<ActionsDefinition>(path, &effective_locale, "actions.json")?
+            .map(|actions_def| actions_def.actions)
+            .unwrap_or_default();
     let movement =
-        read_optional_json::<MovementConfigDefinition>(path, "movement.json")?.unwrap_or_default();
+        read_with_overlay::<MovementConfigDefinition>(path, &effective_locale, "movement.json")?
+            .unwrap_or_default();
     let behavior =
         read_optional_json::<BehaviorDefinition>(path, "behavior.json")?.unwrap_or_default();
     let speech =
@@ -157,7 +177,8 @@ pub fn load_pack_from_dir_with_locale(
     let speech_intents: SpeechIntentsConfig =
         read_optional_json::<SpeechIntentsConfig>(path, "intents.json")?.unwrap_or_default();
     let items: Vec<ItemDefinition> =
-        read_optional_json::<Vec<ItemDefinition>>(path, "items.json")?.unwrap_or_default();
+        read_with_overlay::<Vec<ItemDefinition>>(path, &effective_locale, "items.json")?
+            .unwrap_or_default();
     let variables: BTreeMap<String, crate::engine::state::VariableDeclaration> =
         read_optional_json::<BTreeMap<String, crate::engine::state::VariableDeclaration>>(
             path,
@@ -165,7 +186,8 @@ pub fn load_pack_from_dir_with_locale(
         )?
         .unwrap_or_default();
     let levels = read_optional_json::<LevelingDefinition>(path, "levels.json")?.unwrap_or_default();
-    let skills = read_optional_json::<SkillsDefinition>(path, "skills.json")?.unwrap_or_default();
+    let skills = read_with_overlay::<SkillsDefinition>(path, &effective_locale, "skills.json")?
+        .unwrap_or_default();
     install_skill_behaviors(&skills, &mut actions, &mut settings)?;
 
     let room_index = build_index(&rooms, |room| &room.id);

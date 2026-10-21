@@ -1,0 +1,132 @@
+{
+  "skills": [
+    {
+      "id": "strike",
+      "label": "擊打",
+      "description": "對房間裡的一個目標發動專注的物理攻擊。",
+      "scaling": {
+        "summary_template": "額外傷害：+{bonus_damage}"
+      },
+      "player_action": {
+        "id": "attack",
+        "label": "攻擊",
+        "phrases": [
+          "攻擊",
+          "毆打",
+          "戰鬥",
+          "殺"
+        ],
+        "event_text": "{actor_name}攻擊了{target_actor_name}。",
+        "ui": {
+          "panel_config": {
+            "title": "你想攻擊誰？",
+            "prompt": "選擇一個目標"
+          }
+        },
+        "player_command": {
+          "usage": "attack <target>（攻擊 <目標>）",
+          "example": "攻擊 哥布林"
+        }
+      }
+    },
+    {
+      "id": "intercept",
+      "label": "攔截",
+      "description": "擋在衝著脆弱同伴而來的攻擊前方，替他吸收這一擊。",
+      "scaling": {
+        "summary_template": "吸收傷害：-{damage_soaked}"
+      }
+    },
+    {
+      "id": "heal",
+      "label": "治療",
+      "description": "為受傷的同伴開啟安撫的藥劑，恢復體力。",
+      "scaling": {
+        "summary_template": "回復：{amount} 點體力"
+      }
+    },
+    {
+      "id": "trace",
+      "label": "描紋",
+      "description": "在石頭上刻下閃著光的戰術粉筆符紋。",
+      "scaling": {
+        "summary_template": "描紋魔力 -{mp_discount}",
+        "zero_summary": "基礎魔力消耗"
+      },
+      "player_action": {
+        "id": "trace",
+        "label": "描紋",
+        "phrases": [
+          "描紋",
+          "描繪",
+          "畫線",
+          "畫",
+          "使用粉筆"
+        ],
+        "ui": {
+          "panel_config": {
+            "title": "銘刻",
+            "prompt": "選擇要描繪的記號"
+          }
+        },
+        "player_command": {
+          "usage": "trace（描紋）",
+          "example": "描紋"
+        },
+        "content_event": {
+          "event_text": "蕾拉蹲下身，在地上畫出一道粉筆線。它亮起淡淡而穩定的光，留在了那裡。"
+        }
+      }
+    },
+    {
+      "id": "teleport",
+      "label": "傳送",
+      "description": "把隊伍瞬間送回已啟動的傳送錨點。",
+      "scaling": {
+        "summary_template": "錨點：{anchor_capacity}"
+      },
+      "player_action": {
+        "id": "teleport",
+        "label": "傳送",
+        "phrases": [
+          "傳送",
+          "傳送到"
+        ],
+        "ui": {
+          "panel_config": {
+            "title": "傳送到錨點",
+            "prompt": "選擇要傳送到的錨點："
+          }
+        },
+        "player_command": {
+          "usage": "teleport <anchor>（傳送 <錨點>）",
+          "example": "傳送 傳送台"
+        }
+      }
+    },
+    {
+      "id": "comms",
+      "label": "通訊",
+      "description": "開啟遠端無線電與心靈傳訊，讓你能跨房間轉達戰術更新與戰場狀況。",
+      "scaling": {
+        "summary_template": "與已甦醒的同伴心靈相通"
+      }
+    },
+    {
+      "id": "charm",
+      "label": "魅紋",
+      "description": "轉化並指揮生物與你並肩作戰。",
+      "scaling": {
+        "summary_template": "魅紋加成：+{charm_bonus}"
+      }
+    },
+    {
+      "id": "drain",
+      "label": "噬紋",
+      "description": "一道黑暗的螺旋，會吸走踏入者的生命力。",
+      "scaling": {
+        "summary_template": "傷害：{damage}・次數：{charges}"
+      }
+    }
+  ]
+}

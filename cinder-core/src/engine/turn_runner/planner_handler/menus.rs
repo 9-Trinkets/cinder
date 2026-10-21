@@ -37,7 +37,9 @@ pub(super) fn try_resolve_menu_choice(
                 vec![WorldEvent::MenuChoiceMade {
                     menu_id: menu_id.to_string(),
                     option_id: "done".to_string(),
-                    title: "Done".to_string(),
+                    title: content
+                        .render_message("ui.menu_done", &[])
+                        .unwrap_or_default(),
                 }],
                 true,
             ));

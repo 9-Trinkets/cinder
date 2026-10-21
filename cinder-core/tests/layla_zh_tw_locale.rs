@@ -286,3 +286,162 @@ fn layla_zh_tw_prompt_context_and_narrative_lines_are_localized() {
         untranslated.len()
     );
 }
+
+/// Whether the text carries an English-looking word (three or more consecutive
+/// ASCII letters) outside placeholders. Single letters (`J`) and key names
+/// handled by the allowlist are not leaks.
+fn has_english_word(s: &str) -> bool {
+    const ALLOWED: &[&str] = &[
+        "Enter",
+        "Esc",
+        "PageUp",
+        "PageDown",
+        "JSON",
+        "rating",
+        "review_text",
+        "Trinkets",
+        "www",
+        "com",
+        "MP",
+        "HP",
+        "markdown",
+    ];
+    let literal = strip_placeholders(s);
+    let mut word = String::new();
+    let flush = |word: &mut String| -> bool {
+        let leak = word.len() >= 3 && !ALLOWED.contains(&word.as_str());
+        word.clear();
+        leak
+    };
+    for c in literal.chars() {
+        if c.is_ascii_alphabetic() || c == '_' {
+            word.push(c);
+        } else if flush(&mut word) {
+            return true;
+        }
+    }
+    flush(&mut word)
+}
+
+#[test]
+fn layla_zh_tw_ui_text_has_no_english_fallbacks() {
+    let pack = load_named_pack("layla", Some("zh-TW")).expect("layla zh-TW loads and validates");
+    let value = serde_json::to_value(&pack.ui_text).expect("ui text serializes");
+    let mut leaks = Vec::new();
+    collect_leaks("ui_text", &value, &mut leaks);
+    assert!(
+        leaks.is_empty(),
+        "UI text keys still falling back to English ({}):\n{leaks:#?}",
+        leaks.len()
+    );
+}
+
+fn collect_leaks(path: &str, value: &serde_json::Value, leaks: &mut Vec<String>) {
+    match value {
+        serde_json::Value::String(text) if has_english_word(text) => {
+            leaks.push(format!("{path}: {text}"));
+        }
+        serde_json::Value::Array(items) => {
+            for (index, item) in items.iter().enumerate() {
+                collect_leaks(&format!("{path}/{index}"), item, leaks);
+            }
+        }
+        serde_json::Value::Object(map) => {
+            for (key, item) in map {
+                if key == "id" {
+                    continue;
+                }
+                collect_leaks(&format!("{path}/{key}"), item, leaks);
+            }
+        }
+        _ => {}
+    }
+}
+
+#[test]
+fn layla_zh_tw_overlay_files_localize_pack_root_text() {
+    let pack = load_named_pack("layla", Some("zh-TW")).expect("layla zh-TW loads and validates");
+    let mut leaks = Vec::new();
+
+    for item in &pack.items {
+        for (field, text) in [
+            ("label", item.label.as_str()),
+            ("description", item.description.as_str()),
+            ("look_description", item.look_description.as_str()),
+        ] {
+            if has_english_word(text) {
+                leaks.push(format!("item {} {field}: {text}", item.id));
+            }
+        }
+    }
+    for skill in &pack.skills.skills {
+        for (field, text) in [
+            ("label", skill.label.as_str()),
+            ("description", skill.description.as_str()),
+        ] {
+            if has_english_word(text) {
+                leaks.push(format!("skill {} {field}: {text}", skill.id));
+            }
+        }
+    }
+    for action in &pack.actions {
+        if has_english_word(&action.label) {
+            leaks.push(format!("action {} label: {}", action.id, action.label));
+        }
+        if let Some(panel) = &action.ui.panel_config {
+            for (field, text) in [
+                ("title", panel.title.as_str()),
+                ("prompt", panel.prompt.as_str()),
+            ] {
+                if has_english_word(text) {
+                    leaks.push(format!("action {} panel {field}: {text}", action.id));
+                }
+            }
+        }
+    }
+    for (field, text) in [
+        ("title", pack.settings.title.as_str()),
+        ("tagline", pack.settings.tagline.as_str()),
+        ("description", pack.settings.description.as_str()),
+    ] {
+        if has_english_word(text) {
+            leaks.push(format!("settings {field}: {text}"));
+        }
+    }
+    if has_english_word(&pack.settings.combat.player_defeat_text) {
+        leaks.push("settings combat player_defeat_text".to_string());
+    }
+    for tag in &pack.settings.tags {
+        if has_english_word(tag) {
+            leaks.push(format!("settings tag: {tag}"));
+        }
+    }
+
+    assert!(
+        leaks.is_empty(),
+        "English left in zh-TW pack-root text ({}):\n{leaks:#?}",
+        leaks.len()
+    );
+}
+
+#[test]
+fn layla_zh_tw_accepts_chinese_command_phrases_alongside_english() {
+    let pack = load_named_pack("layla", Some("zh-TW")).expect("layla zh-TW loads and validates");
+    let look = pack
+        .actions
+        .iter()
+        .find(|action| action.id == "look")
+        .expect("look action");
+    assert!(look.phrases.iter().any(|phrase| phrase == "查看"));
+    assert!(
+        look.phrases.iter().any(|phrase| phrase == "look"),
+        "English phrases must survive the overlay"
+    );
+    let english = load_named_pack("layla", Some("en")).expect("layla en loads");
+    assert!(
+        english
+            .actions
+            .iter()
+            .all(|a| a.phrases.iter().all(|p| p.is_ascii()))
+    );
+}

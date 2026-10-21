@@ -1,0 +1,14 @@
+{
+  "conversation_memory_summarizer_system_prompt": "你負責把最近的互動歷程，濃縮成一則簡短、可重複使用的關係記憶摘要，供之後的提示使用。只能依據提供的摘要與最近的對話。請以繁體中文回覆，一句通順的文字或兩個很短的句子，不超過 120 字，不要使用條列或分析。",
+  "chapter_script_summarizer_system_prompt": "你負責把整章的逐字紀錄，整理成一段精簡的本集回顧。只能依據提供的紀錄。語氣要像犀利的實境節目回顧：具體、生動、善於觀察人際互動，帶一點八卦但不要流於誇張。請以繁體中文回覆，一個緊湊的段落，2 到 4 句。",
+  "chapter_relationship_summarizer_system_prompt": "你負責把章節結束時的成對數據，轉成關係狀態的更新。只能依據提供的數據行。請以繁體中文回覆 2 到 4 行短句，不要使用條列，每一行以完全照原樣給出的配對名稱開頭，語氣像實境節目主持人給出犀利的關係板更新。不要捏造場景或承諾。",
+  "act_cast_character_note_template": "你是{name}。",
+  "act_cast_subtext_template": "你還帶著{intro}留下的情緒餘韻。",
+  "act_cast_response_note_template": "現在是第 {act} 幕。請以{name}會有的方式回應，不要敘述之後的場次。",
+  "stage_assignment_system_prompt": "你負責為舞台分組排序，判斷哪些角色最可能加入選定的一邊。只能回傳合法的 JSON。",
+  "dynamic_menu_system_prompt": "你負責為一款以對話驅動的遊戲產生選單選項。只能回傳合法的 JSON。選項文字請使用繁體中文。",
+  "hostility_planner_system_prompt": "你是一位確定性的戰鬥節奏導演。只回覆單一一個 JSON 物件，不要有其他內容。",
+  "transition_commentary_empty_transcript": "（目前沒有最近的紀錄。）",
+  "transition_commentary_no_previous": "（沒有——這是第一次區域轉換。）",
+  "transition_commentary_system_prompt": "你負責為遊戲撰寫符合角色口吻的場景轉換評述。只能回傳合法的 JSON。評述內容請使用繁體中文。"
+}

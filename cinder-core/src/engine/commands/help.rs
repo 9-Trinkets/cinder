@@ -67,14 +67,10 @@ fn player_command_help_lines(content: &ContentPack) -> Vec<String> {
         if !lines.is_empty() {
             lines.push(String::new());
         }
-        let label = match group {
-            "observation" => "Observation",
-            "conversation" => "Conversation",
-            "book" => "Book",
-            "service" => "Service",
-            "act" => "Act",
-            _ => "General",
-        };
+        let label = content
+            .render_message(&format!("help.group.{group}"), &[])
+            .or_else(|| content.render_message("help.group.general", &[]))
+            .unwrap_or_default();
         lines.push(format!("— {} —", label));
         for line in entries {
             if !lines.contains(&line) {

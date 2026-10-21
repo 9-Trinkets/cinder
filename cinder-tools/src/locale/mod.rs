@@ -13,6 +13,7 @@ use std::collections::BTreeMap;
 use std::path::Path;
 
 pub mod apply;
+pub mod overlay_check;
 pub mod scaffold;
 
 /// Subdirectory of a locale holding translation maps, one file per content file.

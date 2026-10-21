@@ -29,9 +29,9 @@ pub(super) fn build_player_skills(
             cinder_core::engine::skills::skill_sp_for_level_with_thresholds(level, thresholds);
         let sp_level_max =
             cinder_core::engine::skills::skill_next_level_sp_with_thresholds(level, thresholds);
-        let scalar_summary = skill
-            .format_summary(level)
-            .unwrap_or_else(|| cinder_core::engine::skills::skill_scalar_summary(skill_id, level));
+        let scalar_summary = skill.format_summary(level).unwrap_or_else(|| {
+            cinder_core::engine::skills::skill_scalar_summary(content, skill_id, level)
+        });
 
         result.push(PlayerSkillItem {
             id: skill.id.clone(),

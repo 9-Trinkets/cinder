@@ -3,7 +3,8 @@
     "aliases": [
       "layla",
       "me",
-      "myself"
+      "myself",
+      "蕾拉"
     ],
     "attackable": false,
     "game_data": {},
@@ -58,7 +59,9 @@
     "aliases": [
       "golem",
       "dark golem",
-      "stone figure"
+      "stone figure",
+      "暗石魔像",
+      "魔像"
     ],
     "attackable": true,
     "drops": {},
@@ -131,7 +134,9 @@
     "aliases": [
       "golem",
       "pale golem",
-      "stone figure"
+      "stone figure",
+      "白石魔像",
+      "魔像"
     ],
     "attackable": true,
     "drops": {},
@@ -206,7 +211,10 @@
       "goblin shaman",
       "the shaman",
       "goblin elder",
-      "old goblin"
+      "old goblin",
+      "哥布林薩滿",
+      "魔像",
+      "哥布林"
     ],
     "attackable": true,
     "drops": {},
@@ -264,7 +272,9 @@
     "aliases": [
       "golem",
       "dark golem",
-      "stone figure"
+      "stone figure",
+      "暗石魔像",
+      "魔像"
     ],
     "attackable": true,
     "drops": {},
@@ -337,7 +347,9 @@
     "aliases": [
       "golem",
       "pale golem",
-      "stone figure"
+      "stone figure",
+      "白石魔像",
+      "魔像"
     ],
     "attackable": true,
     "drops": {},
@@ -411,7 +423,8 @@
       "goblin",
       "cave goblin",
       "the goblin",
-      "meat-thief"
+      "meat-thief",
+      "哥布林"
     ],
     "attackable": true,
     "drops": {},
@@ -467,7 +480,8 @@
       "goblin",
       "cave goblin",
       "the goblin",
-      "bone-chewer"
+      "bone-chewer",
+      "哥布林"
     ],
     "attackable": true,
     "drops": {},
@@ -523,7 +537,8 @@
       "goblin",
       "cave goblin",
       "the goblin",
-      "fire-tender"
+      "fire-tender",
+      "哥布林"
     ],
     "attackable": true,
     "drops": {},
@@ -579,7 +594,8 @@
       "goblin",
       "cave goblin",
       "the goblin",
-      "meat-smoker"
+      "meat-smoker",
+      "哥布林"
     ],
     "attackable": true,
     "drops": {},
@@ -632,7 +648,9 @@
   },
   {
     "aliases": [
-      "elf pawn"
+      "elf pawn",
+      "妖精兵",
+      "妖精"
     ],
     "attackable": true,
     "drops": {},
@@ -718,7 +736,9 @@
   },
   {
     "aliases": [
-      "elf pawn"
+      "elf pawn",
+      "妖精兵",
+      "妖精"
     ],
     "attackable": true,
     "drops": {},
@@ -804,7 +824,9 @@
   },
   {
     "aliases": [
-      "elf pawn"
+      "elf pawn",
+      "妖精兵",
+      "妖精"
     ],
     "attackable": true,
     "drops": {},
@@ -890,7 +912,9 @@
   },
   {
     "aliases": [
-      "elf pawn"
+      "elf pawn",
+      "妖精兵",
+      "妖精"
     ],
     "attackable": true,
     "drops": {},
@@ -976,7 +1000,9 @@
   },
   {
     "aliases": [
-      "elf pawn"
+      "elf pawn",
+      "妖精兵",
+      "妖精"
     ],
     "attackable": true,
     "drops": {},
@@ -1062,7 +1088,9 @@
   },
   {
     "aliases": [
-      "elf pawn"
+      "elf pawn",
+      "妖精兵",
+      "妖精"
     ],
     "attackable": true,
     "drops": {},
@@ -1148,7 +1176,9 @@
   },
   {
     "aliases": [
-      "elf pawn"
+      "elf pawn",
+      "妖精兵",
+      "妖精"
     ],
     "attackable": true,
     "drops": {},
@@ -1234,7 +1264,9 @@
   },
   {
     "aliases": [
-      "elf pawn"
+      "elf pawn",
+      "妖精兵",
+      "妖精"
     ],
     "attackable": true,
     "drops": {},
@@ -1320,7 +1352,9 @@
   },
   {
     "aliases": [
-      "elf rook"
+      "elf rook",
+      "重裝哨兵",
+      "妖精"
     ],
     "attackable": true,
     "drops": {},
@@ -1402,7 +1436,9 @@
   },
   {
     "aliases": [
-      "elf knight"
+      "elf knight",
+      "妖精騎士",
+      "妖精"
     ],
     "attackable": true,
     "drops": {},
@@ -1484,7 +1520,9 @@
   },
   {
     "aliases": [
-      "elf bishop"
+      "elf bishop",
+      "妖精主教",
+      "妖精"
     ],
     "attackable": true,
     "drops": {},
@@ -1573,7 +1611,9 @@
   },
   {
     "aliases": [
-      "elf queen"
+      "elf queen",
+      "妖精女王",
+      "妖精"
     ],
     "attackable": true,
     "drops": {},
@@ -1654,7 +1694,9 @@
   },
   {
     "aliases": [
-      "elf king"
+      "elf king",
+      "妖精王",
+      "妖精"
     ],
     "attackable": true,
     "drops": {},
@@ -1708,7 +1750,9 @@
   },
   {
     "aliases": [
-      "elf bishop"
+      "elf bishop",
+      "妖精主教",
+      "妖精"
     ],
     "attackable": true,
     "drops": {},
@@ -1797,7 +1841,9 @@
   },
   {
     "aliases": [
-      "elf knight"
+      "elf knight",
+      "妖精騎士",
+      "妖精"
     ],
     "attackable": true,
     "drops": {},
@@ -1879,7 +1925,9 @@
   },
   {
     "aliases": [
-      "elf rook"
+      "elf rook",
+      "重裝哨兵",
+      "妖精"
     ],
     "attackable": true,
     "drops": {},
@@ -1964,7 +2012,8 @@
       "fire elemental",
       "elemental",
       "fire",
-      "the elemental"
+      "the elemental",
+      "火元素"
     ],
     "attack_kind": "fire",
     "attackable": true,
@@ -2018,7 +2067,8 @@
       "sprite",
       "fire sprite",
       "wisp",
-      "spark"
+      "spark",
+      "火苗"
     ],
     "attack_kind": "fire",
     "attackable": true,
@@ -2063,7 +2113,8 @@
       "sprite",
       "fire sprite",
       "wisp",
-      "spark"
+      "spark",
+      "火苗"
     ],
     "attack_kind": "fire",
     "attackable": true,
@@ -2108,7 +2159,8 @@
       "sprite",
       "fire sprite",
       "wisp",
-      "spark"
+      "spark",
+      "火苗"
     ],
     "attack_kind": "fire",
     "attackable": true,
@@ -2151,7 +2203,8 @@
   {
     "aliases": [
       "handler",
-      "operator"
+      "operator",
+      "操作員"
     ],
     "attackable": false,
     "game_data": {},
@@ -2204,7 +2257,8 @@
       "sprite",
       "fire sprite",
       "wisp",
-      "spark"
+      "spark",
+      "火苗"
     ],
     "attack_kind": "fire",
     "attackable": true,
@@ -2249,7 +2303,8 @@
       "sprite",
       "fire sprite",
       "wisp",
-      "spark"
+      "spark",
+      "火苗"
     ],
     "attack_kind": "fire",
     "attackable": true,
@@ -2294,7 +2349,8 @@
       "sprite",
       "fire sprite",
       "wisp",
-      "spark"
+      "spark",
+      "火苗"
     ],
     "attack_kind": "fire",
     "attackable": true,
@@ -2340,7 +2396,8 @@
       "rashid",
       "elder rashid",
       "the elder",
-      "village elder"
+      "village elder",
+      "拉希德長老"
     ],
     "attackable": false,
     "id": "elder_rashid",
@@ -2426,7 +2483,8 @@
       "yasmin",
       "baker",
       "baker yasmin",
-      "the baker"
+      "the baker",
+      "雅絲敏"
     ],
     "attackable": false,
     "id": "yasmin",
@@ -2513,7 +2571,8 @@
       "clockmaker",
       "tariq the clockmaker",
       "artisan",
-      "mechanic"
+      "mechanic",
+      "塔里克"
     ],
     "attackable": false,
     "id": "tariq",
@@ -2596,7 +2655,8 @@
       "nafisa",
       "water carrier",
       "the woman at the spring",
-      "woman"
+      "woman",
+      "娜菲莎"
     ],
     "attackable": false,
     "id": "nafisa",
@@ -2647,7 +2707,8 @@
       "kamil",
       "the boy on the wall",
       "boy",
-      "child"
+      "child",
+      "卡米爾"
     ],
     "attackable": false,
     "id": "kamil",
@@ -2699,7 +2760,8 @@
       "boy",
       "orphan",
       "kid",
-      "prisoner"
+      "prisoner",
+      "小宰德"
     ],
     "attackable": false,
     "id": "zayd",
@@ -2790,7 +2852,8 @@
       "harun",
       "priest",
       "priest harun",
-      "inquisitor"
+      "inquisitor",
+      "哈倫祭司"
     ],
     "attackable": true,
     "drops": {},
@@ -2851,7 +2914,8 @@
       "captain",
       "captain malik",
       "commander",
-      "commander malik"
+      "commander malik",
+      "馬利克指揮官"
     ],
     "attackable": true,
     "drops": {},
@@ -2912,7 +2976,8 @@
       "sakhra",
       "steam golem",
       "golem",
-      "the watchful"
+      "the watchful",
+      "石守"
     ],
     "attackable": true,
     "drops": {},
@@ -3009,7 +3074,8 @@
       "guard",
       "gate guard",
       "soldier",
-      "garrison sentry"
+      "garrison sentry",
+      "駐軍哨兵"
     ],
     "attackable": true,
     "drops": {},
@@ -3060,7 +3126,8 @@
       "guard",
       "soldier",
       "garrison guard",
-      "sentry"
+      "sentry",
+      "駐軍衛兵"
     ],
     "attackable": true,
     "drops": {},
@@ -3110,7 +3177,8 @@
       "sentry",
       "guard",
       "patrol",
-      "soldier"
+      "soldier",
+      "駐軍城牆哨兵"
     ],
     "attackable": true,
     "drops": {},
@@ -3157,7 +3225,8 @@
       "sentry",
       "guard",
       "patrol",
-      "soldier"
+      "soldier",
+      "駐軍城牆哨兵"
     ],
     "attackable": true,
     "drops": {},
@@ -3204,7 +3273,8 @@
       "warden",
       "cage guard",
       "guard",
-      "soldier"
+      "soldier",
+      "牢籠看守"
     ],
     "attackable": true,
     "drops": {},
@@ -3254,7 +3324,8 @@
       "automaton",
       "driller",
       "clockwork",
-      "mining machine"
+      "mining machine",
+      "發條鑽礦機"
     ],
     "attackable": true,
     "drops": {},
@@ -3301,7 +3372,8 @@
       "automaton",
       "hauler",
       "clockwork",
-      "machine"
+      "machine",
+      "發條運礦機"
     ],
     "attackable": true,
     "drops": {},
@@ -3348,7 +3420,8 @@
       "fire sprite",
       "wisp",
       "spark",
-      "summoned sprite"
+      "summoned sprite",
+      "火苗"
     ],
     "attack_kind": "fire",
     "attackable": true,
@@ -3393,7 +3466,8 @@
       "sentry captain",
       "sentry",
       "guard",
-      "soldier"
+      "soldier",
+      "哨兵隊長"
     ],
     "attackable": true,
     "drops": {},
@@ -3445,7 +3519,8 @@
       "sentry",
       "guard",
       "citadel sentry",
-      "soldier"
+      "soldier",
+      "堡壘哨兵"
     ],
     "attackable": true,
     "drops": {},
@@ -3489,7 +3564,8 @@
       "raider",
       "frost-wolf raider",
       "wolf soldier",
-      "soldier"
+      "soldier",
+      "霜狼劫掠者"
     ],
     "attackable": true,
     "id": "frost_wolf_raider",
@@ -3532,7 +3608,8 @@
       "mauler",
       "iron-ram mauler",
       "ram soldier",
-      "soldier"
+      "soldier",
+      "鐵羊重錘兵"
     ],
     "attackable": true,
     "id": "iron_ram_mauler",
@@ -3575,7 +3652,8 @@
       "hunter",
       "frost-leopard hunter",
       "leopard soldier",
-      "soldier"
+      "soldier",
+      "霜豹獵手"
     ],
     "attackable": true,
     "id": "frost_leopard_hunter",
@@ -3619,7 +3697,8 @@
       "commander",
       "commander astrid",
       "woman",
-      "soldier"
+      "soldier",
+      "艾絲翠德指揮官"
     ],
     "attackable": false,
     "id": "commander_astrid",
@@ -3673,7 +3752,8 @@
       "einar",
       "healer",
       "apothecary",
-      "scholar"
+      "scholar",
+      "艾納"
     ],
     "attackable": false,
     "id": "einar",
@@ -3734,7 +3814,8 @@
     "aliases": [
       "nivi",
       "nivi olsen",
-      "salt reach clerk"
+      "salt reach clerk",
+      "妮薇歐森"
     ],
     "attackable": false,
     "id": "nivi_olsen",
@@ -3770,7 +3851,8 @@
       "eliška",
       "eliska novakova",
       "eliška nováková",
-      "glassbank tester"
+      "glassbank tester",
+      "艾莉絲卡·諾瓦科娃"
     ],
     "attackable": false,
     "id": "eliska_novakova",
@@ -3804,7 +3886,8 @@
     "aliases": [
       "amaru",
       "amaru quispe",
-      "woolcross mechanic"
+      "woolcross mechanic",
+      "阿馬魯·基斯佩"
     ],
     "attackable": false,
     "id": "amaru_quispe",
@@ -3838,7 +3921,8 @@
     "aliases": [
       "abeni",
       "abeni adeyemi",
-      "greenrest grower"
+      "greenrest grower",
+      "阿貝妮·阿德耶米"
     ],
     "attackable": false,
     "id": "abeni_adeyemi",
@@ -3873,7 +3957,8 @@
       "yu-xin",
       "yuxin",
       "chen yu-xin",
-      "brass yard machinist"
+      "brass yard machinist",
+      "陳宇欣"
     ],
     "attackable": false,
     "id": "chen_yu_xin",
@@ -3911,7 +3996,8 @@
       "lord vane",
       "chieftain",
       "frost-wolf lord",
-      "warlord"
+      "warlord",
+      "范恩領主"
     ],
     "attackable": true,
     "id": "lord_vane",
@@ -3985,7 +4071,8 @@
       "warmaster torin",
       "commander torin",
       "iron-ram warmaster",
-      "warmaster"
+      "warmaster",
+      "托林戰帥"
     ],
     "attackable": true,
     "id": "warmaster_torin",
@@ -4059,7 +4146,8 @@
       "lady sylvan",
       "matron",
       "frost-leopard matron",
-      "mistress"
+      "mistress",
+      "希爾文夫人"
     ],
     "attackable": true,
     "id": "lady_sylvan",
@@ -4145,7 +4233,8 @@
       "guard",
       "cathedral guard",
       "sentry",
-      "soldier"
+      "soldier",
+      "哨兵馬庫斯"
     ],
     "attackable": true,
     "id": "cathedral_guard_crossroads",
@@ -4193,7 +4282,8 @@
       "guard",
       "cathedral guard",
       "sentry",
-      "soldier"
+      "soldier",
+      "哨兵卡修斯"
     ],
     "attackable": true,
     "id": "cathedral_guard_nave",
@@ -4240,7 +4330,8 @@
       "guard",
       "cathedral guard",
       "sentry",
-      "soldier"
+      "soldier",
+      "哨兵盧修斯"
     ],
     "attackable": true,
     "id": "cathedral_guard_mortuary",
@@ -4287,7 +4378,8 @@
       "guard",
       "cathedral guard",
       "sentry",
-      "soldier"
+      "soldier",
+      "哨兵安東尼烏斯"
     ],
     "attackable": true,
     "id": "cathedral_guard_scriptorium",
@@ -4332,7 +4424,8 @@
       "witch",
       "herbalist",
       "arrow witch",
-      "gardener"
+      "gardener",
+      "歐瓦"
     ],
     "attackable": false,
     "id": "orva",
@@ -4379,7 +4472,8 @@
       "flora",
       "apprentice",
       "sorter",
-      "girl"
+      "girl",
+      "芙蘿拉"
     ],
     "attackable": false,
     "id": "flora",
@@ -4420,7 +4514,8 @@
       "silvia",
       "moss gatherer",
       "gardener",
-      "tender"
+      "tender",
+      "希爾維亞"
     ],
     "attackable": false,
     "id": "silvia",
@@ -4461,7 +4556,8 @@
       "fabian",
       "elder fabian",
       "master fabian",
-      "apothecary"
+      "apothecary",
+      "法比安長老"
     ],
     "attackable": false,
     "id": "elder_fabian",
@@ -4504,7 +4600,8 @@
       "seer",
       "the seer",
       "high seer",
-      "priest"
+      "priest",
+      "先知瓦勒里烏斯"
     ],
     "attackable": true,
     "drops": {

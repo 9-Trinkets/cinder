@@ -326,7 +326,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 from,
                 locale,
             } => {
-                let pending = locale::apply::check(&pack_dir, &from, &locale)?;
+                let mut pending = locale::apply::check(&pack_dir, &from, &locale)?;
+                pending += locale::overlay_check::check_overlays(&pack_dir, &locale)?;
                 if pending > 0 {
                     std::process::exit(1);
                 }

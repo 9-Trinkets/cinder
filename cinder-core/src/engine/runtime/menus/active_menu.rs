@@ -267,7 +267,7 @@ impl CinderRuntime {
 }
 
 fn render_menu_choice_options(
-    _content: &crate::content::types::ContentPack,
+    content: &crate::content::types::ContentPack,
     _menu: &crate::content::types::OpeningMenuDefinition,
     _state: &crate::engine::state::WorldState,
     options: &[OpeningMenuOptionDefinition],
@@ -285,9 +285,13 @@ fn render_menu_choice_options(
     if _menu.max_selections > 0 {
         result.push(PanelOption {
             id: "done".to_string(),
-            title: "Done".to_string(),
+            title: content
+                .render_message("ui.menu_done", &[])
+                .unwrap_or_default(),
             command: "done".to_string(),
-            menu_text: "Confirm selection".to_string(),
+            menu_text: content
+                .render_message("ui.menu_confirm_selection", &[])
+                .unwrap_or_default(),
         });
     }
     result

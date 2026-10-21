@@ -54,3 +54,22 @@ body {
 .font-prose {
   font-family: var(--font-prose);
 }
+
+/* Traditional Chinese typography. CJK has no letter-case, no italic design, and
+   reads poorly with wide tracking, so soften the Latin-centric label styling. */
+:lang(zh-TW) body {
+  line-height: 1.7;
+}
+
+:lang(zh-TW) [class*='tracking-'] {
+  letter-spacing: 0.04em;
+}
+
+:lang(zh-TW) .tracking-tight,
+:lang(zh-TW) .tracking-tighter {
+  letter-spacing: 0;
+}
+
+:lang(zh-TW) .italic {
+  font-style: normal;
+}

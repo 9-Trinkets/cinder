@@ -11,18 +11,6 @@ pub fn read_optional_json<T: DeserializeOwned>(
     read_optional_path(&path.join(file_name))
 }
 
-pub fn read_optional_json_raw(
-    path: &Path,
-    file_name: &str,
-) -> Result<Option<String>, Box<dyn Error>> {
-    let file_path = path.join(file_name);
-    if file_path.exists() {
-        Ok(Some(fs::read_to_string(&file_path)?))
-    } else {
-        Ok(None)
-    }
-}
-
 pub fn read_json<T: DeserializeOwned>(path: &Path, file_name: &str) -> Result<T, Box<dyn Error>> {
     read_required_path(&path.join(file_name))
 }

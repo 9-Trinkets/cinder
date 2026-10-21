@@ -132,13 +132,34 @@ pub struct PackInfo {
     pub locale_options: Vec<LocaleItem>,
 }
 
-pub async fn list_packs() -> Json<Vec<PackInfo>> {
+#[derive(Deserialize)]
+pub struct ListPacksQuery {
+    /// Display locale to localize pack metadata for. Falls back to the account
+    /// preference, then each pack's own default language.
+    #[serde(default)]
+    pub locale: Option<String>,
+}
+
+pub async fn list_packs(
+    State(state): State<Arc<AppState>>,
+    auth: AuthPlayer,
+    Query(query): Query<ListPacksQuery>,
+) -> Json<Vec<PackInfo>> {
+    let requested = match query.locale.filter(|code| !code.trim().is_empty()) {
+        Some(code) => Some(code),
+        None => account_locale(&state, &auth).await,
+    };
     Json(
         cinder_core::content::loader::available_packs()
             .into_iter()
             .map(|id| {
+                let locale_options = pack_locale_options(&id);
+                let locale = requested
+                    .as_deref()
+                    .filter(|code| locale_options.iter().any(|option| option.code == *code));
                 let settings =
-                    cinder_core::content::loader::load_pack_settings(&id).unwrap_or_default();
+                    cinder_core::content::loader::load_pack_settings_for_locale(&id, locale)
+                        .unwrap_or_default();
                 let title = if settings.title.is_empty() {
                     id.clone()
                 } else {
@@ -149,7 +170,6 @@ pub async fn list_packs() -> Json<Vec<PackInfo>> {
                 } else {
                     settings.default_language.clone()
                 };
-                let locale_options = pack_locale_options(&id);
                 PackInfo {
                     id,
                     title,
@@ -163,6 +183,19 @@ pub async fn list_packs() -> Json<Vec<PackInfo>> {
             })
             .collect(),
     )
+}
+
+/// The signed-in account's saved display-language preference, if any.
+async fn account_locale(state: &AppState, auth: &AuthPlayer) -> Option<String> {
+    let player_uuid = Uuid::parse_str(&auth.id).ok()?;
+    sqlx::query_scalar::<_, Option<String>>("SELECT preferred_locale FROM players WHERE id = $1")
+        .bind(player_uuid)
+        .fetch_optional(&*state.pool)
+        .await
+        .ok()
+        .flatten()
+        .flatten()
+        .filter(|code| !code.trim().is_empty())
 }
 
 /// Locale options for a single pack, or an empty list if the pack is unreadable.

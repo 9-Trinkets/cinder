@@ -1148,7 +1148,16 @@
         "platform",
         "fortress",
         "conduit",
-        "strongbox"
+        "strongbox",
+        "傳送",
+        "卷軸",
+        "第五層",
+        "下一層",
+        "平台",
+        "傳送台",
+        "要塞",
+        "導管",
+        "保險箱"
       ],
       "reply_keywords": [
         "teleport",
@@ -1156,7 +1165,13 @@
         "floor 5",
         "next floor",
         "descend",
-        "gate"
+        "gate",
+        "傳送",
+        "卷軸",
+        "第五層",
+        "下一層",
+        "下去",
+        "大門"
       ],
       "signals": [
         "speech_topic:teleport_scroll",
@@ -1168,13 +1183,23 @@
         "zayd",
         "sacrifice",
         "offering",
-        "tithe"
+        "tithe",
+        "宰德",
+        "祭品",
+        "貢品",
+        "供奉",
+        "獻祭",
+        "男孩"
       ],
       "reply_keywords": [
         "zayd",
         "sacrifice",
         "offering",
-        "boy"
+        "boy",
+        "宰德",
+        "祭品",
+        "獻祭",
+        "男孩"
       ],
       "signals": [
         "speech_topic:save_zayd",
@@ -1192,7 +1217,16 @@
         "key",
         "astrid",
         "einar",
-        "captain"
+        "captain",
+        "籠子",
+        "囚犯",
+        "解救",
+        "放出",
+        "鑰匙",
+        "艾絲翠德",
+        "艾納",
+        "隊長",
+        "指揮官"
       ],
       "reply_keywords": [
         "cage",
@@ -1202,7 +1236,12 @@
         "free",
         "unlock",
         "key",
-        "captain"
+        "captain",
+        "籠子",
+        "囚犯",
+        "解救",
+        "鑰匙",
+        "隊長"
       ],
       "signals": [
         "speech_topic:free_prisoners",
@@ -1214,14 +1253,23 @@
         "arrow always finds home",
         "the arrow always finds home",
         "arrow always finds",
-        "finds home"
+        "finds home",
+        "箭矢永遠會找到歸家的路",
+        "找到歸家的路",
+        "歸家的路"
       ],
       "reply_keywords": [
         "arrow",
         "einar",
         "witch",
         "orva",
-        "home"
+        "home",
+        "箭",
+        "箭矢",
+        "艾納",
+        "女巫",
+        "歐瓦",
+        "歸家"
       ],
       "signals": [
         "witch_code_word_spoken",

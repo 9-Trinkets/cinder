@@ -56,6 +56,12 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const [localeOptions, setLocaleOptions] = useState<LocaleItem[]>([])
   const [ready, setReady] = useState(false)
 
+  // Keep <html lang> in step with the UI language so the browser picks the right
+  // CJK glyph variants (Traditional vs. Japanese/Simplified) and hyphenation.
+  useEffect(() => {
+    document.documentElement.lang = locale
+  }, [locale])
+
   const applyLocale = useCallback((next: string | null) => {
     const resolved = resolveLocale(next)
     setLocaleState(resolved)

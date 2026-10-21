@@ -13,22 +13,27 @@ pub(super) fn plan_teleport_command(
     let state = context.planner_state;
     if state.story_vars.get("knows_teleport") != Some("true") {
         planned.events.push(WorldEvent::ActionRejected {
-            message: "You have not learned how to teleport yet.".to_string(),
+            message: content
+                .render_message("teleport.not_learned", &[])
+                .unwrap_or_default(),
         });
         return false;
     }
 
     if !content.has_any_teleport_destination(state) {
         planned.events.push(WorldEvent::ActionRejected {
-            message: "You do not have any active teleport anchors yet. Trace a teleport sigil in a room to create a chalk anchor, or visit a teleport platform.".to_string(),
+            message: content
+                .render_message("teleport.no_anchors", &[])
+                .unwrap_or_default(),
         });
         return false;
     }
 
     let Some(raw_target) = input.map(str::trim).filter(|s| !s.is_empty()) else {
         planned.events.push(WorldEvent::ActionRejected {
-            message: "Specify an anchor to teleport to. (e.g. teleport teleport_platform)"
-                .to_string(),
+            message: content
+                .render_message("teleport.specify_anchor", &[])
+                .unwrap_or_default(),
         });
         return false;
     };
@@ -37,9 +42,9 @@ pub(super) fn plan_teleport_command(
 
     let Some(anchor) = content.resolve_teleport_target(state, &target_lower) else {
         planned.events.push(WorldEvent::ActionRejected {
-            message: format!(
-                "Unknown anchor '{raw_target}'. Open your Teleport panel to view available anchors."
-            ),
+            message: content
+                .render_message("teleport.unknown_anchor", &[("target", raw_target)])
+                .unwrap_or_default(),
         });
         return false;
     };
@@ -47,7 +52,9 @@ pub(super) fn plan_teleport_command(
 
     if dest_room_id == context.current_room_id {
         planned.events.push(WorldEvent::ActionRejected {
-            message: "You are already standing at this anchor.".to_string(),
+            message: content
+                .render_message("teleport.already_here", &[])
+                .unwrap_or_default(),
         });
         return false;
     }
@@ -63,9 +70,15 @@ pub(super) fn plan_teleport_command(
         let current_mp = state.actor_stat_u32(player_id, "mp");
         if current_mp < mp_cost {
             planned.events.push(WorldEvent::ActionRejected {
-                message: format!(
-                    "You need at least {mp_cost} MP to teleport, but only have {current_mp} MP."
-                ),
+                message: content
+                    .render_message(
+                        "teleport.insufficient_mp",
+                        &[
+                            ("mp_cost", &mp_cost.to_string()),
+                            ("current_mp", &current_mp.to_string()),
+                        ],
+                    )
+                    .unwrap_or_default(),
             });
             return false;
         }
@@ -84,13 +97,15 @@ pub(super) fn plan_teleport_command(
 
     if is_permanent {
         planned.events.push(WorldEvent::NarrativeLine {
-            text: "The brass platform glows with blue light. The air blurs around you, and you step out at your destination."
-                .to_string(),
+            text: content
+                .render_message("teleport.platform_arrival", &[])
+                .unwrap_or_default(),
         });
     } else {
         planned.events.push(WorldEvent::NarrativeLine {
-            text: "Bright light flares from the chalk. You appear at the anchor, and the chalk mark fades away."
-                .to_string(),
+            text: content
+                .render_message("teleport.chalk_arrival", &[])
+                .unwrap_or_default(),
         });
         planned.events.push(WorldEvent::ChalkAnchorConsumed {
             room_id: dest_room_id.to_string(),

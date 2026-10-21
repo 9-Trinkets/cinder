@@ -44,63 +44,42 @@ pub fn select_reporter<'a>(
 }
 
 fn format_milestone_fallback(
+    content: &ContentPack,
     reporter_id: &str,
     milestone: CommsMilestone,
     room_name: &str,
     fallen_name: Option<&str>,
     enemies_remaining: usize,
 ) -> String {
-    let is_astrid = reporter_id == "commander_astrid" || reporter_id == "astrid";
-    let is_einar = reporter_id == "einar";
-
-    match milestone {
-        CommsMilestone::Contact => {
-            if is_astrid {
-                format!("We've engaged the enemy at {room_name}. Holding the line.")
-            } else if is_einar {
-                format!("Hostiles approaching at {room_name}. Preparing defenses.")
-            } else {
-                format!("Hostiles engaged at {room_name}. We're holding our ground.")
-            }
-        }
-        CommsMilestone::LowHealth => {
-            if is_astrid {
-                format!("Taking heavy damage at {room_name}! Our shields are buckling!")
-            } else if is_einar {
-                format!("Vitals dropping at {room_name}! We're under intense fire!")
-            } else {
-                format!("Taking heavy damage at {room_name}! We need support!")
-            }
-        }
-        CommsMilestone::AllyDown => {
-            let fallen = fallen_name.unwrap_or("A companion");
-            if is_astrid {
-                format!("{fallen} is down at {room_name}! Hold fast!")
-            } else if is_einar {
-                format!("{fallen} has fallen at {room_name}! Urgent medical assistance needed!")
-            } else {
-                format!("{fallen} has fallen at {room_name}! We need reinforcement!")
-            }
-        }
-        CommsMilestone::AreaCleared => {
-            if is_astrid {
-                format!("{room_name} is secure. All hostiles neutralized.")
-            } else if is_einar {
-                format!("The fighting has stopped at {room_name}. Area is secure.")
-            } else {
-                format!("{room_name} is clear. Threat eliminated.")
-            }
-        }
-        CommsMilestone::PeriodicStatus => {
-            if is_astrid {
-                format!("Still holding at {room_name}. {enemies_remaining} hostiles remaining.")
-            } else if is_einar {
-                format!("Engagement continues at {room_name}. {enemies_remaining} hostiles left.")
-            } else {
-                format!("Still engaged at {room_name}. {enemies_remaining} hostiles remaining.")
-            }
-        }
-    }
+    let persona = if reporter_id == "commander_astrid" || reporter_id == "astrid" {
+        "astrid"
+    } else if reporter_id == "einar" {
+        "einar"
+    } else {
+        "default"
+    };
+    let milestone_key = match milestone {
+        CommsMilestone::Contact => "contact",
+        CommsMilestone::LowHealth => "low_health",
+        CommsMilestone::AllyDown => "ally_down",
+        CommsMilestone::AreaCleared => "area_cleared",
+        CommsMilestone::PeriodicStatus => "periodic_status",
+    };
+    let fallen = fallen_name
+        .map(str::to_string)
+        .or_else(|| content.render_message("comms.ally_down.unnamed", &[]))
+        .unwrap_or_default();
+    let remaining = enemies_remaining.to_string();
+    content
+        .render_message(
+            &format!("comms.{milestone_key}.{persona}"),
+            &[
+                ("room_name", room_name),
+                ("fallen", &fallen),
+                ("enemies_remaining", &remaining),
+            ],
+        )
+        .unwrap_or_default()
 }
 
 /// Evaluates offscreen combat states across all non-player rooms where party members are stationed,
@@ -204,6 +183,7 @@ pub fn evaluate_offscreen_combat_dispatches(
                 && (combat_state.contact_dispatched || combat_state.engaged_at_turn > 0)
             {
                 let fallback = format_milestone_fallback(
+                    content,
                     reporter_id,
                     CommsMilestone::AreaCleared,
                     &room_name,
@@ -251,6 +231,7 @@ pub fn evaluate_offscreen_combat_dispatches(
         if !combat_state.newly_fallen_allies.is_empty() {
             let fallen_name = combat_state.newly_fallen_allies.remove(0);
             let fallback = format_milestone_fallback(
+                content,
                 reporter_id,
                 CommsMilestone::AllyDown,
                 &room_name,
@@ -280,6 +261,7 @@ pub fn evaluate_offscreen_combat_dispatches(
             combat_state.contact_dispatched = true;
             combat_state.last_dispatch_turn = state.clock.turn_number;
             let fallback = format_milestone_fallback(
+                content,
                 reporter_id,
                 CommsMilestone::LowHealth,
                 &room_name,
@@ -307,6 +289,7 @@ pub fn evaluate_offscreen_combat_dispatches(
             combat_state.contact_dispatched = true;
             combat_state.last_dispatch_turn = state.clock.turn_number;
             let fallback = format_milestone_fallback(
+                content,
                 reporter_id,
                 CommsMilestone::Contact,
                 &room_name,
@@ -335,6 +318,7 @@ pub fn evaluate_offscreen_combat_dispatches(
         {
             combat_state.last_dispatch_turn = state.clock.turn_number;
             let fallback = format_milestone_fallback(
+                content,
                 reporter_id,
                 CommsMilestone::PeriodicStatus,
                 &room_name,

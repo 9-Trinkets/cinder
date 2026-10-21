@@ -45,7 +45,7 @@ export default function PackDetailPage() {
     setError(null)
     try {
       const [packs, allPlays, packBookmarks] = await Promise.all([
-        api.listPacks(token),
+        api.listPacks(token, locale),
         api.listPlays(token),
         api.listPackBookmarks(token, packId).catch(() => [] as api.BookmarkInfo[]),
       ])
@@ -59,7 +59,7 @@ export default function PackDetailPage() {
     }
   }
 
-  useEffect(() => { load() }, [token, packId, location.key])
+  useEffect(() => { load() }, [token, packId, location.key, locale])
 
   async function doDelete(playId: string) {
     if (!token || deleting) return

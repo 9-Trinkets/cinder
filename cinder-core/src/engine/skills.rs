@@ -1,5 +1,7 @@
 //! 10-level Skill Proficiency (SP) system and pure scalar parameter scaling.
 
+use crate::content::types::ContentPack;
+
 /// Cumulative SP thresholds for skill levels 1 through 10.
 /// Deliberately arithmetic (+10, +15, +20, +25, +30, +35, +40, +45, +50):
 /// 0, 10, 25, 45, 70, 100, 135, 175, 220, 270.
@@ -150,29 +152,47 @@ pub fn teleport_anchor_capacity(level: u32) -> usize {
 /// Base MP cost for casting teleportation.
 pub const TELEPORT_BASE_MP_COST: u32 = 6;
 
-/// Pure scalar summary string for UI display.
-pub fn skill_scalar_summary(skill_id: &str, level: u32) -> String {
+/// Scalar summary string for UI display, localized through the pack's
+/// `skill.summary.*` messages.
+pub fn skill_scalar_summary(content: &ContentPack, skill_id: &str, level: u32) -> String {
     let lvl = level.clamp(1, 10);
+    fn n<T: ToString>(value: T) -> String {
+        value.to_string()
+    }
+    let render = |key: &str, vars: &[(&str, &str)]| -> String {
+        content.render_message(key, vars).unwrap_or_default()
+    };
     match skill_id {
-        "charm" => format!("Charm bonus: +{}", charm_bonus(lvl)),
-        "strike" => format!("Bonus damage: +{}", strike_bonus_damage(lvl)),
-        "heal" => format!("Restores: {} HP", heal_amount(lvl)),
-        "intercept" => format!("Damage soaked: -{}", intercept_damage_soaked(lvl)),
+        "charm" => render("skill.summary.charm", &[("n", &n(charm_bonus(lvl)))]),
+        "strike" => render(
+            "skill.summary.strike",
+            &[("n", &n(strike_bonus_damage(lvl)))],
+        ),
+        "heal" => render("skill.summary.heal", &[("n", &n(heal_amount(lvl)))]),
+        "intercept" => render(
+            "skill.summary.intercept",
+            &[("n", &n(intercept_damage_soaked(lvl)))],
+        ),
         "trace" => {
             let discount = trace_mp_discount(lvl);
             if discount == 0 {
-                "Base MP cost".to_string()
+                render("skill.summary.trace_base", &[])
             } else {
-                format!("-{} Tracing MP", discount)
+                render("skill.summary.trace_discount", &[("n", &n(discount))])
             }
         }
-        "drain" => format!(
-            "Damage: {} · Charges: {}",
-            drain_damage(lvl),
-            drain_charges(lvl)
+        "drain" => render(
+            "skill.summary.drain",
+            &[
+                ("damage", &n(drain_damage(lvl))),
+                ("charges", &n(drain_charges(lvl))),
+            ],
         ),
-        "teleport" => format!("Anchors: {}", teleport_anchor_capacity(lvl)),
-        "comms" => "Telepathic link with awakened allies".to_string(),
+        "teleport" => render(
+            "skill.summary.teleport",
+            &[("n", &n(teleport_anchor_capacity(lvl)))],
+        ),
+        "comms" => render("skill.summary.comms", &[]),
         _ => String::new(),
     }
 }

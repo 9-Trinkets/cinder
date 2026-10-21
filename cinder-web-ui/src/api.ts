@@ -496,8 +496,9 @@ export interface PackInfo {
   locale_options: LocaleItem[]
 }
 
-export function listPacks(token: string) {
-  return reqAuth<PackInfo[]>('/packs', token)
+export function listPacks(token: string, locale?: string | null) {
+  const query = locale ? `?locale=${encodeURIComponent(locale)}` : ''
+  return reqAuth<PackInfo[]>(`/packs${query}`, token)
 }
 
 export interface PlayerProfile {

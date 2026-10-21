@@ -20,7 +20,7 @@ export default function GamesPage() {
   useEffect(() => {
     if (!token) return
     Promise.all([
-      api.listPacks(token),
+      api.listPacks(token, locale),
       api.listPlays(token).catch(() => [] as api.PlayInfo[]),
     ])
       .then(([packList, playList]) => {
@@ -30,7 +30,7 @@ export default function GamesPage() {
       .catch(err => setError(toErrorMessage(err, t('common.failedToLoad'))))
       .finally(() => setLoading(false))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token])
+  }, [token, locale])
 
   return (
     <div className="min-h-screen bg-surface font-prose">

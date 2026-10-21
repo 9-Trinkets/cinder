@@ -1,0 +1,442 @@
+[
+  {
+    "id": "magic-chalk",
+    "label": "魔粉筆",
+    "description": "一截握在手裡暖暖的粉筆，怎麼用都不會磨短。你用它畫過的地方，石頭上都會留下一道淡淡的亮線。",
+    "aliases": [
+      "粉筆",
+      "魔粉筆",
+      "magic chalk"
+    ]
+  },
+  {
+    "id": "charm-sigil",
+    "label": "魅紋",
+    "description": "一圈畫在空地上的封閉粉筆環。當敵人被這樣的圓環從四面圍住，圓環就會閉合，把牠拉到你這一邊。環亮起一次，便耗盡了。",
+    "look_description": "一圈淡淡的粉筆封閉環在地上微微發光，等著被圍在某樣東西周圍。",
+    "aliases": [
+      "魅紋",
+      "charm sigil"
+    ]
+  },
+  {
+    "id": "drain-sigil",
+    "label": "噬紋",
+    "description": "一道會吸走踏入者力量的螺旋粉筆記號。每繞一圈就多吸走一點，接著記號便會消退。它能吸五次，之後就耗盡了。",
+    "look_description": "一道緊密的粉筆螺旋，彷彿把地面的光都吸走了，留下冰冷灰暗的石頭。",
+    "aliases": [
+      "噬紋",
+      "drain sigil"
+    ]
+  },
+  {
+    "id": "drain-scroll",
+    "label": "磨損的卷軸",
+    "description": "一卷乾燥的老樹皮卷軸，微微發暖。樹皮上有一道炭筆畫成的螺旋——那是削弱站在其中者力量的圖樣。讀過之後，描繪噬紋的筆法便會烙進你的腦海。",
+    "aliases": [
+      "卷軸",
+      "磨損的卷軸",
+      "噬紋卷軸"
+    ]
+  },
+  {
+    "id": "spawn-scroll",
+    "label": "餘燼卷軸",
+    "description": "一張經火烤過的樹皮，上面畫著圓形的琥珀紋。琥珀色的線條環繞著中央一點小小的餘燼——那是生紋的圖樣。讀過之後，召喚生物的線條便會浮現在你眼前。",
+    "aliases": [
+      "卷軸",
+      "餘燼卷軸",
+      "生紋卷軸"
+    ]
+  },
+  {
+    "id": "chisel-axe",
+    "label": "鑿斧",
+    "description": "一塊敲出刃口的石楔，半包在油膩的獸皮裡，是哥布林剝皮用的工具。砍肉砍石都行。",
+    "aliases": [
+      "斧頭",
+      "鑿斧",
+      "chisel-axe"
+    ]
+  },
+  {
+    "id": "bitter-moss",
+    "label": "苦蘚",
+    "description": "一團搗碎的草藥和洞穴苦蘚，用一小塊獸皮包著。這是哥布林的藥，療傷的方式就像牠們補皮革一樣。",
+    "aliases": [
+      "苔蘚",
+      "苦蘚",
+      "bitter moss"
+    ]
+  },
+  {
+    "id": "shaman-ring",
+    "label": "薩滿戒指",
+    "description": "一枚用深色骨頭和黏土雕成的戒指，還帶著塑形時的餘溫。裡面藏著薩滿的機巧，對形狀與用途的眼力。戴在手上，你的頭腦會更敏銳，倖存的魔像也會聽從你的意志。",
+    "aliases": [
+      "戒指",
+      "薩滿戒指",
+      "shaman's ring"
+    ]
+  },
+  {
+    "id": "spawn-sigil",
+    "label": "生紋",
+    "description": "一道用活琥珀畫成的圓形紋印，握在手裡暖暖的。裡面藏著能被召喚到這片棋盤上的生物的本名。應召而來的是什麼、站得多穩，取決於描紋者自身的力量。",
+    "look_description": "一枚溫熱的琥珀粉筆圓盤，螺旋隱隱發光，貼著地面低鳴，像一塊埋著的炭火。",
+    "aliases": [
+      "生紋",
+      "spawn sigil"
+    ]
+  },
+  {
+    "id": "leaf-spear",
+    "label": "葉矛",
+    "description": "一支用葉矛木削成的年輕長矛，筆直而老實，是士兵的第一把兵刃。",
+    "aliases": [
+      "葉矛",
+      "長矛",
+      "leaf spear"
+    ]
+  },
+  {
+    "id": "leaf-helm",
+    "label": "葉盔",
+    "description": "用三片樹皮葉綁成的頭盔，僵硬地立在頭上，像一道冠羽。",
+    "aliases": [
+      "葉盔",
+      "頭盔",
+      "leaf helm"
+    ]
+  },
+  {
+    "id": "leaf-crook",
+    "label": "葉杖",
+    "description": "用一根彎曲的葉枝長成的牧杖，和人一樣高。它從來沒被扳直過，以後也不會。",
+    "aliases": [
+      "葉杖",
+      "牧杖",
+      "leaf crook"
+    ]
+  },
+  {
+    "id": "leaf-plate",
+    "label": "葉甲",
+    "description": "幾十片硬葉平整地疊起來、壓成的胸甲。該彎的地方才彎，不該彎的地方絕不彎。",
+    "aliases": [
+      "葉甲",
+      "胸甲",
+      "leaf plate"
+    ]
+  },
+  {
+    "id": "leaf-ring",
+    "label": "葉戒",
+    "description": "用一整條長葉編成的戒指，葉色還是綠的。戴著輕得像沒有，卻讓頭腦清明一點。",
+    "aliases": [
+      "葉戒",
+      "戒指",
+      "leaf ring"
+    ]
+  },
+  {
+    "id": "leaf-cloak",
+    "label": "葉斗篷",
+    "description": "用寬大的深色葉片和根鬚線縫成的斗篷，垂落時悄然無聲，像一層深深的土壤。",
+    "aliases": [
+      "葉斗篷",
+      "斗篷",
+      "leaf cloak"
+    ]
+  },
+  {
+    "id": "leaf-gloves",
+    "label": "葉手套",
+    "description": "用軟化的葉片做成的手套，掌心磨得光滑，貼著手像第二層樹皮。",
+    "aliases": [
+      "葉手套",
+      "手套",
+      "leaf gloves"
+    ]
+  },
+  {
+    "id": "leaf-boots",
+    "label": "葉靴",
+    "description": "用壓緊的葉片做成的靴子，踩在任何石頭上都沒有聲音。走上千步，只會磨薄，不會磨穿。",
+    "aliases": [
+      "葉靴",
+      "靴子",
+      "leaf boots"
+    ]
+  },
+  {
+    "id": "leaf-paste",
+    "label": "葉膏",
+    "description": "把綠葉搗成的糊狀藥膏。它合上傷口的樣子，就像葉子蓋住撕裂的邊緣。",
+    "aliases": [
+      "葉膏",
+      "藥膏",
+      "leaf paste"
+    ]
+  },
+  {
+    "id": "leaf-buckler",
+    "label": "葉盾",
+    "description": "用壓緊的葉片做成的小圓盾，握在副手上很輕，專擋那些衝著心口來的攻擊。",
+    "aliases": [
+      "葉盾",
+      "盾牌",
+      "leaf buckler"
+    ]
+  },
+  {
+    "id": "commander-safe-key",
+    "label": "指揮官的保險箱鑰匙",
+    "description": "一把沉甸甸的黃銅鑰匙，有複雜的雙重鎖齒，是從馬利克指揮官身上搜來的。能打開指揮堡裡的鐵保險箱。",
+    "aliases": [
+      "保險箱鑰匙",
+      "鑰匙",
+      "指揮官鑰匙"
+    ]
+  },
+  {
+    "id": "teleport-scroll",
+    "label": "傳送卷軸",
+    "description": "一卷厚重的黃銅葉卷軸，蝕刻著細密的幾何迴路。讀懂那兩個相交的三角形，你就學會了傳紋。",
+    "aliases": [
+      "卷軸",
+      "傳送卷軸",
+      "傳紋卷軸"
+    ]
+  },
+  {
+    "id": "teleport-sigil",
+    "label": "傳紋",
+    "description": "一個用淡色魔粉筆畫成的雙三角。在上鎖的門、閘門或封死的洞口前描出它，就能瞬間閃到另一側。",
+    "look_description": "一組銳利的粉筆雙三角閃著淡淡的光，帶著相位共振的顫動。",
+    "aliases": [
+      "傳紋",
+      "teleport sigil"
+    ]
+  },
+  {
+    "id": "zayd-lantern",
+    "label": "宰德的礦燈",
+    "description": "一盞凹痕累累的黃銅礦燈，裝有低壓排氣扣。髒污的玻璃後，一縷暖琥珀色的燈絲輕輕嗡鳴，裡面封著一位被遺忘的礦工的靈魂碎片。燈殼摸起來始終微溫，底板上蓋著幾層老機油，底下刻著一個「J」。",
+    "aliases": [
+      "礦燈",
+      "燈",
+      "宰德的燈",
+      "battered miner's lantern"
+    ]
+  },
+  {
+    "id": "iron-cage-key",
+    "label": "鐵籠鑰匙",
+    "description": "一把沉重的黃銅鑲鐵鑰匙，由籠子看守人保管，專門用來轉動懸吊蒸汽監籠的鎖簧。",
+    "aliases": [
+      "鐵籠鑰匙",
+      "籠子鑰匙",
+      "鑰匙"
+    ]
+  },
+  {
+    "id": "fortress-gate-key",
+    "label": "要塞門鑰匙",
+    "description": "一把沉重的黃銅萬能鑰匙，刻著要塞徽記，由門衛攜帶，用來鎖上與打開北面的隔艙門。",
+    "aliases": [
+      "要塞門鑰匙",
+      "門鑰匙",
+      "鑰匙"
+    ]
+  },
+  {
+    "id": "brass-saber",
+    "label": "黃銅軍官彎刀",
+    "description": "一把平衡極佳的弧形騎兵彎刀，配發給駐軍指揮官，刀柄裡藏著蒸汽輔助配重。",
+    "aliases": [
+      "彎刀",
+      "軍刀",
+      "brass officer saber"
+    ]
+  },
+  {
+    "id": "incense-censer",
+    "label": "青銅香爐",
+    "description": "一顆用細鏈吊著的沉重青銅球，聞起來是聖樹脂與冷灰的味道。",
+    "aliases": [
+      "香爐",
+      "bronze incense censer"
+    ]
+  },
+  {
+    "id": "date-flatbread",
+    "label": "椰棗芝麻餅",
+    "description": "一塊厚實香噴噴的芝麻餅，夾著甜椰棗，是雅絲敏用蒸汽烤爐現烤的。能恢復體力，也讓人暖和起來。",
+    "aliases": [
+      "麵包",
+      "餅",
+      "芝麻餅",
+      "椰棗餅",
+      "date flatbread"
+    ]
+  },
+  {
+    "id": "steam-crossbow-bolt",
+    "label": "蒸汽弩箭",
+    "description": "一支帶溝槽的鋼製弩箭，專為高壓駐軍連弩設計。",
+    "aliases": [
+      "弩箭",
+      "steam crossbow bolt"
+    ]
+  },
+  {
+    "id": "brass-gear",
+    "label": "黃銅齒輪",
+    "description": "一個沉重、加工精準的齒輪，從蒸汽自動機上拆下來的。",
+    "aliases": [
+      "齒輪",
+      "brass gear"
+    ]
+  },
+  {
+    "id": "copper-pipe",
+    "label": "銅管接頭",
+    "description": "一段耐用的高壓銅製蒸汽管，附有螺紋黃銅接頭。",
+    "aliases": [
+      "銅管",
+      "管子",
+      "copper pipe fitting"
+    ]
+  },
+  {
+    "id": "courtyard-cage-key",
+    "label": "中庭籠鑰匙",
+    "description": "一把沉重、結著霜的鐵鑰匙，刻著堡壘的徽記。能打開中庭那些關著大批祭品的籠子。",
+    "aliases": [
+      "籠子鑰匙",
+      "中庭鑰匙",
+      "鑰匙"
+    ]
+  },
+  {
+    "id": "sensory-enhancer",
+    "label": "感知膠囊",
+    "description": "一顆小小的半透明藍色膠囊，在第六層的高階聖堂合成。吞下去能強化感官、清除雜音，並讓地圖多出即時的盟友追蹤與可用的傳送門。",
+    "aliases": [
+      "膠囊",
+      "感知膠囊",
+      "sensory enhancer"
+    ]
+  },
+  {
+    "id": "salt-reach-transit-seal",
+    "label": "鹽灘傳送信物",
+    "description": "一枚皂石與黃銅製成的信物，來自鹽灘。使用它，鹽灘就會登錄為永久的傳送目的地。",
+    "aliases": [
+      "鹽灘傳送信物",
+      "鹽灘信物",
+      "信物"
+    ]
+  },
+  {
+    "id": "glassbank-transit-prism",
+    "label": "玻璃鎮傳送信物",
+    "description": "一枚鈷藍玻璃製成的信物，來自玻璃鎮。使用它，玻璃鎮就會登錄為永久的傳送目的地。",
+    "aliases": [
+      "玻璃鎮傳送信物",
+      "玻璃鎮信物",
+      "信物"
+    ]
+  },
+  {
+    "id": "woolcross-transit-knot",
+    "label": "羊毛鎮傳送信物",
+    "description": "一枚銅線與陶片編成的信物，來自羊毛鎮。使用它，羊毛鎮就會登錄為永久的傳送目的地。",
+    "aliases": [
+      "羊毛鎮傳送信物",
+      "羊毛鎮信物",
+      "信物"
+    ]
+  },
+  {
+    "id": "greenrest-transit-seed",
+    "label": "綠息鎮傳送信物",
+    "description": "一枚綠色琺瑯信物，來自綠息鎮。使用它，綠息鎮就會登錄為永久的傳送目的地。",
+    "aliases": [
+      "綠息鎮傳送信物",
+      "綠息鎮信物",
+      "信物"
+    ]
+  },
+  {
+    "id": "brass-yard-transit-gear",
+    "label": "黃銅鎮傳送信物",
+    "description": "一枚帶齒的黃銅信物，來自黃銅鎮。使用它，黃銅鎮就會登錄為永久的傳送目的地。",
+    "aliases": [
+      "黃銅鎮傳送信物",
+      "黃銅鎮信物",
+      "信物"
+    ]
+  },
+  {
+    "id": "clandestine-sanctuary-token",
+    "label": "隱密聖堂符石",
+    "description": "一枚走私來的銀色符石，刻著高階聖堂的共鳴紋印。使用後，蕾拉會獨自越過外圍結界，傳送到高階聖堂的露台。",
+    "aliases": [
+      "隱密聖堂符石",
+      "聖堂符石",
+      "符石",
+      "銀色符石"
+    ]
+  },
+  {
+    "id": "invisibility-potion",
+    "label": "隱形藥劑",
+    "description": "一只玻璃瓶，裝著冰冷閃爍的藍色液體。喝下後，聖堂守衛在 8 回合內看不見你。",
+    "aliases": [
+      "隱形藥劑",
+      "隱形藥水",
+      "藥劑",
+      "藥水"
+    ]
+  },
+  {
+    "id": "silver-arrow-pin",
+    "label": "銀雙箭髮簪",
+    "description": "一枚精巧的銀髮簪，形狀像一支帶羽的箭。艾納一直帶在身上，作為他在聖堂裡等候的愛人的信物。",
+    "aliases": [
+      "銀雙箭髮簪",
+      "髮簪",
+      "銀髮簪"
+    ]
+  },
+  {
+    "id": "spirit-pill",
+    "label": "靈視膠囊",
+    "description": "歐瓦在藥草園給你的一顆小小白色藥丸。吞下去，就能看見亡者發光的靈魂。",
+    "aliases": [
+      "靈視膠囊",
+      "膠囊",
+      "藥丸"
+    ]
+  },
+  {
+    "id": "bind-scroll",
+    "label": "縛紋卷軸",
+    "description": "一卷羊皮紙，佈滿發光的銀色符文，是從先知瓦勒里烏斯手上取回的。讀過之後，你就學會了縛紋。",
+    "aliases": [
+      "縛紋卷軸",
+      "卷軸"
+    ]
+  },
+  {
+    "id": "bind-sigil",
+    "label": "縛紋",
+    "description": "一個用銀色粉筆畫成的交扣結。用來把靈魂繫回軀體，或把靈魂碎片錨定，以找回失落的記憶。",
+    "look_description": "一個交扣的銀色結印，在石地上靜靜發出束縛之力。",
+    "aliases": [
+      "縛紋"
+    ]
+  }
+]

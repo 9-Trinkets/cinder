@@ -217,6 +217,16 @@ struct PlayerPhraseMatch {
     remainder: Option<String>,
 }
 
+/// Strips the verb/argument boundary: a space, or nothing after a phrase that
+/// ends in a non-ASCII character (Chinese has no spaces between words).
+fn strip_phrase_boundary<'a>(rest: &'a str, phrase: &str) -> Option<&'a str> {
+    if let Some(after_space) = rest.strip_prefix(' ') {
+        return Some(after_space);
+    }
+    let phrase_ends_wide = phrase.chars().next_back().is_some_and(|c| !c.is_ascii());
+    (phrase_ends_wide && !rest.is_empty()).then_some(rest)
+}
+
 fn best_player_action_match<'a>(
     content: &'a ContentPack,
     trimmed: &str,
@@ -240,18 +250,17 @@ fn best_player_action_match<'a>(
             }
             let phrase_lower = phrase_trimmed.to_ascii_lowercase();
             let matched = if lower == phrase_lower {
-                if requires_input {
-                    None
-                } else {
-                    Some(PlayerPhraseMatch { remainder: None })
-                }
+                // A bare verb still resolves to its action: the planner then
+                // reports the missing argument in the pack's own words, instead
+                // of the parser answering "unknown command".
+                Some(PlayerPhraseMatch { remainder: None })
             } else {
                 if !accepts_input {
                     None
                 } else {
                     lower
                         .strip_prefix(&phrase_lower)
-                        .and_then(|rest| rest.strip_prefix(' '))
+                        .and_then(|rest| strip_phrase_boundary(rest, &phrase_lower))
                         .and_then(|rest| {
                             let remainder =
                                 trimmed[(trimmed.len() - rest.len())..].trim().to_string();
@@ -489,5 +498,18 @@ mod tests {
                 order,
             } if actor_reference == "blair" && order == "rally"
         ));
+    }
+
+    #[test]
+    fn cjk_phrases_accept_an_argument_without_a_space() {
+        let mut pack = minimal_test_pack();
+        pack.actions = vec![test_action("look", &["look", "查看"], None)];
+        let target = |raw: &str| match parse_command(&pack, raw) {
+            PlayerCommand::Authored { command_id, input } if command_id == "look" => input,
+            _ => None,
+        };
+        assert_eq!(target("查看魔像").as_deref(), Some("魔像"));
+        assert_eq!(target("查看 魔像").as_deref(), Some("魔像"));
+        assert_eq!(parse_command(&pack, "lookup"), PlayerCommand::Unknown);
     }
 }
