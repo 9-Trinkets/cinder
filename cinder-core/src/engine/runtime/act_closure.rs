@@ -90,7 +90,9 @@ impl CinderRuntime {
                                     .map(|definition| definition.default)
                                     .unwrap_or(0);
                                 score += (value - default).abs();
-                                (value != default).then(|| format!("{stat_key} {value}"))
+                                (value != default).then(|| {
+                                    format!("{} {value}", self.content.stat_label(&stat_key))
+                                })
                             })
                             .collect::<Vec<_>>();
                         if rendered_stats.is_empty() {

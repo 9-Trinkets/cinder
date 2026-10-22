@@ -134,5 +134,13 @@
   "help.group.general": "一般",
   "list.separator": "、",
   "list.pair": "{a}和{b}",
-  "list.last": "{rest}和{last}"
+  "list.last": "{rest}和{last}",
+  "stat.attack": "攻擊",
+  "stat.defense": "防禦",
+  "stat.dexterity": "敏捷",
+  "stat.endurance": "耐力",
+  "stat.hp": "體力",
+  "stat.intelligence": "智力",
+  "stat.mp": "魔力",
+  "stat.strength": "力量"
 }

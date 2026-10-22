@@ -175,7 +175,7 @@ fn render_equipment_message(
     bonuses.sort();
     let bonus_text = bonuses
         .iter()
-        .map(|(stat_id, text)| format!("{stat_id} {text}"))
+        .map(|(stat_id, text)| format!("{} {text}", content.stat_label(stat_id)))
         .collect::<Vec<_>>()
         .join(", ");
     content.render_message(

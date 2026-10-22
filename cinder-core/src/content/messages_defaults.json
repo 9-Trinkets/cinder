@@ -134,5 +134,13 @@
   "help.group.general": "General",
   "list.separator": ", ",
   "list.pair": "{a} and {b}",
-  "list.last": "{rest}, and {last}"
+  "list.last": "{rest}, and {last}",
+  "stat.attack": "attack",
+  "stat.defense": "defense",
+  "stat.dexterity": "dexterity",
+  "stat.endurance": "endurance",
+  "stat.hp": "HP",
+  "stat.intelligence": "intelligence",
+  "stat.mp": "MP",
+  "stat.strength": "strength"
 }

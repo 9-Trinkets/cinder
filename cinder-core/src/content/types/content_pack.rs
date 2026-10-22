@@ -627,6 +627,14 @@ impl ContentPack {
             .into()
     }
 
+    /// Player-facing name of a stat (`stat.<id>` message), falling back to the
+    /// raw id for packs that do not define one.
+    pub fn stat_label(&self, stat_id: &str) -> String {
+        self.message(&format!("stat.{stat_id}"))
+            .unwrap_or(stat_id)
+            .to_string()
+    }
+
     /// Joins display labels with the locale's list separator (`, ` in English,
     /// `、` in Chinese).
     pub fn join_list<S: AsRef<str>>(&self, items: &[S]) -> String {
