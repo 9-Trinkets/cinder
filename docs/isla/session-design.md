@@ -4,13 +4,15 @@ Terminology: one therapy session is one **act** (an act sits inside a persistent
 
 Status: proposal for a rebuilt, minimal Isla pack. Nothing here is implemented. Not playtested. Psychology 101, not real therapy: players should learn what therapy feels like without thinking they can do it.
 
+The first patient is **Hal** (`hal-story-spine.md`); pronouns below are she/her for a generic patient. Noa was the earlier candidate (`noa-story-spine.md`, kept for reference).
+
 **The open question is whether this is fun.** The first build is pure authored content (no LLM) so the player experience can be tested as a fixed set of paths before anything else is added.
 
 ## 1. Fantasy and goal
 
-The player is Isla, a bibliotherapist. The skill being played is **attunement**: notice what Noa is asking for in each line and answer in a way that fits.
+The player is Isla, a bibliotherapist. The skill being played is **attunement**: notice what the patient is asking for in each line and answer in a way that fits.
 
-Success is not "Noa gets fixed". Success is "Noa felt seen". The player never sees a score during play. They find out how it went from Noa's review at the end.
+Success is not "the patient gets fixed". Success is "the patient felt seen". The player never sees a score during play. They find out how it went from the patient's review at the end.
 
 ## 2. Act flow
 
@@ -18,24 +20,24 @@ Success is not "Noa gets fixed". Success is "Noa felt seen". The player never se
 |---|------|-------------|--------|
 | 1 | Arrival and greeting | short, 1-2 exchanges | first clues (umbrella, seat, phone) |
 | 2 | Intake | a few exchanges | first bids |
-| 3 | Serve | one beat, one choice | what she accepts or refuses is a clue |
+| 3 | Serve | one beat, one choice | what the patient accepts or refuses is a clue |
 | 4 | Pick a book | choose between 2 books | one fits, one is a near miss |
 | 5 | Reading and stops | read aloud spread by spread, stop to talk | 3-4 stops, a few bids each |
-| 6 | Closing | return one of her own lines | the **final piece** |
-| 7 | Leaving, then review | none | Noa's review with rating |
+| 6 | Closing | return one of the patient's own lines | the **final piece** |
+| 7 | Leaving, then review | none | the patient's review with rating |
 
 Target length: 20-30 minutes. The next act is an open line at the end of the review, not built yet.
 
 ## 3. Bids
 
-Each key line Noa says is a **bid**, written with a hidden type:
+Each key line the patient says is a **bid**, written with a hidden type:
 
-| Bid type | Example | What she is asking for |
+| Bid type | Example (Hal) | What he is asking for |
 |---|---|---|
-| Feeling | "Well run. Everyone gets what they need." | to be noticed, gently |
-| Invitation | "Is there more?" | you to go on |
-| Opening | "He was asking whether I was in there." | to be received, not interpreted |
-| Deflection | "Anyway. It's a children's book." | an exit |
+| Feeling | "Sensible bear. Follows instructions." | to be noticed, gently |
+| Invitation | "Go on. What's the next step?" | you to go on |
+| Opening | "I wash both. I don't know why that part matters." | to be received, not interpreted |
+| Deflection | "Old habits. Anyway, the bridge." | an exit |
 
 ## 4. Fit table
 
@@ -75,18 +77,18 @@ She only tells a secret if you have climbed the ladder to it, so scoring needs b
 - Every menu has at least one option that fits and at least one that does not. Options that do not fit must sound reasonable (too early, too pushy), never rude, so the right answer is not obvious.
 - Wait is a separate "stay quiet" button, not a numbered option.
 - Slot order is shuffled; nothing in the wording marks which ones fit.
-- Noa's lines, her reactions, the book text and every ending line are written by hand.
+- The patient's lines, reactions, the book text and every ending line are written by hand.
 - No LLM in the first build. An LLM for wording can be added later behind the same slots.
 
 ## 7. Closing and review
 
-- **Final piece.** Isla returns one of Noa's own lines. The menu offers 3-4 lines she said during the act: one real insight, the rest deflections.
+- **Final piece.** Isla returns one of the patient's own lines. The menu offers 3-4 lines she said during the act: one real insight, the rest deflections.
 - **Rating.** Every bid met on the first try earns 1 point; a secret is a bid that counts double and earns its points only if held. Stars = points earned divided by points available, times five, rounded to the nearest half star, minimum 1. Bids on rungs she never reaches count as unmet. A bid met only on the retry earns nothing.
-- **Review.** Written by Noa at home, first person, from authored lines picked by yes/no facts: which secrets you held, did the book fit, did you return her real line or a deflection. Rating and text may disagree. No score is shown during play.
+- **Review.** Written by the patient at home, first person, from authored lines picked by yes/no facts: which secrets you held, did the book fit, did you return her real line or a deflection. Rating and text may disagree. No score is shown during play.
 
 ## 8. First build and the fun test
 
-Keep: Noa, one room, two books (one fit, one near miss), about 12 bids with fallbacks.
+Keep: Hal (see `hal-story-spine.md`), one room, two books (one fit, one near miss), about 12 bids with fallbacks.
 
 Cut for now: the kitchen and service items, Awa/Jonah/Sophea, the five secrets, the three generic checkpoints, the clock and timeout stages, the Trust meter, Absorption, Depth, flooding.
 
