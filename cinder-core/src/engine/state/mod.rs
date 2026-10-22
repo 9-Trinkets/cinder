@@ -234,6 +234,22 @@ pub enum ConversationMemoryKind {
     Action,
 }
 
+/// The menu an initial stage opens at the start of play, if any. Stages that
+/// are entered by advancing open their menu through the reducer; initial
+/// stages never advance into themselves, so their menu is opened here.
+fn initial_stage_menu_id(content: &ContentPack) -> Option<String> {
+    content.beats.initial_stage_ids.iter().find_map(|stage_id| {
+        content
+            .beats
+            .stages
+            .iter()
+            .find(|stage| stage.id == *stage_id)
+            .map(|stage| stage.open_menu.as_str())
+            .filter(|menu_id| !menu_id.is_empty())
+            .map(str::to_string)
+    })
+}
+
 impl WorldState {
     /// Deserializes a persisted state JSON blob.
     pub fn from_saved_json(raw: &str) -> Result<Self, String> {
@@ -343,7 +359,7 @@ impl WorldState {
                 party_reaction_ready_at: BTreeMap::new(),
             },
             parties: seeded_parties(content),
-            active_menu_id: None,
+            active_menu_id: initial_stage_menu_id(content),
             pending_menu_selections: Vec::new(),
             generated_menu_options: HashMap::new(),
             pending_projector_sequence_id: None,

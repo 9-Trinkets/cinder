@@ -1,7 +1,7 @@
 {
   "title": "Isla",
-  "tagline": "One book, one evening, one thing they can't quite say.",
-  "description": "It's a quiet, rainy evening, and Isla is meeting a new patient — someone composed, guarded, and carrying a hurt they won't name outright. Find the story that can reach what conversation alone cannot.",
+  "tagline": "One book, one afternoon, and a man who is managing perfectly well.",
+  "description": "It's a rainy afternoon, and Isla is meeting Hal, a retired surveyor who says he is managing perfectly well. Read him a picture book, listen closely, and see what he trusts you with.",
   "tags": [
     "Bibliotherapy",
     "Cozy Narrative",
@@ -12,21 +12,18 @@
   "default_language": "en",
   "autonomous_actor_dialogue": false,
   "actor_tick_scope": "current_board",
-  "closure_perspective_actor_id": "noa",
+  "closure_perspective_actor_id": "hal",
   "act_member_alias": "patient",
   "speech_stamina_cost_floor": 0,
   "show_act_closure": false,
   "sidebar": {
     "sections": [
-      { "id": "location" },
-      { "id": "map" },
-      { "id": "party" },
-      { "id": "equipped" },
-      { "id": "inventory" },
-      { "id": "room_items" },
-      { "id": "room_consumables" },
-      { "id": "secrets" },
-      { "id": "quests" }
+      {
+        "id": "location"
+      },
+      {
+        "id": "quests"
+      }
     ]
   },
   "theme": {

@@ -4,7 +4,7 @@ use crate::engine::narrative::NarrativeLines;
 use crate::engine::reducer::beat_advance::advance_objective_for_signal;
 use crate::engine::reducer::context::ReduceCtx;
 use crate::engine::reducer::observation::render_story_text;
-use crate::engine::state::WorldState;
+use crate::engine::state::{WorldState, render_dynamic_story_text};
 use serde_json::json;
 pub(crate) fn handle_menu_opened(
     state: &mut WorldState,
@@ -120,6 +120,10 @@ pub(crate) fn handle_menu_choice_made(
             lines.narration(render_story_text(&menu.selection_confirmation, state));
         }
         state.pending_menu_selections.clear();
+        if option_id != "done" {
+            let option_lines = menu_choice_narration(content, state, menu, option_id, title);
+            lines.extend_narration(option_lines);
+        }
     }
     apply_world_hook_effects(
         state,
@@ -163,4 +167,45 @@ pub(crate) fn handle_menu_selection_toggled(
             state.pending_menu_selections.retain(|id| id != option_id);
         }
     }
+}
+
+/// The menu-level and option-level narration played when `option_id` is chosen,
+/// with `{selection_title}` and the menu's selection variable filled in.
+fn menu_choice_narration(
+    content: &ContentPack,
+    state: &WorldState,
+    menu: &crate::content::types::OpeningMenuDefinition,
+    option_id: &str,
+    title: &str,
+) -> Vec<String> {
+    let option_lines = menu
+        .options
+        .iter()
+        .chain(
+            state
+                .generated_menu_options
+                .get(&menu.id)
+                .map(|options| options.iter())
+                .into_iter()
+                .flatten(),
+        )
+        .find(|option| option.id == option_id)
+        .map(|option| option.narrative_lines.as_slice())
+        .unwrap_or_default();
+    menu.narrative_lines
+        .iter()
+        .chain(option_lines.iter())
+        .map(|line| {
+            render_dynamic_story_text(
+                &content.render_template(
+                    line,
+                    &[
+                        ("selection_title", title),
+                        (menu.selection_var_key.as_str(), title),
+                    ],
+                ),
+                state,
+            )
+        })
+        .collect()
 }

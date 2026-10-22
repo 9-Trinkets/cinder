@@ -2,23 +2,13 @@
   "id": "isla",
   "title": "Isla",
   "start_room_id": "cafe",
-  "start_time_minutes": 780,
-  "intro_text": "The entrance is quiet. A small lamp on the reception desk casts a warm pool of light across the wood. Two armchairs face each other beside a low table. The door to the cafe is slightly ajar, a sliver of warm light spilling through.\n\nYou are in your late thirties, dressed in layers that suit the weather and the work \u2014 a cardigan with ink-stained cuffs, reading glasses pushed up into your hair. Your voice settles into a lower register when you talk about books, the way some people's voices change when they talk about something they trust absolutely.\n\nThe chime sounds. Through the glass of the entrance door, you see Noa arriving \u2014 early thirties, dressed in quiet quality, carrying an umbrella that she folds with deliberate care. She nods as she steps inside.\n\nYou greet her in the lobby. The session has not formally begun yet, but the space between you is already shaping itself.\n\n'I practise bibliotherapy,' you explain as you guide her toward the cafe. 'It means a book does part of the talking. We disconnect \u2014 phones off, no timekeeping \u2014 and let a story reach what direct conversation sometimes cannot.'\n\nShe listens. In the cafe, she settles into the chair across from you. Phone facedown on the table. There is no clock on the wall.\n\nThe rain fills the space between you.\n\nListen first. Then decide which book might take her there.\n\nThe session ends when the work reaches a natural close \u2014 or when you choose to close it yourself. Type 'end session' if you need to finish early.",
-  "help_text": "Commands:\n{available_commands}\n- Tab switches focus between command and transcript\n- ? opens the menu\n- Type 'end session' to close early (reduces outcome score)",
+  "start_time_minutes": 900,
+  "intro_text": "Rain against the front window. Low piano music from a small speaker. No clock on the wall.\n\nYou are Isla, a bibliotherapist. Your patient has arrived early.\n\nHal is seventy-one. He folds his umbrella along its creases and leans it exactly against the wall. He takes off his hat and holds it in both hands. He checks his watch against the blank wall, where there is no clock. A small notepad is tucked under his arm.\n\n\"Where do I sit? There's usually a protocol.\"",
+  "help_text": "Choose one of the options to respond. Type the number, or click an option.\n- ? opens the menu\n- Type 'end act' to close early",
   "prompt_context": {
     "setting_notes": [
-      "A converted space with three areas: a quiet entrance lobby, a warm cafe lined with curated bookshelves, and a compact kitchen for preparing drinks and pastries.",
-      "Rain against the front window. Low music in the cafe. The espresso machine hissing in small bursts from the kitchen.",
-      "The table between Isla and the patient holds two cups and a deliberate lack of clutter.",
-      "No clock on the wall. No phones buzzing. The space is designed to dissolve the outside world.",
-      "The kitchen is just off the cafe \u2014 Isla can step back to brew coffee or warm a pastry without fully leaving the session.",
-      "The patient is already settled in the cafe when Isla arrives. The session begins once they are both seated."
+      "A quiet cafe lined with books, rain on the glass, no clock on the wall."
     ],
-    "subtext_notes": [
-      "The patient chose bibliotherapy because talking directly felt too exposed.",
-      "The room is designed to lower defenses: warm light, comfortable chairs, no desk between patient and therapist.",
-      "What the patient says aloud and what they actually feel are often two different things.",
-      "The method depends on losing the sense of time — if the patient checks how long they have been here, the absorption breaks."
-    ]
+    "subtext_notes": []
   }
 }

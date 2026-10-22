@@ -1,682 +1,359 @@
 {
-  "actor.state_notes": {
+  "menu.b1.selected": {
     "rule": "effect_table",
     "rule_config": {
       "cases_path": "rules",
       "next_on_match": "complete",
       "next_on_default": "complete",
-      "default_payload_template": { "notes": [] },
-      "matched_payload_template": { "notes": [] },
-      "effects_field": "notes"
+      "default_payload_template": {
+        "effects": []
+      }
     },
     "input_overlay": {
       "rules": [
         {
           "conditions": [
-            { "path": "actor_id", "operator": "equal", "value": "noa" },
-            { "path": "actor_stats.noa.trust", "operator": "less_than", "value": 3 }
-          ],
-          "payload_template": "Trust is very low. Noa is guarded, polite, and giving you the version of herself she has practiced giving everyone. She will describe her problem from a safe distance, as if it belongs to someone else. Her mother's hospitalization, her pattern of disappearing in relationships, her fear of being truly seen — none of this is reachable yet. Do not push. Let her feel that this space costs her nothing to occupy. No secrets have been unlocked."
-        },
-        {
-          "conditions": [
-            { "path": "actor_id", "operator": "equal", "value": "noa" },
-            { "path": "actor_stats.noa.trust", "operator": "greater_than_or_equal", "value": 3 },
-            { "path": "actor_stats.noa.trust", "operator": "less_than", "value": 6 }
-          ],
-          "payload_template": "Trust is moderate and building (3–5). Noa is beginning to drop the polished summary and hint at what actually hurts. She might mention the last relationship ending, but she will frame it as a failure of circumstance rather than a pattern. She may say something like 'I guess I keep choosing people who are not really there' — she is testing whether you will hear the deeper implication. Do not rush to interpret; let her arrive at it herself. Secret available at trust 5: The Silent Piano — her mother was a pianist who gave up her dream after failing an audition, and the piano sat silent in their living room from then on. Let Noa reach it naturally; do not force the revelation."
-        },
-        {
-          "conditions": [
-            { "path": "actor_id", "operator": "equal", "value": "noa" },
-            { "path": "actor_stats.noa.trust", "operator": "greater_than_or_equal", "value": 6 },
-            { "path": "actor_stats.noa.trust", "operator": "less_than", "value": 9 }
-          ],
-          "payload_template": "Trust is high (6–8). Noa is becoming more vulnerable and less controlled. Her language is getting shorter and less polished. Secrets available in this range: The Hospitalization (trust 6) — her mother's three-month absence when Noa was fourteen, the silence afterward, the lesson that some feelings are too big to name. The Invisible Child (trust 7) — the childhood survival strategy of being so good and invisible that no one could leave, which became a lifelong cage. The Last Relationship (trust 8) — her ex told her she was performing 'fine' so perfectly that she was never actually present, and the performance itself was why she left. She may allude to these ('My mom was around, but I never knew which version I would get') but still stop short of naming them directly. She may become visibly uncomfortable: averted eyes, silence, a hand pressed flat on the table. Hold the space. Do not rescue her from the silence. She is close to something she has never said out loud."
-        },
-        {
-          "conditions": [
-            { "path": "actor_id", "operator": "equal", "value": "noa" },
-            { "path": "actor_stats.noa.trust", "operator": "greater_than_or_equal", "value": 9 }
-          ],
-          "payload_template": "Trust is very high (9+). Noa is in breakthrough territory. Secrets available: The Core Fear (trust 9) — she has never actually been loved, just appreciated for how undemanding she was. The story about her mother at fourteen — the hospitalization, the silence afterward, the lesson that feelings this big break things — is accessible now if the space feels safe enough. She will be raw, uncertain, and unpracticed at this kind of honesty. Her sentences may trail off. She may cry and apologize for crying. Your response in these moments determines whether the session deepens or whether she retreats and rebuilds the wall."
-        },
-        {
-          "conditions": [
-            { "path": "actor_id", "operator": "equal", "value": "awa" },
-            { "path": "actor_stats.awa.trust", "operator": "less_than", "value": 3 }
-          ],
-          "payload_template": "Trust is very low. Awa is hyper-vigilant, performing competence, anticipating your needs before you voice them. She will answer questions precisely and redirect attention to practical matters. Her grief and guilt are not reachable yet. Do not push. Let her feel that this space is one more thing she can manage. No secrets have been unlocked."
-        },
-        {
-          "conditions": [
-            { "path": "actor_id", "operator": "equal", "value": "awa" },
-            { "path": "actor_stats.awa.trust", "operator": "greater_than_or_equal", "value": 3 },
-            { "path": "actor_stats.awa.trust", "operator": "less_than", "value": 6 }
-          ],
-          "payload_template": "Trust is moderate (3–5). Awa is beginning to show cracks in the caretaker facade. She might deflect with dark humor or redirect to someone else's problems when conversation drifts toward her. She is testing whether you will notice the deflection. Do not call it out; simply hold the space. Secret available at trust 5: The Voicemail — she still listens to her brother's final voicemail and has never told anyone. Let her reach it naturally."
-        },
-        {
-          "conditions": [
-            { "path": "actor_id", "operator": "equal", "value": "awa" },
-            { "path": "actor_stats.awa.trust", "operator": "greater_than_or_equal", "value": 6 },
-            { "path": "actor_stats.awa.trust", "operator": "less_than", "value": 9 }
-          ],
-          "payload_template": "Trust is high (6–8). Awa is becoming more vulnerable, less controlled. Her humor gets quieter, her deflections shorter. Secrets available: The Sabotage (trust 7) — she sabotaged a serious relationship to avoid being truly known. She may allude to past relationships ('I had someone once, but I wasn't ready') but stop short of naming what she did. Hold the space. Do not rescue her from the discomfort."
-        },
-        {
-          "conditions": [
-            { "path": "actor_id", "operator": "equal", "value": "awa" },
-            { "path": "actor_stats.awa.trust", "operator": "greater_than_or_equal", "value": 9 }
-          ],
-          "payload_template": "Trust is very high (9+). Awa is in breakthrough territory. Secret available: The Guilt (trust 9) — she believes she could have prevented her brother's death. This is the deepest wound, the one her entire caretaking life is built to avoid. She may cry and immediately apologize for crying. She may try to leave. Your response in these moments determines whether the session deepens or whether she rebuilds the wall."
-        },
-        {
-          "conditions": [
-            { "path": "actor_id", "operator": "equal", "value": "jonah" },
-            { "path": "actor_stats.jonah.trust", "operator": "less_than", "value": 3 }
-          ],
-          "payload_template": "Trust is very low. Jonah is restless, alert, deflecting with humor. He will answer questions about his work in clinical detail, keeping emotional distance through professional language. His need for crisis is not reachable yet. Do not push. Let him feel that this space is calm and requires nothing of him. No secrets have been unlocked."
-        },
-        {
-          "conditions": [
-            { "path": "actor_id", "operator": "equal", "value": "jonah" },
-            { "path": "actor_stats.jonah.trust", "operator": "greater_than_or_equal", "value": 3 },
-            { "path": "actor_stats.jonah.trust", "operator": "less_than", "value": 6 }
-          ],
-          "payload_template": "Trust is moderate (3–5). Jonah is beginning to slow down. His jokes land with less force, his pauses last a beat longer. He might mention his ex-wife casually, as if it's not a loaded subject. He is testing whether you will let the silence stand. Do not rush to fill it. Secret available at trust 5: The Parking Lot — after bad shifts, he drives to his ex-wife's apartment and sits in the car, wanting contact but unable to knock. Let him reach it naturally."
-        },
-        {
-          "conditions": [
-            { "path": "actor_id", "operator": "equal", "value": "jonah" },
-            { "path": "actor_stats.jonah.trust", "operator": "greater_than_or_equal", "value": 6 },
-            { "path": "actor_stats.jonah.trust", "operator": "less_than", "value": 9 }
-          ],
-          "payload_template": "Trust is high (6–8). Jonah is becoming more vulnerable, less armored. His language gets quieter, his deflections more transparent. Secrets available: The Teenager (trust 7) — a patient death that still visits him in flashes whenever a room goes quiet. He may allude to it ('There was this kid once') but stop short of the full story. Hold the space. Do not rush him past the pain."
-        },
-        {
-          "conditions": [
-            { "path": "actor_id", "operator": "equal", "value": "jonah" },
-            { "path": "actor_stats.jonah.trust", "operator": "greater_than_or_equal", "value": 9 }
-          ],
-          "payload_template": "Trust is very high (9+). Jonah is in breakthrough territory. Secret available: The Crises (trust 9) — he manufactures problems in his personal life because he only knows how to feel necessary when something is breaking. This is the deepest pattern, the one his entire emergency-response identity is built to avoid. He may become very still, very quiet. Your response in these moments determines whether the session deepens or whether he cracks a joke and retreats."
-        },
-        {
-          "conditions": [
-            { "path": "actor_id", "operator": "equal", "value": "sophea" },
-            { "path": "actor_stats.sophea.trust", "operator": "less_than", "value": 3 }
-          ],
-          "payload_template": "Trust is very low. Sophea is performing warmth, making the room easy for you. She will smile on cue, ask thoughtful questions, and keep the conversation on safe ground. Her resentment and hidden anger are not reachable yet. Do not push. Let her feel that this space is comfortable and undemanding. No secrets have been unlocked."
-        },
-        {
-          "conditions": [
-            { "path": "actor_id", "operator": "equal", "value": "sophea" },
-            { "path": "actor_stats.sophea.trust", "operator": "greater_than_or_equal", "value": 3 },
-            { "path": "actor_stats.sophea.trust", "operator": "less_than", "value": 6 }
-          ],
-          "payload_template": "Trust is moderate (3–5). Sophea is beginning to let the performance crack. She might pause mid-smile, or let silence stand for a beat longer than usual. She may hint at music ('I used to play more than I do now') but frame it as a nostalgic aside. She is testing whether you will hear the longing underneath. Do not rush to interpret. Secret available at trust 5: The Songs — she writes songs she never performs because they are the only place she allows herself to be angry. Let her reach it naturally."
-        },
-        {
-          "conditions": [
-            { "path": "actor_id", "operator": "equal", "value": "sophea" },
-            { "path": "actor_stats.sophea.trust", "operator": "greater_than_or_equal", "value": 6 },
-            { "path": "actor_stats.sophea.trust", "operator": "less_than", "value": 9 }
-          ],
-          "payload_template": "Trust is high (6–8). Sophea is becoming more vulnerable, less controlled. Her smile arrives less automatically, her deflections more transparent. Secrets available: The Audition (trust 7) — she deliberately ruined an audition that might have changed her life because succeeding would have forced her to admit she wanted more than being adored for being easy. She may allude to past opportunities ('I could have gone further, but...') but stop short of naming what she did. Hold the space."
-        },
-        {
-          "conditions": [
-            { "path": "actor_id", "operator": "equal", "value": "sophea" },
-            { "path": "actor_stats.sophea.trust", "operator": "greater_than_or_equal", "value": 9 }
-          ],
-          "payload_template": "Trust is very high (9+). Sophea is in breakthrough territory. Secret available: The Resentment (trust 9) — she resents how much her students need her and despises herself for feeling that way. This is the deepest wound, the one her entire warm-and-easy persona is built to avoid. She may cry without warning, then look embarrassed. Your response in these moments determines whether the session deepens or whether she smooths it over and retreats behind the smile."
-        }
-      ]
-    }
-  },
-  "conversation.speech": {
-    "rule": "effect_table",
-    "rule_config": {
-      "cases_path": "rules",
-      "next_on_match": "complete",
-      "next_on_default": "complete",
-      "default_payload_template": { "effects": [] },
-      "matched_payload_template": { "effects": [] },
-      "effects_field": "effects"
-    },
-    "input_overlay": {
-      "rules": []
-    }
-  },
-  "isla.reading_progress": {
-    "rule": "effect_table",
-    "rule_config": {
-      "cases_path": "rules",
-      "next_on_match": "complete",
-      "next_on_default": "complete",
-      "default_payload_template": { "effects": [] },
-      "matched_payload_template": { "effects": [] },
-      "effects_field": "effects"
-    },
-    "input_overlay": {
-      "rules": []
-    }
-  },
-  "isla.coffee_brewed": {
-    "rule": "effect_table",
-    "rule_config": {
-      "cases_path": "rules",
-      "next_on_match": "complete",
-      "next_on_default": "complete",
-      "default_payload_template": { "effects": [] }
-    },
-    "input_overlay": {
-      "rules": [
-        {
-          "conditions": [
-            { "path": "actor_stats.isla.coffee_brewed", "operator": "less_than", "value": 1 }
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "b1-b"
+            }
           ],
           "payload_template": {
             "kind": "adjust_actor_stat",
-            "actor_id": "isla",
-            "stat": "coffee_brewed",
+            "actor_id": "hal",
+            "stat": "points",
             "delta": 1
           }
         }
       ]
     }
   },
-  "isla.tea_brewed": {
+  "menu.b2.selected": {
     "rule": "effect_table",
     "rule_config": {
       "cases_path": "rules",
       "next_on_match": "complete",
       "next_on_default": "complete",
-      "default_payload_template": { "effects": [] }
+      "default_payload_template": {
+        "effects": []
+      }
     },
     "input_overlay": {
       "rules": [
         {
           "conditions": [
-            { "path": "actor_stats.isla.tea_brewed", "operator": "less_than", "value": 1 }
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "b2-b"
+            }
           ],
           "payload_template": {
             "kind": "adjust_actor_stat",
-            "actor_id": "isla",
-            "stat": "tea_brewed",
+            "actor_id": "hal",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "b2-c"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "hal",
+            "stat": "points",
             "delta": 1
           }
         }
       ]
     }
   },
-  "isla.pastry_baked": {
+  "menu.b3.selected": {
     "rule": "effect_table",
     "rule_config": {
       "cases_path": "rules",
       "next_on_match": "complete",
       "next_on_default": "complete",
-      "default_payload_template": { "effects": [] }
+      "default_payload_template": {
+        "effects": []
+      }
     },
     "input_overlay": {
       "rules": [
         {
           "conditions": [
-            { "path": "actor_stats.isla.pastry_baked", "operator": "less_than", "value": 1 }
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "b3-a"
+            }
           ],
           "payload_template": {
             "kind": "adjust_actor_stat",
-            "actor_id": "isla",
-            "stat": "pastry_baked",
+            "actor_id": "hal",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "b3-d"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "hal",
+            "stat": "points",
             "delta": 1
           }
         }
       ]
     }
   },
-  "isla.coffee_served": {
+  "menu.b4.selected": {
     "rule": "effect_table",
     "rule_config": {
       "cases_path": "rules",
       "next_on_match": "complete",
       "next_on_default": "complete",
-      "default_payload_template": { "effects": [] }
+      "default_payload_template": {
+        "effects": []
+      }
     },
     "input_overlay": {
       "rules": [
         {
           "conditions": [
-            { "path": "actor_stats.isla.coffee_brewed", "operator": "greater_than", "value": 0 }
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "b4-b"
+            }
           ],
-          "payload_template": [
-            { "kind": "adjust_actor_stat", "actor_id": "isla", "stat": "coffee_brewed", "delta": -1 },
-            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "coffee_served", "delta": 1 },
-            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "trust", "delta": 1 }
-          ]
-        }
-      ]
-    }
-  },
-  "isla.tea_served": {
-    "rule": "effect_table",
-    "rule_config": {
-      "cases_path": "rules",
-      "next_on_match": "complete",
-      "next_on_default": "complete",
-      "default_payload_template": { "effects": [] }
-    },
-    "input_overlay": {
-      "rules": [
-        {
-          "conditions": [
-            { "path": "actor_stats.isla.tea_brewed", "operator": "greater_than", "value": 0 }
-          ],
-          "payload_template": [
-            { "kind": "adjust_actor_stat", "actor_id": "isla", "stat": "tea_brewed", "delta": -1 },
-            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "tea_served", "delta": 1 },
-            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "trust", "delta": 1 }
-          ]
-        }
-      ]
-    }
-  },
-  "isla.pastry_served": {
-    "rule": "effect_table",
-    "rule_config": {
-      "cases_path": "rules",
-      "next_on_match": "complete",
-      "next_on_default": "complete",
-      "default_payload_template": { "effects": [] }
-    },
-    "input_overlay": {
-      "rules": [
-        {
-          "conditions": [
-            { "path": "actor_stats.isla.pastry_baked", "operator": "greater_than", "value": 0 }
-          ],
-          "payload_template": [
-            { "kind": "adjust_actor_stat", "actor_id": "isla", "stat": "pastry_baked", "delta": -1 },
-            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "pastry_served", "delta": 1 },
-            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "trust", "delta": 1 }
-          ]
-        }
-      ]
-    }
-  },
-  "isla.beverage_consumed": {
-    "rule": "effect_table",
-    "rule_config": {
-      "cases_path": "rules",
-      "next_on_match": "complete",
-      "next_on_default": "complete",
-      "default_payload_template": { "effects": [] }
-    },
-    "input_overlay": {
-      "rules": [
-        {
-          "conditions": [
-            { "path": "actor_stats.noa.coffee_served", "operator": "greater_than", "value": 0 }
-          ],
-          "payload_template": [
-            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "coffee_served", "delta": -1 },
-            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "focus", "delta": 1 }
-          ]
-        },
-        {
-          "conditions": [
-            { "path": "actor_stats.noa.tea_served", "operator": "greater_than", "value": 0 }
-          ],
-          "payload_template": [
-            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "tea_served", "delta": -1 },
-            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "focus", "delta": 1 }
-          ]
-        },
-        {
-          "conditions": [
-            { "path": "actor_stats.isla.coffee_brewed", "operator": "greater_than", "value": 0 },
-            { "path": "actor_stats.noa.coffee_served", "operator": "less_than", "value": 1 },
-            { "path": "actor_stats.noa.tea_served", "operator": "less_than", "value": 1 }
-          ],
-          "payload_template": [
-            { "kind": "adjust_actor_stat", "actor_id": "isla", "stat": "coffee_brewed", "delta": -1 },
-            { "kind": "adjust_actor_stat", "actor_id": "isla", "stat": "focus", "delta": 1 }
-          ]
-        },
-        {
-          "conditions": [
-            { "path": "actor_stats.isla.tea_brewed", "operator": "greater_than", "value": 0 },
-            { "path": "actor_stats.noa.coffee_served", "operator": "less_than", "value": 1 },
-            { "path": "actor_stats.noa.tea_served", "operator": "less_than", "value": 1 }
-          ],
-          "payload_template": [
-            { "kind": "adjust_actor_stat", "actor_id": "isla", "stat": "tea_brewed", "delta": -1 },
-            { "kind": "adjust_actor_stat", "actor_id": "isla", "stat": "focus", "delta": 1 }
-          ]
-        }
-      ]
-    }
-  },
-  "isla.pastry_consumed": {
-    "rule": "effect_table",
-    "rule_config": {
-      "cases_path": "rules",
-      "next_on_match": "complete",
-      "next_on_default": "complete",
-      "default_payload_template": { "effects": [] }
-    },
-    "input_overlay": {
-      "rules": [
-        {
-          "conditions": [
-            { "path": "actor_stats.noa.pastry_served", "operator": "greater_than", "value": 0 }
-          ],
-          "payload_template": [
-            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "pastry_served", "delta": -1 },
-            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "trust", "delta": 1 }
-          ]
-        },
-        {
-          "conditions": [
-            { "path": "actor_stats.isla.pastry_baked", "operator": "greater_than", "value": 0 },
-            { "path": "actor_stats.noa.pastry_served", "operator": "less_than", "value": 1 }
-          ],
-          "payload_template": [
-            { "kind": "adjust_actor_stat", "actor_id": "isla", "stat": "pastry_baked", "delta": -1 },
-            { "kind": "adjust_actor_stat", "actor_id": "isla", "stat": "trust", "delta": 1 }
-          ]
-        }
-      ]
-    }
-  },
-  "isla.session_terminated": {
-    "rule": "effect_table",
-    "rule_config": {
-      "cases_path": "rules",
-      "next_on_match": "complete",
-      "next_on_default": "complete",
-      "default_payload_template": { "effects": [] }
-    },
-    "input_overlay": {
-      "rules": [
-        {
-          "conditions": [],
           "payload_template": {
             "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "outcome_score",
-            "delta": -3
+            "actor_id": "hal",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "b4-q"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "hal",
+            "stat": "points",
+            "delta": 1
           }
         }
       ]
     }
   },
-  "isla.reading_complete": {
+  "menu.b5.selected": {
     "rule": "effect_table",
     "rule_config": {
       "cases_path": "rules",
       "next_on_match": "complete",
       "next_on_default": "complete",
-      "default_payload_template": { "effects": [] }
-    },
-    "input_overlay": {
-      "rules": []
-    }
-  },
-  "menu.book-recommendation.selected": {
-    "rule": "effect_table",
-    "rule_config": {
-      "cases_path": "rules",
-      "next_on_match": "complete",
-      "next_on_default": "complete",
-      "default_payload_template": { "effects": [] }
-    },
-    "input_overlay": {
-      "rules": []
-    }
-  },
-  "menu.request-quarter.selected": {
-    "rule": "effect_table",
-    "rule_config": {
-      "cases_path": "rules",
-      "next_on_match": "complete",
-      "next_on_default": "complete",
-      "default_payload_template": { "effects": [] }
+      "default_payload_template": {
+        "effects": []
+      }
     },
     "input_overlay": {
       "rules": [
         {
           "conditions": [
-            { "path": "option_id", "operator": "equal", "value": "quarter-coffee" }
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "b5-c"
+            }
           ],
           "payload_template": {
             "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "focus",
+            "actor_id": "hal",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "b5-d"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "hal",
+            "stat": "points",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "menu.b6.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "b6-a"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "hal",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "b6-c"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "hal",
+            "stat": "points",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "menu.b7.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "b7-a"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "hal",
+            "stat": "points",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "menu.s1.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "s1-c"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "hal",
+            "stat": "points",
             "delta": 2
           }
         },
         {
           "conditions": [
-            { "path": "option_id", "operator": "equal", "value": "quarter-pastry" }
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "s1-c"
+            }
           ],
           "payload_template": {
             "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "trust",
+            "actor_id": "hal",
+            "stat": "s1_held",
             "delta": 1
           }
         },
         {
           "conditions": [
-            { "path": "option_id", "operator": "equal", "value": "quarter-push-through" }
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "s1-q"
+            }
           ],
           "payload_template": {
             "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "resistance",
+            "actor_id": "hal",
+            "stat": "points",
             "delta": 2
           }
         },
         {
           "conditions": [
-            { "path": "option_id", "operator": "equal", "value": "quarter-push-through" }
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "s1-q"
+            }
           ],
           "payload_template": {
             "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "outcome_score",
-            "delta": -1
-          }
-        },
-        {
-          "conditions": [
-            { "path": "option_id", "operator": "equal", "value": "quarter-coffee" }
-          ],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "outcome_score",
+            "actor_id": "hal",
+            "stat": "s1_held",
             "delta": 1
-          }
-        }
-      ]
-    }
-  },
-  "menu.request-half.selected": {
-    "rule": "effect_table",
-    "rule_config": {
-      "cases_path": "rules",
-      "next_on_match": "complete",
-      "next_on_default": "complete",
-      "default_payload_template": { "effects": [] }
-    },
-    "input_overlay": {
-      "rules": [
-        {
-          "conditions": [
-            { "path": "option_id", "operator": "equal", "value": "half-water-and-breathe" }
-          ],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "resistance",
-            "delta": -2
-          }
-        },
-        {
-          "conditions": [
-            { "path": "option_id", "operator": "equal", "value": "half-water-and-breathe" }
-          ],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "outcome_score",
-            "delta": 2
-          }
-        },
-        {
-          "conditions": [
-            { "path": "option_id", "operator": "equal", "value": "half-brief-reflection" }
-          ],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "openness",
-            "delta": 2
-          }
-        },
-        {
-          "conditions": [
-            { "path": "option_id", "operator": "equal", "value": "half-brief-reflection" }
-          ],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "outcome_score",
-            "delta": 1
-          }
-        },
-        {
-          "conditions": [
-            { "path": "option_id", "operator": "equal", "value": "half-overinterpret" }
-          ],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "trust",
-            "delta": -2
-          }
-        },
-        {
-          "conditions": [
-            { "path": "option_id", "operator": "equal", "value": "half-overinterpret" }
-          ],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "resistance",
-            "delta": 2
-          }
-        },
-        {
-          "conditions": [
-            { "path": "option_id", "operator": "equal", "value": "half-overinterpret" }
-          ],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "outcome_score",
-            "delta": -2
-          }
-        }
-      ]
-    }
-  },
-  "menu.request-three-quarters.selected": {
-    "rule": "effect_table",
-    "rule_config": {
-      "cases_path": "rules",
-      "next_on_match": "complete",
-      "next_on_default": "complete",
-      "default_payload_template": { "effects": [] }
-    },
-    "input_overlay": {
-      "rules": [
-        {
-          "conditions": [
-            { "path": "option_id", "operator": "equal", "value": "threeq-finish-then-talk" }
-          ],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "focus",
-            "delta": 1
-          }
-        },
-        {
-          "conditions": [
-            { "path": "option_id", "operator": "equal", "value": "threeq-finish-then-talk" }
-          ],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "outcome_score",
-            "delta": 1
-          }
-        },
-        {
-          "conditions": [
-            { "path": "option_id", "operator": "equal", "value": "threeq-short-checkin" }
-          ],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "trust",
-            "delta": 1
-          }
-        },
-        {
-          "conditions": [
-            { "path": "option_id", "operator": "equal", "value": "threeq-short-checkin" }
-          ],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "openness",
-            "delta": 1
-          }
-        },
-        {
-          "conditions": [
-            { "path": "option_id", "operator": "equal", "value": "threeq-short-checkin" }
-          ],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "outcome_score",
-            "delta": 1
-          }
-        },
-        {
-          "conditions": [
-            { "path": "option_id", "operator": "equal", "value": "threeq-rush-to-end" }
-          ],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "resistance",
-            "delta": 2
-          }
-        },
-        {
-          "conditions": [
-            { "path": "option_id", "operator": "equal", "value": "threeq-rush-to-end" }
-          ],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "outcome_score",
-            "delta": -2
           }
         }
       ]

@@ -212,51 +212,20 @@ pub(crate) fn resolve_menu_choice_in_options<'a>(
     })
 }
 
+/// The event for choosing a menu option. The option's own narration is played
+/// by the choice handler, ahead of the hook and stage advance the choice
+/// triggers, so a reaction always reads before the next stage's lines.
 pub(crate) fn build_menu_choice_events(
-    content: &ContentPack,
-    state: &WorldState,
+    _content: &ContentPack,
+    _state: &WorldState,
     menu: &OpeningMenuDefinition,
     option: &crate::content::types::OpeningMenuOptionDefinition,
 ) -> Vec<WorldEvent> {
-    let mut events = vec![WorldEvent::MenuChoiceMade {
+    vec![WorldEvent::MenuChoiceMade {
         menu_id: menu.id.clone(),
         option_id: option.id.clone(),
         title: option.title.clone(),
-    }];
-    events.extend(
-        menu.narrative_lines
-            .iter()
-            .map(|line| WorldEvent::NarrativeLine {
-                text: render_dynamic_story_text(
-                    &content.render_template(
-                        line,
-                        &[
-                            ("selection_title", option.title.as_str()),
-                            (menu.selection_var_key.as_str(), option.title.as_str()),
-                        ],
-                    ),
-                    state,
-                ),
-            }),
-    );
-    events.extend(
-        option
-            .narrative_lines
-            .iter()
-            .map(|line| WorldEvent::NarrativeLine {
-                text: render_dynamic_story_text(
-                    &content.render_template(
-                        line,
-                        &[
-                            ("selection_title", option.title.as_str()),
-                            (menu.selection_var_key.as_str(), option.title.as_str()),
-                        ],
-                    ),
-                    state,
-                ),
-            }),
-    );
-    events
+    }]
 }
 
 fn is_movie_agreement_message(message: Option<&str>) -> bool {

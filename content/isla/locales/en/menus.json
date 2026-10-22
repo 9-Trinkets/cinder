@@ -1,170 +1,416 @@
 [
   {
-    "id": "book-recommendation",
-    "actor_id": "noa",
-    "stage_id": "book-selection",
+    "id": "b1",
+    "actor_id": "hal",
+    "stage_id": "stage-b1",
     "trigger_mode": "any_speak",
-    "dynamic": true,
-    "generation_role": "book_recommender",
-    "proposal_line": "If we're doing this, can we pick the book now?",
-    "intent_guidance": "Open this menu when Isla is moving from listening into recommendation.",
-    "selection_prompt": "Choose one book for Noa:",
-    "invalid_choice_text": "Noa waits, hands folded over the table. Choose one of the books.",
-    "selection_confirmation": "You choose {selection_title}.",
-    "selection_var_key": "recommended_book_title",
-    "selection_id_var_key": "recommended_book_id",
-    "narrative_lines": [
-      "The rain has softened to a steady patter against the front window. Noa rests her elbows on the table, waiting without urgency. The moment between diagnosis and prescription — between being heard and being steered."
-    ],
+    "dynamic": false,
+    "selection_prompt": "How do you answer?",
+    "invalid_choice_text": "Hal waits. Choose one of the options.",
+    "selection_confirmation": "You: \"{selection_title}\"",
     "options": [
       {
-        "id": "book-echoes-of-the-open-window",
-        "title": "Echoes of the Open Window",
-        "menu_text": "grief, unfinished conversations, and making room for unresolved love."
-      },
-      {
-        "id": "book-index-of-small-escapes",
-        "title": "Index of Small Escapes",
-        "menu_text": "coping through routines, avoidance, and slow honesty."
-      },
-      {
-        "id": "book-the-perfectly-managed-life",
-        "title": "The Perfectly Managed Life",
-        "menu_text": "control, productivity, and emotional distance disguised as discipline."
-      }
-    ]
-  },
-  {
-    "id": "request-quarter",
-    "actor_id": "noa",
-    "stage_id": "request-quarter",
-    "trigger_mode": "intent_clarified",
-    "proposal_line": "Could I have something warm before I keep reading?",
-    "intent_guidance": "Open when Noa asks for support at the first reading checkpoint (but let her reflect naturally first).",
-    "selection_prompt": "Noa asks for support. How do you respond?",
-    "invalid_choice_text": "Noa is still waiting for your response.",
-    "selection_confirmation": "You choose {selection_title}.",
-    "selection_var_key": "quarter_request_choice",
-    "selection_id_var_key": "quarter_request_choice_id",
-    "options": [
-      {
-        "id": "quarter-coffee",
-        "title": "Serve coffee",
-        "menu_text": "Serve coffee and invite her to keep reading while it's still hot.",
+        "id": "b1-a",
+        "title": "Either chair is fine. There's no protocol here.",
+        "menu_text": "",
         "narrative_lines": [
-          "You place a warm cup beside her. Steam rises between her and the page. Noa wraps both hands around the mug and exhales — not tension, but threshold crossed.",
-          "\"Thank you,\" she says. Not to the coffee. To the gesture.",
-          "She turns a page before lifting the cup. The reading resumes, steadier than before."
+          "\"Good. Good.\" He takes the nearest chair, still holding the hat in both hands, and sits as if the seat might be assigned."
         ]
       },
       {
-        "id": "quarter-pastry",
-        "title": "Serve pastry",
-        "menu_text": "Serve a homemade pastry and give her a few minutes of quiet.",
+        "id": "b1-b",
+        "title": "Where would you pick, if it were up to you?",
+        "menu_text": "",
         "narrative_lines": [
-          "The plate lands softly beside the book. Noa glances at it, then at you, then at it again — as if unsure what to do with kindness that asks for nothing back.",
-          "She breaks off a piece but does not eat it immediately. She holds it, letting the moment land.",
-          "\"My grandmother used to do this,\" she says, quiet. \"Put things in front of me without a reason.\" The silence that follows is not sad. It is full."
+          "He considers it like a survey question. \"Facing the door. Habit.\" He sits, and the hat goes on the chair beside him."
         ]
       },
       {
-        "id": "quarter-push-through",
-        "title": "Ask her to push through",
-        "menu_text": "Tell her to keep reading first and discuss comfort later.",
+        "id": "b1-c",
+        "title": "You'd like to know the rules before you start.",
+        "menu_text": "",
         "narrative_lines": [
-          "Noa nods once — a short, sharp motion. She understands the instruction even if something in her shoulders tightens.",
-          "She lowers her gaze back to the page, but her thumb presses harder against the spine.",
-          "The reading continues, but the air around her feels thinner now. She is following the directive. Whether she feels held by it is another question."
+          "\"Doesn't everyone?\" A dry smile. He sits exactly where he was already standing."
+        ]
+      },
+      {
+        "id": "b1-d",
+        "title": "Dana said you might be nervous.",
+        "menu_text": "",
+        "narrative_lines": [
+          "His smile goes thin. \"Dana says a lot of things.\" He sits, upright."
+        ]
+      },
+      {
+        "id": "b1-q",
+        "title": "(Say nothing.)",
+        "menu_text": "",
+        "narrative_lines": [
+          "He stands there a moment too long. \"Right. I'll take this one.\""
         ]
       }
     ]
   },
   {
-    "id": "request-half",
-    "actor_id": "noa",
-    "stage_id": "request-half",
-    "trigger_mode": "intent_clarified",
-    "proposal_line": "I'm getting pulled in, but it's a lot. Could we pause a minute?",
-    "intent_guidance": "Open when Noa asks for regulation at the halfway checkpoint (let her reflection land first).",
-    "selection_prompt": "Noa asks for a pause. How do you respond?",
-    "invalid_choice_text": "Noa is waiting for your call.",
-    "selection_confirmation": "You choose {selection_title}.",
-    "selection_var_key": "half_request_choice",
-    "selection_id_var_key": "half_request_choice_id",
+    "id": "b2",
+    "actor_id": "hal",
+    "stage_id": "stage-b2",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "selection_prompt": "How do you answer?",
+    "invalid_choice_text": "Hal waits. Choose one of the options.",
+    "selection_confirmation": "You: \"{selection_title}\"",
     "options": [
       {
-        "id": "half-water-and-breathe",
-        "title": "Offer water and breathing space",
-        "menu_text": "Bring water, lower the pressure, and let her settle before continuing.",
+        "id": "b2-a",
+        "title": "Does that include the days that aren't perfect?",
+        "menu_text": "",
         "narrative_lines": [
-          "A glass of water appears at her elbow. Noa looks at it, then closes the book on her finger to keep her place.",
-          "She takes three slow sips. With each one, the set of her jaw softens by a degree.",
-          "\"I forgot I was holding my breath,\" she admits. She places the glass down and reopens the book. The pause has done its work."
+          "\"There's no such thing. A day is managed or it isn't.\""
         ]
       },
       {
-        "id": "half-brief-reflection",
-        "title": "Offer a brief reflection",
-        "menu_text": "Name one pattern you hear and ask if she wants to test it against the next chapter.",
+        "id": "b2-b",
+        "title": "Managing perfectly well.",
+        "menu_text": "",
         "narrative_lines": [
-          "You name it plainly: the character keeps choosing safety over honesty, and Noa keeps turning pages as if recognizing a mirror she did not ask for.",
-          "Noa is still for a moment. Then she nods, slowly.",
-          "\"That is... uncomfortably exact.\" A pause. \"Keep going. I want to see if she breaks it.\" Her voice carries something between fear and hope."
+          "A short pause. \"Perfectly well. Yes.\" He caps the pen, though he has written nothing."
         ]
       },
       {
-        "id": "half-overinterpret",
-        "title": "Push a strong interpretation",
-        "menu_text": "Give a firm interpretation and ask her to accept it before continuing.",
+        "id": "b2-c",
+        "title": "What does a managed day look like?",
+        "menu_text": "",
         "narrative_lines": [
-          "You tell her what the story really means — not what it says, but what it hides. Your voice carries the weight of certainty.",
-          "Noa's eyes narrow. She does not disagree aloud, but her posture shifts: a subtle retreat, shoulders curling forward.",
-          "\"I think... I need to read it myself,\" she says carefully. She turns a page, but her focus seems to have fractured. The interpretation may have landed on her rather than with her."
+          "\"Up at six. Tea. The ferns. The post.\" A beat. \"It's a good routine.\" He looks slightly surprised at himself."
+        ]
+      },
+      {
+        "id": "b2-d",
+        "title": "That's reassuring to hear.",
+        "menu_text": "",
+        "narrative_lines": [
+          "\"Quite.\" He straightens the notepad."
+        ]
+      },
+      {
+        "id": "b2-q",
+        "title": "(Say nothing.)",
+        "menu_text": "",
+        "narrative_lines": [
+          "He fills the silence with a remark about the weather."
         ]
       }
     ]
   },
   {
-    "id": "request-three-quarters",
-    "actor_id": "noa",
-    "stage_id": "request-three-quarters",
-    "trigger_mode": "intent_clarified",
-    "proposal_line": "I can finish, but I need one thing: should we talk now or after the last pages?",
-    "intent_guidance": "Open when Noa asks for final pacing support (let the late-stage reflection happen first).",
-    "selection_prompt": "Noa asks how to handle the final stretch. Choose your approach:",
-    "invalid_choice_text": "Noa watches your expression, waiting for direction.",
-    "selection_confirmation": "You choose {selection_title}.",
-    "selection_var_key": "three_quarters_request_choice",
-    "selection_id_var_key": "three_quarters_request_choice_id",
+    "id": "b3",
+    "actor_id": "hal",
+    "stage_id": "stage-b3",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "selection_prompt": "How do you answer?",
+    "invalid_choice_text": "Hal waits. Choose one of the options.",
+    "selection_confirmation": "You: \"{selection_title}\"",
     "options": [
       {
-        "id": "threeq-finish-then-talk",
-        "title": "Let her finish, then debrief",
-        "menu_text": "Prioritize completion first, then hold a clean reflection space.",
+        "id": "b3-a",
+        "title": "Where someone thinks the line is.",
+        "menu_text": "",
         "narrative_lines": [
-          "Noa receives the permission like a reprieve. She does not have to hold two things at once — the ending and the meaning.",
-          "She turns to the final pages with renewed focus. Her reading is faster now, more certain. She is no longer parsing for survival but for completion.",
-          "You watch her cross the finish line. The story will land differently once the book is closed, and you will both be there to meet it."
+          "\"Never where it actually is. Where they think it is.\" He taps the pen once."
         ]
       },
       {
-        "id": "threeq-short-checkin",
-        "title": "Do a short check-in now",
-        "menu_text": "Spend two minutes grounding the insight before she reads the ending.",
+        "id": "b3-b",
+        "title": "That sounds like precise work.",
+        "menu_text": "",
         "narrative_lines": [
-          "She sets the book down — fully, this time, with a bookmark placed precisely where she stopped. Noa gives you her full attention, which feels different now. Less guarded.",
-          "\"I think I know what it's going to say,\" she offers. \"The ending. And I think I know why it scares me.\"",
-          "She does not elaborate. She does not need to. The naming is the insight. After a measured silence, she picks the book back up. Ready."
+          "\"It was. It was.\" He looks at the rain for a second."
         ]
       },
       {
-        "id": "threeq-rush-to-end",
-        "title": "Rush to the ending",
-        "menu_text": "Push to finish quickly and postpone emotional processing.",
+        "id": "b3-c",
+        "title": "Is there a line somewhere you're unsure about?",
+        "menu_text": "",
         "narrative_lines": [
-          "Noa hesitates for a fraction of a second, then obeys. Her eyes scan faster, skipping lines now.",
-          "She reaches the ending, but something about the speed has flattened the landing. She closes the book and stares at the cover, not quite present.",
-          "\"That was... fast,\" she says. The words are non-committal. Whatever the story tried to surface, it may need another session to find its way out."
+          "\"I'm never unsure about a line. That's rather the job.\""
+        ]
+      },
+      {
+        "id": "b3-d",
+        "title": "Does that hold for other kinds of disputes too?",
+        "menu_text": "",
+        "narrative_lines": [
+          "\"Families, mostly. The fence was never the problem.\" A dry little laugh, quickly put away."
+        ]
+      },
+      {
+        "id": "b3-q",
+        "title": "(Say nothing.)",
+        "menu_text": "",
+        "narrative_lines": [
+          "He waits you out, then asks whether the room is always this quiet."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "b4",
+    "actor_id": "hal",
+    "stage_id": "stage-b4",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "selection_prompt": "How do you answer?",
+    "invalid_choice_text": "Hal waits. Choose one of the options.",
+    "selection_confirmation": "You: \"{selection_title}\"",
+    "options": [
+      {
+        "id": "b4-a",
+        "title": "Brewed properly.",
+        "menu_text": "",
+        "narrative_lines": [
+          "\"Quite so.\" He seems to hear his own voice and adjusts his cuff."
+        ]
+      },
+      {
+        "id": "b4-b",
+        "title": "I'll warm the pot first. Any other rules?",
+        "menu_text": "",
+        "narrative_lines": [
+          "\"Water just off the boil. Not on it.\" The corner of his mouth moves. \"That's all.\""
+        ]
+      },
+      {
+        "id": "b4-c",
+        "title": "Who taught you to make it that way?",
+        "menu_text": "",
+        "narrative_lines": [
+          "\"Nobody. It's just how it's done.\" The pen taps twice, quickly."
+        ]
+      },
+      {
+        "id": "b4-d",
+        "title": "It's no trouble at all. Black or green?",
+        "menu_text": "",
+        "narrative_lines": [
+          "\"Black. Thank you.\" Brisk, polite, already looking at the cup."
+        ]
+      },
+      {
+        "id": "b4-q",
+        "title": "(Say nothing.)",
+        "menu_text": "",
+        "narrative_lines": [
+          "You let it sit. He softens a little. \"Right. If it isn't too much trouble. The way I said.\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "b5",
+    "actor_id": "hal",
+    "stage_id": "stage-b5",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "selection_prompt": "How do you answer?",
+    "invalid_choice_text": "Hal waits. Choose one of the options.",
+    "selection_confirmation": "You: \"{selection_title}\"",
+    "options": [
+      {
+        "id": "b5-a",
+        "title": "It's a gentle story, isn't it?",
+        "menu_text": "",
+        "narrative_lines": [
+          "\"Yes. Quite.\" He turns the cup a half-turn."
+        ]
+      },
+      {
+        "id": "b5-b",
+        "title": "Does that sound like anyone you know?",
+        "menu_text": "",
+        "narrative_lines": [
+          "\"I don't see the connection.\" The reply comes a beat too fast."
+        ]
+      },
+      {
+        "id": "b5-c",
+        "title": "Nothing wrong with that.",
+        "menu_text": "",
+        "narrative_lines": [
+          "He nods slowly. \"No. Nothing wrong.\" He says it as though the phrase is being tested."
+        ]
+      },
+      {
+        "id": "b5-d",
+        "title": "What do you think the heron meant by \"for when I'm not here\"?",
+        "menu_text": "",
+        "narrative_lines": [
+          "A longer pause than the others. \"That she'd be away. Obviously.\" But he looks at the map in the picture a second longer."
+        ]
+      },
+      {
+        "id": "b5-q",
+        "title": "(Say nothing.)",
+        "menu_text": "",
+        "narrative_lines": [
+          "He clears his throat and adjusts his cuff."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "b6",
+    "actor_id": "hal",
+    "stage_id": "stage-b6",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "selection_prompt": "How do you answer?",
+    "invalid_choice_text": "Hal waits. Choose one of the options.",
+    "selection_confirmation": "You: \"{selection_title}\"",
+    "options": [
+      {
+        "id": "b6-a",
+        "title": "What would you like the next step to be?",
+        "menu_text": "",
+        "narrative_lines": [
+          "\"Oh, I'd like it to be clear.\" A short laugh. \"Go on.\""
+        ]
+      },
+      {
+        "id": "b6-b",
+        "title": "You're curious about the next step.",
+        "menu_text": "",
+        "narrative_lines": [
+          "\"It's a children's book. I'm only following it.\""
+        ]
+      },
+      {
+        "id": "b6-c",
+        "title": "(Read on.)",
+        "menu_text": "",
+        "narrative_lines": [
+          "You turn the page."
+        ]
+      },
+      {
+        "id": "b6-d",
+        "title": "Take your time. We're not in a hurry.",
+        "menu_text": "",
+        "narrative_lines": [
+          "\"Good. No rush. Go on, though.\""
+        ]
+      },
+      {
+        "id": "b6-q",
+        "title": "(Say nothing.)",
+        "menu_text": "",
+        "narrative_lines": [
+          "He shifts in the chair. \"Well? Don't leave a man hanging.\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "b7",
+    "actor_id": "hal",
+    "stage_id": "stage-b7",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "selection_prompt": "How do you answer?",
+    "invalid_choice_text": "Hal waits. Choose one of the options.",
+    "selection_confirmation": "You: \"{selection_title}\"",
+    "options": [
+      {
+        "id": "b7-a",
+        "title": "Why do you think he doesn't?",
+        "menu_text": "",
+        "narrative_lines": [
+          "\"Pride, I suppose. Or he'd have to explain the map.\" He rubs his thumb across the pen."
+        ]
+      },
+      {
+        "id": "b7-b",
+        "title": "Sometimes asking is the hard part.",
+        "menu_text": "",
+        "narrative_lines": [
+          "\"Hm.\" He looks at the page, not at you."
+        ]
+      },
+      {
+        "id": "b7-c",
+        "title": "You'd like him to ask.",
+        "menu_text": "",
+        "narrative_lines": [
+          "\"It's the sensible thing, that's all.\""
+        ]
+      },
+      {
+        "id": "b7-d",
+        "title": "Is there someone you'd like to ask?",
+        "menu_text": "",
+        "narrative_lines": [
+          "\"I have Dana for that.\" Closed."
+        ]
+      },
+      {
+        "id": "b7-q",
+        "title": "(Say nothing.)",
+        "menu_text": "",
+        "narrative_lines": [
+          "\"Well? Nobody's going to answer for him.\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "s1",
+    "actor_id": "hal",
+    "stage_id": "stage-s1",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "selection_prompt": "How do you answer?",
+    "invalid_choice_text": "Hal waits. Choose one of the options.",
+    "selection_confirmation": "You: \"{selection_title}\"",
+    "options": [
+      {
+        "id": "s1-a",
+        "title": "That's a lovely habit.",
+        "menu_text": "",
+        "narrative_lines": [
+          "\"It's just a habit.\" He turns the page himself. \"The bridge.\""
+        ]
+      },
+      {
+        "id": "s1-b",
+        "title": "Do you miss her?",
+        "menu_text": "",
+        "narrative_lines": [
+          "\"Of course I miss her. That's rather the point of a wife.\" The tone has shut."
+        ]
+      },
+      {
+        "id": "s1-c",
+        "title": "Two cups. Every morning.",
+        "menu_text": "",
+        "narrative_lines": [
+          "He nods, eyes on the picture. \"I wash both. I don't know why that part matters.\" A pause. \"It does, though.\""
+        ]
+      },
+      {
+        "id": "s1-d",
+        "title": "Who is the second cup for?",
+        "menu_text": "",
+        "narrative_lines": [
+          "\"Ruth.\" He says it flatly, like a reading from a form. \"Habit.\" He turns the page."
+        ]
+      },
+      {
+        "id": "s1-q",
+        "title": "(Say nothing.)",
+        "menu_text": "",
+        "narrative_lines": [
+          "The silence stays. He says it again, softer, as if testing it: \"She isn't coming down.\" Then: \"I wash both. I don't know why that part matters.\""
         ]
       }
     ]
