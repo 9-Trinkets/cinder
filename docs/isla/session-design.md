@@ -1,115 +1,110 @@
-# Isla: single-session design (draft)
+# Isla: single-act design (draft)
 
-Status: proposal for a rebuilt, minimal Isla pack. Nothing here is implemented. Not playtested.
+Terminology: one therapy session is one **act** (an act sits inside a persistent playthrough, which is the session).
+
+Status: proposal for a rebuilt, minimal Isla pack. Nothing here is implemented. Not playtested. Psychology 101, not real therapy: players should learn what therapy feels like without thinking they can do it.
+
+**The open question is whether this is fun.** The first build is pure authored content (no LLM) so the player experience can be tested as a fixed set of paths before anything else is added.
 
 ## 1. Fantasy and goal
 
-The player is Isla, a bibliotherapist. The skill being played is **attunement**: notice what Noa shows, respond at a depth she can take right now, and give back something she actually said.
+The player is Isla, a bibliotherapist. The skill being played is **attunement**: notice what Noa is asking for in each line and answer in a way that fits.
 
 Success is not "Noa gets fixed". Success is "Noa felt seen". The player never sees a score during play. They find out how it went from Noa's review at the end.
 
-## 2. Session flow
+## 2. Act flow
 
 | # | Beat | Player does | Output |
 |---|------|-------------|--------|
 | 1 | Arrival and greeting | short, 1-2 exchanges | first clues (umbrella, seat, phone) |
-| 2 | Intake | ~5 exchanges, listen for handles | 2-3 **handles** in the notes panel |
+| 2 | Intake | a few exchanges | first bids |
 | 3 | Serve | one beat, one choice | what she accepts or refuses is a clue |
-| 4 | Pick a book | choose between 2 books | fit with a handle (one fits, one near miss) |
-| 5 | Reading and stops | read aloud spread by spread, stop to talk | the loop below, 3-4 stops |
+| 4 | Pick a book | choose between 2 books | one fits, one is a near miss |
+| 5 | Reading and stops | read aloud spread by spread, stop to talk | 3-4 stops, a few bids each |
 | 6 | Closing | return one of her own lines | the **final piece** |
 | 7 | Leaving, then review | none | Noa's review with rating |
 
-Target length: 20-30 minutes. Next session is an open line at the end of the review, not built yet.
+Target length: 20-30 minutes. The next act is an open line at the end of the review, not built yet.
 
-## 3. State model (three variables)
+## 3. Bids
 
-| Variable | RPG analogue | Range | Meaning |
-|---|---|---|---|
-| **Safety** | HP | 0-10 | how safe Noa feels in the room; changes slowly |
-| **Absorption** | MP/SP | 0-3 | how pulled into the story she is; built by reading, spent by stopping |
-| **Depth** | stance/position | 0-2 | where the conversation sits now: 0 the book, 1 a pattern, 2 herself |
+Each key line Noa says is a **bid**, written with a hidden type:
 
-Possible mapping onto existing Isla stats: Safety = `trust`, Absorption = `focus`, Depth = `openness` (read as thresholds). `resistance` would be dropped.
-
-**Ceiling.** The deepest layer she will go to is set by Safety plus Absorption:
-
-| Safety + Absorption | Deepest layer |
-|---|---|
-| 0-2 | 0 (book) |
-| 3-5 | 1 (pattern) |
-| 6+ | 2 (herself) |
-| 9+ and Depth 2 | the core line becomes available |
-
-**Absorption.** +1 per spread read without stopping, capped at 3. Spent to 0 when a stop begins. This is the bibliotherapy mechanism: a story temporarily lowers defenses.
-
-**Flooding (optional).** Each spread has intensity 1-3. If Absorption + intensity exceeds Safety + 3, she shuts down: Safety -1, Depth to 0.
-
-## 4. Move types
-
-The menu generator produces **one option per move type**. The type fixes the depth the move asks for. The LLM only writes the wording, so outcomes stay testable.
-
-| Move | Asks for depth | Notes |
+| Bid type | Example | What she is asking for |
 |---|---|---|
-| **Reflect** | current Depth | mirrors what she just said |
-| **Question** | current Depth | open question on the same layer |
-| **Link** | Depth + 1 | built from one **clue id**; the clue is real or a decoy |
-| **Bridge** | 2 | "does it remind you of anyone?" / of herself |
-| **Wait** | none | silence |
+| Feeling | "Well run. Everyone gets what they need." | to be noticed, gently |
+| Invitation | "Is there more?" | you to go on |
+| Opening | "He was asking whether I was in there." | to be received, not interpreted |
+| Deflection | "Anyway. It's a children's book." | an exit |
 
-Options are never labeled good or bad. A Link built from a decoy clue is a misread.
+## 4. Fit table
 
-## 5. Resolution rules
+Each bid type has fixed answers:
 
-Let `ask` be the move's depth and `reach = Safety + Absorption`.
+| Bid | Fits | Hurts | Everything else |
+|---|---|---|---|
+| Feeling | Reflect, Question | Bridge (too fast) | shallow |
+| Invitation | Read on, Question | Wait (leaves her hanging) | shallow |
+| Opening | Reflect her words, Wait | Bridge, Link (you start interpreting) | shallow |
+| Deflection | Return, Wait | Link, Bridge (you push) | shallow |
 
-| Case | Result |
-|---|---|
-| `ask <= Depth`, accurate | Safety +1 |
-| `ask <= Depth`, generic | nothing (polite answer) |
-| `ask = Depth + 1`, `reach` clears the ceiling, accurate | Depth +1, Safety +1 (she steps in) |
-| `ask = Depth + 1`, `reach` too low | Depth -1, Safety -1 (she retreats) |
-| `ask >= Depth + 2` | Depth to 0, Safety -2 |
-| Link from a decoy clue | Safety -1, she corrects you (the correction becomes a real clue) |
-| **Wait**, `reach` already clears the next ceiling | she steps in on her own: Depth +1 |
-| **Wait**, otherwise | nothing; a second Wait in a row costs Safety -1 |
+Move types: Reflect, Question, Link (to something she said earlier), Bridge (to herself), Wait, Return (to the book), Read on.
 
-## 6. What the player can read (tells)
+## 5. The ladder (the only state)
 
-| State | What it looks like |
-|---|---|
-| Retreating | formal, restates her earlier line, polite |
-| Open | longer answers, asks back, uses "I" |
-| Flooding | short, looks away, goes quiet |
+Her bids are authored in order from surface to vulnerable. Her position on the ladder is the only state:
 
-Reaction text after each spread and each reply is where these show.
+- You **meet** a bid: she moves up one rung.
+- You **miss** it (shallow): she tries once more, in a safer form, then moves on.
+- You **hurt** it: she drops one rung.
+
+**The book decides which rungs exist.** The fitting book unlocks the vulnerable rungs. The near-miss book gives only surface rungs, so she never gets there.
+
+## 5b. Secrets (count double)
+
+Each secret is an Opening bid at the top of a rung. Discovering it is fun, and it is also the player's chance to score extra:
+
+- **Held** (Reflect her words, or Wait): the secret scores double, and an authored after-beat plays (a visible shift and a reframe line).
+- **Fumbled** (anything else): the player still hears the fact, but it scores nothing and costs nothing (it does not drop her down the ladder).
+
+She only tells a secret if you have climbed the ladder to it, so scoring needs both getting there and receiving it well. The notes page can be called "What she trusted you with"; held entries are filled in and fumbled ones are greyed ("told, not held").
+
+## 6. Menus and content (all authored)
+
+- Every bid is written with its own menu of at most four options. Each option has fixed wording and a fixed type, and the engine looks up its result in the fit table.
+- Every menu has at least one option that fits and at least one that does not. Options that do not fit must sound reasonable (too early, too pushy), never rude, so the right answer is not obvious.
+- Wait is a separate "stay quiet" button, not a numbered option.
+- Slot order is shuffled; nothing in the wording marks which ones fit.
+- Noa's lines, her reactions, the book text and every ending line are written by hand.
+- No LLM in the first build. An LLM for wording can be added later behind the same slots.
 
 ## 7. Closing and review
 
-- **Final piece.** Isla returns one of Noa's own lines. The menu offers 3-4 lines she said during the session, flagged when she said them. One is the real insight and the others are deflections.
-- **Review.** Written by Noa at home, first person, with a star rating. It quotes the page she stopped on, what you served, and the line you returned. Rating and text may disagree. It is assembled from session tags first; the LLM may polish later.
+- **Final piece.** Isla returns one of Noa's own lines. The menu offers 3-4 lines she said during the act: one real insight, the rest deflections.
+- **Rating.** Every bid met on the first try earns 1 point; a secret is a bid that counts double and earns its points only if held. Stars = points earned divided by points available, times five, rounded to the nearest half star, minimum 1. Bids on rungs she never reaches count as unmet. A bid met only on the retry earns nothing.
+- **Review.** Written by Noa at home, first person, from authored lines picked by yes/no facts: which secrets you held, did the book fit, did you return her real line or a deflection. Rating and text may disagree. No score is shown during play.
 
-## 8. First build
+## 8. First build and the fun test
 
-Keep: Noa, one room, two books (one fit, one near miss), the three variables, the LLM for Noa's wording inside these limits.
+Keep: Noa, one room, two books (one fit, one near miss), about 12 bids with fallbacks.
 
-Cut for now: the kitchen and service items, Awa/Jonah/Sophea, the five secrets, the three generic checkpoints, the clock and timeout stages.
+Cut for now: the kitchen and service items, Awa/Jonah/Sophea, the five secrets, the three generic checkpoints, the clock and timeout stages, the Trust meter, Absorption, Depth, flooding.
+
+**Fun hypotheses to test with a prototype script (before any engine work):**
+1. The player hesitates between options for a real reason, not because the right one is obvious.
+2. A miss feels like a missed chance, not a quiz penalty.
+3. When she opens up, it feels like a reward the player earned.
+4. The review makes the player want to try again and do something different.
+
+**Likely failure:** it plays as "guess the right move type". Mitigations to try if so: two fits per bid with different consequences, more textured misses (she tries again differently), and bids whose type is ambiguous until you read her reaction.
 
 ## 9. Open questions
 
-1. Can a hook read Noa's generated line, to detect when she says something about herself?
-2. Can a stage carry per-spread reaction text, or does that need a book content type?
-3. Where do flagged lines for the closing menu get stored?
+1. How many bids make a good act, and how many rungs per book?
+2. Does Wait need its own consequences?
+3. Should the player see her reaction text only, or also a faint hint of the ladder?
 4. Is two books enough for the choice to matter?
 
-## 10. Table-read findings (5 turns, user as Isla, assistant as Noa)
+## 10. Earlier models (superseded)
 
-Starting state: Safety 3, Absorption 2, Depth 0. Moves played: Link (real clue), Wait, Read on, Wait, Reflect.
-
-- **Link with a real clue** stepped her in one layer when reach cleared the ceiling.
-- **Wait too early did nothing.** At reach 4 it gave her nothing to work with. At reach 6 she stepped in on her own. Silence only pays when she is ready.
-- **Reading is the lever for reach.** Two spreads took reach from 4 to 6.
-- **Over-ceiling slide (new rule to adopt).** She can go deeper than her ceiling because the story carries her. At the start of the next turn she slides back one layer unless the previous move was an accurate Reflect or Question, which holds her and gives Safety +1. The player's job at that moment is to receive, not push.
-- **Too many options.** Six or seven felt heavy. Rule for the first build: at most four options per turn; Bridge hidden once she is at Depth 2; Link shows only the best one or two clues; Wait is a separate "stay quiet" button; **Return** (ask 0) appears only when she has gone deeper than she can hold.
-- **Flagged lines worked** as raw material for the closing menu (a surface line, the real insight, a deflection).
-- **Untested:** the thresholds (3 and 6), the +1/-1/-2 deltas, flooding, pacing (Safety 3 to 5 in five turns, core needs 9), and whether decoy clues read as misreads or as unfair traps.
+The first design used three variables (Safety, Absorption, Depth) and then a single Trust meter. Both were replaced by bids because the ladder is easier to explain, author and test. Table-read findings from the three-variable model: a Link from a real clue stepped her in one layer when she was ready; a Wait too early did nothing; reading raised what she could reach; a story can carry her deeper than she can hold, and the right move then is to receive; six or seven options felt heavy (rule: at most four); flagged lines worked as raw material for the closing.
