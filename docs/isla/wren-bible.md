@@ -14,6 +14,55 @@ Everything the writing must stay true to. Lines come after this is agreed. Conte
 - Cannot answer "how do you feel?" or "why?". She can answer "what happened?" and "show me".
 - Gets sidetracked by something concrete (a crayon, a cartwheel) when a topic gets too big. That is not a lack of interest. It is how she steps back.
 
+## 1b. Wren as a person **(decision)**
+
+She is not only a child in a hard situation. These are the things she is like, most of which long predate the cup.
+
+**Temperament.** Careful, orderly, observant, a little serious. She was always the child who lined up her shoes, even when she was three. The separation made her more of it, not different from it.
+
+**Habits**
+- Lines up her shoes, **the same way at both front doors**. Toes to the wall, a thumb's width apart.
+- Counts things: stairs, tiles, steps to the corner. She does it silently, with her lips moving.
+- **Does not step on the third tile** in Mom's kitchen doorway, the one where the cup broke. She steps over it, and does not know she does.
+- Touches Rabbit's chewed ear when she is thinking.
+- Checks her notebook every night before bed, and turns off lights that other people left on.
+- **Hums a slow tune** without noticing. It is the song her parents danced to on Friday nights. She does not know the name. Mom has stopped noticing it, and Dad has not.
+- When she is scared, she lines up crayons by color. When she is very scared, she tidies.
+- Says "okay" to nearly everything.
+
+**What she is good at.** Cartwheels (on grass, not on the playroom rug). Remembering routes. Spelling her name backwards. Finding the one block that is missing.
+
+**What makes her laugh.** Mustard the dog, who sits on people. Silly voices, as long as someone else is doing them. A teacher saying a word wrong on purpose.
+
+**Colors.** Her favorite color is **orange**, "like the inside of a clementine." Mom puts a clementine in her lunch every day. She uses yellow (Mom's door) and green (Dad's door) with great care and equally, and she does not pick between them. She has a worn red crayon stub she loves. Blue she has stopped choosing, and has not noticed.
+
+**Food.** Clementines. Buttered noodles. Toast, specifically **the heel of the loaf**: Dad brings her a warm one from the bakery downstairs and she loves it, and does not tell him. Cinnamon toast at Mom's on Sundays. Sandwiches cut in **squares**, not triangles. She says she is "too full" at Dad's, where there are pancakes, and she is not. She dislikes mushrooms.
+
+**Animals.** She likes small ones she can look after. At school there is a class hamster named **Pretzel**, and she asked to be the one who feeds him. Ms. Okafor said yes, and it is the one part of the school day where Wren still talks. She is gentle with Mustard, who is too big to hold and too clumsy to mind. She does not want a pet of her own, because "it would have to pick."
+
+**Friends.** **Few, and close.**
+- **Marisol**, her best friend since kindergarten, is in the other first-grade class this year, so they only meet at recess.
+- **Teddy**, a quiet boy who also loves Pretzel.
+She still plays, but she lets other children choose the game. She has stopped sharing news at morning meeting, which is a different thing from being unfriendly.
+
+**What she wants to be.** A **crossing guard.** "Mr. Dee lets me hold the sign sometimes." He stands at the corner by school and walks the children across. Second choice: "a vet for hamsters." The first one says a lot about her, and nobody has asked her why.
+
+**Favorite places.**
+- **At Mom's:** the window seat in the kitchen, looking at the yard. She sits sideways so her back is to the doorway.
+- **At Dad's:** the back step of the bakery at 6 a.m., where the baker hands her a roll through the door.
+- **At Aunt Jo's:** the yard with Mustard.
+- **At school:** the library corner, in the beanbag nearest the shelf.
+
+**Favorite class.** **Math**, especially math centers: sorting, patterns, and blocks. Patterns are things where you can always tell what comes next. She likes **library time**. She dislikes morning meeting, the part where each child shares a piece of news.
+
+**What the player can notice in the playroom** (these are the clues, none of them scored):
+- She lines up the crayons by color before she draws.
+- She steps around a square of the road rug and does not look at it.
+- She hums a slow tune.
+- She asks which bin is "Tuesday".
+- She wants a **clementine** and half of a cracker, and cuts it in squares. (This replaces the tea beat in the old pack: Isla offers a snack.)
+- She touches Biscuit's ear when a question is hard.
+
 ## 2. Where and how they live **(decision)**
 
 **The place.** A rowhouse neighborhood in **Philadelphia**, Pennsylvania: narrow brick houses, front stoops, small back yards, a corner store and a bakery on the commercial street two blocks away. A working- and middle-income neighborhood where neighbors know each other. It is November, so it is cold and the leaves are down.
@@ -137,4 +186,4 @@ Arrival, play with the bins, the first look at Rabbit's bag, a picture book read
 2. Is the loving-act version of the cup (she was making her mom tea) the right one, or too sad?
 3. Is Philadelphia right, or would you rather a different city, a suburb, or an unnamed place?
 4. Should Mom be present for any of the session, or only at the end?
-5. What should the very last beat be: the drawing, the handle, or something Mom says?
+5. What should the very last beat be: the drawing, the handle, the Friday song hummed in the car, or something Mom says?
