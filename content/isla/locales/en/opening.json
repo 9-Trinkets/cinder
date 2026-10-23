@@ -3,7 +3,7 @@
   "title": "Isla",
   "start_room_id": "cafe",
   "start_time_minutes": 900,
-  "intro_text": "Rain against the front window. Low piano music from a small speaker. No clock on the wall.\n\nYou are Isla, a bibliotherapist. Your patient has arrived early.\n\nHal is seventy-one. He folds his umbrella along its creases and leans it exactly against the wall. He takes off his hat and holds it in both hands. He checks his watch against the blank wall, where there is no clock. A small notepad is tucked under his arm.\n\nHal: Where do I sit? There's usually a protocol.",
+  "intro_text": "Rain against the front window. Low piano music from a small speaker. No clock on the wall.\n\nYou are Isla. You help people with books: you read them a story, and you listen to what it stirs up.\n\nYour patient today is Hal, seventy-one, a retired land surveyor. His daughter Dana made the appointment, and he has made it clear he came to please her.\n\nHe folds his umbrella along its creases and leans it exactly against the wall. He holds his hat in both hands, and checks his watch against the blank wall, where there is no clock.\n\nHal: Where do I sit? There's usually a protocol.",
   "help_text": "Choose one of the options to respond. Type the number, or click an option.\n- ? opens the menu\n- Type 'end act' to close early",
   "prompt_context": {
     "setting_notes": [

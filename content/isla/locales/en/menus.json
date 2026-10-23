@@ -14,8 +14,9 @@
         "title": "Either chair is fine. There's no protocol here.",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: Either chair is fine. There's no protocol here.",
           "Hal: Good. Good.",
-          "He takes the nearest chair, still holding the hat in both hands, and sits as if the seat might be assigned."
+          "He takes the chair nearest the door, still holding his hat."
         ]
       },
       {
@@ -23,9 +24,10 @@
         "title": "Where would you pick, if it were up to you?",
         "menu_text": "",
         "narrative_lines": [
-          "He considers it like a survey question.",
+          "Isla: Where would you pick, if it were up to you?",
+          "He considers it as if it were a survey question.",
           "Hal: Facing the door. Habit.",
-          "He sits, and the hat goes on the chair beside him."
+          "He sits, and sets his hat on the chair beside him."
         ]
       },
       {
@@ -33,6 +35,7 @@
         "title": "You'd like to know the rules before you start.",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: You'd like to know the rules before you start.",
           "Hal: Doesn't everyone?",
           "A dry smile. He sits exactly where he was already standing."
         ]
@@ -42,17 +45,18 @@
         "title": "Dana said you might be nervous.",
         "menu_text": "",
         "narrative_lines": [
-          "His smile goes thin.",
+          "Isla: Dana said you might be nervous.",
+          "His smile thins.",
           "Hal: Dana says a lot of things.",
-          "He sits, upright."
+          "He sits, very upright."
         ]
       },
       {
         "id": "b1-q",
-        "title": "(Say nothing.)",
+        "title": "Say nothing.",
         "menu_text": "",
         "narrative_lines": [
-          "He stands there a moment too long.",
+          "You say nothing. He stands there a moment too long.",
           "Hal: Right. I'll take this one."
         ]
       }
@@ -73,6 +77,7 @@
         "title": "Does that include the days that aren't perfect?",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: Does that include the days that aren't perfect?",
           "Hal: There's no such thing. A day is managed or it isn't."
         ]
       },
@@ -81,9 +86,10 @@
         "title": "Managing perfectly well.",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: Managing perfectly well.",
           "A short pause.",
           "Hal: Perfectly well. Yes.",
-          "He caps the pen, though he has written nothing."
+          "He looks down at the notepad, as if there might be more to write."
         ]
       },
       {
@@ -91,10 +97,11 @@
         "title": "What does a managed day look like?",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: What does a managed day look like?",
           "Hal: Up at six. Tea. The ferns. The post.",
           "A beat.",
           "Hal: It's a good routine.",
-          "He looks slightly surprised at himself."
+          "He seems a little surprised to have said so much."
         ]
       },
       {
@@ -102,16 +109,17 @@
         "title": "That's reassuring to hear.",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: That's reassuring to hear.",
           "Hal: Quite.",
-          "He straightens the notepad."
+          "He squares the notepad on his knee."
         ]
       },
       {
         "id": "b2-q",
-        "title": "(Say nothing.)",
+        "title": "Say nothing.",
         "menu_text": "",
         "narrative_lines": [
-          "He fills the silence with a remark about the weather."
+          "You wait. He fills the silence with a remark about the rain."
         ]
       }
     ]
@@ -131,8 +139,9 @@
         "title": "Where someone thinks the line is.",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: Where someone thinks the line is.",
           "Hal: Never where it actually is. Where they think it is.",
-          "He taps the pen once."
+          "He nods, as if you had passed a small test."
         ]
       },
       {
@@ -140,8 +149,9 @@
         "title": "That sounds like precise work.",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: That sounds like precise work.",
           "Hal: It was. It was.",
-          "He looks at the rain for a second."
+          "He looks at the rain for a moment."
         ]
       },
       {
@@ -149,7 +159,9 @@
         "title": "Is there a line somewhere you're unsure about?",
         "menu_text": "",
         "narrative_lines": [
-          "Hal: I'm never unsure about a line. That's rather the job."
+          "Isla: Is there a line somewhere you're unsure about?",
+          "Hal: I'm never unsure about a line. That's rather the job.",
+          "The pen stays very still."
         ]
       },
       {
@@ -157,16 +169,17 @@
         "title": "Does that hold for other kinds of disputes too?",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: Does that hold for other kinds of disputes too?",
           "Hal: Families, mostly. The fence was never the problem.",
           "A dry little laugh, quickly put away."
         ]
       },
       {
         "id": "b3-q",
-        "title": "(Say nothing.)",
+        "title": "Say nothing.",
         "menu_text": "",
         "narrative_lines": [
-          "He waits you out, then asks whether the room is always this quiet."
+          "You wait. He waits you out, then asks whether the room is always this quiet."
         ]
       }
     ]
@@ -186,8 +199,9 @@
         "title": "Brewed properly.",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: Brewed properly.",
           "Hal: Quite so.",
-          "He seems to hear his own voice and adjusts his cuff."
+          "He seems to hear his own voice, and adjusts his cuff."
         ]
       },
       {
@@ -195,6 +209,7 @@
         "title": "I'll warm the pot first. Any other rules?",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: I'll warm the pot first. Any other rules?",
           "Hal: Water just off the boil. Not on it.",
           "The corner of his mouth moves.",
           "Hal: That's all."
@@ -205,8 +220,9 @@
         "title": "Who taught you to make it that way?",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: Who taught you to make it that way?",
           "Hal: Nobody. It's just how it's done.",
-          "The pen taps twice, quickly."
+          "The pen taps twice, quickly, against the notepad."
         ]
       },
       {
@@ -214,13 +230,14 @@
         "title": "It's no trouble at all. Black or green?",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: It's no trouble at all. Black or green?",
           "Hal: Black. Thank you.",
-          "Brisk, polite, already looking at the cup."
+          "Brisk and polite, and already looking at the cup."
         ]
       },
       {
         "id": "b4-q",
-        "title": "(Say nothing.)",
+        "title": "Say nothing.",
         "menu_text": "",
         "narrative_lines": [
           "You let it sit. He softens a little.",
@@ -244,8 +261,9 @@
         "title": "It's a gentle story, isn't it?",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: It's a gentle story, isn't it?",
           "Hal: Yes. Quite.",
-          "He turns the cup a half-turn."
+          "He turns his cup a half-turn on its saucer."
         ]
       },
       {
@@ -253,8 +271,9 @@
         "title": "Does that sound like anyone you know?",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: Does that sound like anyone you know?",
           "Hal: I don't see the connection.",
-          "The reply comes a beat too fast."
+          "It comes a beat too fast."
         ]
       },
       {
@@ -262,27 +281,29 @@
         "title": "Nothing wrong with that.",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: Nothing wrong with that.",
           "He nods slowly.",
           "Hal: No. Nothing wrong.",
-          "He says it as though the phrase is being tested."
+          "He says it like a phrase being tested."
         ]
       },
       {
         "id": "b5-d",
-        "title": "What do you think the heron meant by \"for when I'm not here\"?",
+        "title": "What do you think the heron meant by \"for when I am not here\"?",
         "menu_text": "",
         "narrative_lines": [
-          "A longer pause than the others.",
+          "Isla: What do you think the heron meant by \"for when I am not here\"?",
+          "A longer pause than usual.",
           "Hal: That she'd be away. Obviously.",
-          "But he looks at the map in the picture a second longer."
+          "But his eyes stay on the picture of the map."
         ]
       },
       {
         "id": "b5-q",
-        "title": "(Say nothing.)",
+        "title": "Say nothing.",
         "menu_text": "",
         "narrative_lines": [
-          "He clears his throat and adjusts his cuff."
+          "You wait. He clears his throat and adjusts his cuff."
         ]
       }
     ]
@@ -302,9 +323,10 @@
         "title": "What would you like the next step to be?",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: What would you like the next step to be?",
           "Hal: Oh, I'd like it to be clear.",
           "A short laugh.",
-          "Hal: Go on."
+          "Hal: Go on, then."
         ]
       },
       {
@@ -312,12 +334,13 @@
         "title": "You're curious about the next step.",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: You're curious about the next step.",
           "Hal: It's a children's book. I'm only following it."
         ]
       },
       {
         "id": "b6-c",
-        "title": "(Read on.)",
+        "title": "Read on.",
         "menu_text": "",
         "narrative_lines": [
           "You turn the page."
@@ -328,15 +351,16 @@
         "title": "Take your time. We're not in a hurry.",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: Take your time. We're not in a hurry.",
           "Hal: Good. No rush. Go on, though."
         ]
       },
       {
         "id": "b6-q",
-        "title": "(Say nothing.)",
+        "title": "Say nothing.",
         "menu_text": "",
         "narrative_lines": [
-          "He shifts in the chair.",
+          "You wait. He shifts in the chair.",
           "Hal: Well? Don't leave a man hanging."
         ]
       }
@@ -357,8 +381,9 @@
         "title": "Why do you think he doesn't?",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: Why do you think he doesn't?",
           "Hal: Pride, I suppose. Or he'd have to explain the map.",
-          "He rubs his thumb across the pen."
+          "He rubs his thumb along the pen."
         ]
       },
       {
@@ -366,6 +391,7 @@
         "title": "Sometimes asking is the hard part.",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: Sometimes asking is the hard part.",
           "Hal: Hm.",
           "He looks at the page, not at you."
         ]
@@ -375,6 +401,7 @@
         "title": "You'd like him to ask.",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: You'd like him to ask.",
           "Hal: It's the sensible thing, that's all."
         ]
       },
@@ -383,15 +410,17 @@
         "title": "Is there someone you'd like to ask?",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: Is there someone you'd like to ask?",
           "Hal: I have Dana for that.",
-          "Closed."
+          "The subject is closed."
         ]
       },
       {
         "id": "b7-q",
-        "title": "(Say nothing.)",
+        "title": "Say nothing.",
         "menu_text": "",
         "narrative_lines": [
+          "You wait.",
           "Hal: Well? Nobody's going to answer for him."
         ]
       }
@@ -412,9 +441,9 @@
         "title": "That's a lovely habit.",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: That's a lovely habit.",
           "Hal: It's just a habit.",
-          "He turns the page himself.",
-          "Hal: The bridge."
+          "He turns the page himself, back to the bridge."
         ]
       },
       {
@@ -422,8 +451,9 @@
         "title": "Do you miss her?",
         "menu_text": "",
         "narrative_lines": [
-          "Hal: Of course I miss her. That's rather the point of a wife.",
-          "The tone has shut."
+          "Isla: Do you miss her?",
+          "Hal: Of course I miss her. That is rather the point of a wife.",
+          "The door has closed."
         ]
       },
       {
@@ -431,7 +461,8 @@
         "title": "Two cups. Every morning.",
         "menu_text": "",
         "narrative_lines": [
-          "He nods, eyes on the picture.",
+          "Isla: Two cups. Every morning.",
+          "He nods, eyes on the page.",
           "Hal: I wash both. I don't know why that part matters.",
           "A pause.",
           "Hal: It does, though."
@@ -442,18 +473,19 @@
         "title": "Who is the second cup for?",
         "menu_text": "",
         "narrative_lines": [
+          "Isla: Who is the second cup for?",
           "Hal: Ruth.",
-          "He says it flatly, like a reading from a form.",
+          "He says it flatly, like a line on a form.",
           "Hal: Habit.",
-          "He turns the page."
+          "He turns the page, back to the bridge."
         ]
       },
       {
         "id": "s1-q",
-        "title": "(Say nothing.)",
+        "title": "Say nothing.",
         "menu_text": "",
         "narrative_lines": [
-          "The silence stays. He says it again, softer, as if testing it:",
+          "You let it stay quiet. He says it again, softer, as if testing it.",
           "Hal: She isn't coming down.",
           "Then:",
           "Hal: I wash both. I don't know why that part matters."
