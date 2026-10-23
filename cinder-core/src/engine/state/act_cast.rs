@@ -70,7 +70,8 @@ pub fn initialize_act_state(content: &ContentPack, state: &mut WorldState) {
     if needs_bootstrap {
         bootstrap_first_act(content, state);
     } else {
-        inject_act_cast_vars(content, state);
+        // A mid-act reload must keep the stats earned so far.
+        inject_act_cast_vars(content, state, false);
     }
 }
 
@@ -127,7 +128,7 @@ pub fn advance_to_next_act(
         next_state.clock.current_time_minutes = content.opening.start_time_minutes
             + (series.current_act_number.saturating_sub(1) * MINUTES_PER_DAY);
     }
-    inject_act_cast_vars(content, &mut next_state);
+    inject_act_cast_vars(content, &mut next_state, true);
     *state = next_state;
     Some(current_act_intro(state).unwrap_or_else(|| content.opening.intro_text.clone()))
 }
@@ -325,10 +326,13 @@ fn bootstrap_first_act(content: &ContentPack, state: &mut WorldState) {
     series.current_cast_member_id = patient.id.clone();
     series.next_seed_index = 1;
     series.cast_members.insert(patient.id.clone(), patient);
-    inject_act_cast_vars(content, state);
+    inject_act_cast_vars(content, state, true);
 }
 
-fn inject_act_cast_vars(content: &ContentPack, state: &mut WorldState) {
+/// Publishes the current cast member's vars into the world. `restore_stats`
+/// seeds the patient's actor stats from their saved snapshot, which is right
+/// when an act begins and wrong on a mid-act reload (it would wipe progress).
+fn inject_act_cast_vars(content: &ContentPack, state: &mut WorldState, restore_stats: bool) {
     let Some(series) = state.act_series.as_ref() else {
         return;
     };
@@ -368,11 +372,13 @@ fn inject_act_cast_vars(content: &ContentPack, state: &mut WorldState) {
             "false"
         },
     );
-    if let Some(stats) = state.combat.actor_stats.get_mut(&patient.actor_id) {
-        *stats = patient.actor_stats.clone();
-    }
-    if let Some(initial_stats) = state.combat.initial_actor_stats.get_mut(&patient.actor_id) {
-        *initial_stats = patient.actor_stats.clone();
+    if restore_stats {
+        if let Some(stats) = state.combat.actor_stats.get_mut(&patient.actor_id) {
+            *stats = patient.actor_stats.clone();
+        }
+        if let Some(initial_stats) = state.combat.initial_actor_stats.get_mut(&patient.actor_id) {
+            *initial_stats = patient.actor_stats.clone();
+        }
     }
     let patient_actor_ids = content
         .act_cast
