@@ -92,7 +92,7 @@ Warm, brisk, tired. A classroom aide, so her default voice is calm and organized
 - Her written note is short, in contractions, with no drama.
 
 **Calibration (Mom):**
-- "Okay, baby. Five o'clock. I'll be right here."
+- "Okay, baby. Half past four. I'll be right here."
 - "She's been so good. Honestly, she's no trouble at all."
 - "I'm sorry. It's been a long few months."
 

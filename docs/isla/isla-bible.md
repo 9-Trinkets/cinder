@@ -49,6 +49,7 @@ So: yes, it is enough, and she is careful. Nobody who sees her would think of he
 - **Nothing that dangles.** No necklaces, long earrings or loose sleeves, because children grab.
 - **A canvas tote** from her library days, with a worn "Friends of the Library" patch. In it: five picture books she has read at least twice, a pencil stub, tissues, and a **small wind-up kitchen timer with a soft chime**. She winds it at the start so that ending a session is the timer's job and not hers.
 - Her hair is tied back, sometimes with a pencil through it.
+- **A square of oatmeal-colored cloth,** folded small in the tote. Before a story she draws it over the toy shelf.
 
 ## 7. How her background shows up in what she does
 
@@ -59,6 +60,7 @@ So: yes, it is enough, and she is careful. Nobody who sees her would think of he
 | Waits before answering | years of waiting for Danny to answer |
 | Will not read a book she has not read twice | the librarian |
 | Writes notes after, never during | she does not want to be a person who is writing |
+| Covers the toy shelf with a cloth before a story: "Stories first. Toys are sleeping." | Danny could not look at a book with toys in sight, so she hung a towel over his shelf |
 | Does not rush in with comfort | she learned that comfort too early ends the telling |
 | Dry humor with adults, none at a child's expense | she has had to be good company to tired parents |
 

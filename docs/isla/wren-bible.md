@@ -55,13 +55,7 @@ She still plays, but she lets other children choose the game. She has stopped sh
 
 **Favorite class.** **Math**, especially math centers: sorting, patterns, and blocks. Patterns are things where you can always tell what comes next. She likes **library time**. She dislikes morning meeting, the part where each child shares a piece of news.
 
-**What the player can notice in the playroom** (these are the clues, none of them scored):
-- She lines up the crayons by color before she draws.
-- She steps around a square of the road rug and does not look at it.
-- She hums a slow tune.
-- She asks which bin is "Tuesday".
-- She wants a **clementine** and half of a cracker, and cuts it in squares. (This replaces the tea beat in the old pack: Isla offers a snack.)
-- She touches Biscuit's ear when a question is hard.
+The things the player can notice in the playroom are listed in section 10.
 
 ## 2. Where and how they live **(decision)**
 
@@ -123,18 +117,29 @@ Mom cried. It was not about the cup. It was about everything that week, and the 
 - **Her teacher:** she stopped sharing at morning meeting, and sorts the class library into piles.
 - **Isla:** the separation, the school report, and that her parents are both loving and anxious. **Isla does not know about the cup.** Nobody does.
 
-## 9. Isla and the setting
+## 9. Isla and the sessions
 
-Isla is a child psychologist at Willow House, a converted old house with a small waiting room. She reads picture books with children and watches what they do with them. This is **Wren's third session**:
+Isla is a child psychologist at **Willow House** (the building and rooms are described in `willow-house.md`, and Isla herself in `isla-bible.md`). This is **Wren's third session**:
 1. Session one: Isla met the parents and Wren briefly.
 2. Session two: Wren built a tower of blocks, in silence, then knocked it down and tidied every block.
 3. Session three (the act): the first time Wren has come with a plan.
 
-Mom waits in the waiting room. Dad brought her today and left her at the door.
+Sessions are **Thursdays at 4:00**, thirty minutes. Mom usually brings her, and Dad does not. **Today Dad brought her,** because Mom's meeting ran long, and he left her at the door. Mom will come at half past four. That breaks Wren's notebook rule (Thursday is a yellow day, and a green-door parent is at the door), and she arrives a little off-balance.
 
-## 10. The playroom
+## 10. Wren in the playroom
 
-A pale green blind, so the light is soft. A low table. A beanbag. A shelf of picture books. A basket of crayons with one red crayon worn down to a stub, which Wren likes. **Two identical toy bins**, one at each end of the shelf. A rug with a road printed on it.
+What she notices, avoids, and does there. These are the clues the player can find. None are scored, and none are explained:
+
+- She **lines the crayons up by color** before she draws.
+- She **steps around** one square of the road rug and does not look at it.
+- She **avoids the dusty blue cushion** and sits on the mustard one, without noticing she is choosing.
+- She **hums** a slow tune.
+- She asks which toy bin is **"Tuesday"**.
+- She sorts toys into the **two lidded bins**, counting so both have the same number.
+- She wants a **clementine and half a cracker**, cut in squares. (The snack replaces the tea beat of the old design: Isla offers.)
+- She **touches Biscuit's ear** when a question is hard.
+- She is drawn to the **red crayon stub**.
+- She stands very still when the radiator knocks.
 
 ## 11. Wren's things
 
