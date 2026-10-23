@@ -1,0 +1,117 @@
+[
+  {
+    "id": "grounds",
+    "label": "Grounds",
+    "rooms": [
+      {
+        "room_id": "front-yard",
+        "x": 0.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "porch",
+        "x": 1.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "back-yard",
+        "x": 0.0,
+        "y": 2.0
+      }
+    ]
+  },
+  {
+    "id": "ground-floor",
+    "label": "Ground floor",
+    "rooms": [
+      {
+        "room_id": "playroom",
+        "x": 0.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "waiting-room",
+        "x": 1.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "bathroom",
+        "x": 0.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "hall",
+        "x": 1.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "kitchen",
+        "x": 1.0,
+        "y": 2.0
+      }
+    ]
+  },
+  {
+    "id": "second-floor",
+    "label": "Second floor",
+    "rooms": [
+      {
+        "room_id": "family-room",
+        "x": 1.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "sand-art-room",
+        "x": 0.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "landing-2",
+        "x": 1.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "quiet-room",
+        "x": 2.0,
+        "y": 1.0
+      }
+    ]
+  },
+  {
+    "id": "third-floor",
+    "label": "Third floor",
+    "rooms": [
+      {
+        "room_id": "book-room",
+        "x": 1.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "director-office",
+        "x": 0.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "landing-3",
+        "x": 1.0,
+        "y": 1.0
+      },
+      {
+        "room_id": "staff-room",
+        "x": 2.0,
+        "y": 1.0
+      }
+    ]
+  },
+  {
+    "id": "basement",
+    "label": "Basement",
+    "rooms": [
+      {
+        "room_id": "basement",
+        "x": 0.0,
+        "y": 0.0
+      }
+    ]
+  }
+]

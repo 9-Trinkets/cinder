@@ -1,15 +1,4 @@
 {
-  "actor": {
-    "points": {
-      "default": 0,
-      "min": 0,
-      "max": 16
-    },
-    "s1_held": {
-      "default": 0,
-      "min": 0,
-      "max": 1
-    }
-  },
+  "actor": {},
   "pair": {}
 }

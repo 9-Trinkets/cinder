@@ -1,13 +1,13 @@
 {
   "id": "isla",
   "title": "Isla",
-  "start_room_id": "cafe",
-  "start_time_minutes": 900,
-  "intro_text": "Rain against the front window. Low piano music from a small speaker. No clock on the wall.\n\nYou are Isla. You help people with books: you read them a story, and you listen to what it stirs up.\n\nYour patient today is Hal, seventy-one, a retired land surveyor. His daughter Dana made the appointment, and he has made it clear he came to please her.\n\nHe folds his umbrella along its creases and leans it exactly against the wall. He holds his hat in both hands, and checks his watch against the blank wall, where there is no clock.\n\nHal: Where do I sit? There's usually a protocol.",
-  "help_text": "Choose one of the options to respond. Type the number, or click an option.\n- ? opens the menu\n- Type 'end act' to close early",
+  "start_room_id": "porch",
+  "start_time_minutes": 935,
+  "intro_text": "It is a quarter to four on a Thursday in November, gray and cold. You have just ridden through the last of the school traffic.\n\nYou are Isla. You are a child psychologist at Willow House, a children's counseling center in an old brick house on a corner. At four you will meet a six-year-old named Wren. It will be your third time.\n\nYou chain the bike to the porch rail and unclip the canvas bag. Behind the green door, a lamp is already on.",
+  "help_text": "Use Look to examine the room, a person, or something in it. Use Move to go somewhere.\n- ? opens the menu",
   "prompt_context": {
     "setting_notes": [
-      "A quiet cafe lined with books, rain on the glass, no clock on the wall."
+      "A converted brick house that is a children's counseling center."
     ],
     "subtext_notes": []
   }

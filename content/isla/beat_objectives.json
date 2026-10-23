@@ -1,18 +1,9 @@
 {
   "objectives": [
     {
-      "id": "the-act",
+      "id": "the-session",
       "stage_ids": [
-        "stage-b1",
-        "stage-b2",
-        "stage-b3",
-        "stage-b4",
-        "stage-b5",
-        "stage-b6",
-        "stage-b7",
-        "stage-s1",
-        "stage-s1-skipped",
-        "stage-slice-end"
+        "stage-before-session"
       ],
       "progress": {
         "keys": []

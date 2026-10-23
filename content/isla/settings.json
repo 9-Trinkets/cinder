@@ -1,7 +1,7 @@
 {
   "title": "Isla",
-  "tagline": "One book, one afternoon, and a man who is managing perfectly well.",
-  "description": "It's a rainy afternoon, and Isla is meeting Hal, a retired surveyor who says he is managing perfectly well. Read him a picture book, listen closely, and see what he trusts you with.",
+  "tagline": "Stories first. Toys are sleeping.",
+  "description": "You are Isla, a child psychologist in an old brick house on a corner. Read a picture book with a six-year-old and notice what she does with it.",
   "tags": [
     "Bibliotherapy",
     "Cozy Narrative",
@@ -12,7 +12,7 @@
   "default_language": "en",
   "autonomous_actor_dialogue": false,
   "actor_tick_scope": "current_board",
-  "closure_perspective_actor_id": "hal",
+  "closure_perspective_actor_id": "gloria",
   "act_member_alias": "patient",
   "speech_stamina_cost_floor": 0,
   "show_act_closure": false,
@@ -20,6 +20,9 @@
     "sections": [
       {
         "id": "location"
+      },
+      {
+        "id": "map"
       }
     ]
   },

@@ -1,30 +1,20 @@
 [
   {
-    "id": "hal",
-    "name": "Hal",
-    "room_id": "cafe",
-    "initial_stats": {
-      "points": 0
-    },
+    "id": "gloria",
+    "name": "Gloria",
+    "room_id": "waiting-room",
+    "initial_stats": {},
     "aliases": [
-      "hal",
-      "harold"
+      "gloria",
+      "receptionist",
+      "office manager"
     ],
-    "inspect_text": "Hal is seventy-one, upright, in a pressed jacket. He keeps his hat in his hands. His watch is set seven minutes fast, and a small notepad is tucked under his arm. He is precise about everything he says, and about everything he does not say.",
+    "inspect_text": "Gloria Santos has been at this desk for nineteen years. Her glasses hang on a beaded chain, and she is writing something in red pen with the phone tucked against her shoulder. She nods at you without looking up.",
     "prompt_context": {
       "character_notes": [],
       "subtext_notes": [],
       "response_notes": [],
       "behavior_examples": []
-    },
-    "act_cast": {
-      "inspect_blurb": "Hal, 71, a retired land surveyor. Dry, formal, and managing perfectly well.",
-      "intro_blurb": "",
-      "return_blurb": "",
-      "metadata": {
-        "char_age": "71",
-        "char_profession": "retired land surveyor"
-      }
     }
   }
 ]

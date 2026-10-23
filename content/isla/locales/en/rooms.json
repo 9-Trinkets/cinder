@@ -1,10 +1,1192 @@
 [
   {
-    "id": "cafe",
-    "title": "Cafe",
-    "summary": "A warm room lined with books, low music, and a small table between two chairs.",
-    "inspect_text": "Rain streaks the window. Shelves hold marked copies with penciled tabs. Two chairs face each other across a low table, with a deliberate amount of empty space between them. A small speaker plays piano, quietly.",
-    "features": [],
-    "exits": []
+    "id": "front-yard",
+    "title": "Under the Willow",
+    "summary": "The front yard, mostly willow.",
+    "inspect_text": "The willow takes up most of the yard. Its long branches hang to the ground and sweep the sidewalk when the wind comes, and its roots have pushed one square of pavement up like a lid. A low fence runs along the street. From here you can see the porch steps and the green door.",
+    "features": [
+      {
+        "id": "willow",
+        "label": "willow",
+        "aliases": [
+          "tree",
+          "branches",
+          "weeping willow"
+        ],
+        "inspect_text": "The trunk is wider than you can reach around. Under the curtain of branches there is a dry circle of dirt where children wait for rides. Someone has left a single mitten on a root."
+      },
+      {
+        "id": "sidewalk",
+        "label": "tilted sidewalk",
+        "aliases": [
+          "pavement",
+          "cracked square",
+          "sidewalk square"
+        ],
+        "inspect_text": "One square of sidewalk tilts up at a corner. Every child who comes here steps on it once, on purpose."
+      },
+      {
+        "id": "fence",
+        "label": "fence",
+        "aliases": [
+          "iron fence",
+          "gate"
+        ],
+        "inspect_text": "A low iron fence, painted the same green as the door. The latch is set high enough that small hands can't reach it."
+      },
+      {
+        "id": "mitten",
+        "label": "mitten",
+        "aliases": [
+          "lost mitten"
+        ],
+        "inspect_text": "A red mitten, damp, with a thumb that has been chewed. It has been here since Monday. There is a bin in the basement for these."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "porch",
+        "label": "Porch",
+        "aliases": [
+          "steps",
+          "front steps"
+        ]
+      },
+      {
+        "room_id": "back-yard",
+        "label": "Side path",
+        "aliases": [
+          "ramp",
+          "back yard",
+          "path"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "porch",
+    "title": "Front Porch",
+    "summary": "Deep and shaded, with a swing and a green door.",
+    "inspect_text": "The porch is deep and shaded, with a swing at one end and a green door with white trim. Your bicycle is chained to the rail. Through the glass in the door you can see a lamp on in the waiting room.",
+    "features": [
+      {
+        "id": "swing",
+        "label": "swing",
+        "aliases": [
+          "porch swing"
+        ],
+        "inspect_text": "A wooden swing on two chains. A card taped to one chain reads, in the director's handwriting, \"Staff may not remove the swing.\""
+      },
+      {
+        "id": "door",
+        "label": "front door",
+        "aliases": [
+          "green door",
+          "door"
+        ],
+        "inspect_text": "Deep sage green with white trim, a shade darker than the walls inside. The brass knob is worn bright in the middle, and a second, lower handle has been added at a child's height."
+      },
+      {
+        "id": "bicycle",
+        "label": "bicycle",
+        "aliases": [
+          "bike",
+          "pannier"
+        ],
+        "inspect_text": "Your bicycle, chained to the rail. The canvas bag clips off the back. Inside are five picture books, a pencil stub, tissues, a folded cloth, and a small wind-up timer."
+      },
+      {
+        "id": "doormat",
+        "label": "doormat",
+        "aliases": [
+          "mat",
+          "welcome mat"
+        ],
+        "inspect_text": "The mat says WELCOME in letters worn down to WELC."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "front-yard",
+        "label": "Yard",
+        "aliases": [
+          "steps",
+          "willow",
+          "front yard"
+        ]
+      },
+      {
+        "room_id": "waiting-room",
+        "label": "Inside",
+        "aliases": [
+          "door",
+          "waiting room",
+          "front door"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "waiting-room",
+    "title": "Waiting Room",
+    "summary": "Low chairs, a fish tank, and a reception desk.",
+    "inspect_text": "A small room with low chairs along two walls and a rug in a faded pattern of leaves. A fish tank bubbles on a stand. Gloria's reception desk sits to one side, and a doorway at the back leads to the hall. It smells of warm radiator and, faintly, toast.",
+    "features": [
+      {
+        "id": "reception-desk",
+        "label": "reception desk",
+        "aliases": [
+          "desk",
+          "reception",
+          "sign-in",
+          "clipboard"
+        ],
+        "inspect_text": "The sign-in sheet hangs on a clipboard from a string. Beside it sit a jar of stickers, sorted by color, and a mug that says WORLD'S OKAYEST BEEKEEPER."
+      },
+      {
+        "id": "pickup-cards",
+        "label": "pickup cards",
+        "aliases": [
+          "cards",
+          "cork board",
+          "corkboard"
+        ],
+        "inspect_text": "A corkboard of index cards, one for each child, each with a photo of whoever is coming to collect them and a time. Today's cards have been checked off in green pen."
+      },
+      {
+        "id": "fish-tank",
+        "label": "fish tank",
+        "aliases": [
+          "fish",
+          "tank",
+          "snail"
+        ],
+        "inspect_text": "Four small fish and a snail. The snail is on the glass at a child's eye level, as always."
+      },
+      {
+        "id": "low-chairs",
+        "label": "chairs",
+        "aliases": [
+          "low chairs",
+          "seats"
+        ],
+        "inspect_text": "Child-size chairs along the walls, and three adult-size ones that look as if they were added later."
+      },
+      {
+        "id": "fidget-basket",
+        "label": "fidget basket",
+        "aliases": [
+          "basket",
+          "fidgets"
+        ],
+        "inspect_text": "A basket of things to turn over in your hands, such as smooth stones, a cube with buttons on every side, and a loop of bright string."
+      },
+      {
+        "id": "picture-books",
+        "label": "picture books",
+        "aliases": [
+          "books",
+          "shelf",
+          "book shelf"
+        ],
+        "inspect_text": "A low shelf of picture books with the covers facing out. Several have been mended with tape."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "porch",
+        "label": "Front door",
+        "aliases": [
+          "porch",
+          "outside",
+          "door"
+        ]
+      },
+      {
+        "room_id": "hall",
+        "label": "Hall",
+        "aliases": [
+          "doorway",
+          "back"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hall",
+    "title": "Ground-Floor Hall",
+    "summary": "A narrow hall, doors on both sides, and stairs up and down.",
+    "inspect_text": "A narrow hall with a worn runner and doors on both sides. A staircase goes up on the left, and a smaller one goes down at the back. The walls are covered in children's drawings, none of them with a name on the front.",
+    "features": [
+      {
+        "id": "drawings",
+        "label": "drawings",
+        "aliases": [
+          "wall",
+          "pictures",
+          "children's drawings"
+        ],
+        "inspect_text": "Crayon houses, a purple dog, a map of nowhere, a very serious portrait of a cat. There are no names, only dates in small pencil on the back."
+      },
+      {
+        "id": "coat-hooks",
+        "label": "coat hooks",
+        "aliases": [
+          "hooks",
+          "coats"
+        ],
+        "inspect_text": "A row of hooks at two heights. The low ones hold small coats and one stuffed dinosaur that has been waiting since Tuesday."
+      },
+      {
+        "id": "white-noise",
+        "label": "white noise machine",
+        "aliases": [
+          "machine",
+          "white noise",
+          "noise machine"
+        ],
+        "inspect_text": "A small gray machine on the floor by the playroom door hisses softly, like rain on leaves. It covers the voices inside."
+      },
+      {
+        "id": "radiator",
+        "label": "radiator",
+        "aliases": [
+          "heater"
+        ],
+        "inspect_text": "Cast iron, painted white. It knocks twice and then sighs."
+      },
+      {
+        "id": "bench",
+        "label": "bench",
+        "aliases": [
+          "parent bench"
+        ],
+        "inspect_text": "A bench with a cushion, for a parent who needs to sit for a moment before going in."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "waiting-room",
+        "label": "Waiting room",
+        "aliases": [
+          "front",
+          "entry"
+        ]
+      },
+      {
+        "room_id": "playroom",
+        "label": "Playroom",
+        "aliases": [
+          "play room"
+        ]
+      },
+      {
+        "room_id": "bathroom",
+        "label": "Bathroom",
+        "aliases": [
+          "restroom",
+          "toilet"
+        ]
+      },
+      {
+        "room_id": "kitchen",
+        "label": "Kitchen",
+        "aliases": []
+      },
+      {
+        "room_id": "landing-2",
+        "label": "Upstairs",
+        "aliases": [
+          "stairs",
+          "stairs up",
+          "second floor"
+        ]
+      },
+      {
+        "room_id": "basement",
+        "label": "Downstairs",
+        "aliases": [
+          "basement",
+          "stairs down",
+          "cellar"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "playroom",
+    "title": "Playroom",
+    "summary": "Sage walls, a beanbag by the window, two toy bins.",
+    "inspect_text": "A former front parlor, twelve feet by fifteen, with a bay window and pine floors worn in two paths. The walls are soft sage and the blind is a paler green, so the afternoon light comes in gently. Everything is low, from the round table to the beanbag by the window to the shelf at a child's reach. It is very quiet.",
+    "features": [
+      {
+        "id": "beanbag",
+        "label": "beanbag",
+        "aliases": [
+          "reading spot",
+          "bean bag"
+        ],
+        "inspect_text": "Deep and worn, the color of oatmeal. It has a dent in it about the size of a child."
+      },
+      {
+        "id": "toy-bins",
+        "label": "toy bins",
+        "aliases": [
+          "bins",
+          "bin",
+          "toy bin"
+        ],
+        "inspect_text": "Two identical lidded bins stand at either end of the shelf. Lift a lid and you find blocks, animals, hand puppets, a wooden train, and a family of plain wooden dolls, in no particular order."
+      },
+      {
+        "id": "toy-shelf",
+        "label": "toy shelf",
+        "aliases": [
+          "shelf",
+          "toys"
+        ],
+        "inspect_text": "Open and low, with the toys sorted loosely. There is a toy kitchen with three cups, a doctor's kit, a box of costumes, and a sand tray with a lid."
+      },
+      {
+        "id": "picture-shelf",
+        "label": "picture books",
+        "aliases": [
+          "books",
+          "book shelf",
+          "your books"
+        ],
+        "inspect_text": "Your books, mostly, with the covers facing out. You have read each of them at least twice, and some of them a great many more times."
+      },
+      {
+        "id": "road-rug",
+        "label": "road rug",
+        "aliases": [
+          "rug",
+          "road"
+        ],
+        "inspect_text": "A printed road runs across the rug with a little town along it. There is a bakery, a school, two houses, and a bridge. Some of the squares are more worn than others."
+      },
+      {
+        "id": "timer",
+        "label": "timer",
+        "aliases": [
+          "wind-up timer",
+          "pear"
+        ],
+        "inspect_text": "A small wind-up timer in the shape of a pear. It is quiet until it chimes."
+      },
+      {
+        "id": "rules-card",
+        "label": "rules card",
+        "aliases": [
+          "card",
+          "rules",
+          "sign"
+        ],
+        "inspect_text": "A card by the door in your handwriting, with a small bird drawn beside each line. Nothing gets hurt. You can say it or not say it. When the timer chimes, we're done."
+      },
+      {
+        "id": "crayons",
+        "label": "crayon basket",
+        "aliases": [
+          "crayons",
+          "basket"
+        ],
+        "inspect_text": "A basket of crayons, mostly worn. One red crayon has been used down to a stub, and every child who comes ends up picking it."
+      },
+      {
+        "id": "your-chair",
+        "label": "your chair",
+        "aliases": [
+          "chair",
+          "soft chair"
+        ],
+        "inspect_text": "Soft and lower than most. When you sit in it, your eyes are at the height of a six-year-old's."
+      },
+      {
+        "id": "lamp",
+        "label": "reading lamp",
+        "aliases": [
+          "lamp"
+        ],
+        "inspect_text": "A lamp with a warm bulb, by the beanbag. You turn it on before a story and turn the overhead light off."
+      },
+      {
+        "id": "blue-cushion",
+        "label": "blue cushion",
+        "aliases": [
+          "cushion",
+          "window seat"
+        ],
+        "inspect_text": "A dusty blue cushion on the window seat, a little faded where the sun reaches it."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "hall",
+        "label": "Hall",
+        "aliases": [
+          "door",
+          "out"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bathroom",
+    "title": "Bathroom",
+    "summary": "Small and bright, with a step stool and a night light.",
+    "inspect_text": "A small, bright bathroom with a low sink and a wooden step stool. A night light is plugged in by the door, even in the afternoon. The lock turns with a big, easy knob.",
+    "features": [
+      {
+        "id": "step-stool",
+        "label": "step stool",
+        "aliases": [
+          "stool"
+        ],
+        "inspect_text": "Painted wood, with a rubber foot at each corner. It has been used so much that the top step is smooth."
+      },
+      {
+        "id": "night-light",
+        "label": "night light",
+        "aliases": [
+          "light"
+        ],
+        "inspect_text": "A small round light shaped like a moon, glowing a pale yellow."
+      },
+      {
+        "id": "lock",
+        "label": "lock",
+        "aliases": [
+          "knob",
+          "door lock"
+        ],
+        "inspect_text": "A big round knob, easy for a small hand to turn. A card beneath it explains, for parents, that staff can open it from outside with a coin."
+      },
+      {
+        "id": "soap",
+        "label": "soap",
+        "aliases": [
+          "sink"
+        ],
+        "inspect_text": "Plain white soap with no smell at all. A hand towel hangs beside the sink at a child's height."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "hall",
+        "label": "Hall",
+        "aliases": [
+          "door",
+          "out"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "kitchen",
+    "title": "Kitchen",
+    "summary": "A narrow kitchen with a kettle and the snack shelf.",
+    "inspect_text": "A narrow kitchen at the back of the house, with a kettle on the stove and a window over the sink that looks onto the yard. A shelf by the fridge is the snack shelf. The room smells of toast.",
+    "features": [
+      {
+        "id": "snack-shelf",
+        "label": "snack shelf",
+        "aliases": [
+          "snacks",
+          "crackers",
+          "clementines",
+          "shelf"
+        ],
+        "inspect_text": "Crackers in two kinds, a bowl of clementines for the winter, a tin of oat cookies, and a pitcher of water with a clean cloth over it."
+      },
+      {
+        "id": "kettle",
+        "label": "kettle",
+        "aliases": [
+          "tea",
+          "stove"
+        ],
+        "inspect_text": "A dented steel kettle. A box of tea sits beside it with a note that says, \"For parents. Please take two.\""
+      },
+      {
+        "id": "fridge",
+        "label": "fridge",
+        "aliases": [
+          "refrigerator",
+          "notes"
+        ],
+        "inspect_text": "Covered in a clinic's worth of paper. There is a schedule, a thank-you card in crayon, and a note in red pen that says WHO KEEPS TAKING THE GOOD SPOON."
+      },
+      {
+        "id": "kitchen-window",
+        "label": "window",
+        "aliases": [
+          "sink",
+          "yard window"
+        ],
+        "inspect_text": "The window looks onto the back yard, the painted hopscotch, and the back steps."
+      },
+      {
+        "id": "kitchen-table",
+        "label": "table",
+        "aliases": [
+          "chairs"
+        ],
+        "inspect_text": "A small table with three mismatched chairs. One has a cushion tied on with a ribbon."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "hall",
+        "label": "Hall",
+        "aliases": [
+          "front",
+          "door"
+        ]
+      },
+      {
+        "room_id": "back-yard",
+        "label": "Back door",
+        "aliases": [
+          "yard",
+          "back yard",
+          "door to the yard"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "back-yard",
+    "title": "Back Yard",
+    "summary": "A small fenced yard with a hopscotch and the back steps.",
+    "inspect_text": "A small fenced yard with a hopscotch painted on the flagstones and two raised beds of herbs, cut back for the winter. Three gray steps lead up to the kitchen door. A side path with a ramp runs along the wall to the front of the house.",
+    "features": [
+      {
+        "id": "hopscotch",
+        "label": "hopscotch",
+        "aliases": [
+          "squares",
+          "chalk"
+        ],
+        "inspect_text": "Painted in white on the flagstones. The number seven has been painted twice."
+      },
+      {
+        "id": "herb-beds",
+        "label": "herb beds",
+        "aliases": [
+          "herbs",
+          "beds",
+          "rosemary",
+          "thyme"
+        ],
+        "inspect_text": "Rosemary and thyme, still green. A small sign says, \"Children water. Adults do not.\""
+      },
+      {
+        "id": "back-steps",
+        "label": "back steps",
+        "aliases": [
+          "steps",
+          "gray steps"
+        ],
+        "inspect_text": "Three wooden steps painted gray, with a worn place in the middle of the top one. This is where the staff sit when they need a minute."
+      },
+      {
+        "id": "yard-fence",
+        "label": "fence",
+        "aliases": [
+          "gate",
+          "wooden fence"
+        ],
+        "inspect_text": "A tall wooden fence, with a gate to the side path. The latch is out of a child's reach."
+      },
+      {
+        "id": "church-bell",
+        "label": "church bell",
+        "aliases": [
+          "bell",
+          "sky"
+        ],
+        "inspect_text": "From here you can hear the bell of the church down the block. It rings the hour and, if you are listening for it, the half."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "kitchen",
+        "label": "Kitchen",
+        "aliases": [
+          "back door",
+          "door"
+        ]
+      },
+      {
+        "room_id": "front-yard",
+        "label": "Side path",
+        "aliases": [
+          "ramp",
+          "front yard",
+          "path"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "landing-2",
+    "title": "Second-Floor Landing",
+    "summary": "A wide landing with a window and three doors.",
+    "inspect_text": "A wide landing with a window onto the street and three doors. The stairs continue upward. From behind one closed door comes a low, muffled murmur.",
+    "features": [
+      {
+        "id": "landing-window",
+        "label": "window",
+        "aliases": [
+          "street window"
+        ],
+        "inspect_text": "From here you can see the corner, the bus stop, and the crossing guard in his orange vest."
+      },
+      {
+        "id": "door-signs",
+        "label": "door signs",
+        "aliases": [
+          "signs",
+          "doors"
+        ],
+        "inspect_text": "Hand-lettered signs on the doors say SAND AND ART, QUIET ROOM, and FAMILY ROOM. The sign on the family room hangs from a hook, so it can be turned over to IN USE."
+      },
+      {
+        "id": "pothos",
+        "label": "plant",
+        "aliases": [
+          "pothos",
+          "vine"
+        ],
+        "inspect_text": "A pothos that has outgrown its pot and is working its way along the window frame."
+      },
+      {
+        "id": "murmur",
+        "label": "murmur",
+        "aliases": [
+          "voices",
+          "closed door"
+        ],
+        "inspect_text": "You can't make out words. It is the sound of a parent and a clinician talking slowly and carefully."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "hall",
+        "label": "Downstairs",
+        "aliases": [
+          "stairs",
+          "stairs down",
+          "ground floor"
+        ]
+      },
+      {
+        "room_id": "sand-art-room",
+        "label": "Sand and art room",
+        "aliases": [
+          "art room",
+          "sand room"
+        ]
+      },
+      {
+        "room_id": "quiet-room",
+        "label": "Quiet room",
+        "aliases": []
+      },
+      {
+        "room_id": "family-room",
+        "label": "Family room",
+        "aliases": [
+          "parents room"
+        ]
+      },
+      {
+        "room_id": "landing-3",
+        "label": "Upstairs",
+        "aliases": [
+          "stairs up",
+          "third floor"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sand-art-room",
+    "title": "Sand and Art Room",
+    "summary": "A tiled room with a sand tray and an easel.",
+    "inspect_text": "A bright room with a long table, an easel, and a big sand tray under the window. The floor is tiled so it can be washed. Everything is a little messy, in a way that someone has planned.",
+    "features": [
+      {
+        "id": "sand-tray",
+        "label": "sand tray",
+        "aliases": [
+          "sand",
+          "tray",
+          "figures"
+        ],
+        "inspect_text": "A wooden tray, with a shelf of tiny figures beside it. There are animals, trees, bridges, a house, and a boat. The sand is damp and smooth. A single white shell sits in one corner."
+      },
+      {
+        "id": "easel",
+        "label": "easel",
+        "aliases": [
+          "paper"
+        ],
+        "inspect_text": "A sturdy easel at a child's height, with a clean sheet clipped on. A cup of fat brushes stands on its ledge."
+      },
+      {
+        "id": "smocks",
+        "label": "smocks",
+        "aliases": [
+          "hooks",
+          "shirts"
+        ],
+        "inspect_text": "Old adult shirts hung backward on hooks, as smocks. Each has a tag with a name, and every tag has been scribbled over in crayon."
+      },
+      {
+        "id": "drying-rack",
+        "label": "drying rack",
+        "aliases": [
+          "rack",
+          "paintings"
+        ],
+        "inspect_text": "Paintings drying on a rack. A purple storm, a green house, and a great deal of brown."
+      },
+      {
+        "id": "art-sink",
+        "label": "sink",
+        "aliases": [
+          "hose"
+        ],
+        "inspect_text": "A deep sink with a hose and a step. A sign says, \"Wash the brushes, not the paintings.\""
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "landing-2",
+        "label": "Landing",
+        "aliases": [
+          "out",
+          "door"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "quiet-room",
+    "title": "Quiet Room",
+    "summary": "A small, dim room with a mattress and weighted blankets.",
+    "inspect_text": "A small, dim room with a mattress on the floor, a stack of weighted blankets, and a basket of stuffed animals. A sound machine murmurs like a far-off river. The lower half of the walls is covered in cork.",
+    "features": [
+      {
+        "id": "mattress",
+        "label": "mattress",
+        "aliases": [
+          "bed",
+          "floor mattress"
+        ],
+        "inspect_text": "A firm mattress on the floor with a clean, soft sheet. A child could lie on it, or behind it, or under the blankets."
+      },
+      {
+        "id": "weighted-blankets",
+        "label": "weighted blankets",
+        "aliases": [
+          "blankets",
+          "blanket"
+        ],
+        "inspect_text": "Heavy and soft. The smallest one is covered in faded stars."
+      },
+      {
+        "id": "stuffed-animals",
+        "label": "stuffed animals",
+        "aliases": [
+          "basket",
+          "animals",
+          "toys"
+        ],
+        "inspect_text": "A basket of stuffed animals in various states of wear. A lamb, an owl, a frog with one eye."
+      },
+      {
+        "id": "sound-machine",
+        "label": "sound machine",
+        "aliases": [
+          "machine",
+          "river"
+        ],
+        "inspect_text": "A small speaker with a dial. The setting is stopped on river."
+      },
+      {
+        "id": "dim-lamp",
+        "label": "lamp",
+        "aliases": [
+          "dimmer"
+        ],
+        "inspect_text": "A lamp with a dimmer. Someone has taped a small arrow beside the switch, pointing down, and written \"lower\" beside it."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "landing-2",
+        "label": "Landing",
+        "aliases": [
+          "out",
+          "door"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "family-room",
+    "title": "Family Room",
+    "summary": "Two sofas, a low table, and tissues within reach.",
+    "inspect_text": "A comfortable room with two sofas and a low table, and a window over the yard. A box of tissues is within reach of every seat. A bookshelf holds parenting books and a plant. It is where parents sit when there is something hard to say.",
+    "features": [
+      {
+        "id": "sofas",
+        "label": "sofas",
+        "aliases": [
+          "sofa",
+          "couch",
+          "couches"
+        ],
+        "inspect_text": "Two deep sofas set at an angle, so two people can sit without having to face each other. The cushions have been turned over many times."
+      },
+      {
+        "id": "tissues",
+        "label": "tissues",
+        "aliases": [
+          "tissue box",
+          "box"
+        ],
+        "inspect_text": "A box on every flat surface. The one by the window is nearly empty."
+      },
+      {
+        "id": "family-window",
+        "label": "window",
+        "aliases": [
+          "yard window"
+        ],
+        "inspect_text": "The window looks down on the back yard and the herb beds."
+      },
+      {
+        "id": "parenting-books",
+        "label": "bookshelf",
+        "aliases": [
+          "books",
+          "shelf",
+          "parenting books"
+        ],
+        "inspect_text": "Titles about sleep, school, and separation. A few have worn spines and Post-it notes sticking out."
+      },
+      {
+        "id": "toy-corner",
+        "label": "toy basket",
+        "aliases": [
+          "toys",
+          "corner"
+        ],
+        "inspect_text": "A small basket of toys in the corner for children who have to come along. Blocks, a plastic truck, a stuffed whale."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "landing-2",
+        "label": "Landing",
+        "aliases": [
+          "out",
+          "door"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "landing-3",
+    "title": "Third-Floor Landing",
+    "summary": "A narrow landing under the roof, with a skylight.",
+    "inspect_text": "A narrower landing under the roof, with a skylight and three doors. The air is warmer here and smells of paper and dust.",
+    "features": [
+      {
+        "id": "skylight",
+        "label": "skylight",
+        "aliases": [
+          "window",
+          "sky"
+        ],
+        "inspect_text": "A square of gray sky. In summer the sun crosses the floor here in a bright stripe."
+      },
+      {
+        "id": "holiday-schedule",
+        "label": "clipboard",
+        "aliases": [
+          "schedule",
+          "holiday schedule"
+        ],
+        "inspect_text": "A clipboard on a step stool, headed HOLIDAY SCHEDULE, with several names crossed out and written in again."
+      },
+      {
+        "id": "door-labels",
+        "label": "door labels",
+        "aliases": [
+          "labels",
+          "doors"
+        ],
+        "inspect_text": "Three doors, labeled DIRECTOR, STAFF, and BOOKS. The last one has an extra sign that says, \"Please close this softly. The books are sleeping.\""
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "landing-2",
+        "label": "Downstairs",
+        "aliases": [
+          "stairs",
+          "stairs down"
+        ]
+      },
+      {
+        "room_id": "director-office",
+        "label": "Director's office",
+        "aliases": [
+          "office",
+          "dr. bell's office"
+        ]
+      },
+      {
+        "room_id": "staff-room",
+        "label": "Staff room",
+        "aliases": [
+          "staff"
+        ]
+      },
+      {
+        "room_id": "book-room",
+        "label": "Book room",
+        "aliases": [
+          "books",
+          "library"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "director-office",
+    "title": "Dr. Bell's Office",
+    "summary": "A cluttered, welcoming office with a wall of framed drawings.",
+    "inspect_text": "A cluttered, welcoming office with a desk buried under files, an armchair with a crocheted blanket, and a wall of children's art in cheap frames.",
+    "features": [
+      {
+        "id": "bell-desk",
+        "label": "desk",
+        "aliases": [
+          "files",
+          "papers"
+        ],
+        "inspect_text": "Files in stacks, a lamp with a green shade, and a mug of pens. A sticky note on the monitor says, \"Ask Teo about the whale.\""
+      },
+      {
+        "id": "art-wall",
+        "label": "framed art",
+        "aliases": [
+          "art",
+          "wall",
+          "drawings",
+          "framed drawings"
+        ],
+        "inspect_text": "Forty drawings in cheap frames, from children who are now grown. Each has a small gold sticker in the corner with a year."
+      },
+      {
+        "id": "clay-figures",
+        "label": "clay figures",
+        "aliases": [
+          "figures",
+          "clay",
+          "shelf"
+        ],
+        "inspect_text": "A shelf of small clay figures, each made by a child in the sand and art room. Dr. Bell fired them in a kiln she bought secondhand."
+      },
+      {
+        "id": "armchair",
+        "label": "armchair",
+        "aliases": [
+          "blanket",
+          "chair"
+        ],
+        "inspect_text": "A deep armchair with a crocheted blanket over the arm. It is turned to face the window and not the desk."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "landing-3",
+        "label": "Landing",
+        "aliases": [
+          "out",
+          "door"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "staff-room",
+    "title": "Staff Room",
+    "summary": "A long table, mismatched mugs, and a crowded whiteboard.",
+    "inspect_text": "A long table with mismatched mugs, a fridge that hums, and a whiteboard covered in names and room numbers in four colors. Coats hang on every hook.",
+    "features": [
+      {
+        "id": "whiteboard",
+        "label": "whiteboard",
+        "aliases": [
+          "schedule",
+          "board"
+        ],
+        "inspect_text": "The week, in four colors. Today, in green, it says Isla, 4:00, Playroom, and just the first letter of a name. Beside it, in blue, Teo, 4:00, Sand Room. In red, underlined, PICKUP CARDS."
+      },
+      {
+        "id": "mugs",
+        "label": "mugs",
+        "aliases": [
+          "table",
+          "cups"
+        ],
+        "inspect_text": "No two alike. Yours is the one with the chipped handle and a picture of a very old cat."
+      },
+      {
+        "id": "staff-fridge",
+        "label": "fridge",
+        "aliases": [
+          "lunches"
+        ],
+        "inspect_text": "Lunches in paper bags with names, and a container of soup labeled DO NOT EAT, MARGUERITE."
+      },
+      {
+        "id": "staff-hooks",
+        "label": "coat hooks",
+        "aliases": [
+          "hooks",
+          "coats"
+        ],
+        "inspect_text": "A row of coats. A long green one, a yellow rain jacket, a tweed jacket with one elbow patched, and a small gray hat."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "landing-3",
+        "label": "Landing",
+        "aliases": [
+          "out",
+          "door"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "book-room",
+    "title": "Book Room",
+    "summary": "An attic room lined with shelves of picture books.",
+    "inspect_text": "A long, narrow attic room lined floor to ceiling with shelves. Picture books fill most of them, sorted loosely by subject. Moving, new babies, big feelings, bedtime, school. A rolling ladder leans against the wall.",
+    "features": [
+      {
+        "id": "book-shelves",
+        "label": "shelves",
+        "aliases": [
+          "books",
+          "picture books"
+        ],
+        "inspect_text": "The spines are labeled in marker. MOVING, NEW BABY, BIG FEELINGS, BEDTIME, SCHOOL, DEATH, DIVORCE. The last two are low, where a child could find them."
+      },
+      {
+        "id": "rolling-ladder",
+        "label": "ladder",
+        "aliases": [
+          "rolling ladder"
+        ],
+        "inspect_text": "A wooden ladder on a rail. It squeaks, and the squeak has been described, by three staff members, as comforting."
+      },
+      {
+        "id": "donation-box",
+        "label": "donation box",
+        "aliases": [
+          "box",
+          "donations"
+        ],
+        "inspect_text": "A box of donated books waiting to be sorted. On top is a note that says, \"Please do not give me another dinosaur one.\""
+      },
+      {
+        "id": "supplies",
+        "label": "art supplies",
+        "aliases": [
+          "paper",
+          "pencils",
+          "crayons"
+        ],
+        "inspect_text": "Reams of paper, jars of pencils, and a crate of crayon stubs the clinic won't throw away."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "landing-3",
+        "label": "Landing",
+        "aliases": [
+          "out",
+          "door"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "basement",
+    "title": "Basement",
+    "summary": "A low basement with a washer, a furnace, and shelves of blankets.",
+    "inspect_text": "A low basement with a washer and dryer, a furnace that clicks on and off, and shelves of folded blankets and beanbag covers. The stairs creak behind you. It is warm and smells like clean laundry.",
+    "features": [
+      {
+        "id": "washer",
+        "label": "washer",
+        "aliases": [
+          "dryer",
+          "laundry"
+        ],
+        "inspect_text": "The washer is running. A beanbag cover tumbles inside it, slowly."
+      },
+      {
+        "id": "blanket-shelves",
+        "label": "blanket shelves",
+        "aliases": [
+          "blankets",
+          "shelves",
+          "covers"
+        ],
+        "inspect_text": "Folded blankets and beanbag covers in tidy stacks, sorted by color. There are a great many more than seem necessary."
+      },
+      {
+        "id": "furnace",
+        "label": "furnace",
+        "aliases": [
+          "boiler"
+        ],
+        "inspect_text": "Old, with several patches. It clicks on with a sound that carries all the way up to the playroom."
+      },
+      {
+        "id": "mitten-bin",
+        "label": "mitten bin",
+        "aliases": [
+          "bin",
+          "lost mittens",
+          "mittens"
+        ],
+        "inspect_text": "A bin labeled LOST MITTENS, full to the brim, none of them in pairs."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "hall",
+        "label": "Upstairs",
+        "aliases": [
+          "stairs",
+          "stairs up",
+          "ground floor"
+        ]
+      }
+    ]
   }
 ]

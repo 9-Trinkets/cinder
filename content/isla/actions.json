@@ -34,12 +34,57 @@
         "overflow": false,
         "group": "observation",
         "sort_order": 100,
+        "shortcut": 1,
         "panel": "look",
         "panel_config": {
           "title": "Look Around",
           "prompt": "What catches your eye?",
           "data_source": "features",
           "on_select": "execute_command"
+        }
+      }
+    },
+    {
+      "id": "move",
+      "command": "MOVE",
+      "label": "Move",
+      "group": "movement",
+      "phrases": [
+        "go to",
+        "go",
+        "enter",
+        "move to",
+        "move"
+      ],
+      "player_enabled": true,
+      "target_mode": "room",
+      "outcome_mode": "event",
+      "effects": [
+        "move_actor"
+      ],
+      "event_text": "{actor_name} heads to {target_room_title}.",
+      "available": {},
+      "ui": {
+        "bar": true,
+        "overflow": false,
+        "group": "movement",
+        "sort_order": 2,
+        "shortcut": 2,
+        "panel": "move",
+        "panel_config": {
+          "title": "Where To?",
+          "prompt": "Choose a direction",
+          "data_source": "exits",
+          "on_select": "execute_command"
+        }
+      },
+      "player_command": {
+        "target_mode": "room_reference",
+        "usage": "go <exit>",
+        "example": "go upstairs",
+        "advances_time": true,
+        "input": {
+          "required": true
         }
       }
     },
