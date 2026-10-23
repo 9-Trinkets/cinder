@@ -1,11 +1,22 @@
 {
   "initial_stage_ids": [
-    "stage-before-session"
+    "stage-read-notes"
   ],
   "stages": [
     {
-      "id": "stage-before-session",
-      "summary": "Get ready for Wren.",
+      "id": "stage-read-notes",
+      "quest_id": "get-ready",
+      "quest_title": "Get ready for Wren",
+      "quest_kind": "main",
+      "summary": "Read your notes on Wren. They are in your bag. Use Look.",
+      "advance_signals": [
+        "item_observed:note-intake",
+        "item_observed:note-referral",
+        "item_observed:note-session-one",
+        "item_observed:note-session-two",
+        "item_observed:note-schedule"
+      ],
+      "next_stage_ids": [],
       "narrative_lines": []
     }
   ]

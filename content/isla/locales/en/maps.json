@@ -18,6 +18,11 @@
         "x": 0.0,
         "y": 2.0
       }
+    ],
+    "reveal_conditions": [
+      {
+        "kind": "always"
+      }
     ]
   },
   {
@@ -49,6 +54,11 @@
         "x": 1.0,
         "y": 2.0
       }
+    ],
+    "reveal_conditions": [
+      {
+        "kind": "always"
+      }
     ]
   },
   {
@@ -74,6 +84,11 @@
         "room_id": "quiet-room",
         "x": 2.0,
         "y": 1.0
+      }
+    ],
+    "reveal_conditions": [
+      {
+        "kind": "always"
       }
     ]
   },
@@ -101,6 +116,11 @@
         "x": 2.0,
         "y": 1.0
       }
+    ],
+    "reveal_conditions": [
+      {
+        "kind": "always"
+      }
     ]
   },
   {
@@ -111,6 +131,11 @@
         "room_id": "basement",
         "x": 0.0,
         "y": 0.0
+      }
+    ],
+    "reveal_conditions": [
+      {
+        "kind": "always"
       }
     ]
   }

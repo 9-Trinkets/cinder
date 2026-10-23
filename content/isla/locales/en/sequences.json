@@ -1,0 +1,16 @@
+{
+  "sequences": [
+    {
+      "id": "bell-text",
+      "label": "Dr. Bell texts",
+      "steps": [
+        {
+          "voice": "channel",
+          "channel_id": "phone",
+          "speaker_id": "dr-bell",
+          "line": "Wren is early. Dad dropped her off. Have a look at your notes before you take her, especially last week's. Go slowly."
+        }
+      ]
+    }
+  ]
+}

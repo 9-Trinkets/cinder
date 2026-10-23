@@ -1,5 +1,48 @@
 [
   {
+    "id": "player",
+    "name": "Isla",
+    "initial_stats": {},
+    "aliases": [
+      "isla",
+      "me",
+      "myself"
+    ],
+    "inspect_text": "Yourself. A cardigan with ink on the cuffs, flat boots, reading glasses pushed up into your hair.",
+    "prompt_context": {
+      "character_notes": [],
+      "subtext_notes": [],
+      "response_notes": [],
+      "behavior_examples": []
+    },
+    "room_id": "porch",
+    "initial_inventory": {
+      "note-intake": 1,
+      "note-referral": 1,
+      "note-session-one": 1,
+      "note-session-two": 1,
+      "note-schedule": 1
+    }
+  },
+  {
+    "id": "wren",
+    "name": "Wren",
+    "initial_stats": {},
+    "aliases": [
+      "wren",
+      "girl",
+      "child"
+    ],
+    "inspect_text": "Wren is six and a half. She sits very straight on a low chair with a grey rabbit in her lap, one ear chewed. Her shoes are off and set side by side on the floor, toes exactly even.",
+    "prompt_context": {
+      "character_notes": [],
+      "subtext_notes": [],
+      "response_notes": [],
+      "behavior_examples": []
+    },
+    "room_id": "waiting-room"
+  },
+  {
     "id": "gloria",
     "name": "Gloria",
     "room_id": "waiting-room",
@@ -16,5 +59,64 @@
       "response_notes": [],
       "behavior_examples": []
     }
+  },
+  {
+    "id": "dr-bell",
+    "name": "Dr. Bell",
+    "initial_stats": {},
+    "aliases": [
+      "dr bell",
+      "bell",
+      "marguerite",
+      "director"
+    ],
+    "inspect_text": "Dr. Bell is upstairs, on a call.",
+    "prompt_context": {
+      "character_notes": [],
+      "subtext_notes": [],
+      "response_notes": [],
+      "behavior_examples": []
+    },
+    "tags": [
+      "offstage"
+    ]
+  },
+  {
+    "id": "nadia",
+    "name": "Mom",
+    "initial_stats": {},
+    "aliases": [
+      "mom",
+      "nadia"
+    ],
+    "inspect_text": "Wren's mother is not here yet.",
+    "prompt_context": {
+      "character_notes": [],
+      "subtext_notes": [],
+      "response_notes": [],
+      "behavior_examples": []
+    },
+    "tags": [
+      "offstage"
+    ]
+  },
+  {
+    "id": "ben",
+    "name": "Dad",
+    "initial_stats": {},
+    "aliases": [
+      "dad",
+      "ben"
+    ],
+    "inspect_text": "Wren's father has already gone.",
+    "prompt_context": {
+      "character_notes": [],
+      "subtext_notes": [],
+      "response_notes": [],
+      "behavior_examples": []
+    },
+    "tags": [
+      "offstage"
+    ]
   }
 ]

@@ -100,6 +100,9 @@ fn player_facing_text_has_no_parentheses() {
     for actor in &pack.actors {
         texts.push((actor.id.clone(), actor.inspect_text.clone()));
     }
+    for item in &pack.items {
+        texts.push((item.id.clone(), item.description.clone()));
+    }
     for (name, text) in texts {
         assert!(
             !text.contains('(') && !text.contains(')'),
@@ -163,6 +166,9 @@ fn narration_has_no_colons() {
     for actor in &pack.actors {
         texts.push((actor.id.clone(), actor.inspect_text.clone()));
     }
+    for item in &pack.items {
+        texts.push((item.id.clone(), item.description.clone()));
+    }
     for (name, text) in texts {
         let chars: Vec<char> = text.chars().collect();
         for (i, c) in chars.iter().enumerate() {
@@ -175,4 +181,27 @@ fn narration_has_no_colons() {
             );
         }
     }
+}
+
+/// Willow House is a place Isla knows, not a dungeon: every map shows in full
+/// from the start. Layla keeps its fog of war.
+#[test]
+fn isla_maps_are_never_fogged_and_layla_maps_still_are() {
+    use cinder_core::content::types::MapRevealCondition;
+    let isla = load_named_pack("isla", Some("en")).expect("isla loads");
+    for map in &isla.maps {
+        assert!(
+            map.reveal_conditions
+                .iter()
+                .any(|c| matches!(c, MapRevealCondition::Always)),
+            "{} is fogged",
+            map.id
+        );
+    }
+    let layla = load_named_pack("layla", Some("en")).expect("layla loads");
+    assert!(layla.maps.iter().all(|m| {
+        m.reveal_conditions
+            .iter()
+            .all(|c| !matches!(c, MapRevealCondition::Always))
+    }));
 }

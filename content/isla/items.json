@@ -1,1 +1,57 @@
-[]
+[
+  {
+    "id": "note-intake",
+    "label": "intake form",
+    "aliases": [
+      "intake form",
+      "intake",
+      "form"
+    ],
+    "kind": "misc",
+    "description": "The intake form, filled in by two hands in two pens. Under what brought you here, Mom has written that Wren has been so good, honestly no trouble at all. Dad has written that she is a good little trooper.\n\nUnder changes in the family, both of them have ticked the box for separation."
+  },
+  {
+    "id": "note-referral",
+    "label": "school referral",
+    "aliases": [
+      "school referral",
+      "referral",
+      "letter"
+    ],
+    "kind": "misc",
+    "description": "A letter on school letterhead, from Ms. Okafor. She writes that Wren used to share news every morning and lately just says pass. At lunch Wren sorts the class library into piles by color.\n\nShe adds that Wren is kind to everyone and has never once been a problem."
+  },
+  {
+    "id": "note-session-one",
+    "label": "notes from week one",
+    "aliases": [
+      "week one",
+      "session one",
+      "first notes"
+    ],
+    "kind": "misc",
+    "description": "Your own notes, in your small square writing. Wren stayed by the door for ten minutes, holding the rabbit by one ear. She lined her shoes up. She told you her name and the day of the week, and nothing else."
+  },
+  {
+    "id": "note-session-two",
+    "label": "notes from last week",
+    "aliases": [
+      "last week",
+      "session two",
+      "week two",
+      "notes from week two"
+    ],
+    "kind": "misc",
+    "description": "Last week. Wren built a tower of blocks without a word, knocked it down, and put every block back in the bin. She counted under her breath, and then stopped herself.\n\nUnderlined in pencil. Did not name the move. W. left the table when I said \"two houses.\""
+  },
+  {
+    "id": "note-schedule",
+    "label": "family schedule",
+    "aliases": [
+      "family schedule",
+      "schedule"
+    ],
+    "kind": "misc",
+    "description": "A typed page. Weekdays are at Mom's. Tuesday nights are at Dad's, and every second weekend. Thursday is a Mom day.\n\nIn the margin, in Dr. Bell's green ink. Both parents attentive. Child very tidy. Go slowly."
+  }
+]

@@ -47,5 +47,18 @@
     "font_mono": "ui-monospace, 'SFMono-Regular', Menlo, monospace"
   },
   "show_clock": false,
-  "show_player_input": false
+  "show_player_input": false,
+  "channels": [
+    {
+      "id": "phone",
+      "kind": "direct",
+      "privacy": "private",
+      "availability": "always",
+      "participants": [
+        "player",
+        "dr-bell"
+      ],
+      "label": "Phone"
+    }
+  ]
 }
