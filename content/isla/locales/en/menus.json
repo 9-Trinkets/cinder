@@ -7,14 +7,15 @@
     "dynamic": false,
     "selection_prompt": "How do you answer?",
     "invalid_choice_text": "Hal waits. Choose one of the options.",
-    "selection_confirmation": "You: \"{selection_title}\"",
+    "selection_confirmation": "",
     "options": [
       {
         "id": "b1-a",
         "title": "Either chair is fine. There's no protocol here.",
         "menu_text": "",
         "narrative_lines": [
-          "\"Good. Good.\" He takes the nearest chair, still holding the hat in both hands, and sits as if the seat might be assigned."
+          "Hal: Good. Good.",
+          "He takes the nearest chair, still holding the hat in both hands, and sits as if the seat might be assigned."
         ]
       },
       {
@@ -22,7 +23,9 @@
         "title": "Where would you pick, if it were up to you?",
         "menu_text": "",
         "narrative_lines": [
-          "He considers it like a survey question. \"Facing the door. Habit.\" He sits, and the hat goes on the chair beside him."
+          "He considers it like a survey question.",
+          "Hal: Facing the door. Habit.",
+          "He sits, and the hat goes on the chair beside him."
         ]
       },
       {
@@ -30,7 +33,8 @@
         "title": "You'd like to know the rules before you start.",
         "menu_text": "",
         "narrative_lines": [
-          "\"Doesn't everyone?\" A dry smile. He sits exactly where he was already standing."
+          "Hal: Doesn't everyone?",
+          "A dry smile. He sits exactly where he was already standing."
         ]
       },
       {
@@ -38,7 +42,9 @@
         "title": "Dana said you might be nervous.",
         "menu_text": "",
         "narrative_lines": [
-          "His smile goes thin. \"Dana says a lot of things.\" He sits, upright."
+          "His smile goes thin.",
+          "Hal: Dana says a lot of things.",
+          "He sits, upright."
         ]
       },
       {
@@ -46,7 +52,8 @@
         "title": "(Say nothing.)",
         "menu_text": "",
         "narrative_lines": [
-          "He stands there a moment too long. \"Right. I'll take this one.\""
+          "He stands there a moment too long.",
+          "Hal: Right. I'll take this one."
         ]
       }
     ]
@@ -59,14 +66,14 @@
     "dynamic": false,
     "selection_prompt": "How do you answer?",
     "invalid_choice_text": "Hal waits. Choose one of the options.",
-    "selection_confirmation": "You: \"{selection_title}\"",
+    "selection_confirmation": "",
     "options": [
       {
         "id": "b2-a",
         "title": "Does that include the days that aren't perfect?",
         "menu_text": "",
         "narrative_lines": [
-          "\"There's no such thing. A day is managed or it isn't.\""
+          "Hal: There's no such thing. A day is managed or it isn't."
         ]
       },
       {
@@ -74,7 +81,9 @@
         "title": "Managing perfectly well.",
         "menu_text": "",
         "narrative_lines": [
-          "A short pause. \"Perfectly well. Yes.\" He caps the pen, though he has written nothing."
+          "A short pause.",
+          "Hal: Perfectly well. Yes.",
+          "He caps the pen, though he has written nothing."
         ]
       },
       {
@@ -82,7 +91,10 @@
         "title": "What does a managed day look like?",
         "menu_text": "",
         "narrative_lines": [
-          "\"Up at six. Tea. The ferns. The post.\" A beat. \"It's a good routine.\" He looks slightly surprised at himself."
+          "Hal: Up at six. Tea. The ferns. The post.",
+          "A beat.",
+          "Hal: It's a good routine.",
+          "He looks slightly surprised at himself."
         ]
       },
       {
@@ -90,7 +102,8 @@
         "title": "That's reassuring to hear.",
         "menu_text": "",
         "narrative_lines": [
-          "\"Quite.\" He straightens the notepad."
+          "Hal: Quite.",
+          "He straightens the notepad."
         ]
       },
       {
@@ -111,14 +124,15 @@
     "dynamic": false,
     "selection_prompt": "How do you answer?",
     "invalid_choice_text": "Hal waits. Choose one of the options.",
-    "selection_confirmation": "You: \"{selection_title}\"",
+    "selection_confirmation": "",
     "options": [
       {
         "id": "b3-a",
         "title": "Where someone thinks the line is.",
         "menu_text": "",
         "narrative_lines": [
-          "\"Never where it actually is. Where they think it is.\" He taps the pen once."
+          "Hal: Never where it actually is. Where they think it is.",
+          "He taps the pen once."
         ]
       },
       {
@@ -126,7 +140,8 @@
         "title": "That sounds like precise work.",
         "menu_text": "",
         "narrative_lines": [
-          "\"It was. It was.\" He looks at the rain for a second."
+          "Hal: It was. It was.",
+          "He looks at the rain for a second."
         ]
       },
       {
@@ -134,7 +149,7 @@
         "title": "Is there a line somewhere you're unsure about?",
         "menu_text": "",
         "narrative_lines": [
-          "\"I'm never unsure about a line. That's rather the job.\""
+          "Hal: I'm never unsure about a line. That's rather the job."
         ]
       },
       {
@@ -142,7 +157,8 @@
         "title": "Does that hold for other kinds of disputes too?",
         "menu_text": "",
         "narrative_lines": [
-          "\"Families, mostly. The fence was never the problem.\" A dry little laugh, quickly put away."
+          "Hal: Families, mostly. The fence was never the problem.",
+          "A dry little laugh, quickly put away."
         ]
       },
       {
@@ -163,14 +179,15 @@
     "dynamic": false,
     "selection_prompt": "How do you answer?",
     "invalid_choice_text": "Hal waits. Choose one of the options.",
-    "selection_confirmation": "You: \"{selection_title}\"",
+    "selection_confirmation": "",
     "options": [
       {
         "id": "b4-a",
         "title": "Brewed properly.",
         "menu_text": "",
         "narrative_lines": [
-          "\"Quite so.\" He seems to hear his own voice and adjusts his cuff."
+          "Hal: Quite so.",
+          "He seems to hear his own voice and adjusts his cuff."
         ]
       },
       {
@@ -178,7 +195,9 @@
         "title": "I'll warm the pot first. Any other rules?",
         "menu_text": "",
         "narrative_lines": [
-          "\"Water just off the boil. Not on it.\" The corner of his mouth moves. \"That's all.\""
+          "Hal: Water just off the boil. Not on it.",
+          "The corner of his mouth moves.",
+          "Hal: That's all."
         ]
       },
       {
@@ -186,7 +205,8 @@
         "title": "Who taught you to make it that way?",
         "menu_text": "",
         "narrative_lines": [
-          "\"Nobody. It's just how it's done.\" The pen taps twice, quickly."
+          "Hal: Nobody. It's just how it's done.",
+          "The pen taps twice, quickly."
         ]
       },
       {
@@ -194,7 +214,8 @@
         "title": "It's no trouble at all. Black or green?",
         "menu_text": "",
         "narrative_lines": [
-          "\"Black. Thank you.\" Brisk, polite, already looking at the cup."
+          "Hal: Black. Thank you.",
+          "Brisk, polite, already looking at the cup."
         ]
       },
       {
@@ -202,7 +223,8 @@
         "title": "(Say nothing.)",
         "menu_text": "",
         "narrative_lines": [
-          "You let it sit. He softens a little. \"Right. If it isn't too much trouble. The way I said.\""
+          "You let it sit. He softens a little.",
+          "Hal: Right. If it isn't too much trouble. The way I said."
         ]
       }
     ]
@@ -215,14 +237,15 @@
     "dynamic": false,
     "selection_prompt": "How do you answer?",
     "invalid_choice_text": "Hal waits. Choose one of the options.",
-    "selection_confirmation": "You: \"{selection_title}\"",
+    "selection_confirmation": "",
     "options": [
       {
         "id": "b5-a",
         "title": "It's a gentle story, isn't it?",
         "menu_text": "",
         "narrative_lines": [
-          "\"Yes. Quite.\" He turns the cup a half-turn."
+          "Hal: Yes. Quite.",
+          "He turns the cup a half-turn."
         ]
       },
       {
@@ -230,7 +253,8 @@
         "title": "Does that sound like anyone you know?",
         "menu_text": "",
         "narrative_lines": [
-          "\"I don't see the connection.\" The reply comes a beat too fast."
+          "Hal: I don't see the connection.",
+          "The reply comes a beat too fast."
         ]
       },
       {
@@ -238,7 +262,9 @@
         "title": "Nothing wrong with that.",
         "menu_text": "",
         "narrative_lines": [
-          "He nods slowly. \"No. Nothing wrong.\" He says it as though the phrase is being tested."
+          "He nods slowly.",
+          "Hal: No. Nothing wrong.",
+          "He says it as though the phrase is being tested."
         ]
       },
       {
@@ -246,7 +272,9 @@
         "title": "What do you think the heron meant by \"for when I'm not here\"?",
         "menu_text": "",
         "narrative_lines": [
-          "A longer pause than the others. \"That she'd be away. Obviously.\" But he looks at the map in the picture a second longer."
+          "A longer pause than the others.",
+          "Hal: That she'd be away. Obviously.",
+          "But he looks at the map in the picture a second longer."
         ]
       },
       {
@@ -267,14 +295,16 @@
     "dynamic": false,
     "selection_prompt": "How do you answer?",
     "invalid_choice_text": "Hal waits. Choose one of the options.",
-    "selection_confirmation": "You: \"{selection_title}\"",
+    "selection_confirmation": "",
     "options": [
       {
         "id": "b6-a",
         "title": "What would you like the next step to be?",
         "menu_text": "",
         "narrative_lines": [
-          "\"Oh, I'd like it to be clear.\" A short laugh. \"Go on.\""
+          "Hal: Oh, I'd like it to be clear.",
+          "A short laugh.",
+          "Hal: Go on."
         ]
       },
       {
@@ -282,7 +312,7 @@
         "title": "You're curious about the next step.",
         "menu_text": "",
         "narrative_lines": [
-          "\"It's a children's book. I'm only following it.\""
+          "Hal: It's a children's book. I'm only following it."
         ]
       },
       {
@@ -298,7 +328,7 @@
         "title": "Take your time. We're not in a hurry.",
         "menu_text": "",
         "narrative_lines": [
-          "\"Good. No rush. Go on, though.\""
+          "Hal: Good. No rush. Go on, though."
         ]
       },
       {
@@ -306,7 +336,8 @@
         "title": "(Say nothing.)",
         "menu_text": "",
         "narrative_lines": [
-          "He shifts in the chair. \"Well? Don't leave a man hanging.\""
+          "He shifts in the chair.",
+          "Hal: Well? Don't leave a man hanging."
         ]
       }
     ]
@@ -319,14 +350,15 @@
     "dynamic": false,
     "selection_prompt": "How do you answer?",
     "invalid_choice_text": "Hal waits. Choose one of the options.",
-    "selection_confirmation": "You: \"{selection_title}\"",
+    "selection_confirmation": "",
     "options": [
       {
         "id": "b7-a",
         "title": "Why do you think he doesn't?",
         "menu_text": "",
         "narrative_lines": [
-          "\"Pride, I suppose. Or he'd have to explain the map.\" He rubs his thumb across the pen."
+          "Hal: Pride, I suppose. Or he'd have to explain the map.",
+          "He rubs his thumb across the pen."
         ]
       },
       {
@@ -334,7 +366,8 @@
         "title": "Sometimes asking is the hard part.",
         "menu_text": "",
         "narrative_lines": [
-          "\"Hm.\" He looks at the page, not at you."
+          "Hal: Hm.",
+          "He looks at the page, not at you."
         ]
       },
       {
@@ -342,7 +375,7 @@
         "title": "You'd like him to ask.",
         "menu_text": "",
         "narrative_lines": [
-          "\"It's the sensible thing, that's all.\""
+          "Hal: It's the sensible thing, that's all."
         ]
       },
       {
@@ -350,7 +383,8 @@
         "title": "Is there someone you'd like to ask?",
         "menu_text": "",
         "narrative_lines": [
-          "\"I have Dana for that.\" Closed."
+          "Hal: I have Dana for that.",
+          "Closed."
         ]
       },
       {
@@ -358,7 +392,7 @@
         "title": "(Say nothing.)",
         "menu_text": "",
         "narrative_lines": [
-          "\"Well? Nobody's going to answer for him.\""
+          "Hal: Well? Nobody's going to answer for him."
         ]
       }
     ]
@@ -371,14 +405,16 @@
     "dynamic": false,
     "selection_prompt": "How do you answer?",
     "invalid_choice_text": "Hal waits. Choose one of the options.",
-    "selection_confirmation": "You: \"{selection_title}\"",
+    "selection_confirmation": "",
     "options": [
       {
         "id": "s1-a",
         "title": "That's a lovely habit.",
         "menu_text": "",
         "narrative_lines": [
-          "\"It's just a habit.\" He turns the page himself. \"The bridge.\""
+          "Hal: It's just a habit.",
+          "He turns the page himself.",
+          "Hal: The bridge."
         ]
       },
       {
@@ -386,7 +422,8 @@
         "title": "Do you miss her?",
         "menu_text": "",
         "narrative_lines": [
-          "\"Of course I miss her. That's rather the point of a wife.\" The tone has shut."
+          "Hal: Of course I miss her. That's rather the point of a wife.",
+          "The tone has shut."
         ]
       },
       {
@@ -394,7 +431,10 @@
         "title": "Two cups. Every morning.",
         "menu_text": "",
         "narrative_lines": [
-          "He nods, eyes on the picture. \"I wash both. I don't know why that part matters.\" A pause. \"It does, though.\""
+          "He nods, eyes on the picture.",
+          "Hal: I wash both. I don't know why that part matters.",
+          "A pause.",
+          "Hal: It does, though."
         ]
       },
       {
@@ -402,7 +442,10 @@
         "title": "Who is the second cup for?",
         "menu_text": "",
         "narrative_lines": [
-          "\"Ruth.\" He says it flatly, like a reading from a form. \"Habit.\" He turns the page."
+          "Hal: Ruth.",
+          "He says it flatly, like a reading from a form.",
+          "Hal: Habit.",
+          "He turns the page."
         ]
       },
       {
@@ -410,7 +453,10 @@
         "title": "(Say nothing.)",
         "menu_text": "",
         "narrative_lines": [
-          "The silence stays. He says it again, softer, as if testing it: \"She isn't coming down.\" Then: \"I wash both. I don't know why that part matters.\""
+          "The silence stays. He says it again, softer, as if testing it:",
+          "Hal: She isn't coming down.",
+          "Then:",
+          "Hal: I wash both. I don't know why that part matters."
         ]
       }
     ]

@@ -5,7 +5,7 @@
   "stages": [
     {
       "id": "stage-b1",
-      "summary": "Bid 1.",
+      "summary": "Sit with Hal and listen.",
       "narrative_lines": [],
       "open_menu": "b1",
       "advance_signals": [
@@ -17,10 +17,10 @@
     },
     {
       "id": "stage-b2",
-      "summary": "Bid 2.",
+      "summary": "Sit with Hal and listen.",
       "narrative_lines": [
         "He opens the notepad, uncaps a pen, and writes the date at the top of the page. He looks at it for a moment.",
-        "\"I'm managing perfectly well. Ask anyone. Ask Dana.\""
+        "Hal: I'm managing perfectly well. Ask anyone. Ask Dana."
       ],
       "open_menu": "b2",
       "advance_signals": [
@@ -32,10 +32,10 @@
     },
     {
       "id": "stage-b3",
-      "summary": "Bid 3.",
+      "summary": "Sit with Hal and listen.",
       "narrative_lines": [
         "He recovers, and gives a small, practised nod toward the window.",
-        "\"Forty years of surveys. Most disputes are about where someone thinks the line is.\""
+        "Hal: Forty years of surveys. Most disputes are about where someone thinks the line is."
       ],
       "open_menu": "b3",
       "advance_signals": [
@@ -47,10 +47,10 @@
     },
     {
       "id": "stage-b4",
-      "summary": "Bid 4.",
+      "summary": "Sit with Hal and listen.",
       "narrative_lines": [
         "You offer tea.",
-        "\"No tea for me. Well, only if it's brewed properly. Pot warmed first.\""
+        "Hal: No tea for me. Well, only if it's brewed properly. Pot warmed first."
       ],
       "open_menu": "b4",
       "advance_signals": [
@@ -62,15 +62,17 @@
     },
     {
       "id": "stage-b5",
-      "summary": "Bid 5.",
+      "summary": "Sit with Hal and listen.",
       "narrative_lines": [
-        "You bring the tea, and he holds his watch up toward the blank wall. \"Seven minutes fast, you'll notice. Ruth set it. So I'd be on time.\" He doesn't seem to hear himself say the name.",
-        "You open the book and begin to read. *The Bear Who Followed the Map.*",
+        "You bring the tea, and he holds his watch up toward the blank wall.",
+        "Hal: Seven minutes fast, you'll notice. Ruth set it. So I'd be on time.",
+        "He doesn't seem to hear himself say the name.",
+        "You open the book and begin to read. The Bear Who Followed the Map.",
         "1. A heron folds a map into a bear's paw. \"For when I am not here.\" (A tall grey bird at a doorway, a small brown paw closing on paper.)",
         "2. Step one: fish at dawn. The bear sets two bowls on the table. One is eaten. (Two bowls, one full.)",
         "3. Step two: beans planted exactly in rows. The bear is proud. A rabbit waves from the fence. (Perfect rows, a bear standing very straight.)",
         "Hal has stopped writing. The pen is in his hand and the cap is on the table.",
-        "\"Sensible bear. Follows instructions. Nothing wrong with that.\""
+        "Hal: Sensible bear. Follows instructions. Nothing wrong with that."
       ],
       "open_menu": "b5",
       "advance_signals": [
@@ -82,9 +84,9 @@
     },
     {
       "id": "stage-b6",
-      "summary": "Bid 6.",
+      "summary": "Sit with Hal and listen.",
       "narrative_lines": [
-        "\"Go on. What's the next step?\""
+        "Hal: Go on. What's the next step?"
       ],
       "open_menu": "b6",
       "advance_signals": [
@@ -96,12 +98,12 @@
     },
     {
       "id": "stage-b7",
-      "summary": "Hal asks about the bridge.",
+      "summary": "Sit with Hal and listen.",
       "narrative_lines": [
         "4. The rabbit brings jam. \"Can't stop,\" says the bear, \"I'm following the map.\" The jam stays on the step. (A jar on a doorstep, a rabbit's ears drooping.)",
         "5. Step seven: the bridge is out. The bear sits at the edge and folds the map smaller. (A gap in a bridge, a bear very small beside it.)",
         "Hal is quiet. He looks at the picture of the bridge.",
-        "\"Why doesn't the bear ask the rabbit about the bridge?\""
+        "Hal: Why doesn't the bear ask the rabbit about the bridge?"
       ],
       "open_menu": "b7",
       "advance_signals": [
@@ -135,10 +137,12 @@
     },
     {
       "id": "stage-s1",
-      "summary": "Two cups.",
+      "summary": "Sit with Hal and listen.",
       "narrative_lines": [
         "Hal looks at the bear's two bowls, the picture still open between you.",
-        "\"I put out two cups every morning. Habit.\" A beat. \"I know she isn't coming down.\""
+        "Hal: I put out two cups every morning. Habit.",
+        "A beat.",
+        "Hal: I know she isn't coming down."
       ],
       "open_menu": "s1",
       "advance_signals": [
@@ -150,20 +154,22 @@
     },
     {
       "id": "stage-s1-skipped",
-      "summary": "He does not open up.",
+      "summary": "Sit with Hal and listen.",
       "narrative_lines": [
-        "Hal studies the picture. \"Well. Back to the bridge,\" he says, and turns the page for you.",
+        "Hal studies the picture.",
+        "Hal: Well. Back to the bridge,",
+        "he says, and turns the page for you.",
         "(End of the vertical slice. The rest of the act is not built yet.)"
       ],
-      "end_act": true
+      "end_game": true
     },
     {
       "id": "stage-slice-end",
-      "summary": "End of the slice.",
+      "summary": "Sit with Hal and listen.",
       "narrative_lines": [
         "(End of the vertical slice. The rest of the act is not built yet.)"
       ],
-      "end_act": true
+      "end_game": true
     }
   ]
 }

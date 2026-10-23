@@ -2,37 +2,101 @@
   "actions": [
     {
       "id": "look",
+      "command": "LOOK",
       "label": "Look",
-      "player_enabled": true,
-      "target_mode": "none",
+      "group": "observation",
       "phrases": [
         "look",
         "l",
-        "look room"
+        "look at",
+        "look room",
+        "look around",
+        "inspect room",
+        "examine",
+        "x"
       ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "effects": [
+        "observe_room"
+      ],
+      "player_command": {
+        "usage": "look [at <thing or person>]",
+        "example": "look around",
+        "advances_time": false,
+        "input": {
+          "required": false
+        }
+      },
+      "available": {},
       "ui": {
         "bar": true,
         "overflow": false,
-        "group": "system",
-        "sort_order": 10
+        "group": "observation",
+        "sort_order": 100,
+        "panel": "look",
+        "panel_config": {
+          "title": "Look Around",
+          "prompt": "What catches your eye?",
+          "data_source": "features",
+          "on_select": "execute_command"
+        }
       }
     },
     {
-      "id": "end_act",
-      "label": "End Act",
-      "player_enabled": true,
-      "target_mode": "none",
+      "id": "inspect_feature",
+      "command": "INSPECT FEATURE",
+      "label": "Inspect Feature",
+      "group": "observation",
       "phrases": [
-        "end act",
-        "end",
-        "quit",
-        "exit"
+        "look at",
+        "inspect",
+        "x"
       ],
+      "player_enabled": false,
+      "target_mode": "feature",
+      "effects": [
+        "observe_feature"
+      ],
+      "event_text": "{actor_name} studies the {feature_label}.",
+      "available": {},
       "ui": {
         "bar": false,
-        "overflow": true,
-        "group": "system",
-        "sort_order": 90
+        "overflow": false,
+        "group": "observe",
+        "sort_order": 1
+      },
+      "npc": {
+        "prompt_verb": "inspect",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "inspect_actor",
+      "command": "INSPECT ACTOR",
+      "label": "Inspect Actor",
+      "group": "observation",
+      "phrases": [
+        "look at",
+        "inspect",
+        "x"
+      ],
+      "player_enabled": false,
+      "target_mode": "actor",
+      "effects": [
+        "observe_actor"
+      ],
+      "event_text": "{actor_name} studies {target_actor_name} more closely.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": false,
+        "group": "observe",
+        "sort_order": 2
+      },
+      "npc": {
+        "prompt_verb": "study",
+        "visible_by_default": true
       }
     }
   ]

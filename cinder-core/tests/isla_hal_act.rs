@@ -97,3 +97,39 @@ fn a_fumbled_secret_scores_nothing() {
     play(&runtime, &["s1-a"]);
     assert_eq!(points(&runtime), before);
 }
+
+/// The server rebuilds the runtime from saved state on every turn, so stats
+/// earned earlier in the act must survive a reload.
+#[test]
+fn points_survive_a_reload_between_turns() {
+    let pack = load_named_pack("isla", Some("en")).expect("isla loads");
+    let mut state = WorldState::new(&pack);
+    let mut last_text = String::new();
+    for choice in ["b1-b", "b2-b", "b3-a", "b4-b", "b5-c", "b6-a", "b7-a"] {
+        let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime");
+        last_text = runtime.run_turn(choice).expect("turn").text();
+        state = runtime.export_state().expect("state exports");
+    }
+    assert_eq!(state.actor_stat("hal", "points"), 7);
+    assert!(
+        last_text.contains("two cups every morning"),
+        "the gate must still be met after reloads: {last_text}"
+    );
+}
+
+#[test]
+fn looking_around_leaves_the_pending_choice_open() {
+    let runtime = runtime();
+    let room = runtime.run_turn("look").expect("look").text();
+    assert!(room.contains("Rain streaks the window"), "{room}");
+    let hal = runtime.run_turn("look at hal").expect("look at hal").text();
+    assert!(hal.contains("seventy-one"), "{hal}");
+    assert!(
+        runtime
+            .current_active_menu_info()
+            .expect("menu info")
+            .is_some(),
+        "the menu stays open after a look"
+    );
+    assert_eq!(points(&runtime), 0, "looking earns and costs nothing");
+}

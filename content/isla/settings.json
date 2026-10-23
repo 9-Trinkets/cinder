@@ -20,9 +20,6 @@
     "sections": [
       {
         "id": "location"
-      },
-      {
-        "id": "quests"
       }
     ]
   },
@@ -45,5 +42,7 @@
     "crt_bez": "#121418",
     "font_prose": "Georgia, 'Times New Roman', serif",
     "font_mono": "ui-monospace, 'SFMono-Regular', Menlo, monospace"
-  }
+  },
+  "show_clock": false,
+  "show_player_input": false
 }
