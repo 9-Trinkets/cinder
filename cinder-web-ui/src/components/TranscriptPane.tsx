@@ -120,6 +120,21 @@ const TranscriptPane = memo(function TranscriptPane({
         </div>
       )}
 
+      {/* Outside the scroll area, so it never covers transcript text. */}
+      {!searchOpen && lines.length > 0 && (
+        <div className="shrink-0 px-4 sm:px-6 pt-2">
+          <div className="max-w-2xl mx-auto w-full flex justify-end">
+            <button
+              onClick={() => setSearchOpen(true)}
+              aria-label={t('hud.search')}
+              className="text-muted hover:text-text text-xs bg-surface/90 px-2.5 py-1 rounded-md border border-subtle cursor-pointer shadow-xs transition-colors"
+            >
+              {t('hud.search')}
+            </button>
+          </div>
+        </div>
+      )}
+
       <div
         ref={transcriptRef}
         onScroll={onScroll}
@@ -128,17 +143,6 @@ const TranscriptPane = memo(function TranscriptPane({
         className="flex-1 overflow-y-auto px-4 sm:px-6 py-6"
       >
         <div className="max-w-2xl mx-auto w-full space-y-4">
-          {!searchOpen && lines.length > 0 && (
-            <div className="sticky top-0 z-10 flex justify-end">
-              <button
-                onClick={() => setSearchOpen(true)}
-                aria-label={t('hud.search')}
-                className="text-muted hover:text-text text-xs bg-surface/90 backdrop-blur-sm px-2.5 py-1 rounded-md border border-subtle cursor-pointer shadow-xs transition-colors"
-              >
-                {t('hud.search')}
-              </button>
-            </div>
-          )}
           {transcriptItems.map(item =>
             item.type === 'room_card' ? (
               <RoomCard

@@ -155,9 +155,12 @@ export function usePlay() {
     setCommandPending(true)
     lastInteractionAtRef.current = Date.now()
     autoScrollRef.current = true
-    const cmdLine: Line = { text: `> ${displayCmd ?? cmd}`, kind: 'player', key: nextKey.current++ }
+    // An empty display means the content already shows what the player said.
+    const cmdLine: Line | null = displayCmd === ''
+      ? null
+      : { text: `> ${displayCmd ?? cmd}`, kind: 'player', key: nextKey.current++ }
     queueScroll('smooth')
-    setLines(prev => [...prev, cmdLine])
+    if (cmdLine) setLines(prev => [...prev, cmdLine])
     try {
       const res = await api.runCommand(token, id, cmd, displayCmd)
       applyCommandResponse(res, 'smooth')
@@ -298,8 +301,8 @@ export function usePlay() {
   function describePanelPick(panelName: string, option: api.PanelOptionData): string | undefined {
     const title = option.title?.trim()
     if (!title) return undefined
-    // List options are the player's own words, so the echo is just the words.
-    if (getPanelConfig(panelName)?.layout === 'list') return title
+    // List options carry their own line in the content, so nothing is echoed.
+    if (getPanelConfig(panelName)?.layout === 'list') return ''
     const action =
       uiSnapshot?.action_bar_actions.find(a => a.panel === panelName || a.id === panelName) ??
       uiSnapshot?.overflow_actions.find(a => a.panel === panelName || a.id === panelName)

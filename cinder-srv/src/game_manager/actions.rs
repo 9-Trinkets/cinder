@@ -133,10 +133,7 @@ pub async fn run_command(
     let play_id = parse_uuid(play_id, "play id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     let input_owned = input.to_string();
-    let transcript_text = display
-        .map(str::trim)
-        .filter(|text| !text.is_empty() && text.chars().count() <= 200)
-        .map_or_else(|| input_owned.clone(), str::to_string);
+    let transcript_text = transcript_echo(input, display);
     with_runtime(
         pool,
         &play_id,
@@ -229,10 +226,13 @@ pub async fn run_command(
                 ui_snapshot: Some(ui_snapshot),
             };
             let transcript_entries = {
-                let mut entries = vec![PendingTranscriptEntry {
-                    role: "player".to_string(),
-                    text: transcript_text.clone(),
-                }];
+                let mut entries = Vec::new();
+                if let Some(text) = &transcript_text {
+                    entries.push(PendingTranscriptEntry {
+                        role: "player".to_string(),
+                        text: text.clone(),
+                    });
+                }
                 for line in &narrative {
                     let trimmed = line.text.trim();
                     if !trimmed.is_empty() {
@@ -453,6 +453,17 @@ pub async fn continue_play(
     .await
 }
 
+/// The line stored for the player's own input. A readable `display` replaces
+/// the raw command; an explicitly empty `display` means the content already
+/// shows what the player said, so no echo is stored.
+fn transcript_echo(input: &str, display: Option<&str>) -> Option<String> {
+    match display.map(str::trim) {
+        Some("") => None,
+        Some(text) if text.chars().count() <= 200 => Some(text.to_string()),
+        _ => Some(input.to_string()),
+    }
+}
+
 /// Splits text on blank lines into trimmed, non-empty paragraphs.
 fn split_paragraphs(text: &str) -> Vec<String> {
     text.split("\n\n")
@@ -464,7 +475,19 @@ fn split_paragraphs(text: &str) -> Vec<String> {
 
 #[cfg(test)]
 mod paragraph_tests {
-    use super::split_paragraphs;
+    use super::{split_paragraphs, transcript_echo};
+
+    #[test]
+    fn echo_uses_display_unless_it_is_explicitly_empty() {
+        assert_eq!(transcript_echo("2", None).as_deref(), Some("2"));
+        assert_eq!(
+            transcript_echo("2", Some("Look at Hal")).as_deref(),
+            Some("Look at Hal")
+        );
+        assert_eq!(transcript_echo("2", Some("   ")), None);
+        let long = "x".repeat(201);
+        assert_eq!(transcript_echo("2", Some(&long)).as_deref(), Some("2"));
+    }
 
     #[test]
     fn paragraphs_split_on_blank_lines_and_drop_empties() {
