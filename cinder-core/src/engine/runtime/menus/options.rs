@@ -42,6 +42,17 @@ impl CinderRuntime {
                 .collect(),
             PanelDataSource::InventoryItems => self.inventory_panel_options(&state),
             PanelDataSource::CraftableItems => Vec::new(),
+            PanelDataSource::ActorTopics => {
+                crate::engine::topics::room_topics(&self.content, &state)
+                    .into_iter()
+                    .map(|(actor, topic)| PanelOption {
+                        id: format!("{}:{}", actor.id, topic.id),
+                        title: topic.label.clone(),
+                        command: format!("say {}:{}", actor.id, topic.id),
+                        menu_text: String::new(),
+                    })
+                    .collect()
+            }
             PanelDataSource::FollowActors => self.follow_actor_panel_options(&state),
             PanelDataSource::TeleportAnchors => self.teleport_anchors_panel_options(&state),
         };

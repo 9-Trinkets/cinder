@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use std::collections::BTreeMap;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RoomExitDefinition {
@@ -38,6 +39,10 @@ pub struct RoomDefinition {
     /// the throne room reads differently after its king falls).
     #[serde(default)]
     pub descriptions: Vec<RoomDescriptionOverride>,
+    /// Loose items lying in the room when play starts (item id → count), which
+    /// the player can pick up with Take.
+    #[serde(default)]
+    pub items: BTreeMap<String, u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

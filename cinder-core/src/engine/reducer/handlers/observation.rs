@@ -7,6 +7,7 @@ use crate::engine::reducer::observation::{
     render_feature_consumables_line, render_room_observation, render_story_text,
 };
 use crate::engine::state::WorldState;
+use crate::engine::topics::topic_used_var;
 
 pub(crate) fn handle_current_room_observed(
     state: &mut WorldState,
@@ -166,4 +167,27 @@ pub(crate) fn handle_actor_observed_actor(
     } else {
         lines.narration(content.presentation.error_text.actor_unknown.clone());
     }
+}
+
+pub(crate) fn handle_topic_selected(ctx: &mut ReduceCtx<'_>, actor_id: &str, topic_id: &str) {
+    let state = &mut *ctx.state;
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
+    let Some(topic) = content
+        .actor(actor_id)
+        .and_then(|actor| actor.topics.iter().find(|topic| topic.id == topic_id))
+    else {
+        return;
+    };
+    for line in &topic.narrative_lines {
+        lines.narration(render_story_text(line, state));
+    }
+    state
+        .story_vars
+        .set_unchecked(&topic_used_var(actor_id, topic_id), "true");
+    lines.extend_lines(advance_objective_for_signal(
+        state,
+        content,
+        &format!("topic_selected:{actor_id}:{topic_id}"),
+    ));
 }

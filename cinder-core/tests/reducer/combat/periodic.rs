@@ -349,6 +349,7 @@ fn boss_triggers_emit_boss_cues_for_adjacent_and_distant_rooms() {
     });
     // Add distant room "cellar" connected only to KITCHEN
     pack.rooms.push(RoomDefinition {
+        items: Default::default(),
         id: "cellar".to_string(),
         title: "Cellar".to_string(),
         summary: String::new(),
@@ -462,6 +463,7 @@ fn distant_minion_is_silent_but_depletion_emits_distant_cue() {
         ..ItemDefinition::default()
     });
     pack.rooms.push(RoomDefinition {
+        items: Default::default(),
         id: "cellar".to_string(),
         title: "Cellar".to_string(),
         summary: String::new(),
@@ -566,6 +568,7 @@ fn offscreen_kills_emit_anonymous_kill_cues_and_deduplicate() {
         ..ItemDefinition::default()
     });
     pack.rooms.push(RoomDefinition {
+        items: Default::default(),
         id: "cellar".to_string(),
         title: "Cellar".to_string(),
         summary: String::new(),

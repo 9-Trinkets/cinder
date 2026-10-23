@@ -63,3 +63,15 @@ fn stats_earned_during_an_act_survive_a_runtime_reload() {
     let after = reloaded.export_state().expect("state exports");
     assert_eq!(after.actor_stat("gloria", "points"), 3);
 }
+
+#[test]
+fn rooms_can_start_with_loose_items_lying_in_them() {
+    let mut pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let room_id = pack.rooms[0].id.clone();
+    pack.rooms[0].items.insert("magic-chalk".to_string(), 2);
+    let state = WorldState::new(&pack);
+    assert_eq!(
+        state.loose_room_items(&room_id),
+        vec![("magic-chalk".to_string(), 2)]
+    );
+}

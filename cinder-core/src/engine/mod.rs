@@ -25,6 +25,7 @@ pub mod runtime;
 pub mod scripted;
 pub mod skills;
 pub mod state;
+pub(crate) mod topics;
 pub mod turn_policies;
 pub mod turn_runner;
 pub mod workflows;

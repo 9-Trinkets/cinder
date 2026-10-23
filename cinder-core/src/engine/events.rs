@@ -175,6 +175,10 @@ pub enum WorldEvent {
     ItemObserved {
         item_id: String,
     },
+    TopicSelected {
+        actor_id: String,
+        topic_id: String,
+    },
     CommandObjectiveProgressApplied {
         command_id: String,
     },

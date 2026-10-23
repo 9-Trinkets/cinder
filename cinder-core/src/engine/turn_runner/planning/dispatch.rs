@@ -12,6 +12,37 @@ use crate::engine::turn_runner::planner_handler::items::{
     plan_drop_command, plan_equip_command, plan_take_command, plan_unequip_command,
 };
 
+fn plan_topic_command(
+    content: &ContentPack,
+    planner_state: &crate::engine::state::WorldState,
+    target: &str,
+    planned: &mut PlannedTurn,
+) -> bool {
+    match crate::engine::topics::resolve_topic(content, planner_state, target) {
+        Some((actor, topic)) => {
+            planned
+                .events
+                .push(crate::engine::events::WorldEvent::TopicSelected {
+                    actor_id: actor.id.clone(),
+                    topic_id: topic.id.clone(),
+                });
+            true
+        }
+        None => {
+            planned
+                .events
+                .push(crate::engine::events::WorldEvent::ActionRejected {
+                    message: content
+                        .presentation
+                        .error_text
+                        .unknown_input
+                        .replace("{raw_input}", target),
+                });
+            false
+        }
+    }
+}
+
 fn plan_command_effects(
     content: &ContentPack,
     action: &ActionDefinition,
@@ -36,6 +67,9 @@ fn plan_command_effects(
         CommandEffect::AttackTarget,
     ]) {
         plan_targeted_state_command(content, action, input, context, planned)
+    } else if action.has_effect(CommandEffect::SelectTopic) {
+        let target = input.unwrap_or_default().trim();
+        plan_topic_command(content, context.planner_state, target, planned)
     } else if action.has_effect(CommandEffect::PickUpItem) && action.item_id.is_empty() {
         let target = input.unwrap_or_default().trim();
         plan_take_command(

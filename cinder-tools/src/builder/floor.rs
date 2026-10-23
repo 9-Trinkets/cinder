@@ -274,6 +274,7 @@ impl FloorBuilder {
                 y: draft.y,
             });
             built_rooms.push(RoomDefinition {
+                items: Default::default(),
                 id: draft.id,
                 title: draft.title,
                 summary: draft.summary,

@@ -379,7 +379,7 @@ impl WorldState {
                     .actor(&content.settings.combat.player_actor_id)
                     .map(|actor| seeding::resolve_inventory_specs(&actor.initial_inventory))
                     .unwrap_or_default(),
-                room_item_stock: BTreeMap::new(),
+                room_item_stock: seeded_room_item_stock(content),
                 room_item_charges: BTreeMap::new(),
                 actor_inventories: seeded_actor_inventories(content),
                 actor_equipment: seeded_actor_equipment(content),
@@ -709,6 +709,19 @@ fn feature_key(room_id: &str, feature_id: &str) -> String {
 
 fn consumable_key(room_id: &str, feature_id: &str, consumable_id: &str) -> String {
     format!("{room_id}::{feature_id}::{consumable_id}")
+}
+
+fn seeded_room_item_stock(content: &ContentPack) -> BTreeMap<String, u32> {
+    content
+        .rooms
+        .iter()
+        .flat_map(|room| {
+            room.items
+                .iter()
+                .filter(|(_, count)| **count > 0)
+                .map(|(item_id, count)| (room_item_key(&room.id, item_id), *count))
+        })
+        .collect()
 }
 
 fn room_item_key(room_id: &str, item_id: &str) -> String {

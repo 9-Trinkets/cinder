@@ -45,6 +45,7 @@ pub fn reducer_test_pack() -> ContentPack {
     pack.presentation = reducer_test_presentation();
     pack.rooms = vec![
         RoomDefinition {
+            items: Default::default(),
             id: LOUNGE_ID.to_string(),
             title: LOUNGE_TITLE.to_string(),
             summary: "A comfortable lounge.".to_string(),
@@ -68,6 +69,7 @@ pub fn reducer_test_pack() -> ContentPack {
             descriptions: vec![],
         },
         RoomDefinition {
+            items: Default::default(),
             id: KITCHEN_ID.to_string(),
             title: KITCHEN_TITLE.to_string(),
             summary: "A quiet kitchen.".to_string(),
@@ -235,6 +237,7 @@ pub fn reducer_test_stats() -> StatsDefinition {
 
 pub fn test_actor(id: &str, name: &str, room_id: &str) -> ActorDefinition {
     ActorDefinition {
+        topics: Vec::new(),
         id: id.to_string(),
         name: name.to_string(),
         room_id: room_id.to_string(),

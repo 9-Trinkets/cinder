@@ -107,6 +107,9 @@ pub enum PanelDataSource {
     FollowActors,
     /// Known spatial anchors (permanent platforms and active chalk anchors).
     TeleportAnchors,
+    /// Authored topics of the actors in the room, each chosen via
+    /// `say <actor>:<topic>`.
+    ActorTopics,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]

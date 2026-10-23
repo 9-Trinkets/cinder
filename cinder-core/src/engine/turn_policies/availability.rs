@@ -294,6 +294,9 @@ fn action_has_available_target(
             })
         }
         PanelDataSource::Exits | PanelDataSource::Features | PanelDataSource::FollowActors => true,
+        PanelDataSource::ActorTopics => {
+            !crate::engine::topics::room_topics(content, state).is_empty()
+        }
         PanelDataSource::TeleportAnchors => content.has_any_teleport_destination(state),
         PanelDataSource::LooseRoomItems => state
             .loose_room_items(room_id)

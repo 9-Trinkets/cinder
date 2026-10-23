@@ -153,6 +153,7 @@ fn conversion_narration_follows_the_flag_placement() {
     // An actor in the lounge converts via the `actor.surrounded` hook once its
     // only neighbor (the kitchen) holds a stone marker.
     pack.actors.push(ActorDefinition {
+        topics: Vec::new(),
         id: "golem".to_string(),
         name: "dark golem".to_string(),
         room_id: LOUNGE_ID.to_string(),
@@ -229,6 +230,7 @@ fn creating_an_item_in_a_room_can_complete_a_surround() {
     // An actor in the lounge is encircled once its only neighbor (the kitchen)
     // holds a chalk marking created by the trace action.
     pack.actors.push(ActorDefinition {
+        topics: Vec::new(),
         id: "golem".to_string(),
         name: "dark golem".to_string(),
         room_id: LOUNGE_ID.to_string(),
@@ -556,6 +558,7 @@ fn surround_removes_all_surrounding_sigils_on_success() {
         ..ActionDefinition::default()
     });
     pack.rooms.push(RoomDefinition {
+        items: Default::default(),
         id: "center".to_string(),
         title: "Center".to_string(),
         summary: "".to_string(),
@@ -589,6 +592,7 @@ fn surround_removes_all_surrounding_sigils_on_success() {
     });
     for r in ["north", "south", "east"] {
         pack.rooms.push(RoomDefinition {
+            items: Default::default(),
             id: r.to_string(),
             title: r.to_string(),
             summary: "".to_string(),

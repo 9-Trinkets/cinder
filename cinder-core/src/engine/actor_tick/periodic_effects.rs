@@ -107,6 +107,7 @@ mod tests {
     fn current_board_scope_excludes_effects_on_disconnected_rooms() {
         let (mut content, mut state, actor_id) = periodic_fixture(ActorTickScope::CurrentBoard);
         content.rooms.push(RoomDefinition {
+            items: Default::default(),
             id: "remote".to_string(),
             title: "Remote".to_string(),
             summary: String::new(),
