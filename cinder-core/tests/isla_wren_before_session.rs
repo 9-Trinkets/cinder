@@ -47,12 +47,17 @@ fn dr_bell_texts_as_a_message_on_the_phone() {
 }
 
 #[test]
-fn reading_a_note_prints_it_and_finishes_the_quest_step() {
+fn reading_a_note_prints_it_and_finishes_that_quest_step() {
     let runtime = runtime();
-    let before = runtime.quest_summaries().expect("quests");
-    assert_eq!(before.len(), 1);
-    assert_eq!(before[0].title, "Get ready for Wren");
-    assert_eq!(before[0].status, "active");
+    let before = quest_status(&runtime);
+    assert_eq!(
+        before,
+        vec![
+            ("Read your notes".to_string(), "active".to_string()),
+            ("Choose a book".to_string(), "active".to_string()),
+            ("Bring a snack".to_string(), "active".to_string()),
+        ]
+    );
 
     let text = runtime
         .run_turn("look at notes from last week")
@@ -60,9 +65,82 @@ fn reading_a_note_prints_it_and_finishes_the_quest_step() {
         .text();
     assert!(text.contains("Did not name the move"), "{text}");
 
-    let after = runtime.quest_summaries().expect("quests");
-    assert!(
-        after.iter().all(|q| q.status != "active"),
-        "quest still active: {after:?}"
-    );
+    assert_eq!(quest_status(&runtime)[0].1, "completed");
+    assert_eq!(quest_status(&runtime)[1].1, "active");
+}
+
+#[test]
+fn taking_the_snack_and_a_book_finish_their_steps() {
+    let runtime = runtime();
+    for command in ["go inside", "go hall", "go kitchen", "take snack"] {
+        runtime.run_turn(command).expect(command);
+    }
+    assert_eq!(quest_status(&runtime)[2].1, "completed");
+    for command in ["go hall", "go upstairs", "go upstairs", "go book room"] {
+        runtime.run_turn(command).expect(command);
+    }
+    runtime
+        .run_turn("take bear counts to ten")
+        .expect("take book");
+    assert_eq!(quest_status(&runtime)[1].1, "completed");
+}
+
+fn quest_status(runtime: &CinderRuntime) -> Vec<(String, String)> {
+    runtime
+        .quest_summaries()
+        .unwrap()
+        .into_iter()
+        .map(|q| (q.title, q.status))
+        .collect()
+}
+
+#[test]
+fn the_talk_panel_offers_what_to_say_to_the_people_in_the_room() {
+    let runtime = runtime();
+    runtime.run_turn("go inside").expect("go inside");
+    let options = runtime
+        .panel_options(&cinder_core::content::types::PanelDataSource::ActorTopics)
+        .expect("topics");
+    let titles: Vec<_> = options.iter().map(|o| o.title.as_str()).collect();
+    assert_eq!(titles, vec!["Greet Wren", "Ask Gloria about Wren"]);
+}
+
+#[test]
+fn saying_a_topic_plays_it_once_and_it_is_no_longer_offered() {
+    let runtime = runtime();
+    runtime.run_turn("go inside").expect("go inside");
+    let text = runtime.run_turn("say wren:greet").expect("say").text();
+    assert!(text.contains("Wren: Dad brought me."), "{text}");
+
+    let options = runtime
+        .panel_options(&cinder_core::content::types::PanelDataSource::ActorTopics)
+        .expect("topics");
+    assert_eq!(options.len(), 1);
+    assert_eq!(options[0].title, "Ask Gloria about Wren");
+
+    let typed = runtime
+        .run_turn("say ask gloria about wren")
+        .expect("typed")
+        .text();
+    assert!(typed.contains("read up before you take her"), "{typed}");
+}
+
+#[test]
+fn topics_are_not_offered_where_nobody_is_listening() {
+    let runtime = runtime();
+    let options = runtime
+        .panel_options(&cinder_core::content::types::PanelDataSource::ActorTopics)
+        .expect("topics");
+    assert!(options.is_empty(), "porch has no one to talk to");
+}
+
+#[test]
+fn the_book_room_and_kitchen_start_stocked_for_taking() {
+    let runtime = runtime();
+    for command in ["go inside", "go hall", "go kitchen"] {
+        runtime.run_turn(command).expect(command);
+    }
+    let text = runtime.run_turn("take snack").expect("take").text();
+    assert!(text.to_lowercase().contains("clementine"), "{text}");
+    assert_eq!(runtime.inventory_items().unwrap().get("snack"), Some(&1));
 }

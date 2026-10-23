@@ -53,5 +53,50 @@
     ],
     "kind": "misc",
     "description": "A typed page. Weekdays are at Mom's. Tuesday nights are at Dad's, and every second weekend. Thursday is a Mom day.\n\nIn the margin, in Dr. Bell's green ink. Both parents attentive. Child very tidy. Go slowly."
+  },
+  {
+    "id": "book-bird",
+    "label": "The Bird Who Carried Her Nest",
+    "aliases": [
+      "bird book",
+      "bird who carried her nest",
+      "nest book",
+      "the bird who carried her nest"
+    ],
+    "kind": "misc",
+    "description": "A thin picture book. On the cover, a round brown bird holds a nest in both wings, with a tree on either side of her."
+  },
+  {
+    "id": "book-bear",
+    "label": "Bear Counts to Ten",
+    "aliases": [
+      "bear book",
+      "bear counts to ten",
+      "counting book"
+    ],
+    "kind": "misc",
+    "description": "A fat, cheerful picture book. On the cover, a bear holds one paw up, and ten red balloons float over his head."
+  },
+  {
+    "id": "book-fox",
+    "label": "Two Houses for Fox",
+    "aliases": [
+      "fox book",
+      "two houses for fox",
+      "two houses"
+    ],
+    "kind": "misc",
+    "description": "A picture book with a fox standing between two small houses. A sticker on the spine reads Changing Families."
+  },
+  {
+    "id": "snack",
+    "label": "clementine and crackers",
+    "aliases": [
+      "snack",
+      "clementine",
+      "crackers"
+    ],
+    "kind": "misc",
+    "description": "A clementine and four square crackers on a paper napkin."
   }
 ]

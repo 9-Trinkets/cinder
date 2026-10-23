@@ -40,7 +40,20 @@
       "response_notes": [],
       "behavior_examples": []
     },
-    "room_id": "waiting-room"
+    "room_id": "waiting-room",
+    "topics": [
+      {
+        "id": "greet",
+        "label": "Greet Wren",
+        "narrative_lines": [
+          "You cross the waiting room and stop a few steps from her chair. Wren looks at your shoes, and then at the door.",
+          "Isla: Hi, Wren. It's Isla.",
+          "She touches the rabbit's chewed ear.",
+          "Wren: Dad brought me.",
+          "Wren: It's not a Dad day."
+        ]
+      }
+    ]
   },
   {
     "id": "gloria",
@@ -58,7 +71,18 @@
       "subtext_notes": [],
       "response_notes": [],
       "behavior_examples": []
-    }
+    },
+    "topics": [
+      {
+        "id": "about-wren",
+        "label": "Ask Gloria about Wren",
+        "narrative_lines": [
+          "Isla: How has she been?",
+          "Gloria: Dad dropped her off early. She's done the stones in the fish tank twice.",
+          "Gloria: You'll want to read up before you take her. It's a short one."
+        ]
+      }
+    ]
   },
   {
     "id": "dr-bell",

@@ -1,14 +1,16 @@
 {
   "initial_stage_ids": [
-    "stage-read-notes"
+    "stage-read-notes",
+    "stage-choose-book",
+    "stage-bring-snack"
   ],
   "stages": [
     {
       "id": "stage-read-notes",
-      "quest_id": "get-ready",
-      "quest_title": "Get ready for Wren",
+      "quest_id": "read-notes",
+      "quest_title": "Read your notes",
       "quest_kind": "main",
-      "summary": "Read your notes on Wren. They are in your bag. Use Look.",
+      "summary": "Read your notes on Wren. They are in your tote. Use Look.",
       "advance_signals": [
         "item_observed:note-intake",
         "item_observed:note-referral",
@@ -18,6 +20,32 @@
       ],
       "next_stage_ids": [],
       "narrative_lines": []
+    },
+    {
+      "quest_id": "choose-book",
+      "quest_title": "Choose a book",
+      "quest_kind": "main",
+      "next_stage_ids": [],
+      "narrative_lines": [],
+      "id": "stage-choose-book",
+      "summary": "Choose a picture book from the book room on the third floor.",
+      "advance_signals": [
+        "item_acquired:book-bird",
+        "item_acquired:book-bear",
+        "item_acquired:book-fox"
+      ]
+    },
+    {
+      "quest_id": "bring-snack",
+      "quest_title": "Bring a snack",
+      "quest_kind": "main",
+      "next_stage_ids": [],
+      "narrative_lines": [],
+      "id": "stage-bring-snack",
+      "summary": "Bring a snack from the kitchen.",
+      "advance_signals": [
+        "item_acquired:snack"
+      ]
     }
   ]
 }

@@ -143,6 +143,84 @@
         "prompt_verb": "study",
         "visible_by_default": true
       }
+    },
+    {
+      "id": "talk",
+      "command": "TALK",
+      "label": "Talk",
+      "group": "conversation",
+      "phrases": [
+        "say",
+        "talk"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "effects": [
+        "select_topic"
+      ],
+      "player_command": {
+        "usage": "say <what to say>",
+        "example": "say greet wren",
+        "advances_time": false,
+        "input": {
+          "required": true
+        }
+      },
+      "available": {},
+      "ui": {
+        "bar": true,
+        "overflow": false,
+        "group": "conversation",
+        "sort_order": 110,
+        "shortcut": 3,
+        "panel": "talk",
+        "panel_config": {
+          "title": "What do you say?",
+          "prompt": "",
+          "data_source": "actor_topics",
+          "on_select": "execute_command"
+        }
+      }
+    },
+    {
+      "id": "take",
+      "command": "TAKE",
+      "label": "Take",
+      "group": "items",
+      "phrases": [
+        "take",
+        "pick up",
+        "get",
+        "pickup"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "pick_up_item"
+      ],
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "panel": "take",
+        "panel_config": {
+          "title": "In the room",
+          "prompt": "",
+          "data_source": "loose_room_items",
+          "on_select": "execute_command"
+        },
+        "group": "items",
+        "sort_order": 120
+      },
+      "player_command": {
+        "usage": "take <item>",
+        "example": "take iron chisel",
+        "advances_time": false,
+        "input": {
+          "required": true
+        }
+      }
     }
   ]
 }

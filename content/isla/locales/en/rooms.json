@@ -554,7 +554,10 @@
           "door to the yard"
         ]
       }
-    ]
+    ],
+    "items": {
+      "snack": 1
+    }
   },
   {
     "id": "back-yard",
@@ -1131,7 +1134,12 @@
           "door"
         ]
       }
-    ]
+    ],
+    "items": {
+      "book-bird": 1,
+      "book-bear": 1,
+      "book-fox": 1
+    }
   },
   {
     "id": "basement",

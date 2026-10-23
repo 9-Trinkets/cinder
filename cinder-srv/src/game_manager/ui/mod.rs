@@ -411,6 +411,27 @@ mod tests {
     }
 
     #[test]
+    fn isla_waiting_room_offers_talk_topics_and_the_tote() {
+        let pack = cinder_core::loader::load_named_pack("isla", Some("en")).expect("isla loads");
+        let runtime = CinderRuntime::new(pack, false).expect("runtime creates");
+        runtime.run_turn("go inside").expect("go inside");
+        let snapshot = build_ui_snapshot(&runtime, "isla", &[]).expect("snapshot builds");
+
+        let bar: Vec<_> = snapshot
+            .action_bar_actions
+            .iter()
+            .map(|a| a.id.as_str())
+            .collect();
+        assert!(bar.contains(&"talk"), "{bar:?}");
+        let talk = &snapshot.panel_options["talk"];
+        let titles: Vec<_> = talk.iter().map(|o| o.title.as_str()).collect();
+        assert_eq!(titles, vec!["Greet Wren", "Ask Gloria about Wren"]);
+        assert_eq!(talk[0].command.as_deref(), Some("say wren:greet"));
+        assert_eq!(snapshot.ui_text.look_group_items, "Tote");
+        assert!(snapshot.sidebar_sections.iter().any(|id| id == "quests"));
+    }
+
+    #[test]
     fn quests_and_levels_stay_hidden_until_player_visits_qualifying_room() {
         let pack = cinder_core::loader::load_named_pack("layla", Some("en")).expect("layla loads");
         let runtime = CinderRuntime::new(pack.clone(), false).expect("runtime creates");
