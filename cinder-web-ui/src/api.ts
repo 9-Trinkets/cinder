@@ -443,6 +443,7 @@ export interface UiSnapshot {
     look_panel_title: string
     look_group_room: string
     look_group_things: string
+    look_group_items?: string
     look_group_people: string
     look_group_party?: string
     room_items_sidebar_label: string
@@ -453,6 +454,7 @@ export interface UiSnapshot {
     talk_panel_title: string
     talk_panel_prompt: string
     menu_option_list_title: string
+    channel_header_label?: string
     exit_confirm_title: string
     exit_confirm_body: string
     shell_menu: {

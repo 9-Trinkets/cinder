@@ -188,11 +188,13 @@ const TranscriptLine = memo(function TranscriptLine({
   searchQuery,
   craftedLabels,
   interactableLabels,
+  channelHeaderLabel,
 }: {
   line: Line
   searchQuery?: string
   craftedLabels?: string[]
   interactableLabels?: string[]
+  channelHeaderLabel?: string
 }) {
   const { t } = useI18n()
 
@@ -228,7 +230,9 @@ const TranscriptLine = memo(function TranscriptLine({
     return (
       <div className="my-3.5 pl-4 border-l-2 border-rose/60 font-prose">
         <span className="font-mono text-[10px] font-semibold tracking-widest uppercase text-rose block mb-1">
-          {t('hud.dispatch', { speaker })}
+          {channelHeaderLabel
+            ? channelHeaderLabel.replace('{speaker}', speaker)
+            : t('hud.dispatch', { speaker })}
         </span>
         <div className="text-text text-base leading-[1.8] italic">
           <HighlightedText

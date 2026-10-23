@@ -17,6 +17,11 @@ pub struct UiTextDefinition {
     /// Label of the action-bar action that opens the pending menu's choices.
     #[serde(default = "default_menu_action_label")]
     pub menu_action_label: String,
+    /// Header shown above channel messages, with `{speaker}`. Empty keeps the
+    /// client's default ("Dispatch • {speaker}"); a pack with a phone or chat
+    /// channel can set e.g. "Message • {speaker}".
+    #[serde(default)]
+    pub channel_header_label: String,
     #[serde(default = "default_menu_choice_hint")]
     pub menu_choice_hint: String,
     #[serde(default = "default_menu_choice_transcript")]
@@ -121,6 +126,10 @@ pub struct UiTextDefinition {
     pub look_group_room: String,
     #[serde(default = "default_look_group_things")]
     pub look_group_things: String,
+    /// Heading for carried items in the Look panel (e.g. "Tote"). Empty keeps
+    /// them listed with the room's things.
+    #[serde(default)]
+    pub look_group_items: String,
     #[serde(default = "default_look_group_people")]
     pub look_group_people: String,
     #[serde(default = "default_look_group_party")]

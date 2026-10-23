@@ -41,8 +41,14 @@ export function groupLookOptions(
   const room = options.filter(option => option.id === '__room__')
   if (room.length > 0) grouped.push([uiText.look_group_room, room])
 
-  const things = options.filter(option => option.id.startsWith('feature:') || option.id.startsWith('item:'))
+  const itemsGroupLabel = uiText.look_group_items?.trim()
+  const things = options.filter(
+    option => option.id.startsWith('feature:') || (!itemsGroupLabel && option.id.startsWith('item:')),
+  )
   if (things.length > 0) grouped.push([uiText.look_group_things, things])
+
+  const carried = itemsGroupLabel ? options.filter(option => option.id.startsWith('item:')) : []
+  if (carried.length > 0) grouped.push([itemsGroupLabel!, carried])
 
   const people = options.filter(option => option.id.startsWith('actor:'))
   if (people.length > 0) {

@@ -332,6 +332,7 @@ export default function GamePage() {
             gameOver={gameOver}
             craftedLabels={uiSnapshot?.crafted_consumable_labels ?? []}
             interactableLabels={uiSnapshot?.interactable_labels ?? []}
+            channelHeaderLabel={uiSnapshot?.ui_text.channel_header_label}
             transcriptRef={transcriptRef}
             bottomRef={bottomRef}
             onScroll={handleTranscriptScroll}

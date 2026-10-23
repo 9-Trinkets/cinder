@@ -10,6 +10,8 @@ impl Default for super::ui_text::UiTextDefinition {
             game_over_hint: default_game_over_hint(),
             menu_option_list_title: default_menu_option_list_title(),
             menu_action_label: default_menu_action_label(),
+            channel_header_label: String::new(),
+            look_group_items: String::new(),
             menu_choice_hint: default_menu_choice_hint(),
             menu_choice_transcript: default_menu_choice_transcript(),
             shell_menu_title: default_shell_menu_title(),

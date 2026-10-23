@@ -69,6 +69,7 @@ const TranscriptPane = memo(function TranscriptPane({
   onDismissGameClosure,
   craftedLabels,
   interactableLabels,
+  channelHeaderLabel,
 }: {
   lines: Line[]
   busyLabel: string | null
@@ -82,6 +83,7 @@ const TranscriptPane = memo(function TranscriptPane({
   onDismissGameClosure: () => void
   craftedLabels: string[]
   interactableLabels?: string[]
+  channelHeaderLabel?: string
 }) {
   const { t } = useI18n()
   const [searchOpen, setSearchOpen] = useState(false)
@@ -160,6 +162,7 @@ const TranscriptPane = memo(function TranscriptPane({
                 searchQuery={searchQuery}
                 craftedLabels={craftedLabels}
                 interactableLabels={interactableLabels}
+                channelHeaderLabel={channelHeaderLabel}
               />
             ),
           )}
