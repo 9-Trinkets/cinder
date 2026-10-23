@@ -124,7 +124,7 @@ Isla is a child psychologist at **Willow House** (the building and rooms are des
 2. Session two: Wren built a tower of blocks, in silence, then knocked it down and tidied every block.
 3. Session three (the act): the first time Wren has come with a plan.
 
-Sessions are **Thursdays at 4:00**, thirty minutes. Mom usually brings her, and Dad does not. **Today Dad brought her,** because Mom's meeting ran long, and he left her at the door. Mom will come at half past four. That breaks Wren's notebook rule (Thursday is a yellow day, and a green-door parent is at the door), and she arrives a little off-balance.
+Sessions are **Thursdays at 4:00**, thirty minutes. Mom usually brings her, and Dad does not. **Today Dad dropped her off ten minutes early,** on his way to a job across town, and left. Mom's meeting ran long, so she will come at half past four. That breaks Wren's notebook rule (Thursday is a yellow day, and a green-door parent brought her), and she is sitting in the waiting room a little off-balance when Isla arrives.
 
 ## 10. Wren in the playroom
 

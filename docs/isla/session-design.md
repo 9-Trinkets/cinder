@@ -1,112 +1,187 @@
-# Isla: single-act design (draft)
+# Isla: the Wren act, session design (draft)
 
-Terminology: one therapy session is one **act** (an act sits inside a persistent playthrough, which is the session).
+How the game plays, for the first patient, in Willow House. Read with `wren-bible.md`, `isla-bible.md`, `willow-house.md` and `voice-guide.md`. Items marked **(decision)** can change.
 
-Status: proposal for a rebuilt, minimal Isla pack. Nothing here is implemented. Not playtested. Psychology 101, not real therapy: players should learn what therapy feels like without thinking they can do it.
+Terminology: one therapy session is one **act**. An act sits inside a persistent playthrough, which the engine calls a session.
 
-The first patient is **Hal** (`hal-story-spine.md`); pronouns below are she/her for a generic patient. Noa was the earlier candidate (`noa-story-spine.md`, kept for reference).
+**No clock.** The game has no time of day. Progress comes from quests, hooks and what the player does. Thursday at 4:00 and a thirty-minute session are backstory only.
 
-**The open question is whether this is fun.** The first build is pure authored content (no LLM) so the player experience can be tested as a fixed set of paths before anything else is added.
+Status: proposal. Not implemented beyond the walkable house. Psychology 101, not real therapy: the player should learn what attunement feels like without coming away thinking they can do therapy.
 
-## 1. Fantasy and goal
+## 1. What the player is doing
 
-The player is Isla, a bibliotherapist. The skill being played is **attunement**: notice what the patient is asking for in each line and answer in a way that fits.
+The player is Isla. The skill being played is **attunement**: notice what a child offers, answer it in a way that fits, and let the child lead. Success is not "Wren gets fixed". Success is "Wren felt met", and the player finds out how it went from what Wren and her mom leave behind at the end. No score is shown during play.
 
-Success is not "the patient gets fixed". Success is "the patient felt seen". The player never sees a score during play. They find out how it went from the patient's review at the end.
+## 2. The shape of the game **(decision)**
 
-## 2. Act flow
+Three phases, with no clock:
 
-| # | Beat | Player does | Output |
-|---|------|-------------|--------|
-| 1 | Arrival and greeting | short, 1-2 exchanges | first clues (umbrella, seat, phone) |
-| 2 | Intake | a few exchanges | first bids |
-| 3 | Serve | one beat, one choice | what the patient accepts or refuses is a clue |
-| 4 | Pick a book | choose between 2 books | one fits, one is a near miss |
-| 5 | Reading and stops | read aloud spread by spread, stop to talk | 3-4 stops, a few bids each |
-| 6 | Closing | return one of the patient's own lines | the **final piece** |
-| 7 | Leaving, then review | none | the patient's review with rating |
+| Phase | What it is |
+|---|---|
+| **1. Before you greet Wren** | Isla gets ready. Free exploration of Willow House, with a short, optional list. **Wren is already in the waiting room.** |
+| **2. The session** | The act begins when Isla greets Wren. Mostly choices, in the playroom. |
+| **3. After** | Mom collects Wren. Isla writes her note on the back steps, and her phone buzzes with what came in. |
 
-Target length: 20-30 minutes. The next act is an open line at the end of the review, not built yet.
+## 3. Where Isla is at the start **(decision)**
 
-## 3. Bids
+**On the front porch, on a gray afternoon in November.** She has just chained her bike and unclipped her tote. Through the glass in the green door she can see Wren sitting alone on a low chair in the waiting room with Biscuit in her lap and her shoes lined up in a perfect row.
 
-Each key line the patient says is a **bid**, written with a hidden type:
+Dad dropped her off early, on his way to a job across town, and left. That is why she is already there. Gloria is at the desk. Mom will collect her afterward, because her meeting ran late.
 
-| Bid type | Example (Hal) | What he is asking for |
+The game starts here because it is the last moment Isla can choose what to do before she greets a child.
+
+## 4. The first quest: "Get ready for Wren" **(decision)**
+
+The quest log shows one quest with three small, **optional** steps. None is required, and none is scored. Together they decide how well Isla knows Wren, what she holds, and what the room contains.
+
+| Step | How it is done | What it changes |
 |---|---|---|
-| Feeling | "Sensible bear. Follows instructions." | to be noticed, gently |
-| Invitation | "Go on. What's the next step?" | you to go on |
-| Opening | "I wash both. I don't know why that part matters." | to be received, not interpreted |
-| Deflection | "Old habits. Anyway, the bridge." | an exit |
+| **Read your notes** | Look at any of the case notes Isla carries (section 5). | The player learns what Isla knows. Without it the player goes in knowing only what the opening said, and is more likely to pick the wrong book. |
+| **Choose a book** | Visit the book room and take one from the shelves. | Decides which book Isla reads. It is the first real decision (section 9). |
+| **Bring a snack** | Take a clementine and some crackers from the kitchen to the playroom. | Wren will ask for a snack. If there is none ready, Isla has to leave the room to get one. |
 
-## 4. Fit table
+**Reading the notes is strongly encouraged but never required.** The ways the game does it, all driven by events and not by a clock:
+- **A text from Dr. Bell arrives on its own** as Isla steps inside (section 5): "Have a look at your notes before you take her, especially last week's."
+- **The notes are on the Look panel** from the start, listed with what Isla is carrying.
+- **The quest log lists it first.**
+- **Gloria mentions it** the first time Isla steps inside: "You'll want to read up before you take her. It's a short one."
+- **It matters.** The notes hold the one clue that makes the right book choice easy, and a player who skips them is likelier to make the mistake.
 
-Each bid type has fixed answers:
+**Pacing.** There is no deadline. Wren waits, and the player can explore the whole house. Finishing a step can prompt a short line, for example Gloria saying "She's been very patient" once the notes are read.
+
+**If she does nothing.** She walks in and greets Wren with only the tote. The book defaults to the safe one in the tote (a counting book, section 9), there is no snack, and she has read nothing. The act still works, with less to go on.
+
+## 5. Isla's notes and her phone **(decision)**
+
+Two things, with different jobs. **What she carries is read when she chooses.** **What arrives on its own comes on her phone.**
+
+### Her case notes (things she holds)
+
+Isla keeps a **folder of notes** on Wren. Each page is its own item in her tote, so the whole folder is a collection she can read, in any order, as often as she likes:
+
+1. **The intake form,** in the parents' own words. Mom: "She's been so good. Honestly, no trouble at all." Dad: "She's a good little trooper."
+2. **The school counselor's referral,** with Ms. Okafor's observations: she stopped sharing at morning meeting, and she sorts the class library into piles.
+3. **Isla's notes from session one,** a brief meeting.
+4. **Isla's notes from session two.** Wren built a tower of blocks in silence, knocked it down, and tidied every block. **Isla also wrote: "Did not name the move. W. left the table when I said 'two houses.'"** This is the clue that warns against a book about exactly that.
+5. **The family schedule,** a typed page with Mom's days and Dad's days, and Dr. Bell's margin note: "Both parents attentive. Child very tidy. Go slowly."
+
+None of it is about the cup.
+
+**How it works in the game:**
+- The player opens the **Look** panel, where the pages are listed with whatever else Isla is carrying, and chooses one. Its text prints into the transcript.
+- No new screen and no new action. It uses what the game already has for looking at things Isla holds.
+- **A new page is added after the session:** Isla's own **session three note**, written on the back steps. It is in her own voice, and what it says depends on what the player did. The folder keeps growing with each patient and each session.
+- The player can read the folder any time they like, with no time cost.
+
+### Her phone (things that arrive)
+
+Isla's phone is in her tote, and **off while she is with a child**, so nothing arrives during the session. Messages appear in the transcript as a styled block with the sender's name, in the same style as a handler's voice.
+
+- **At the start,** as she steps inside, her phone buzzes. **Dr. Bell,** the director, is on a call upstairs: "Wren's early. Dad dropped her off. Have a look at your notes before you take her, especially last week's. Go slowly."
+- **After the session,** on the back steps, it buzzes again:
+  - **A message from Mom** about the session. It is the feedback, and in the fullest case it says Wren hummed the Friday song in the car.
+  - **A text from Dr. Bell:** "How did it go? Come and find me tomorrow."
+- Wren's drawing, which she left for Isla, is described in plain narration.
+
+## 6. When the session begins **(decision)**
+
+Wren is **already in the waiting room.** There is no arrival scene: no truck, no goodbye from Dad, no walk through the door, and nothing waits on a clock.
+
+- **The pickup card** shows Dad's photo, not Mom's. That is the plant. Isla can look at it, and Gloria mentions it.
+- **From Isla's first step inside** Wren is visible and can be looked at. She is sorting the fish tank's smooth stones into two piles, in silence.
+- **The act begins** when the player chooses **Greet Wren**, a bar action available in the waiting room while Wren is there. Until then the player can walk anywhere and do the optional steps, for as long as they like.
+- If the player greets her immediately, the preparation is skipped.
+
+## 7. The session **(decision)**
+
+All authored, with no LLM. The session has these beats, each a short screen of text and a small choice:
+
+1. **Meeting her.** Wren is wary and a little off-balance (Dad dropped her early, and it is a Mom day). Isla greets her. **Bid:** she checks her notebook and says it is the wrong day.
+2. **Walking in.** Down the hall, past the white-noise machine, into the playroom. The rules card is read aloud.
+3. **The bins.** Wren starts sorting toys into the two lidded bins and counting. Isla can join, wait, or comment.
+4. **The snack.** She asks for a clementine and half a cracker, cut in squares, or notices that there is none.
+5. **Rabbit's bag.** She sets Biscuit's bag beside her and packs it again. **First secret:** what is in it.
+6. **Stories first.** Isla draws the cloth over the toy shelf and turns on the lamp. The reading begins.
+7. **The book, in stops.** Isla reads a few pages, Wren reacts, and there is a choice. The book opens the next secrets, one at a time.
+8. **The cup.** The last secret, and the hardest to reach.
+9. **Closing.** The timer on the shelf gives its soft warning, and then its chime. This is a story beat that arrives when the session reaches its closing, not a clock running out. Isla can offer one of Wren's own lines back, or nothing.
+
+## 8. After the session **(decision)**
+
+- **Mom arrives** and waits in the waiting room. Isla speaks with her briefly. Mom is relieved and a little worried.
+- **Isla sits on the back steps for five minutes** with her bike beside her. Her phone buzzes (section 5), and she writes her note. That note is the new page added to the folder.
+- **The game ends** when she has read her note and Mom's message, or chooses to stop. There is no star rating. The note, Mom's message and Wren's drawing are the feedback, and the lines in each depend on which secrets were held and which book was chosen.
+
+## 9. The choice of book **(decision)**
+
+The shelves in the book room are sorted loosely by subject. There are many books, and three matter. Each is something a careful player can reason about from the file.
+
+| Book | What it is | Effect |
+|---|---|---|
+| ***The Bird Who Carried Her Nest*** | A bird who will not set down her nest because she is afraid either tree will be sad. | **The fit.** It opens the later secrets. |
+| ***Bear Counts to Ten*** | A cheerful counting book. Wren will love it. | **Safe and shallow.** It reaches the first secret or two, and no more. This is the default in Isla's tote. |
+| ***Two Houses for Fox*** | A book about a fox whose parents live apart. It is on the low DIVORCE shelf. | **Too direct.** Wren goes quiet and the session retreats. |
+
+The third is the instructive one. The file says her parents are separating, and a book about exactly that looks like the obvious choice. A player who read Isla's note from session two ("W. left the table when I said 'two houses'") has the clue to avoid it. A player who skipped the file is more likely to fall in, and learns, through play, that a child may not be ready to meet her own story head on.
+
+## 10. Bids, moves and fit, for a child **(decision)**
+
+A **bid** is something Wren offers, in words or in action. Each has a hidden type:
+
+| Bid type | Example | What she is asking for |
+|---|---|---|
+| **Offer** | Sorting toys into the bins. "These ones live here." | for it to be noticed |
+| **Ask** | "Is Rabbit allowed?" | a plain, short answer |
+| **Step back** | Switching to a cartwheel when the topic gets big | to be let off the hook |
+| **Tell** | "It came off all in one bit." (a secret) | to be received, not fixed |
+
+Isla's **moves:** Reflect ("Those ones live here."), Wonder ("I wonder what Biscuit thinks."), Join (puts a toy in a bin too), Offer (hands over the red crayon), Wait (sits and watches), Follow (goes along with the change of subject), Probe (a direct question), and Reassure ("It's okay.").
+
+**Fit table:**
 
 | Bid | Fits | Hurts | Everything else |
 |---|---|---|---|
-| Feeling | Reflect, Question | Bridge (too fast) | shallow |
-| Invitation | Read on, Question | Wait (leaves her hanging) | shallow |
-| Opening | Reflect her words, Wait | Bridge, Link (you start interpreting) | shallow |
-| Deflection | Return, Wait | Link, Bridge (you push) | shallow |
+| Offer | Reflect, Join, Wait | Probe | shallow |
+| Ask | a short plain answer (Reflect or Offer) | Probe | shallow |
+| Step back | Follow, Wait | Probe, Reassure | shallow |
+| Tell | Reflect, Wait | Probe, Reassure | shallow |
 
-Move types: Reflect, Question, Link (to something she said earlier), Bridge (to herself), Wait, Return (to the book), Read on.
+With a child, **Wait and Follow often fit,** which is a change from the adult version. **Probe always hurts,** and **Reassure hurts at a Tell** because it answers a guilt that has not been said yet.
 
-## 5. The ladder (the only state)
+## 11. Secrets and scoring **(decision)**
 
-Her bids are authored in order from surface to vulnerable. Her position on the ladder is the only state:
+Kept from the earlier design, and patient-neutral:
+- **Every bid met on the first try earns 1 point.** A **secret** is a bid that counts double, and only counts if it is **held** (Reflect or Wait). A fumbled secret costs nothing, and the player still hears it.
+- A secret appears only if the player has earned at least **60%** of the points available so far. The last one also needs the one before it held.
+- The book decides how far the chain goes (section 9).
+- The number of bids and the point total will be set once the bids are written.
 
-- You **meet** a bid: she moves up one rung.
-- You **miss** it (shallow): she tries once more, in a safer form, then moves on.
-- You **hurt** it: she drops one rung.
+The four secrets, as things Isla finds before Wren says them (see `wren-bible.md`): 1. The bag. 2. The notebook. 3. The quiet. 4. The cup.
 
-**The book decides which rungs exist.** The fitting book unlocks the vulnerable rungs. The near-miss book gives only surface rungs, so she never gets there.
+## 12. What the engine can already do
 
-## 5b. Secrets (count double)
+| Need | Support |
+|---|---|
+| Walk the house, look at things | Built (Willow House) |
+| Wren already in the waiting room | An actor placed there at the start |
+| **Greet Wren** starts the act | An action available only in the waiting room while Wren is present, opening the first menu |
+| Quests and nudges, with no clock | Stages, quests, and hooks on events such as entering a room, reading something, or taking an item |
+| **Case notes Isla can read** | Items carried in the tote, listed on the Look panel, whose description prints when looked at. Built. |
+| **A new note added after the session** | The `GrantItem` effect on a stage, which already exists. Conditional variants use a hook. |
+| The book is chosen | `item_acquired:<book>` signal, with books as items |
+| A snack is brought | `item_acquired` plus a room check |
+| Bids as menus, points and the 60% gate | Built and tested earlier (menus, hooks, conditional signals) |
+| **Messages on the phone** | The handler pattern exists, but it has **one** voice. **Needs** a small generic change so a pack message can name its speaker (Dr. Bell, Mom), and a text setting for the block's header ("Message" instead of "Dispatch"). |
+| **A "read your notes" quest step** | **Needs** one line: looking at an item should fire an `item_observed:<id>` signal, as looking at a feature already does. |
+| Closing and feedback that depend on what was held | **Needs** options and lines shown only when a condition holds |
 
-Each secret is an Opening bid at the top of a rung. Discovering it is fun, and it is also the player's chance to score extra:
+So the notes need almost nothing. The phone needs a small generic change, and the closing needs the conditional options and lines we already knew about.
 
-- **Held** (Reflect her words, or Wait): the secret scores double, and an authored after-beat plays (a visible shift and a reframe line).
-- **Fumbled** (anything else): the player still hears the fact, but it scores nothing and costs nothing (it does not drop her down the ladder).
+## 13. Open questions
 
-She only tells a secret if you have climbed the ladder to it, so scoring needs both getting there and receiving it well. The notes page can be called "What she trusted you with"; held entries are filled in and fumbled ones are greyed ("told, not held").
-
-## 6. Menus and content (all authored)
-
-- Every bid is written with its own menu of at most four options. Each option has fixed wording and a fixed type, and the engine looks up its result in the fit table.
-- Every menu has at least one option that fits and at least one that does not. Options that do not fit must sound reasonable (too early, too pushy), never rude, so the right answer is not obvious.
-- Wait is a separate "stay quiet" button, not a numbered option.
-- Slot order is shuffled; nothing in the wording marks which ones fit.
-- The patient's lines, reactions, the book text and every ending line are written by hand.
-- No LLM in the first build. An LLM for wording can be added later behind the same slots.
-
-## 7. Closing and review
-
-- **Final piece.** Isla returns one of the patient's own lines. The menu offers 3-4 lines she said during the act: one real insight, the rest deflections.
-- **Rating.** Every bid met on the first try earns 1 point; a secret is a bid that counts double and earns its points only if held. Stars = points earned divided by points available, times five, rounded to the nearest half star, minimum 1. Bids on rungs she never reaches count as unmet. A bid met only on the retry earns nothing.
-- **Review.** Written by the patient at home, first person, from authored lines picked by yes/no facts: which secrets you held, did the book fit, did you return her real line or a deflection. Rating and text may disagree. No score is shown during play.
-
-## 8. First build and the fun test
-
-Keep: Hal (see `hal-story-spine.md`), one room, two books (one fit, one near miss), about 12 bids with fallbacks.
-
-Cut for now: the kitchen and service items, Awa/Jonah/Sophea, the five secrets, the three generic checkpoints, the clock and timeout stages, the Trust meter, Absorption, Depth, flooding.
-
-**Fun hypotheses to test with a prototype script (before any engine work):**
-1. The player hesitates between options for a real reason, not because the right one is obvious.
-2. A miss feels like a missed chance, not a quiz penalty.
-3. When she opens up, it feels like a reward the player earned.
-4. The review makes the player want to try again and do something different.
-
-**Likely failure:** it plays as "guess the right move type". Mitigations to try if so: two fits per bid with different consequences, more textured misses (she tries again differently), and bids whose type is ambiguous until you read her reaction.
-
-## 9. Open questions
-
-1. How many bids make a good act, and how many rungs per book?
-2. Does Wait need its own consequences?
-3. Should the player see her reaction text only, or also a faint hint of the ladder?
-4. Is two books enough for the choice to matter?
-
-## 10. Earlier models (superseded)
-
-The first design used three variables (Safety, Absorption, Depth) and then a single Trust meter. Both were replaced by bids because the ladder is easier to explain, author and test. Table-read findings from the three-variable model: a Link from a real clue stepped her in one layer when she was ready; a Wait too early did nothing; reading raised what she could reach; a story can carry her deeper than she can hold, and the right move then is to receive; six or seven options felt heavy (rule: at most four); flagged lines worked as raw material for the closing.
+1. **Wren waiting alone** with Gloria, with no limit. Fair to her, or too sad before the session starts?
+2. **Without a deadline, does the preparation matter enough?** The three steps are optional. The pull is the notes' clue about the books, Dr. Bell's text, and Gloria's nudge.
+3. **Reading notes with Wren in the room.** The engine allows it. Should the story put the folder away when she greets Wren, so it cannot be read mid-session?
+4. **One new page, or one per outcome?** The session three note has several versions depending on what happened. Is that the right size?
+5. **Would Mom really message her psychologist?** Clinics often have secure messaging for this. The alternative is a note left at the desk.
+6. **Three books enough?** Should there be a fourth, and what would it be?
