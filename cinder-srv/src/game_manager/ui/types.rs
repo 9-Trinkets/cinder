@@ -191,6 +191,11 @@ pub struct PanelConfigData {
     pub prompt: String,
     pub data_source: PanelDataSource,
     pub on_select: cinder_core::content::types::PanelSelectAction,
+    /// How the web UI lays the options out. `"list"` shows one option per
+    /// row in the player's own words (no title-casing, numbered, and a pick
+    /// echoes only its text); absent means the default grid of short labels.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub layout: Option<String>,
 }
 
 #[derive(Clone, Serialize)]
@@ -305,6 +310,7 @@ pub struct UiSnapshot {
     /// False for spectator packs (e.g. Aera) where the player watches rather
     /// than types commands.
     pub show_player_input: bool,
+    pub show_clock: bool,
     pub action_bar_actions: Vec<ActionBarAction>,
     pub overflow_actions: Vec<OverflowAction>,
     pub look_options: Vec<LookOptionData>,

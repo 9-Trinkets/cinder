@@ -14,6 +14,9 @@ pub struct UiTextDefinition {
     pub game_over_hint: String,
     #[serde(default = "default_menu_option_list_title")]
     pub menu_option_list_title: String,
+    /// Label of the action-bar action that opens the pending menu's choices.
+    #[serde(default = "default_menu_action_label")]
+    pub menu_action_label: String,
     #[serde(default = "default_menu_choice_hint")]
     pub menu_choice_hint: String,
     #[serde(default = "default_menu_choice_transcript")]
@@ -188,6 +191,10 @@ pub(super) fn default_game_over_hint() -> String {
 
 pub(super) fn default_menu_option_list_title() -> String {
     "Choose an option".to_string()
+}
+
+pub(super) fn default_menu_action_label() -> String {
+    "Choices".to_string()
 }
 
 pub(super) fn default_menu_choice_hint() -> String {

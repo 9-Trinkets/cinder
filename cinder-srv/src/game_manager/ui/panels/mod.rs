@@ -17,6 +17,7 @@ pub(super) use options::build_panel_options;
 pub(super) use overflow::build_overflow_actions;
 pub(super) use runtime::{
     build_active_menu, build_interactable_labels, build_look_options, build_talk_options,
+    menu_action,
 };
 pub(super) use shared::{msg, msg_fmt, panel_config_data, title_case};
 

@@ -9,6 +9,7 @@ impl Default for super::ui_text::UiTextDefinition {
             act_ended_title: default_act_ended_title(),
             game_over_hint: default_game_over_hint(),
             menu_option_list_title: default_menu_option_list_title(),
+            menu_action_label: default_menu_action_label(),
             menu_choice_hint: default_menu_choice_hint(),
             menu_choice_transcript: default_menu_choice_transcript(),
             shell_menu_title: default_shell_menu_title(),

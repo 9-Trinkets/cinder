@@ -53,10 +53,12 @@ export default function StatusPanel({
     location: () => (
       <Section title={t('hud.location')} defaultOpen>
         <p className="text-text font-medium">{uiSnapshot.current_room_name}</p>
-        <p className="text-text text-xs">
-          {t('hud.day', { day: uiSnapshot.day_number })}
-          {uiSnapshot.time_label ? <span className="text-muted ml-1">— {formatClockLabel(uiSnapshot.time_label, locale)}</span> : null}
-        </p>
+        {uiSnapshot.show_clock !== false && (
+          <p className="text-text text-xs">
+            {t('hud.day', { day: uiSnapshot.day_number })}
+            {uiSnapshot.time_label ? <span className="text-muted ml-1">— {formatClockLabel(uiSnapshot.time_label, locale)}</span> : null}
+          </p>
+        )}
       </Section>
     ),
 

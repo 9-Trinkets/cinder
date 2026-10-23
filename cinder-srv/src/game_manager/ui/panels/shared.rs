@@ -8,6 +8,7 @@ pub(crate) fn panel_config_data(pc: &PanelConfig) -> PanelConfigData {
         prompt: pc.prompt.clone(),
         data_source: pc.data_source.clone(),
         on_select: pc.on_select.clone(),
+        layout: None,
     }
 }
 

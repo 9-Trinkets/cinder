@@ -6,6 +6,9 @@ import { useI18n } from '../i18n'
 export function getActionMeta(actionId: string, label: string): { borderClass: string; textClass: string; bgClass: string } {
   const id = actionId.toLowerCase()
   const lbl = label.toLowerCase()
+  if (id === 'menu') {
+    return { borderClass: 'border-pine hover:border-foam', textClass: 'text-foam font-semibold', bgClass: 'bg-pine/20 hover:bg-pine/30' }
+  }
   if (id.includes('look') || lbl.includes('look')) {
     return { borderClass: 'border-iris/40 hover:border-iris', textClass: 'text-iris', bgClass: 'bg-iris/10 hover:bg-iris/20' }
   }
@@ -58,7 +61,8 @@ export const ActionBar = memo(function ActionBar({
       <div className="max-w-2xl mx-auto flex flex-wrap items-center gap-1.5 px-4 py-2">
         {actions.map((action, idx) => {
           const meta = getActionMeta(action.id, action.label)
-          const shortcutNum = action.shortcut ?? (idx < 9 ? idx + 1 : undefined)
+          // A shortcut of 0 means "none" (the number keys are for the bar's own actions).
+          const shortcutNum = action.shortcut === 0 ? undefined : (action.shortcut ?? (idx < 9 ? idx + 1 : undefined))
           const label = titleize(action.label)
           return (
             <button

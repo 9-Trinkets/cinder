@@ -28,7 +28,9 @@ export default function FolioPanel({
           {uiSnapshot.current_room_name}
         </h3>
         <div className="flex items-center gap-2.5 text-xs text-muted mt-1 font-mono">
-          <span>{t('hud.day', { day: uiSnapshot.day_number })}{uiSnapshot.time_label ? ` — ${formatClockLabel(uiSnapshot.time_label, locale)}` : ''}</span>
+          {uiSnapshot.show_clock !== false && (
+            <span>{t('hud.day', { day: uiSnapshot.day_number })}{uiSnapshot.time_label ? ` — ${formatClockLabel(uiSnapshot.time_label, locale)}` : ''}</span>
+          )}
           {uiSnapshot.followed_actor_name && (
             <>
               <span className="text-muted/40">&bull;</span>

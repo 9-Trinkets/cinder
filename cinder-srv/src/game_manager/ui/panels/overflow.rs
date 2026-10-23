@@ -208,6 +208,7 @@ fn insert_generic_item_actions(
                 prompt: spec.prompt.resolve(&content.ui_text),
                 data_source: spec.data_source.clone(),
                 on_select: PanelSelectAction::ExecuteCommand,
+                layout: None,
             }),
         };
         match spec.anchor {
@@ -273,7 +274,12 @@ pub(crate) fn build_overflow_actions(
         .collect();
 
     if let Ok(active_stages) = runtime.active_stage_ids() {
-        append_stage_menu_overflow_actions(&mut overflow_actions, content, &active_stages);
+        append_stage_menu_overflow_actions(
+            &mut overflow_actions,
+            content,
+            &active_stages,
+            state.active_menu_id.as_deref(),
+        );
     }
 
     insert_generic_item_actions(&mut overflow_actions, content, panels);

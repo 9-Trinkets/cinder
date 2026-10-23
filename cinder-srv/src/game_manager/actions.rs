@@ -57,7 +57,12 @@ pub async fn create_play(
     let intro_text = runtime
         .current_intro_text()
         .map_err(|e| format!("intro text error: {e}"))?;
-    let _ = runtime.push_transcript_line(&intro_text);
+    // Each paragraph is its own transcript line so spoken lines can be styled
+    // as dialogue instead of being buried in the scene text.
+    let intro_paragraphs = split_paragraphs(&intro_text);
+    for paragraph in &intro_paragraphs {
+        let _ = runtime.push_transcript_line(paragraph);
+    }
     for system_line in &system_lines {
         let _ = runtime.push_transcript_line(system_line);
     }
@@ -91,10 +96,13 @@ pub async fn create_play(
     .execute(&mut *tx)
     .await
     .map_err(|e| format!("db insert error: {e}"))?;
-    let mut transcript_entries = vec![PendingTranscriptEntry {
-        role: "narrative".to_string(),
-        text: intro_text.clone(),
-    }];
+    let mut transcript_entries: Vec<PendingTranscriptEntry> = intro_paragraphs
+        .iter()
+        .map(|paragraph| PendingTranscriptEntry {
+            role: "narrative".to_string(),
+            text: paragraph.clone(),
+        })
+        .collect();
     transcript_entries.extend(
         system_lines
             .iter()
@@ -443,4 +451,28 @@ pub async fn continue_play(
         },
     )
     .await
+}
+
+/// Splits text on blank lines into trimmed, non-empty paragraphs.
+fn split_paragraphs(text: &str) -> Vec<String> {
+    text.split("\n\n")
+        .map(str::trim)
+        .filter(|paragraph| !paragraph.is_empty())
+        .map(str::to_string)
+        .collect()
+}
+
+#[cfg(test)]
+mod paragraph_tests {
+    use super::split_paragraphs;
+
+    #[test]
+    fn paragraphs_split_on_blank_lines_and_drop_empties() {
+        assert_eq!(
+            split_paragraphs("One.\n\n  Two.  \n\n\n\nThree."),
+            vec!["One.", "Two.", "Three."]
+        );
+        assert_eq!(split_paragraphs("Solo."), vec!["Solo."]);
+        assert!(split_paragraphs("  \n\n ").is_empty());
+    }
 }

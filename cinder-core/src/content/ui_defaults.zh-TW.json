@@ -4,6 +4,7 @@
   "act_ended_title": "本場結束",
   "game_over_hint": "↑/↓ 或 PageUp/PageDown 捲動",
   "menu_option_list_title": "選擇一個選項",
+  "menu_action_label": "選項",
   "menu_choice_hint": "用 ↑/↓ 與 Enter 選擇。",
   "menu_choice_transcript": "選擇了{title}",
   "shell_menu_title": "選單",

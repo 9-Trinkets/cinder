@@ -115,6 +115,10 @@ pub struct ContentSettingsDefinition {
     /// watches the show instead of typing commands.
     #[serde(default = "default_true")]
     pub show_player_input: bool,
+    /// Whether the web UI shows the in-world day and time. Packs whose setting
+    /// has no clocks (a room with no clock on the wall) set this to false.
+    #[serde(default = "default_true")]
+    pub show_clock: bool,
     /// Limits which actors participate in background ticks.
     #[serde(default)]
     pub actor_tick_scope: ActorTickScope,
@@ -210,6 +214,7 @@ impl Default for ContentSettingsDefinition {
             default_language: default_default_language(),
             autonomous_actor_dialogue: false,
             show_player_input: true,
+            show_clock: true,
             actor_tick_scope: ActorTickScope::default(),
             closure_perspective_actor_id: String::default(),
             act_member_alias: String::default(),

@@ -224,6 +224,32 @@ const QuickActionPanel = memo(function QuickActionPanel({
           )}
 
           {panel !== 'look' && panel !== 'overflow' && panel !== 'give' && genericOptions.length > 0 && (() => {
+            if (panelConfig?.layout === 'list') {
+              // One option per row, in the player's own words: no title-casing.
+              return (
+                <div className="space-y-2">
+                  {genericOptions.map((opt, index) => (
+                    <button
+                      key={opt.id}
+                      onClick={() => onSelectOption(panel, opt)}
+                      disabled={busy || opt.disabled}
+                      aria-pressed={opt.selected}
+                      className={`block w-full text-left px-3 py-2 rounded-xl border transition duration-150 disabled:opacity-50 disabled:cursor-not-allowed ${
+                        opt.selected
+                          ? 'border-pine bg-pine/15 text-text cursor-pointer'
+                          : 'border-subtle hover:bg-overlay text-text cursor-pointer'
+                      }`}
+                    >
+                      <span className="text-muted mr-2">{index + 1}.</span>
+                      <span className="font-medium">{opt.title}</span>
+                      {opt.subtitle && <span className="text-muted ml-2">— {opt.subtitle}</span>}
+                      {opt.selected && <span className="text-pine ml-2" aria-label={t('hud.currentOrder')}>✓</span>}
+                    </button>
+                  ))}
+                </div>
+              )
+            }
+
             if (panel === 'talk' || panel === 'speak') {
               const partyIds = new Set((uiSnapshot.party ?? []).map(p => p.id))
               const roomActors = genericOptions.filter(opt => !partyIds.has(opt.id))

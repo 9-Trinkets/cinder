@@ -178,6 +178,8 @@ export interface PanelConfigData {
   prompt: string
   data_source: 'actors_in_room' | 'exits' | 'features' | 'craftable_items' | 'loose_room_items' | 'inventory_items' | 'follow_actors'
   on_select: 'execute_command' | 'prefill_input'
+  /** 'list': one option per row, in the player's own words. */
+  layout?: 'list'
 }
 
 export interface PanelOptionData {
@@ -393,6 +395,7 @@ export interface UiSnapshot {
   follow_options: MenuOptionItem[]
   autonomous_actor_dialogue: boolean
   show_player_input: boolean
+  show_clock?: boolean
   action_bar_actions: ActionBarAction[]
   overflow_actions: OverflowAction[]
   look_options: LookOptionData[]

@@ -59,11 +59,6 @@ export default function GamePage() {
     doFollowActor,
     doChangeLocale,
     doExit,
-    activeMenu,
-    activeMenuTitle,
-    setActiveMenu,
-    menuSelections,
-    toggleMenuOption,
     movie,
     movieFrame,
     setMovieFrame,
@@ -89,6 +84,7 @@ export default function GamePage() {
       const options = uiSnapshot?.panel_options?.[panel] ?? []
       if (
         options.length === 1 &&
+        action.panel_config?.layout !== 'list' &&
         !options[0].disabled &&
         action.id !== 'give' &&
         action.id !== 'trace' &&
@@ -139,11 +135,6 @@ export default function GamePage() {
           setQuickPanel(null)
           return
         }
-        if (activeMenu) {
-          e.preventDefault()
-          setActiveMenu(null)
-          return
-        }
         if (showFolio) {
           e.preventDefault()
           setShowFolio(false)
@@ -175,6 +166,16 @@ export default function GamePage() {
         if (e.metaKey) return
         const allowShortcut = e.ctrlKey || e.altKey || !isInputActive
         if (!allowShortcut) return
+
+        // While a list panel (the pending choices) is open, number keys pick.
+        if (quickPanel && findPanelConfig(quickPanel)?.layout === 'list') {
+          const choice = uiSnapshot?.panel_options?.[quickPanel]?.[parseInt(e.key, 10) - 1]
+          if (choice && !choice.disabled) {
+            e.preventDefault()
+            handleSelectPanelOption(quickPanel, choice)
+          }
+          return
+        }
 
         const num = parseInt(e.key, 10)
         const fallbackActions = [
@@ -225,7 +226,8 @@ export default function GamePage() {
     gameOver,
     atSuggestions,
     quickPanel,
-    activeMenu,
+    findPanelConfig,
+    handleSelectPanelOption,
     showFolio,
     showExitConfirm,
     movie,
@@ -235,7 +237,6 @@ export default function GamePage() {
     handleTakeItem,
     setAtSuggestions,
     setQuickPanel,
-    setActiveMenu,
     setShowFolio,
     setShowExitConfirm,
     closeMovie,
@@ -300,10 +301,14 @@ export default function GamePage() {
         >
           <div className="flex items-center gap-2 text-xs text-muted truncate">
             <span className="font-semibold text-text truncate">{uiSnapshot.current_room_name}</span>
-            <span className="text-muted/40 font-mono">&bull;</span>
-            <span className="font-mono text-muted shrink-0">
-              {t('hud.day', { day: uiSnapshot.day_number })}{uiSnapshot.time_label ? ` — ${formatClockLabel(uiSnapshot.time_label, locale)}` : ''}
-            </span>
+            {uiSnapshot.show_clock !== false && (
+              <>
+                <span className="text-muted/40 font-mono">&bull;</span>
+                <span className="font-mono text-muted shrink-0">
+                  {t('hud.day', { day: uiSnapshot.day_number })}{uiSnapshot.time_label ? ` — ${formatClockLabel(uiSnapshot.time_label, locale)}` : ''}
+                </span>
+              </>
+            )}
             {uiSnapshot.followed_actor_name && (
               <>
                 <span className="text-muted/40 font-mono">&bull;</span>
@@ -557,74 +562,6 @@ export default function GamePage() {
             onTakeItem={itemId => void execCommand(`take ${itemId}`)}
             onOpenPanel={panel => { setShowFolio(false); setQuickPanel(panel) }}
           />
-        </Modal>
-      )}
-
-      {activeMenu && (
-        <Modal title={activeMenuTitle} onClose={() => setActiveMenu(null)}>
-          {activeMenu.max_selections && activeMenu.max_selections > 0 && (
-            <p className="text-xs text-muted mb-2">
-              {activeMenu.max_selections === 1 ? t('hud.selectUpToOne', { max: activeMenu.max_selections }) : t('hud.selectUpToMany', { max: activeMenu.max_selections })}
-              {activeMenu.min_selections && activeMenu.min_selections > 0
-                ? ` (at least ${activeMenu.min_selections})`
-                : ''}
-              {menuSelections.size > 0 ? ` — ${menuSelections.size} selected` : ''}
-            </p>
-          )}
-          {activeMenu.options.length === 0 ? (
-            <p className="text-muted italic">{t('hud.noOptions')}</p>
-          ) : (
-            activeMenu.options.map((opt, i) => {
-              const isMultiSelect = (activeMenu.max_selections ?? 0) > 0
-              const isSelected = menuSelections.has(opt.id)
-              return (
-                <button
-                  key={opt.id}
-                  onClick={async () => {
-                    if (isMultiSelect) {
-                      await toggleMenuOption(opt.id)
-                    } else {
-                      await execCommand((i + 1).toString())
-                    }
-                  }}
-                  disabled={busy}
-                  className={`block w-full text-left px-3 py-2 rounded border disabled:opacity-50 cursor-pointer transition duration-150 ${
-                    isSelected
-                      ? 'bg-pine/15 border-pine text-text'
-                      : 'hover:bg-overlay border-subtle text-text'
-                  }`}
-                >
-                  {isMultiSelect && (
-                    <span className={`inline-block w-4 h-4 mr-2 rounded border align-middle ${
-                      isSelected
-                        ? 'bg-pine border-pine'
-                        : 'border-subtle'
-                    }`}>
-                      {isSelected && (
-                        <span className="block text-surface text-xs text-center leading-4">✓</span>
-                      )}
-                    </span>
-                  )}
-                  {!isMultiSelect && (
-                    <span className="text-muted mr-2">{(i + 1).toString()}.</span>
-                  )}
-                  <span className="font-medium">{opt.title}</span>
-                  {opt.menu_text && <span className="text-muted ml-2">— {opt.menu_text}</span>}
-                </button>
-              )
-            })
-          )}
-          {(activeMenu.max_selections ?? 0) > 0 && (
-            <button
-              onClick={async () => {
-                await execCommand('done', t('hud.done'))
-              }}
-              disabled={busy || menuSelections.size === 0}
-              className="mt-3 w-full px-3 py-2 rounded bg-pine text-surface text-sm font-semibold transition duration-200 hover:brightness-110 active:scale-[0.98] disabled:opacity-50 cursor-pointer"
-            >
-              {t('hud.done')}
-            </button>
-          )}
         </Modal>
       )}
 

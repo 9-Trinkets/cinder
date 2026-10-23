@@ -19,6 +19,7 @@ use self::panels::{
     build_action_bar_items, build_active_menu, build_drop_panel_options,
     build_equipment_panel_options, build_interactable_labels, build_look_options,
     build_overflow_actions, build_panel_options, build_talk_options, build_use_panel_options,
+    menu_action,
 };
 use self::room::{build_room_consumables, crafted_consumable_labels};
 use self::sidebar::{
@@ -111,7 +112,7 @@ pub(super) fn build_ui_snapshot(
     let state = runtime.export_state().map_err(|e| e.to_string())?;
     let party = build_party_members(runtime, &state, content);
 
-    let (action_bar_actions, take_panel_options, give_panel_options) =
+    let (mut action_bar_actions, take_panel_options, give_panel_options) =
         build_action_bar_items(content, &state, &party);
     let panels = PanelOptionGroups {
         take: take_panel_options,
@@ -135,6 +136,12 @@ pub(super) fn build_ui_snapshot(
     let interactable_labels =
         build_interactable_labels(&look_options, &exit_labels, &inventory_labels);
 
+    // An open menu is answered from the action bar like any other action.
+    let menu_panel = active_menu.as_ref().map(|menu| menu_action(content, menu));
+    if let Some((action, _)) = &menu_panel {
+        action_bar_actions.push(action.clone());
+    }
+
     let bar_ids: Vec<&str> = action_bar_actions
         .iter()
         .map(|action| action.id.as_str())
@@ -147,6 +154,9 @@ pub(super) fn build_ui_snapshot(
     let overflow_actions = build_overflow_actions(&ctx, &bar_ids, &panels)?;
     let mut panel_options = build_panel_options(&ctx, panels)?;
     panel_options.extend(sidebar::build_party_order_panels(content, &state, &party));
+    if let Some((_, options)) = menu_panel {
+        panel_options.insert("menu".to_string(), options);
+    }
 
     let sidebar_sections = content.visible_sidebar_sections(&state);
     let show_map = sidebar_sections.iter().any(|id| id == "map");
@@ -188,6 +198,7 @@ pub(super) fn build_ui_snapshot(
         ),
         autonomous_actor_dialogue: content.settings.autonomous_actor_dialogue,
         show_player_input: content.settings.show_player_input,
+        show_clock: content.settings.show_clock,
         action_bar_actions,
         overflow_actions,
         look_options,
@@ -295,6 +306,7 @@ fn append_stage_menu_overflow_actions(
     overflow_actions: &mut Vec<OverflowAction>,
     content: &cinder_core::content::types::ContentPack,
     active_stages: &[String],
+    active_menu_id: Option<&str>,
 ) {
     for stage_id in active_stages {
         let Some(stage) = content
@@ -312,6 +324,11 @@ fn append_stage_menu_overflow_actions(
         else {
             continue;
         };
+        // An open menu is already shown as the docked choices; listing its
+        // options here as well would show every choice twice.
+        if active_menu_id == Some(menu.id.as_str()) {
+            continue;
+        }
         let waits_for_menu_selection = stage
             .advance_signals
             .iter()
@@ -338,6 +355,51 @@ fn append_stage_menu_overflow_actions(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn an_open_stage_menu_is_not_repeated_in_the_overflow_actions() {
+        let pack = cinder_core::loader::load_named_pack("isla", Some("en")).expect("isla loads");
+        let runtime = CinderRuntime::new(pack, false).expect("runtime creates");
+        let snapshot = build_ui_snapshot(&runtime, "isla", &[]).expect("snapshot builds");
+        let menu = snapshot.active_menu.expect("the first menu is open");
+        assert!(!menu.options.is_empty());
+        for option in &menu.options {
+            assert!(
+                !snapshot
+                    .overflow_actions
+                    .iter()
+                    .any(|action| action.id == option.id || action.label == option.title),
+                "choice '{}' must appear in the docked menu only",
+                option.title
+            );
+        }
+        assert!(
+            snapshot.overflow_actions.is_empty(),
+            "nothing else belongs in the overflow: {:?}",
+            snapshot
+                .overflow_actions
+                .iter()
+                .map(|action| &action.label)
+                .collect::<Vec<_>>()
+        );
+        assert!(
+            snapshot
+                .action_bar_actions
+                .iter()
+                .any(|action| action.id == "look"),
+            "Look stays on the main bar"
+        );
+        let choices = snapshot
+            .action_bar_actions
+            .iter()
+            .find(|action| action.id == "menu")
+            .expect("an open menu is an action-bar action");
+        assert_eq!(choices.panel.as_deref(), Some("menu"));
+        assert_eq!(choices.label, "Choices");
+        let panel = &snapshot.panel_options["menu"];
+        assert_eq!(panel.len(), menu.options.len());
+        assert_eq!(panel[0].command.as_deref(), Some("1"));
+    }
 
     #[test]
     fn quests_and_levels_stay_hidden_until_player_visits_qualifying_room() {

@@ -298,6 +298,8 @@ export function usePlay() {
   function describePanelPick(panelName: string, option: api.PanelOptionData): string | undefined {
     const title = option.title?.trim()
     if (!title) return undefined
+    // List options are the player's own words, so the echo is just the words.
+    if (getPanelConfig(panelName)?.layout === 'list') return title
     const action =
       uiSnapshot?.action_bar_actions.find(a => a.panel === panelName || a.id === panelName) ??
       uiSnapshot?.overflow_actions.find(a => a.panel === panelName || a.id === panelName)
@@ -307,6 +309,11 @@ export function usePlay() {
   function handleSelectPanelOption(panelName: string, option: api.PanelOptionData) {
     if (option.panel) {
       setQuickPanel(option.panel)
+      return
+    }
+    // Multi-select options toggle in place, so the panel stays open.
+    if (option.command?.startsWith('toggle:')) {
+      void toggleMenuOption(option.command.slice('toggle:'.length))
       return
     }
     const config = getPanelConfig(panelName)
@@ -447,7 +454,11 @@ export function usePlay() {
         if (playState?.intro_text) {
           setLines([
             ...titleEntries,
-            { text: playState.intro_text, kind: 'narration', key: nextKey.current++ },
+            ...playState.intro_text
+              .split(/\n\s*\n/)
+              .map(paragraph => paragraph.trim())
+              .filter(Boolean)
+              .map(paragraph => ({ text: paragraph, kind: 'narration' as const, key: nextKey.current++ })),
           ])
         }
         return true
