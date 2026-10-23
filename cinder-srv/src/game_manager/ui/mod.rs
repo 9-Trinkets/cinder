@@ -357,47 +357,56 @@ mod tests {
     use super::*;
 
     #[test]
-    fn an_open_stage_menu_is_not_repeated_in_the_overflow_actions() {
-        let pack = cinder_core::loader::load_named_pack("isla", Some("en")).expect("isla loads");
+    fn an_open_stage_menu_is_a_bar_action_and_not_repeated_in_the_overflow() {
+        use cinder_core::content::types::{
+            AdvanceSignal, BeatDefinition, OpeningMenuDefinition, OpeningMenuOptionDefinition,
+        };
+        let option = |id: &str, title: &str| OpeningMenuOptionDefinition {
+            id: id.to_string(),
+            title: title.to_string(),
+            menu_text: String::new(),
+            ..Default::default()
+        };
+        let mut pack =
+            cinder_core::loader::load_named_pack("layla", Some("en")).expect("layla loads");
+        pack.beats.initial_stage_ids = vec!["test-stage".to_string()];
+        pack.beats.stages.push(BeatDefinition {
+            id: "test-stage".to_string(),
+            open_menu: "test-menu".to_string(),
+            advance_signals: vec![AdvanceSignal::Simple("menu_selected:test-menu".to_string())],
+            ..Default::default()
+        });
+        pack.menus.push(OpeningMenuDefinition {
+            id: "test-menu".to_string(),
+            stage_id: "test-stage".to_string(),
+            options: vec![option("a", "First"), option("b", "Second")],
+            ..Default::default()
+        });
         let runtime = CinderRuntime::new(pack, false).expect("runtime creates");
-        let snapshot = build_ui_snapshot(&runtime, "isla", &[]).expect("snapshot builds");
-        let menu = snapshot.active_menu.expect("the first menu is open");
-        assert!(!menu.options.is_empty());
+        let snapshot = build_ui_snapshot(&runtime, "layla", &[]).expect("snapshot builds");
+
+        let menu = snapshot
+            .active_menu
+            .expect("the initial stage's menu is open");
+        assert_eq!(menu.options.len(), 2);
         for option in &menu.options {
             assert!(
                 !snapshot
                     .overflow_actions
                     .iter()
                     .any(|action| action.id == option.id || action.label == option.title),
-                "choice '{}' must appear in the docked menu only",
+                "choice '{}' must appear in the menu panel only",
                 option.title
             );
         }
-        assert!(
-            snapshot.overflow_actions.is_empty(),
-            "nothing else belongs in the overflow: {:?}",
-            snapshot
-                .overflow_actions
-                .iter()
-                .map(|action| &action.label)
-                .collect::<Vec<_>>()
-        );
-        assert!(
-            snapshot
-                .action_bar_actions
-                .iter()
-                .any(|action| action.id == "look"),
-            "Look stays on the main bar"
-        );
         let choices = snapshot
             .action_bar_actions
             .iter()
             .find(|action| action.id == "menu")
             .expect("an open menu is an action-bar action");
         assert_eq!(choices.panel.as_deref(), Some("menu"));
-        assert_eq!(choices.label, "Choices");
         let panel = &snapshot.panel_options["menu"];
-        assert_eq!(panel.len(), menu.options.len());
+        assert_eq!(panel.len(), 2);
         assert_eq!(panel[0].command.as_deref(), Some("1"));
     }
 

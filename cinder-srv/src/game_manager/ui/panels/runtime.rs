@@ -165,7 +165,7 @@ mod tests {
 
     #[test]
     fn single_select_menu_options_answer_by_position() {
-        let pack = cinder_core::loader::load_named_pack("isla", Some("en")).expect("isla loads");
+        let pack = cinder_core::loader::load_named_pack("layla", Some("en")).expect("layla loads");
         let (action, options) = menu_action(&pack, &menu(0, &[]));
         assert_eq!(action.panel.as_deref(), Some("menu"));
         assert_eq!(
@@ -179,7 +179,7 @@ mod tests {
 
     #[test]
     fn multi_select_menu_toggles_and_ends_with_a_done_option() {
-        let pack = cinder_core::loader::load_named_pack("isla", Some("en")).expect("isla loads");
+        let pack = cinder_core::loader::load_named_pack("layla", Some("en")).expect("layla loads");
         let (_, none_chosen) = menu_action(&pack, &menu(2, &[]));
         assert_eq!(none_chosen[0].command.as_deref(), Some("toggle:a"));
         let done = none_chosen.last().unwrap();
