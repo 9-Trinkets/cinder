@@ -327,6 +327,7 @@ pub(crate) fn handle_item_consumed(
 }
 
 pub(crate) fn handle_item_observed(ctx: &mut ReduceCtx<'_>, item_id: &str) {
+    let state = &mut *ctx.state;
     let content = ctx.content;
     let lines = &mut *ctx.lines;
     if let Some(item) = content.item(item_id) {
@@ -334,4 +335,9 @@ pub(crate) fn handle_item_observed(ctx: &mut ReduceCtx<'_>, item_id: &str) {
     } else {
         lines.narration(content.presentation.error_text.feature_unknown.clone());
     }
+    lines.extend_lines(advance_objective_for_signal(
+        state,
+        content,
+        &format!("item_observed:{item_id}"),
+    ));
 }
