@@ -360,7 +360,7 @@ fn without_a_snack_isla_has_to_fetch_one() {
 #[test]
 fn poor_answers_close_the_deeper_secrets() {
     let runtime = runtime();
-    start_session(&runtime, false, None);
+    start_session(&runtime, false, Some("bear book"));
     answer(&runtime, "bins", &miss("bins"));
     answer(&runtime, "snack-none", &miss("snack-none"));
     assert_eq!(
@@ -528,7 +528,7 @@ fn the_messages_come_from_mom_and_dr_bell_and_say_who_they_are_to() {
 }
 
 #[test]
-fn the_session_cannot_go_on_until_isla_has_fetched_a_book() {
+fn without_a_book_the_next_to_do_is_to_choose_one_and_bring_it_back() {
     let runtime = runtime();
     start_session(&runtime, true, None);
     for menu in ["bins", "snack-have"] {
@@ -537,30 +537,78 @@ fn the_session_cannot_go_on_until_isla_has_fetched_a_book() {
     if active_menu(&runtime).as_deref() == Some("bag") {
         answer(&runtime, "bag", fit("bag"));
     }
-    let text = answer(&runtime, "stories", fit("stories"));
-    assert!(text.contains("no book"), "{text}");
-    assert_eq!(active_menu(&runtime).as_deref(), Some("fetch-book"));
 
-    // Opening the tote again without a book changes nothing.
-    let again = answer(&runtime, "fetch-book", fit("fetch-book"));
-    assert!(again.contains("no book"), "{again}");
-    assert_eq!(active_menu(&runtime).as_deref(), Some("fetch-book"));
+    // The story cannot start yet, and the list says why.
+    assert_eq!(active_menu(&runtime), None);
+    let step = |runtime: &CinderRuntime| {
+        runtime
+            .current_objective_summaries()
+            .unwrap()
+            .into_iter()
+            .map(|o| o.summary)
+            .collect::<Vec<_>>()
+    };
+    assert_eq!(
+        step(&runtime),
+        vec!["Choose a picture book from the book room, at the top of the house."]
+    );
 
-    // Fetching one from the book room lets the story begin.
-    for step in ["go hall", "go upstairs", "go upstairs", "go book room"] {
-        turn(&runtime, step);
+    // Taking a book changes the step to bringing it back.
+    for command in ["go hall", "go upstairs", "go upstairs", "go book room"] {
+        turn(&runtime, command);
     }
     turn(&runtime, "take bear book");
-    for step in [
+    assert_eq!(
+        step(&runtime),
+        vec!["Take the book back to Wren in the playroom."]
+    );
+    assert_eq!(active_menu(&runtime), None);
+
+    // Back in the playroom the story can begin.
+    for command in [
         "go landing",
         "go downstairs",
         "go downstairs",
         "go playroom",
     ] {
-        turn(&runtime, step);
+        turn(&runtime, command);
     }
-    answer(&runtime, "fetch-book", fit("fetch-book"));
+    assert_eq!(active_menu(&runtime).as_deref(), Some("stories"));
+    answer(&runtime, "stories", fit("stories"));
     assert_eq!(active_menu(&runtime).as_deref(), Some("bear-1"));
+}
+
+#[test]
+fn a_book_taken_early_skips_the_choose_a_book_step() {
+    let runtime = runtime();
+    start_session(&runtime, true, Some("bear book"));
+    for menu in ["bins", "snack-have"] {
+        answer(&runtime, menu, fit(menu));
+    }
+    if active_menu(&runtime).as_deref() == Some("bag") {
+        answer(&runtime, "bag", fit("bag"));
+    }
+    assert_eq!(active_menu(&runtime).as_deref(), Some("stories"));
+}
+
+#[test]
+fn an_empty_tote_at_the_story_still_sends_isla_for_a_book() {
+    let runtime = runtime();
+    start_session(&runtime, true, Some("bear book"));
+    for menu in ["bins", "snack-have"] {
+        answer(&runtime, menu, fit(menu));
+    }
+    if active_menu(&runtime).as_deref() == Some("bag") {
+        answer(&runtime, "bag", fit("bag"));
+    }
+    // The book is gone from her tote by the time the story starts.
+    let mut state = runtime.export_state().expect("state");
+    assert!(state.remove_item("book-bear"));
+    let pack = load_named_pack("isla", Some("en")).expect("isla loads");
+    let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime");
+    let text = answer(&runtime, "stories", fit("stories"));
+    assert!(text.contains("no book"), "{text}");
+    assert_eq!(active_menu(&runtime).as_deref(), Some("fetch-book"));
 }
 
 #[test]

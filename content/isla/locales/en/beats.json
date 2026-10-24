@@ -191,6 +191,45 @@
           "signal": "menu_selected:snack-have",
           "next_stage_ids": [
             "stage-stories-intro"
+          ],
+          "conditions": [
+            {
+              "path": "inventory.book-bird",
+              "operator": "gte",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "signal": "menu_selected:snack-have",
+          "next_stage_ids": [
+            "stage-stories-intro"
+          ],
+          "conditions": [
+            {
+              "path": "inventory.book-bear",
+              "operator": "gte",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "signal": "menu_selected:snack-have",
+          "next_stage_ids": [
+            "stage-stories-intro"
+          ],
+          "conditions": [
+            {
+              "path": "inventory.book-fox",
+              "operator": "gte",
+              "value": 1
+            }
+          ]
+        },
+        {
+          "signal": "menu_selected:snack-have",
+          "next_stage_ids": [
+            "stage-pick-book"
           ]
         }
       ]
@@ -239,10 +278,64 @@
               "path": "story_vars.values.snack_none_choice",
               "operator": "equal",
               "value": "snack-none-reassure"
+            },
+            {
+              "path": "inventory.book-bird",
+              "operator": "gte",
+              "value": 1
             }
           ],
           "next_stage_ids": [
             "stage-stories-intro"
+          ]
+        },
+        {
+          "signal": "menu_selected:snack-none",
+          "conditions": [
+            {
+              "path": "story_vars.values.snack_none_choice",
+              "operator": "equal",
+              "value": "snack-none-reassure"
+            },
+            {
+              "path": "inventory.book-bear",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-stories-intro"
+          ]
+        },
+        {
+          "signal": "menu_selected:snack-none",
+          "conditions": [
+            {
+              "path": "story_vars.values.snack_none_choice",
+              "operator": "equal",
+              "value": "snack-none-reassure"
+            },
+            {
+              "path": "inventory.book-fox",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-stories-intro"
+          ]
+        },
+        {
+          "signal": "menu_selected:snack-none",
+          "conditions": [
+            {
+              "path": "story_vars.values.snack_none_choice",
+              "operator": "equal",
+              "value": "snack-none-reassure"
+            }
+          ],
+          "next_stage_ids": [
+            "stage-pick-book"
           ]
         },
         {
@@ -270,10 +363,64 @@
               "path": "story_vars.values.snack_none_choice",
               "operator": "equal",
               "value": "snack-none-probe"
+            },
+            {
+              "path": "inventory.book-bird",
+              "operator": "gte",
+              "value": 1
             }
           ],
           "next_stage_ids": [
             "stage-stories-intro"
+          ]
+        },
+        {
+          "signal": "menu_selected:snack-none",
+          "conditions": [
+            {
+              "path": "story_vars.values.snack_none_choice",
+              "operator": "equal",
+              "value": "snack-none-probe"
+            },
+            {
+              "path": "inventory.book-bear",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-stories-intro"
+          ]
+        },
+        {
+          "signal": "menu_selected:snack-none",
+          "conditions": [
+            {
+              "path": "story_vars.values.snack_none_choice",
+              "operator": "equal",
+              "value": "snack-none-probe"
+            },
+            {
+              "path": "inventory.book-fox",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-stories-intro"
+          ]
+        },
+        {
+          "signal": "menu_selected:snack-none",
+          "conditions": [
+            {
+              "path": "story_vars.values.snack_none_choice",
+              "operator": "equal",
+              "value": "snack-none-probe"
+            }
+          ],
+          "next_stage_ids": [
+            "stage-pick-book"
           ]
         },
         {
@@ -301,10 +448,64 @@
               "path": "inventory.snack",
               "operator": "gte",
               "value": 1
+            },
+            {
+              "path": "inventory.book-bird",
+              "operator": "gte",
+              "value": 1
             }
           ],
           "next_stage_ids": [
             "stage-stories-intro"
+          ]
+        },
+        {
+          "signal": "menu_selected:snack-none",
+          "conditions": [
+            {
+              "path": "inventory.snack",
+              "operator": "gte",
+              "value": 1
+            },
+            {
+              "path": "inventory.book-bear",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-stories-intro"
+          ]
+        },
+        {
+          "signal": "menu_selected:snack-none",
+          "conditions": [
+            {
+              "path": "inventory.snack",
+              "operator": "gte",
+              "value": 1
+            },
+            {
+              "path": "inventory.book-fox",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-stories-intro"
+          ]
+        },
+        {
+          "signal": "menu_selected:snack-none",
+          "conditions": [
+            {
+              "path": "inventory.snack",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-pick-book"
           ]
         },
         {
@@ -355,10 +556,64 @@
               "path": "inventory.snack",
               "operator": "gte",
               "value": 1
+            },
+            {
+              "path": "inventory.book-bird",
+              "operator": "gte",
+              "value": 1
             }
           ],
           "next_stage_ids": [
             "stage-stories-intro"
+          ]
+        },
+        {
+          "signal": "room_entered:playroom",
+          "conditions": [
+            {
+              "path": "inventory.snack",
+              "operator": "gte",
+              "value": 1
+            },
+            {
+              "path": "inventory.book-bear",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-stories-intro"
+          ]
+        },
+        {
+          "signal": "room_entered:playroom",
+          "conditions": [
+            {
+              "path": "inventory.snack",
+              "operator": "gte",
+              "value": 1
+            },
+            {
+              "path": "inventory.book-fox",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-stories-intro"
+          ]
+        },
+        {
+          "signal": "room_entered:playroom",
+          "conditions": [
+            {
+              "path": "inventory.snack",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-pick-book"
           ]
         }
       ]
@@ -375,10 +630,54 @@
       ],
       "open_menu": "bag",
       "advance_signals": [
-        "menu_selected:bag"
+        {
+          "signal": "menu_selected:bag",
+          "conditions": [
+            {
+              "path": "inventory.book-bird",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-stories-intro"
+          ]
+        },
+        {
+          "signal": "menu_selected:bag",
+          "conditions": [
+            {
+              "path": "inventory.book-bear",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-stories-intro"
+          ]
+        },
+        {
+          "signal": "menu_selected:bag",
+          "conditions": [
+            {
+              "path": "inventory.book-fox",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-stories-intro"
+          ]
+        },
+        {
+          "signal": "menu_selected:bag",
+          "next_stage_ids": [
+            "stage-pick-book"
+          ]
+        }
       ],
       "next_stage_ids": [
-        "stage-stories-intro"
+        "stage-pick-book"
       ]
     },
     {
@@ -1022,6 +1321,39 @@
             "stage-fetch-book"
           ]
         }
+      ]
+    },
+    {
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "id": "stage-pick-book",
+      "summary": "Choose a picture book from the book room, at the top of the house.",
+      "narrative_lines": [
+        "Wren (to Isla): Are we doing a story?",
+        "Isla (to Wren): We are. I need to pick one first. I'll be right back."
+      ],
+      "advance_signals": [
+        "item_acquired:book-bird",
+        "item_acquired:book-bear",
+        "item_acquired:book-fox"
+      ],
+      "next_stage_ids": [
+        "stage-bring-book"
+      ]
+    },
+    {
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "id": "stage-bring-book",
+      "summary": "Take the book back to Wren in the playroom.",
+      "narrative_lines": [],
+      "advance_signals": [
+        "room_entered:playroom"
+      ],
+      "next_stage_ids": [
+        "stage-stories-intro"
       ]
     }
   ]
