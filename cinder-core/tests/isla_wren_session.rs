@@ -113,6 +113,14 @@ fn wren_follows_isla_to_the_playroom_and_the_bins_follow() {
     assert!(look.contains("Beside you: Wren."), "{look}");
     assert!(!look.contains("Your party"), "{look}");
     let text = turn(&runtime, "go playroom");
+    let heading_pos = text.find("== Playroom ==").expect("playroom heading");
+    let scene_pos = text
+        .find("Afternoon light slants across the road rug")
+        .expect("playroom arrival scene");
+    assert!(
+        heading_pos < scene_pos,
+        "room heading and summary should appear before arrival scene:\n{text}"
+    );
     assert!(
         text.contains("Wren (to Isla): These ones live in this house"),
         "{text}"

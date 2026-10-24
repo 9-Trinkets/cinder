@@ -58,6 +58,7 @@ pub fn apply_events(
     // updates triggered by command effects) that are applied in the same pass.
     let mut pending: VecDeque<TimestampedWorldEvent> = events.iter().cloned().collect();
     let mut spawned_events: Vec<WorldEvent> = Vec::new();
+    let mut room_entry_line_start: Option<usize> = None;
     while let Some(entry) = pending.pop_front() {
         spawned_events.clear();
         {
@@ -67,6 +68,7 @@ pub fn apply_events(
                 lines: &mut lines,
                 suppressed_actor_stats: &suppressed_actor_stats,
                 outbox: &mut spawned_events,
+                room_entry_line_start: &mut room_entry_line_start,
             };
             dispatch::dispatch(&mut ctx, &entry.event);
         }

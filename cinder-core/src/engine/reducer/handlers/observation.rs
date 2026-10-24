@@ -15,9 +15,17 @@ pub(crate) fn handle_current_room_observed(
     room_id: &str,
     mode: ObservationMode,
     lines: &mut NarrativeLines,
+    insert_at: Option<usize>,
 ) {
-    if let Some(observation) = render_room_observation(content, state, room_id, mode) {
-        lines.extend(observation.0);
+    if let Some(observation) = render_room_observation(content, state, room_id, mode.clone()) {
+        if mode == ObservationMode::Summary
+            && let Some(idx) = insert_at
+            && idx <= lines.0.len()
+        {
+            lines.0.splice(idx..idx, observation.0);
+        } else {
+            lines.extend(observation.0);
+        }
     } else {
         lines.error(content.presentation.error_text.room_missing.clone());
     }

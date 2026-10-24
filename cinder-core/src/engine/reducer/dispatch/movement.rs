@@ -23,7 +23,12 @@ pub(super) fn dispatch(ctx: &mut ReduceCtx<'_>, event: &WorldEvent) -> bool {
             true
         }
         WorldEvent::PlayerMoved { to_room_id, .. } => {
-            handle_player_moved(&mut *ctx.state, ctx.content, to_room_id, &mut *ctx.lines);
+            *ctx.room_entry_line_start = Some(handle_player_moved(
+                &mut *ctx.state,
+                ctx.content,
+                to_room_id,
+                &mut *ctx.lines,
+            ));
             true
         }
         WorldEvent::PlayerFollowedActor { actor_id } => {

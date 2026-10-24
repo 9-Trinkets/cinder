@@ -259,6 +259,8 @@ pub(crate) fn handle_player_used_item(
         lines.narration(line.clone());
     }
 
+    let room_entry_line_start = lines.0.len();
+
     if let Err(error) = crate::engine::hooks::apply_narrating_world_hook_effects(
         state,
         content,
@@ -306,6 +308,7 @@ pub(crate) fn handle_player_used_item(
             &new_room_id,
             crate::engine::events::ObservationMode::Summary,
             lines,
+            Some(room_entry_line_start),
         );
     }
 }

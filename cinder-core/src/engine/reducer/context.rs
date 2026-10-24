@@ -17,4 +17,5 @@ pub(crate) struct ReduceCtx<'a> {
     pub lines: &'a mut NarrativeLines,
     pub suppressed_actor_stats: &'a [(&'a str, &'a str)],
     pub outbox: &'a mut Vec<WorldEvent>,
+    pub room_entry_line_start: &'a mut Option<usize>,
 }

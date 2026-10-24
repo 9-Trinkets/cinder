@@ -13,12 +13,14 @@ pub(super) fn dispatch(ctx: &mut ReduceCtx<'_>, event: &WorldEvent) -> bool {
             if ctx.state.phase != GamePhase::Active {
                 return false;
             }
+            let insert_at = ctx.room_entry_line_start.take();
             handle_current_room_observed(
                 &mut *ctx.state,
                 ctx.content,
                 room_id,
                 mode.clone(),
                 &mut *ctx.lines,
+                insert_at,
             );
             true
         }

@@ -54,13 +54,14 @@ pub(crate) fn handle_player_moved(
     content: &ContentPack,
     to_room_id: &str,
     lines: &mut NarrativeLines,
-) {
+) -> usize {
     let from_room_id = state.current_room_id.clone();
     lines.extend_lines(advance_objective_for_signal(
         state,
         content,
         &format!("room_left:{from_room_id}"),
     ));
+    let room_entry_line_start = lines.0.len();
     let first_visit =
         !state.actor_has_visited_room(&content.settings.combat.player_actor_id, to_room_id);
     state.current_room_id = to_room_id.to_string();
@@ -104,6 +105,7 @@ pub(crate) fn handle_player_moved(
         )
         .unwrap_or_else(|error| eprintln!("[cinder] hook warning (board.entered): {error}"));
     }
+    room_entry_line_start
 }
 
 /// Moves every living follower into the player's room (used when the player
