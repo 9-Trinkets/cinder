@@ -124,6 +124,13 @@ pub enum AdvanceEffect {
         #[serde(default)]
         message: String,
     },
+    RemoveItem {
+        item_id: String,
+        #[serde(default = "default_grant_count")]
+        count: u32,
+        #[serde(default)]
+        message: String,
+    },
     /// Starts a scripted sequence from its first line. Its lines then play
     /// one per advancing turn.
     QueueSequence {

@@ -146,6 +146,9 @@ fn validate_stage_effects(
         match effect {
             AdvanceEffect::GrantItem {
                 item_id, message, ..
+            }
+            | AdvanceEffect::RemoveItem {
+                item_id, message, ..
             } => {
                 validate_reward_reference(pack, stage_id, item_id, message, diagnostics);
             }

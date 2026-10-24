@@ -202,6 +202,7 @@ fn completion_effect_events(sequence: &ScriptedSequence) -> Vec<WorldEvent> {
                 value: value.clone(),
             }],
             AdvanceEffect::GrantItem { .. }
+            | AdvanceEffect::RemoveItem { .. }
             | AdvanceEffect::SetFollowsPlayer { .. }
             | AdvanceEffect::QueueSequence { .. }
             | AdvanceEffect::ResolveSurvivorRewards { .. } => {

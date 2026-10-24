@@ -219,6 +219,22 @@ fn apply_stage_effect(
             }
             return Ok(());
         }
+        AdvanceEffect::RemoveItem {
+            item_id,
+            count,
+            message,
+        } => {
+            let mut removed = false;
+            for _ in 0..*count {
+                if state.remove_item(item_id) {
+                    removed = true;
+                }
+            }
+            if removed {
+                push_effect_message(content, message, messages);
+            }
+            return Ok(());
+        }
         AdvanceEffect::QueueSequence { sequence_id } => {
             return state.queue_scripted_sequence(sequence_id);
         }
