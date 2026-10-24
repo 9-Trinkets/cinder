@@ -61,21 +61,6 @@
             {
               "path": "option_id",
               "operator": "equal",
-              "value": "bins-reflect"
-            }
-          ],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "wren",
-            "stat": "points",
-            "delta": 1
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "option_id",
-              "operator": "equal",
               "value": "bins-join"
             }
           ],
@@ -92,6 +77,21 @@
               "path": "option_id",
               "operator": "equal",
               "value": "bins-wait"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "wren",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "bins-reflect"
             }
           ],
           "payload_template": {
@@ -121,7 +121,7 @@
             {
               "path": "option_id",
               "operator": "equal",
-              "value": "snack-have-reflect"
+              "value": "snack-have-offer"
             }
           ],
           "payload_template": {
@@ -136,7 +136,7 @@
             {
               "path": "option_id",
               "operator": "equal",
-              "value": "snack-have-offer"
+              "value": "snack-have-reflect"
             }
           ],
           "payload_template": {
@@ -166,7 +166,7 @@
             {
               "path": "option_id",
               "operator": "equal",
-              "value": "snack-none-reflect"
+              "value": "snack-none-offer"
             }
           ],
           "payload_template": {
@@ -181,7 +181,7 @@
             {
               "path": "option_id",
               "operator": "equal",
-              "value": "snack-none-offer"
+              "value": "snack-none-reflect"
             }
           ],
           "payload_template": {
@@ -211,7 +211,7 @@
             {
               "path": "option_id",
               "operator": "equal",
-              "value": "bag-reflect"
+              "value": "bag-wait"
             }
           ],
           "payload_template": {
@@ -226,7 +226,7 @@
             {
               "path": "option_id",
               "operator": "equal",
-              "value": "bag-wait"
+              "value": "bag-reflect"
             }
           ],
           "payload_template": {
@@ -256,6 +256,21 @@
             {
               "path": "option_id",
               "operator": "equal",
+              "value": "bird-1-wait"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "wren",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
               "value": "bird-1-reflect"
             }
           ],
@@ -272,21 +287,6 @@
               "path": "option_id",
               "operator": "equal",
               "value": "bird-1-join"
-            }
-          ],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "wren",
-            "stat": "points",
-            "delta": 1
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "option_id",
-              "operator": "equal",
-              "value": "bird-1-wait"
             }
           ],
           "payload_template": {
@@ -391,7 +391,7 @@
             {
               "path": "option_id",
               "operator": "equal",
-              "value": "bird-2-follow"
+              "value": "bird-2-wait"
             }
           ],
           "payload_template": {
@@ -406,7 +406,7 @@
             {
               "path": "option_id",
               "operator": "equal",
-              "value": "bird-2-wait"
+              "value": "bird-2-follow"
             }
           ],
           "payload_template": {
@@ -436,7 +436,7 @@
             {
               "path": "option_id",
               "operator": "equal",
-              "value": "quiet-reflect"
+              "value": "quiet-wait"
             }
           ],
           "payload_template": {
@@ -451,7 +451,7 @@
             {
               "path": "option_id",
               "operator": "equal",
-              "value": "quiet-reflect"
+              "value": "quiet-wait"
             }
           ],
           "payload_template": {
@@ -466,7 +466,7 @@
             {
               "path": "option_id",
               "operator": "equal",
-              "value": "quiet-wait"
+              "value": "quiet-reflect"
             }
           ],
           "payload_template": {
@@ -481,7 +481,7 @@
             {
               "path": "option_id",
               "operator": "equal",
-              "value": "quiet-wait"
+              "value": "quiet-reflect"
             }
           ],
           "payload_template": {
@@ -511,7 +511,7 @@
             {
               "path": "option_id",
               "operator": "equal",
-              "value": "bird-3-reflect"
+              "value": "bird-3-wait"
             }
           ],
           "payload_template": {
@@ -526,7 +526,7 @@
             {
               "path": "option_id",
               "operator": "equal",
-              "value": "bird-3-wait"
+              "value": "bird-3-reflect"
             }
           ],
           "payload_template": {
@@ -646,7 +646,7 @@
             {
               "path": "option_id",
               "operator": "equal",
-              "value": "bear-1-reflect"
+              "value": "bear-1-join"
             }
           ],
           "payload_template": {
@@ -661,7 +661,7 @@
             {
               "path": "option_id",
               "operator": "equal",
-              "value": "bear-1-join"
+              "value": "bear-1-reflect"
             }
           ],
           "payload_template": {
@@ -781,7 +781,7 @@
             {
               "path": "option_id",
               "operator": "equal",
-              "value": "bear-2-reflect"
+              "value": "bear-2-offer"
             }
           ],
           "payload_template": {
@@ -811,7 +811,7 @@
             {
               "path": "option_id",
               "operator": "equal",
-              "value": "bear-2-offer"
+              "value": "bear-2-reflect"
             }
           ],
           "payload_template": {
@@ -841,21 +841,6 @@
             {
               "path": "option_id",
               "operator": "equal",
-              "value": "closing-plain"
-            }
-          ],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "wren",
-            "stat": "points",
-            "delta": 1
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "option_id",
-              "operator": "equal",
               "value": "closing-again"
             }
           ],
@@ -872,6 +857,21 @@
               "path": "option_id",
               "operator": "equal",
               "value": "closing-wait"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "wren",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "closing-plain"
             }
           ],
           "payload_template": {

@@ -199,6 +199,8 @@ Implemented in `content/isla` and tested in `cinder-core/tests/isla_wren_session
 | Meeting, bins, snack, each book stop, closing | reflect, wait, join or follow, plain answer | 1 each |
 | Secrets (bag, notebook, quiet, cup) | reflect, wait | 2 each |
 
+**Answer order is mixed.** Each menu lists its answers in a fixed but scrambled order, so the first answer is a fit only about a quarter of the time. The tests choose answers by id, not by position.
+
 **Secrets are gated by fixed point thresholds,** a simplification of "60% of the points so far". The thresholds are 2 for the bag, 4 for the notebook, 6 for the quiet, and 8 for the cup. The cup also needs the quiet to have been held. A player who has not fit the first answers never hears the deeper ones.
 
 **The book decides the path.** The branch is read from what Isla carries when she opens the book: *The Bird Who Carried Her Nest* reaches every secret, *Bear Counts to Ten* (the default) reaches the notebook, and *Two Houses for Fox* makes Wren retreat to the bins.

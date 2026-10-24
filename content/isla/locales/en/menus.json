@@ -11,6 +11,16 @@
     "selection_confirmation": "",
     "options": [
       {
+        "id": "meet-reassure",
+        "title": "That's okay. We can still start.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Wren): That's okay. We can still start.",
+          "Wren (to Isla): Okay.",
+          "She looks down at her shoes and says nothing else."
+        ]
+      },
+      {
         "id": "meet-reflect",
         "title": "Dad brought you today.",
         "menu_text": "",
@@ -38,16 +48,6 @@
           "Wren (to Isla): Nothing.",
           "She zips Rabbit's bag a second time."
         ]
-      },
-      {
-        "id": "meet-reassure",
-        "title": "That's okay. We can still start.",
-        "menu_text": "",
-        "narrative_lines": [
-          "Isla (to Wren): That's okay. We can still start.",
-          "Wren (to Isla): Okay.",
-          "She looks down at her shoes and says nothing else."
-        ]
       }
     ]
   },
@@ -63,13 +63,13 @@
     "selection_confirmation": "",
     "options": [
       {
-        "id": "bins-reflect",
-        "title": "Those ones live here.",
+        "id": "bins-probe",
+        "title": "Why do they live there?",
         "menu_text": "",
         "narrative_lines": [
-          "Isla (to Wren): Those ones live here.",
-          "Wren (to Isla): And those ones.",
-          "She puts the pig in the left bin, next to the cow."
+          "Isla (to Wren): Why do they live there?",
+          "Wren (to Isla): Because.",
+          "She takes the cow out and puts it back in the other bin."
         ]
       },
       {
@@ -92,13 +92,13 @@
         ]
       },
       {
-        "id": "bins-probe",
-        "title": "Why do they live there?",
+        "id": "bins-reflect",
+        "title": "Those ones live here.",
         "menu_text": "",
         "narrative_lines": [
-          "Isla (to Wren): Why do they live there?",
-          "Wren (to Isla): Because.",
-          "She takes the cow out and puts it back in the other bin."
+          "Isla (to Wren): Those ones live here.",
+          "Wren (to Isla): And those ones.",
+          "She puts the pig in the left bin, next to the cow."
         ]
       }
     ]
@@ -114,16 +114,6 @@
     "invalid_choice_text": "Wren waits. Choose one of the options.",
     "selection_confirmation": "",
     "options": [
-      {
-        "id": "snack-have-reflect",
-        "title": "Half a cracker, in squares.",
-        "menu_text": "",
-        "narrative_lines": [
-          "Isla (to Wren): Half a cracker, in squares.",
-          "You unfold the napkin from your tote and set it on the low table. A peeled clementine and four square pieces of cracker.",
-          "Wren (to Isla): Four. That's right."
-        ]
-      },
       {
         "id": "snack-have-offer",
         "title": "Set the napkin on the low table.",
@@ -152,6 +142,16 @@
           "Wren (to Isla): Okay.",
           "She eats every piece, very slowly."
         ]
+      },
+      {
+        "id": "snack-have-reflect",
+        "title": "Half a cracker, in squares.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Wren): Half a cracker, in squares.",
+          "You unfold the napkin from your tote and set it on the low table. A peeled clementine and four square pieces of cracker.",
+          "Wren (to Isla): Four. That's right."
+        ]
       }
     ]
   },
@@ -167,13 +167,13 @@
     "selection_confirmation": "",
     "options": [
       {
-        "id": "snack-none-reflect",
-        "title": "Half a cracker, in squares. I'll be right back.",
+        "id": "snack-none-reassure",
+        "title": "We can do without.",
         "menu_text": "",
         "narrative_lines": [
-          "Isla (to Wren): Half a cracker, in squares. I'll be right back.",
-          "The kitchen is warm and smells of toast. You peel a clementine and cut half a cracker into squares. When you come back, Wren is exactly where you left her, with her back to the door.",
-          "Wren (to Isla): Four. That's right."
+          "Isla (to Wren): We can do without.",
+          "Wren (to Isla): Okay.",
+          "She sits on the beanbag with her hands between her knees."
         ]
       },
       {
@@ -197,13 +197,13 @@
         ]
       },
       {
-        "id": "snack-none-reassure",
-        "title": "We can do without.",
+        "id": "snack-none-reflect",
+        "title": "Half a cracker, in squares. I'll be right back.",
         "menu_text": "",
         "narrative_lines": [
-          "Isla (to Wren): We can do without.",
-          "Wren (to Isla): Okay.",
-          "She sits on the beanbag with her hands between her knees."
+          "Isla (to Wren): Half a cracker, in squares. I'll be right back.",
+          "The kitchen is warm and smells of toast. You peel a clementine and cut half a cracker into squares. When you come back, Wren is exactly where you left her, with her back to the door.",
+          "Wren (to Isla): Four. That's right."
         ]
       }
     ]
@@ -220,13 +220,13 @@
     "selection_confirmation": "",
     "options": [
       {
-        "id": "bag-reflect",
-        "title": "In case.",
+        "id": "bag-probe",
+        "title": "In case of what?",
         "menu_text": "",
         "narrative_lines": [
-          "Isla (to Wren): In case.",
-          "Wren (to Isla): He never has to stay anywhere.",
-          "She sets the bag on her lap, closer to her."
+          "Isla (to Wren): In case of what?",
+          "Wren (to Isla): In case.",
+          "She puts the bag behind her back."
         ]
       },
       {
@@ -239,16 +239,6 @@
         ]
       },
       {
-        "id": "bag-probe",
-        "title": "In case of what?",
-        "menu_text": "",
-        "narrative_lines": [
-          "Isla (to Wren): In case of what?",
-          "Wren (to Isla): In case.",
-          "She puts the bag behind her back."
-        ]
-      },
-      {
         "id": "bag-reassure",
         "title": "Rabbit doesn't need to leave.",
         "menu_text": "",
@@ -256,6 +246,16 @@
           "Isla (to Wren): Rabbit doesn't need to leave.",
           "Wren (to Isla): He might.",
           "She keeps one hand on the bag."
+        ]
+      },
+      {
+        "id": "bag-reflect",
+        "title": "In case.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Wren): In case.",
+          "Wren (to Isla): He never has to stay anywhere.",
+          "She sets the bag on her lap, closer to her."
         ]
       }
     ]
@@ -293,6 +293,24 @@
     "selection_confirmation": "",
     "options": [
       {
+        "id": "bird-1-probe",
+        "title": "Why doesn't she put it down?",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Wren): Why doesn't she put it down?",
+          "Wren (to Isla): I don't know.",
+          "She turns Rabbit to face the wall."
+        ]
+      },
+      {
+        "id": "bird-1-wait",
+        "title": "Wait.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You wait with the book open. Wren studies the picture for a long time."
+        ]
+      },
+      {
         "id": "bird-1-reflect",
         "title": "The whole time.",
         "menu_text": "",
@@ -310,24 +328,6 @@
           "You trace the other wing with your finger. Wren moves her finger over so that it doesn't touch yours.",
           "Wren (to Isla): Both wings."
         ]
-      },
-      {
-        "id": "bird-1-wait",
-        "title": "Wait.",
-        "menu_text": "",
-        "narrative_lines": [
-          "You wait with the book open. Wren studies the picture for a long time."
-        ]
-      },
-      {
-        "id": "bird-1-probe",
-        "title": "Why doesn't she put it down?",
-        "menu_text": "",
-        "narrative_lines": [
-          "Isla (to Wren): Why doesn't she put it down?",
-          "Wren (to Isla): I don't know.",
-          "She turns Rabbit to face the wall."
-        ]
       }
     ]
   },
@@ -342,26 +342,6 @@
     "invalid_choice_text": "Wren waits. Choose one of the options.",
     "selection_confirmation": "",
     "options": [
-      {
-        "id": "notebook-bird-reflect",
-        "title": "You tick it every night.",
-        "menu_text": "",
-        "narrative_lines": [
-          "Isla (to Wren): You tick it every night.",
-          "Wren (to Isla): I do it before bed.",
-          "Wren (to Isla): Once I said the wrong door. Dad waited on the steps. Mom waited at home.",
-          "She closes the notebook."
-        ]
-      },
-      {
-        "id": "notebook-bird-wait",
-        "title": "Wait.",
-        "menu_text": "",
-        "narrative_lines": [
-          "You wait. Wren turns a page back and finds a green square with a smudge on it.",
-          "Wren (to Isla): Once I said the wrong door. Dad waited on the steps. Mom waited at home. And then Aunt Jo came. She had Mustard."
-        ]
-      },
       {
         "id": "notebook-bird-probe",
         "title": "Why do you tick it?",
@@ -381,6 +361,26 @@
           "Wren (to Isla): Okay.",
           "She closes the notebook and holds it flat on her knee."
         ]
+      },
+      {
+        "id": "notebook-bird-reflect",
+        "title": "You tick it every night.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Wren): You tick it every night.",
+          "Wren (to Isla): I do it before bed.",
+          "Wren (to Isla): Once I said the wrong door. Dad waited on the steps. Mom waited at home.",
+          "She closes the notebook."
+        ]
+      },
+      {
+        "id": "notebook-bird-wait",
+        "title": "Wait.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You wait. Wren turns a page back and finds a green square with a smudge on it.",
+          "Wren (to Isla): Once I said the wrong door. Dad waited on the steps. Mom waited at home. And then Aunt Jo came. She had Mustard."
+        ]
       }
     ]
   },
@@ -396,6 +396,14 @@
     "selection_confirmation": "",
     "options": [
       {
+        "id": "bird-2-wait",
+        "title": "Wait.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You wait with the book open. After a while Wren turns the page herself."
+        ]
+      },
+      {
         "id": "bird-2-follow",
         "title": "Not in here. On the grass.",
         "menu_text": "",
@@ -403,14 +411,6 @@
           "Isla (to Wren): Not in here. On the grass.",
           "Wren (to Isla): I'm good at them. I can do three.",
           "She turns the page herself."
-        ]
-      },
-      {
-        "id": "bird-2-wait",
-        "title": "Wait.",
-        "menu_text": "",
-        "narrative_lines": [
-          "You wait with the book open. After a while Wren turns the page herself."
         ]
       },
       {
@@ -447,24 +447,6 @@
     "selection_confirmation": "",
     "options": [
       {
-        "id": "quiet-reflect",
-        "title": "He won't tell.",
-        "menu_text": "",
-        "narrative_lines": [
-          "Isla (to Wren): He won't tell.",
-          "Wren (to Isla): At Mom's I don't say Dad. And at Dad's I don't say Mom. Their faces go funny."
-        ]
-      },
-      {
-        "id": "quiet-wait",
-        "title": "Wait.",
-        "menu_text": "",
-        "narrative_lines": [
-          "You wait. Wren whispers to Rabbit again, shorter. Then she says it out loud, quickly.",
-          "Wren (to Isla): At Dad's I don't say Mom. Their faces go funny."
-        ]
-      },
-      {
         "id": "quiet-probe",
         "title": "What did you tell him?",
         "menu_text": "",
@@ -483,6 +465,24 @@
           "Wren (to Isla): Rabbit says it's not okay.",
           "She puts a hand over his ear."
         ]
+      },
+      {
+        "id": "quiet-wait",
+        "title": "Wait.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You wait. Wren whispers to Rabbit again, shorter. Then she says it out loud, quickly.",
+          "Wren (to Isla): At Dad's I don't say Mom. Their faces go funny."
+        ]
+      },
+      {
+        "id": "quiet-reflect",
+        "title": "He won't tell.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Wren): He won't tell.",
+          "Wren (to Isla): At Mom's I don't say Dad. And at Dad's I don't say Mom. Their faces go funny."
+        ]
       }
     ]
   },
@@ -498,14 +498,13 @@
     "selection_confirmation": "",
     "options": [
       {
-        "id": "bird-3-reflect",
-        "title": "She put it down.",
+        "id": "bird-3-probe",
+        "title": "How do you think she feels?",
         "menu_text": "",
         "narrative_lines": [
-          "Isla (to Wren): She put it down.",
-          "Wren (to Isla): And the trees were okay.",
-          "She puts one finger on the ground in the picture, between the trees.",
-          "Wren (to Isla): It's flat there."
+          "Isla (to Wren): How do you think she feels?",
+          "Wren (to Isla): I don't know.",
+          "She picks up the red crayon stub and puts it down again."
         ]
       },
       {
@@ -517,21 +516,22 @@
         ]
       },
       {
+        "id": "bird-3-reflect",
+        "title": "She put it down.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Wren): She put it down.",
+          "Wren (to Isla): And the trees were okay.",
+          "She puts one finger on the ground in the picture, between the trees.",
+          "Wren (to Isla): It's flat there."
+        ]
+      },
+      {
         "id": "bird-3-close",
         "title": "Leave the book open on the last page.",
         "menu_text": "",
         "narrative_lines": [
           "You leave the book open on your knees, on the last page."
-        ]
-      },
-      {
-        "id": "bird-3-probe",
-        "title": "How do you think she feels?",
-        "menu_text": "",
-        "narrative_lines": [
-          "Isla (to Wren): How do you think she feels?",
-          "Wren (to Isla): I don't know.",
-          "She picks up the red crayon stub and puts it down again."
         ]
       }
     ]
@@ -602,13 +602,13 @@
     "selection_confirmation": "",
     "options": [
       {
-        "id": "bear-1-reflect",
-        "title": "Four. Five.",
+        "id": "bear-1-probe",
+        "title": "What comes after ten?",
         "menu_text": "",
         "narrative_lines": [
-          "Isla (to Wren): Four. Five.",
-          "Wren (to Isla): Six. Seven.",
-          "She holds up fingers as she goes."
+          "Isla (to Wren): What comes after ten?",
+          "Wren (to Isla): Eleven.",
+          "She says it flatly, and doesn't look at the book."
         ]
       },
       {
@@ -621,21 +621,21 @@
         ]
       },
       {
+        "id": "bear-1-reflect",
+        "title": "Four. Five.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Wren): Four. Five.",
+          "Wren (to Isla): Six. Seven.",
+          "She holds up fingers as she goes."
+        ]
+      },
+      {
         "id": "bear-1-wait",
         "title": "Wait.",
         "menu_text": "",
         "narrative_lines": [
           "You wait with the book open. Wren counts the balloons on the page under her breath, and gets to ten."
-        ]
-      },
-      {
-        "id": "bear-1-probe",
-        "title": "What comes after ten?",
-        "menu_text": "",
-        "narrative_lines": [
-          "Isla (to Wren): What comes after ten?",
-          "Wren (to Isla): Eleven.",
-          "She says it flatly, and doesn't look at the book."
         ]
       }
     ]
@@ -652,6 +652,16 @@
     "selection_confirmation": "",
     "options": [
       {
+        "id": "notebook-bear-probe",
+        "title": "Why do you tick it?",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Wren): Why do you tick it?",
+          "Wren (to Isla): For the days.",
+          "She closes the notebook and puts it back in the bag."
+        ]
+      },
+      {
         "id": "notebook-bear-reflect",
         "title": "You tick it every night.",
         "menu_text": "",
@@ -663,25 +673,6 @@
         ]
       },
       {
-        "id": "notebook-bear-wait",
-        "title": "Wait.",
-        "menu_text": "",
-        "narrative_lines": [
-          "You wait. Wren turns a page back and finds a green square with a smudge on it.",
-          "Wren (to Isla): Once I said the wrong door. Dad waited on the steps. Mom waited at home. And then Aunt Jo came. She had Mustard."
-        ]
-      },
-      {
-        "id": "notebook-bear-probe",
-        "title": "Why do you tick it?",
-        "menu_text": "",
-        "narrative_lines": [
-          "Isla (to Wren): Why do you tick it?",
-          "Wren (to Isla): For the days.",
-          "She closes the notebook and puts it back in the bag."
-        ]
-      },
-      {
         "id": "notebook-bear-reassure",
         "title": "You don't have to keep the days right.",
         "menu_text": "",
@@ -689,6 +680,15 @@
           "Isla (to Wren): You don't have to keep the days right.",
           "Wren (to Isla): Okay.",
           "She closes the notebook and holds it flat on her knee."
+        ]
+      },
+      {
+        "id": "notebook-bear-wait",
+        "title": "Wait.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You wait. Wren turns a page back and finds a green square with a smudge on it.",
+          "Wren (to Isla): Once I said the wrong door. Dad waited on the steps. Mom waited at home. And then Aunt Jo came. She had Mustard."
         ]
       }
     ]
@@ -704,23 +704,6 @@
     "invalid_choice_text": "Wren waits. Choose one of the options.",
     "selection_confirmation": "",
     "options": [
-      {
-        "id": "bear-2-reflect",
-        "title": "Ten is the end.",
-        "menu_text": "",
-        "narrative_lines": [
-          "Isla (to Wren): Ten is the end.",
-          "Wren (to Isla): Then you start again at one."
-        ]
-      },
-      {
-        "id": "bear-2-wait",
-        "title": "Wait.",
-        "menu_text": "",
-        "narrative_lines": [
-          "You wait. Wren watches the balloons going up until you close the book."
-        ]
-      },
       {
         "id": "bear-2-offer",
         "title": "Offer to read it again.",
@@ -738,6 +721,23 @@
           "Isla (to Wren): Where do the balloons go?",
           "Wren (to Isla): Up."
         ]
+      },
+      {
+        "id": "bear-2-wait",
+        "title": "Wait.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You wait. Wren watches the balloons going up until you close the book."
+        ]
+      },
+      {
+        "id": "bear-2-reflect",
+        "title": "Ten is the end.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Wren): Ten is the end.",
+          "Wren (to Isla): Then you start again at one."
+        ]
       }
     ]
   },
@@ -753,20 +753,20 @@
     "selection_confirmation": "",
     "options": [
       {
+        "id": "fox-1-wait",
+        "title": "Wait.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You wait with the book closed. Wren goes to the bins, and starts moving animals from one to the other."
+        ]
+      },
+      {
         "id": "fox-1-reflect",
         "title": "Not this one.",
         "menu_text": "",
         "narrative_lines": [
           "Isla (to Wren): Not this one.",
           "You close the book and put it face down on the beanbag. Wren slides off the cushion and goes to the bins. She starts moving animals from one to the other."
-        ]
-      },
-      {
-        "id": "fox-1-wait",
-        "title": "Wait.",
-        "menu_text": "",
-        "narrative_lines": [
-          "You wait with the book closed. Wren goes to the bins, and starts moving animals from one to the other."
         ]
       },
       {
@@ -793,12 +793,12 @@
     "selection_confirmation": "",
     "options": [
       {
-        "id": "closing-plain",
-        "title": "The timer says when. A few more minutes.",
+        "id": "closing-probe",
+        "title": "Did you like the story?",
         "menu_text": "",
         "narrative_lines": [
-          "Isla (to Wren): The timer says when. A few more minutes.",
-          "Wren (to Isla): Okay."
+          "Isla (to Wren): Did you like the story?",
+          "Wren (to Isla): It's okay."
         ]
       },
       {
@@ -818,12 +818,12 @@
         ]
       },
       {
-        "id": "closing-probe",
-        "title": "Did you like the story?",
+        "id": "closing-plain",
+        "title": "The timer says when. A few more minutes.",
         "menu_text": "",
         "narrative_lines": [
-          "Isla (to Wren): Did you like the story?",
-          "Wren (to Isla): It's okay."
+          "Isla (to Wren): The timer says when. A few more minutes.",
+          "Wren (to Isla): Okay."
         ]
       }
     ]

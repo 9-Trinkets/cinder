@@ -17,6 +17,38 @@ fn turn(runtime: &CinderRuntime, input: &str) -> String {
         .text()
 }
 
+/// The option that fits each menu's bid, and one that does not. Answers are
+/// chosen by id, so the order they are listed in does not matter.
+fn fit(menu: &str) -> &'static str {
+    match menu {
+        "meet" => "meet-reflect",
+        "bins" => "bins-reflect",
+        "snack-have" => "snack-have-reflect",
+        "snack-none" => "snack-none-offer",
+        "bag" => "bag-reflect",
+        "stories" => "stories-read",
+        "bird-1" => "bird-1-reflect",
+        "notebook-bird" => "notebook-bird-reflect",
+        "bird-2" => "bird-2-follow",
+        "quiet" => "quiet-reflect",
+        "bird-3" => "bird-3-reflect",
+        "cup" => "cup-reflect",
+        "closing" => "closing-plain",
+        "bear-1" => "bear-1-reflect",
+        "notebook-bear" => "notebook-bear-reflect",
+        "bear-2" => "bear-2-reflect",
+        "fox-1" => "fox-1-reflect",
+        "phone-1" => "phone-1-open",
+        "phone-2" => "phone-2-next",
+        "note" => "note-write",
+        other => panic!("no fitting option known for {other}"),
+    }
+}
+
+fn miss(menu: &str) -> String {
+    format!("{menu}-probe")
+}
+
 fn points(runtime: &CinderRuntime) -> i32 {
     runtime
         .export_state()
@@ -53,13 +85,13 @@ fn greeting_wren_opens_the_first_bid() {
 fn a_fitting_answer_earns_a_point_and_a_miss_does_not() {
     let fit = runtime();
     greet(&fit);
-    let text = turn(&fit, "1");
+    let text = turn(&fit, "meet-reflect");
     assert!(text.contains("He had a job. A far one."), "{text}");
     assert_eq!(points(&fit), 1);
 
     let miss = runtime();
     greet(&miss);
-    let text = turn(&miss, "3");
+    let text = turn(&miss, "meet-probe");
     assert!(text.contains("Wren (to Isla): Nothing."), "{text}");
     assert_eq!(points(&miss), 0);
 }
@@ -68,7 +100,7 @@ fn a_fitting_answer_earns_a_point_and_a_miss_does_not() {
 fn wren_follows_isla_to_the_playroom_and_the_bins_follow() {
     let runtime = runtime();
     greet(&runtime);
-    let text = turn(&runtime, "1");
+    let text = turn(&runtime, "meet-reflect");
     assert!(text.contains("She stays a step behind you"), "{text}");
     assert_eq!(active_menu(&runtime), None);
 
@@ -87,7 +119,7 @@ fn wren_follows_isla_to_the_playroom_and_the_bins_follow() {
     assert_eq!(state.actor_room_id("wren", "waiting-room"), "playroom");
     assert!(!state.follows_player("wren"), "she stays at the bins");
 
-    let text = turn(&runtime, "1");
+    let text = turn(&runtime, "bins-reflect");
     assert!(text.contains("And those ones."), "{text}");
     assert_eq!(points(&runtime), 2);
     assert_eq!(active_menu(&runtime).as_deref(), Some("snack-none"));
@@ -97,7 +129,7 @@ fn wren_follows_isla_to_the_playroom_and_the_bins_follow() {
 fn points_survive_a_runtime_reload() {
     let first = runtime();
     greet(&first);
-    turn(&first, "1");
+    turn(&first, "meet-reflect");
     let state = first.export_state().expect("state");
     let pack = load_named_pack("isla", Some("en")).expect("isla loads");
     let reloaded = CinderRuntime::from_state(pack, state, false).expect("reload");
@@ -174,7 +206,7 @@ fn start_session(runtime: &CinderRuntime, snack: bool, book: Option<&str>) {
     }
     turn(runtime, "go waiting room");
     turn(runtime, "say wren:greet");
-    turn(runtime, "1");
+    turn(runtime, "meet-reflect");
     turn(runtime, "go hall");
     turn(runtime, "go playroom");
 }
@@ -185,9 +217,9 @@ fn finish_after(runtime: &CinderRuntime) -> String {
     for step in ["go hall", "go kitchen", "go back yard"] {
         text += &turn(runtime, step);
     }
-    text += &answer(runtime, "phone-1", "1");
-    text += &answer(runtime, "phone-2", "1");
-    text += &answer(runtime, "note", "1");
+    text += &answer(runtime, "phone-1", fit("phone-1"));
+    text += &answer(runtime, "phone-2", fit("phone-2"));
+    text += &answer(runtime, "note", fit("note"));
     text += &turn(runtime, "look at notes from today");
     text
 }
@@ -218,7 +250,7 @@ fn the_best_session_with_the_right_book_reaches_every_secret_and_the_best_drawin
         "cup",
         "closing",
     ] {
-        answer(&runtime, menu, "1");
+        answer(&runtime, menu, fit(menu));
     }
     assert_eq!(points(&runtime), 15);
     let state = runtime.export_state().expect("state");
@@ -242,10 +274,10 @@ fn the_best_session_with_the_right_book_reaches_every_secret_and_the_best_drawin
 fn the_first_secret_is_the_bag_and_the_last_is_the_cup() {
     let runtime = runtime();
     start_session(&runtime, true, Some("bird book"));
-    answer(&runtime, "bins", "1");
-    let text = answer(&runtime, "snack-have", "1");
+    answer(&runtime, "bins", fit("bins"));
+    let text = answer(&runtime, "snack-have", fit("snack-have"));
     assert!(text.contains("Rabbit's got his toothbrush"), "{text}");
-    let text = answer(&runtime, "bag", "1");
+    let text = answer(&runtime, "bag", fit("bag"));
     assert!(text.contains("He never has to stay anywhere"), "{text}");
     for menu in [
         "stories",
@@ -255,9 +287,9 @@ fn the_first_secret_is_the_bag_and_the_last_is_the_cup() {
         "quiet",
         "bird-3",
     ] {
-        answer(&runtime, menu, "1");
+        answer(&runtime, menu, fit(menu));
     }
-    let text = turn(&runtime, "1");
+    let text = turn(&runtime, fit("cup"));
     assert!(
         text.contains("It was Mom's. I was making tea"),
         "the cup should be told: {text}"
@@ -268,8 +300,8 @@ fn the_first_secret_is_the_bag_and_the_last_is_the_cup() {
 fn without_a_snack_isla_has_to_fetch_one() {
     let runtime = runtime();
     start_session(&runtime, false, None);
-    answer(&runtime, "bins", "1");
-    let text = answer(&runtime, "snack-none", "2");
+    answer(&runtime, "bins", fit("bins"));
+    let text = answer(&runtime, "snack-none", fit("snack-none"));
     assert!(text.contains("The kitchen is warm"), "{text}");
     assert_eq!(points(&runtime), 3);
 }
@@ -278,8 +310,8 @@ fn without_a_snack_isla_has_to_fetch_one() {
 fn poor_answers_close_the_deeper_secrets() {
     let runtime = runtime();
     start_session(&runtime, false, None);
-    answer(&runtime, "bins", "4");
-    answer(&runtime, "snack-none", "4");
+    answer(&runtime, "bins", &miss("bins"));
+    answer(&runtime, "snack-none", &miss("snack-none"));
     assert_eq!(
         active_menu(&runtime).as_deref(),
         Some("stories"),
@@ -292,11 +324,11 @@ fn the_default_book_is_the_shallow_counting_book() {
     let runtime = runtime();
     start_session(&runtime, true, None);
     for menu in ["bins", "snack-have", "bag", "stories"] {
-        answer(&runtime, menu, "1");
+        answer(&runtime, menu, fit(menu));
     }
     assert_eq!(active_menu(&runtime).as_deref(), Some("bear-1"));
     for menu in ["bear-1", "notebook-bear", "bear-2", "closing"] {
-        answer(&runtime, menu, "1");
+        answer(&runtime, menu, fit(menu));
     }
     let state = runtime.export_state().expect("state");
     assert!(
@@ -317,9 +349,9 @@ fn the_book_about_two_houses_makes_wren_retreat() {
     let runtime = runtime();
     start_session(&runtime, true, Some("fox book"));
     for menu in ["bins", "snack-have", "bag", "stories"] {
-        answer(&runtime, menu, "1");
+        answer(&runtime, menu, fit(menu));
     }
-    let text = answer(&runtime, "fox-1", "1");
+    let text = answer(&runtime, "fox-1", fit("fox-1"));
     assert!(text.contains("goes to the bins"), "{text}");
     assert_eq!(active_menu(&runtime).as_deref(), Some("closing"));
 }
@@ -337,10 +369,10 @@ fn the_cup_needs_the_quiet_secret_to_have_been_held() {
         "notebook-bird",
         "bird-2",
     ] {
-        answer(&runtime, menu, "1");
+        answer(&runtime, menu, fit(menu));
     }
-    answer(&runtime, "quiet", "3");
-    answer(&runtime, "bird-3", "1");
+    answer(&runtime, "quiet", &miss("quiet"));
+    answer(&runtime, "bird-3", fit("bird-3"));
     assert_eq!(
         active_menu(&runtime).as_deref(),
         Some("closing"),
@@ -352,7 +384,7 @@ fn the_cup_needs_the_quiet_secret_to_have_been_held() {
 fn choices_wait_while_isla_is_away_from_wren() {
     let runtime = runtime();
     start_session(&runtime, false, None);
-    answer(&runtime, "bins", "1");
+    answer(&runtime, "bins", fit("bins"));
     assert!(runtime.menu_choice_options().unwrap().is_some());
 
     turn(&runtime, "go hall");
@@ -362,13 +394,13 @@ fn choices_wait_while_isla_is_away_from_wren() {
     );
     assert!(runtime.menu_choice_options().unwrap().is_none());
     // A number typed in the hall answers nothing.
-    let text = turn(&runtime, "2");
+    let text = turn(&runtime, "snack-none-offer");
     assert!(!text.contains("I'll go and get one"), "{text}");
     assert_eq!(active_menu(&runtime).as_deref(), Some("snack-none"));
 
     turn(&runtime, "go playroom");
     assert!(runtime.current_active_menu_info().unwrap().is_some());
-    let text = turn(&runtime, "2");
+    let text = turn(&runtime, "snack-none-offer");
     assert!(text.contains("I'll go and get one"), "{text}");
 }
 
@@ -376,11 +408,11 @@ fn choices_wait_while_isla_is_away_from_wren() {
 fn a_quieter_session_gets_a_quieter_message_and_note() {
     let runtime = runtime();
     start_session(&runtime, false, None);
-    answer(&runtime, "bins", "4");
-    answer(&runtime, "snack-none", "4");
-    answer(&runtime, "stories", "1");
+    answer(&runtime, "bins", &miss("bins"));
+    answer(&runtime, "snack-none", &miss("snack-none"));
+    answer(&runtime, "stories", fit("stories"));
     for menu in ["bear-1", "bear-2", "closing"] {
-        answer(&runtime, menu, "4");
+        answer(&runtime, menu, &miss(menu));
     }
     let after = finish_after(&runtime);
     assert!(after.contains("she's always quiet in the car"), "{after}");
@@ -408,14 +440,14 @@ fn the_messages_come_from_mom_and_dr_bell_and_say_who_they_are_to() {
         "cup",
         "closing",
     ] {
-        answer(&runtime, menu, "1");
+        answer(&runtime, menu, fit(menu));
     }
     for step in ["go hall", "go kitchen", "go back yard"] {
         turn(&runtime, step);
     }
-    let first = answer(&runtime, "phone-1", "1");
+    let first = answer(&runtime, "phone-1", fit("phone-1"));
     assert!(first.contains("Mom (to Isla): She hummed"), "{first}");
-    let second = answer(&runtime, "phone-2", "1");
+    let second = answer(&runtime, "phone-2", fit("phone-2"));
     assert!(
         second.contains("Dr. Bell (to Isla): How did it go?"),
         "{second}"
