@@ -431,11 +431,11 @@
   },
   {
     "id": "spirit-pill",
-    "label": "spirit pill",
-    "aliases": ["spirit pill", "pill", "spirit-pill"],
+    "label": "spirit capsule",
+    "aliases": ["spirit capsule", "spirit-capsule", "spirit pill", "spirit-pill", "capsule", "pill"],
     "kind": "potion",
     "use_hook": "item.spirit_pill_used",
-    "description": "A small white pill given by Orva in the herb garden. Swallowing it lets you see the glowing spirits of the dead."
+    "description": "A thumb-sized silver capsule filled with luminous blue dew harvested from cliffside soul plants. Swallowing it lets you see the trapped spirits of the dead."
   },
   {
     "id": "bind-scroll",

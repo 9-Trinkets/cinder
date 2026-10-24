@@ -645,7 +645,8 @@
       "beat_note": "Astrid, Einar, and Orva are reunited on the Sanctuary Platform. Commander Astrid will hold the platform while Layla climbs the white stair to Floor 7.",
       "update_message": "Speak with Commander Astrid and ascend to Floor 7 via the glowing white stair.",
       "narrative_lines": [
-        "Blue light flashes across the mountain cliff. Commander Astrid and Einar materialize on the stone platform, their weapons drawn. Astrid plants her heavy shield into the flagstones, securing the acropolis perimeter. Einar rushes forward and embraces Orva, their twin silver arrows gleaming in the sunlight.",
+        "A blinding pillar of blue light erupts from the resonance anchor, permanently linking Floor 6 to the Frost Citadel below! Commander Astrid, Elwin, Queen Nur, Sakhra, Einar, and your golem companions materialize on the platform. Channeling the Bind Sigil through Zayd's Amber Lamp, you restore the memories of Zayd's parents—Siraj and Nur weep as they recognize one another and embrace at last. You free Mari, Ferid, and Hana from their servitude, while Orin's golden spirit spark smiles from the lantern and dissolves peacefully into the clouds.",
+        "Suddenly, Priest Harun bolts across the terrace trying to escape! Astrid intercepts him with a crushing shield slam, Elwin pins his robe with an arrow, and fortress guards haul him away in chains. Across the courtyard, Einar and Orva embrace tightly, their matching silver arrows gleaming together in the morning sun.",
         "Astrid: The acropolis perimeter is secure, Layla. We will hold this platform with our shields so nothing can sneak up behind you. The white stair is open. Ascend to Floor 7 and end this game."
       ],
       "on_advance_effects": [],

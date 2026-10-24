@@ -12871,7 +12871,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "Chilling entries matching living names to monster classes: miners turned into steam golems, forest scouts bound into shadow elves."
+        "inspect_text": "Chilling entries matching living names to monster classes: miners turned into steam golems, forest scouts bound into shadow elves. You recognize the recorded names of Siraj, Nur, Orin, Mari, Ferid, and Hana."
       }
     ],
     "exits": [
@@ -12959,7 +12959,7 @@
     "id": "herbarium_garden",
     "title": "The Glass Solarium",
     "summary": "A warm, bright botanical courtyard covered by an intricate wrought-iron and glass dome. Raised stone beds hold rare alpine mosses, flowering medicinal shrubs, and terraced herbs.",
-    "inspect_text": "Steam from warm floor pipes keeps the air humid and fragrant. Stone benches line the perimeter, stairs lead up to the Southwest Garden Bastion, and doors open south to the still room and east to the dispensary.",
+    "inspect_text": "Steam from warm floor pipes keeps the air humid and fragrant. Stone benches line the perimeter, stairs lead up to the Southwest Garden Bastion, doors open south to the still room and east to the dispensary, and a loosened stone brick behind the water basin conceals a narrow ventilation flue leading out to the cliff balcony.",
     "allow_rest": true,
     "features": [
       {
@@ -13014,6 +13014,22 @@
           "shop"
         ],
         "menu_label": "Enter the Dispensary Hall",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "herbarium_cliff_balcony",
+        "label": "West",
+        "aliases": [
+          "west",
+          "w",
+          "vent",
+          "balcony",
+          "flue",
+          "cliff",
+          "ledge",
+          "out"
+        ],
+        "menu_label": "Slip through the vent to the Cliff Balcony",
         "requires_story_var": ""
       },
       {
@@ -13179,6 +13195,79 @@
           "hall"
         ],
         "menu_label": "Return to the Dispensary Hall",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "herbarium_cliff_balcony",
+    "title": "The Secret Cliff Balcony",
+    "summary": "A narrow stone shelf nestled beneath overhanging buttresses high above an endless sea of clouds. A disused steam pipe warms dark alpine soil where wild soul grass glimmers with fresh dew.",
+    "inspect_text": "Cold mountain winds buffet the outer cliffs, but this sheltered ledge is remarkably warm. A stone mortar sits beside the soul grass to collect luminous morning dew. To the east, a narrow vent flue leads back into the Solarium Garden. To the west, a chained iron door conceals a spiral stair plunging down into the Reanimation Sanctum.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "herbarium_cliff_balcony-soul_grass",
+        "label": "the wild soul grass",
+        "aliases": [
+          "soul grass",
+          "grass",
+          "plants",
+          "dew",
+          "herbs",
+          "soil"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Low wild herbs rooted in dark alpine loam, pulsing with faint azure light in rhythm with the steam vent. Droplets of fresh, luminous dew cling to the leaf tips—the key ingredient used to brew the Spirit Capsule."
+      },
+      {
+        "id": "herbarium_cliff_balcony-iron_door",
+        "label": "the chained iron door",
+        "aliases": [
+          "door",
+          "iron door",
+          "chains",
+          "stairs",
+          "staircase",
+          "steps"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "A heavy stone slab reinforced by crude iron chains, concealing a hidden spiral staircase that leads down directly into the Reanimation Sanctum."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "herbarium_garden",
+        "label": "East",
+        "aliases": [
+          "east",
+          "e",
+          "garden",
+          "solarium",
+          "vent",
+          "in",
+          "back"
+        ],
+        "menu_label": "Return through the vent to the Solarium Garden",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "mortuary_reanimation_sanctum",
+        "label": "Down",
+        "aliases": [
+          "down",
+          "d",
+          "west",
+          "w",
+          "stairs",
+          "door",
+          "sanctum",
+          "undercrypt"
+        ],
+        "menu_label": "Descend the secret stairs to the Reanimation Sanctum",
         "requires_story_var": ""
       }
     ],
@@ -13448,6 +13537,21 @@
         "allow_rest": false,
         "consumables": [],
         "inspect_text": "Dozens of pale, translucent human spirits floating silently above the altar. Their faces resemble the miners and villagers of Deepwell and Salt Reach, waiting to be stripped of memory and bound into dungeon monsters."
+      },
+      {
+        "id": "mortuary_reanimation_sanctum-ledger",
+        "label": "the black binding ledger",
+        "aliases": [
+          "ledger",
+          "binding ledger",
+          "book",
+          "registry",
+          "records",
+          "names"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "A heavy black leather ledger detailing the horrifying transformation pipeline: Siraj bound into the stone guard Sakhra, Nur into the Elf White Queen, Orin (Mr. Black) into Black Golem 1, Mari (Miss Black) into Black Golem 2, Ferid (Mr. White) into White Golem 1, and Hana (Miss White) into White Golem 2."
       }
     ],
     "exits": [
@@ -13474,6 +13578,20 @@
           "catacombs"
         ],
         "menu_label": "Return to the Silent Catacombs",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "herbarium_cliff_balcony",
+        "label": "Up",
+        "aliases": [
+          "up",
+          "u",
+          "balcony",
+          "stairs",
+          "secret stairs",
+          "cliff"
+        ],
+        "menu_label": "Climb the secret spiral stair to the Cliff Balcony",
         "requires_story_var": ""
       },
       {

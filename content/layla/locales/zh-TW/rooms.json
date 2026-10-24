@@ -13718,7 +13718,7 @@
         "allow_rest": false,
         "consumables": [],
         "id": "scriptorium_secret_archive-ledgers",
-        "inspect_text": "令人心寒的條目，把活人的名字對應到魔物級別：礦工被變成蒸汽魔像，林中斥候被縛成暗影妖精。",
+        "inspect_text": "令人不寒而慄的紀錄，將活人的名字與魔物階級一一對應：礦工被變成蒸汽魔像，森林斥候被縛成幽影精靈。你清楚認出了西拉傑、努爾、歐林、瑪莉、法瑞德與哈娜的名字。",
         "label": "機密殮房帳冊"
       }
     ],
@@ -13798,6 +13798,26 @@
       },
       {
         "aliases": [
+          "west",
+          "w",
+          "vent",
+          "balcony",
+          "flue",
+          "cliff",
+          "ledge",
+          "out",
+          "西",
+          "通風口",
+          "陽台",
+          "懸崖"
+        ],
+        "label": "西",
+        "menu_label": "穿過通風口前往懸崖秘密陽台",
+        "requires_story_var": "",
+        "room_id": "herbarium_cliff_balcony"
+      },
+      {
+        "aliases": [
           "south",
           "s",
           "still",
@@ -13853,7 +13873,7 @@
       }
     ],
     "id": "herbarium_garden",
-    "inspect_text": "來自地面暖管的蒸汽讓空氣潮濕而芬芳。石凳沿著四周排列，石梯向上通往西南花園稜堡，幾扇門向南通往蒸餾靜室，向東通往藥房。",
+    "inspect_text": "來自地面暖管的蒸汽讓空氣潮濕而芬芳。石凳沿著四周排列，石梯向上通往西南花園稜堡，幾扇門向南通往蒸餾靜室、向東通往藥房，水槽下方一塊鬆動的排氣石磚後方隱藏著通往懸崖秘密陽台的通風導管。",
     "summary": "一座溫暖明亮的植物庭院，頂上是精巧的鍛鐵與玻璃圓頂。墊高的石圃裡種著稀有的高山苔蘚、開花的藥用灌木和層疊的香草。",
     "title": "玻璃日光室"
   },
@@ -14011,6 +14031,95 @@
     "inspect_text": "精巧的黃銅齒輪咬合計時，以絆線連向鐘樓的鐘鎚。一只洩水閥和浮球水位計，為小心的動手腳留下了機會。",
     "summary": "一處遮陰的石壁龕，安置著聖所的主滴漏——一座巨大的青銅水鐘。水從層疊的青銅蓄水器中節奏精準地滴落，計量著規定的值守時刻。",
     "title": "水鐘迴廊"
+  },
+  {
+    "allow_rest": false,
+    "descriptions": [],
+    "exits": [
+      {
+        "aliases": [
+          "east",
+          "e",
+          "garden",
+          "solarium",
+          "vent",
+          "in",
+          "back",
+          "東",
+          "花園",
+          "日光花園",
+          "通風口"
+        ],
+        "label": "東",
+        "menu_label": "鑽過通風導管返回草藥花園",
+        "requires_story_var": "",
+        "room_id": "herbarium_garden"
+      },
+      {
+        "aliases": [
+          "down",
+          "d",
+          "west",
+          "w",
+          "stairs",
+          "door",
+          "sanctum",
+          "undercrypt",
+          "下",
+          "西",
+          "石階",
+          "石門",
+          "密室",
+          "靈柩殿"
+        ],
+        "label": "下",
+        "menu_label": "順著隱密石階向下前往靈柩殿",
+        "requires_story_var": "",
+        "room_id": "mortuary_reanimation_sanctum"
+      }
+    ],
+    "features": [
+      {
+        "aliases": [
+          "soul grass",
+          "grass",
+          "plants",
+          "dew",
+          "herbs",
+          "soil",
+          "野生靈魂草",
+          "靈魂草",
+          "露水"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "id": "herbarium_cliff_balcony-soul_grass",
+        "inspect_text": "生長在高山黑土中的低矮野生草葉，葉面上浮動著幽藍的微光光點，隨著蒸汽呼吐緩慢明暗。葉尖正凝結著一滴滴晶瑩露水——正是調配靈視膠囊的關鍵核心。",
+        "label": "野生靈魂草"
+      },
+      {
+        "aliases": [
+          "door",
+          "iron door",
+          "chains",
+          "stairs",
+          "staircase",
+          "steps",
+          "生鐵鎖鏈石門",
+          "石門",
+          "鐵門"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "id": "herbarium_cliff_balcony-iron_door",
+        "inspect_text": "以粗重生鐵鎖鏈加固的厚重石門，後方是一條避開聖堂巡邏、直達底層靈柩殿的隱密螺旋石階。",
+        "label": "生鐵鎖鏈石門"
+      }
+    ],
+    "id": "herbarium_cliff_balcony",
+    "inspect_text": "寒夜冷風在崖壁外呼嘯，但這處避風夾層卻寧靜而溫暖。靈魂草葉尖下放置著接取晨露的粗陶石碗。東側的狹窄通風導管可鑽回草藥花園，西側一扇生鐵加固的厚重石門則通向盤旋向下的幽暗石階，直抵底層靈柩殿。",
+    "summary": "懸於至高聖所外側絕壁之上的狹窄石階夾層，隱匿於倒扣的宏偉樑柱下方，俯瞰著翻湧無邊的壯闊雲海。一截廢棄的採暖蒸汽管朝著黑色高山腐殖土吐出細細的恆定暖汽，數十株幽藍閃爍的野生靈魂草正凝結著新鮮純淨的露水。",
+    "title": "懸崖秘密陽台"
   },
   {
     "allow_rest": false,
@@ -14252,15 +14361,15 @@
     "descriptions": [
       {
         "actor_defeated": "the_seer",
-        "inspect_text": "黑暗的儀式已經結束。先知瓦勒里烏斯敗倒在地面的石板上，他的縛魂咒已破。南邊，平台在山間天空下敞開。",
+        "inspect_text": "黑暗的儀式已經結束。先知瓦勒里烏斯與石骨巨龍崩解為滿地灰燼，縛魂印記已破。南邊，平台在山間天空下敞開。",
         "requires_story_var": "",
-        "summary": "青銅祭壇冰冷而寂靜地立著。先知瓦勒里烏斯既已敗亡，被囚的靈魂也已安然消散。南邊通往平台的門開著。"
+        "summary": "青銅祭壇冰冷而寂靜地立著。先知瓦勒里烏斯與石骨巨龍既已敗亡，被囚的靈魂也已安然消散。南邊通往平台的門開著。"
       },
       {
         "actor_defeated": "",
-        "inspect_text": "憑著通靈丹的力量，真相顯露。受困的人類靈魂無助地飄盪在銀色光圈中。當他周圍盡是受困的幽魂時，青銅祭壇前那個罩著兜帽的身影卻有溫熱的呼吸和跳動的心臟。他是這間屋裡唯一的活人——先知瓦勒里烏斯。",
+        "inspect_text": "憑藉靈視膠囊的力量，真相顯露。受困的人類靈魂無助地飄盪在銀色光圈中。在滿堂漂浮的幽魂之中，唯有黑曜石祭壇前手握法杖、操縱石骨巨龍的身影擁有溫熱的呼吸與心跳。他是這間屋裡唯一的活人——先知瓦勒里烏斯。",
         "requires_story_var": "spiritual_sight",
-        "summary": "你的靈視甦醒了！數十個蒼白發光的人類靈魂浮在祭壇上方的光圈裡，等著被變成魔物。在滿室飄盪的幽魂之中，只站著一個仍在呼吸的活人：先知瓦勒里烏斯。"
+        "summary": "你的靈視甦醒了！數百個蒼白發光的人類靈魂浮在祭壇上方的光圈裡，等著被變成魔物。在滿室飄盪的幽魂之中，只站著一個仍在呼吸的活人：先知瓦勒里烏斯。"
       }
     ],
     "exits": [
@@ -14288,6 +14397,24 @@
         "menu_label": "返回寂靜墓窟",
         "requires_story_var": "",
         "room_id": "mortuary_crypt"
+      },
+      {
+        "aliases": [
+          "up",
+          "u",
+          "balcony",
+          "stairs",
+          "secret stairs",
+          "cliff",
+          "上",
+          "陽台",
+          "懸崖陽台",
+          "石階"
+        ],
+        "label": "上",
+        "menu_label": "攀登隱密螺旋石階前往懸崖陽台",
+        "requires_story_var": "",
+        "room_id": "herbarium_cliff_balcony"
       },
       {
         "aliases": [
@@ -14330,8 +14457,25 @@
         "allow_rest": false,
         "consumables": [],
         "id": "mortuary_reanimation_sanctum-spirits",
-        "inspect_text": "數十個蒼白、半透明的人類靈魂靜靜飄浮在祭壇上方。他們的臉孔像深井鎮和鹽灘的礦工與村民，正等著被等著被剝去記憶、縛成地牢魔物。",
+        "inspect_text": "數十個蒼白、半透明的人類靈魂靜靜飄浮在祭壇上方。他們的臉孔像深井鎮和鹽灘的礦工與村民，正等著被剝去記憶、縛成地牢魔物。",
         "label": "被囚的靈魂"
+      },
+      {
+        "aliases": [
+          "ledger",
+          "binding ledger",
+          "book",
+          "registry",
+          "records",
+          "names",
+          "黑色鎖魂名冊",
+          "名冊"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "id": "mortuary_reanimation_sanctum-ledger",
+        "inspect_text": "一本厚重的黑皮鎖魂名冊，靈視的光芒穿透墨字，清晰映出殘酷的轉化紀錄：西拉傑抽離記憶繫入外圍蒸汽石守、努爾抹除記憶繫入迷霧林地白棋王后、切石匠歐林繫入一號黑石魔像、磨坊匠瑪莉繫入二號黑石魔像、礦工法瑞德繫入一號白石魔像、織布匠哈娜繫入二號白石魔像。",
+        "label": "黑色鎖魂名冊"
       }
     ],
     "id": "mortuary_reanimation_sanctum",

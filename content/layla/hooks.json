@@ -55,6 +55,61 @@
         {
           "conditions": [
             {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "the_seer"
+            }
+          ],
+          "payload_template": {
+            "kind": "move_actors",
+            "actor_id": "sanctuary_dragon",
+            "room_id": ""
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "sanctuary_dragon"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "seer_defeated",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "sanctuary_dragon"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "handler.seer_valerius_defeated"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "sanctuary_dragon"
+            }
+          ],
+          "payload_template": {
+            "kind": "move_actors",
+            "actor_id": "the_seer",
+            "room_id": ""
+          }
+        },
+        {
+          "conditions": [
+            {
               "path": "tags",
               "operator": "array_contains_any",
               "value": ["house_head"]

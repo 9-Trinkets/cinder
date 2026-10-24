@@ -1214,6 +1214,11 @@
         "y": 18.0
       },
       {
+        "room_id": "herbarium_cliff_balcony",
+        "x": 3.0,
+        "y": 18.0
+      },
+      {
         "room_id": "herbarium_apothecary",
         "x": 9.0,
         "y": 18.0
