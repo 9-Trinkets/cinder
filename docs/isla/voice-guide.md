@@ -4,9 +4,9 @@ How everyone in the Wren act sounds, and how the story is told. Read with `wren-
 
 ## 1. Conventions for every line
 
-- **Speech** is written as its own line: `Name: what they say.` No stage directions inside the speech. Action goes in a separate narration line before or after.
+- **Speech** is written as its own line, naming who it is said to: `Wren (to Isla): what she says.` No stage directions inside the speech. Action goes in a separate narration line before or after.
 - **Narration** is its own line. Two sentences at most.
-- **No parentheses**, ever, in anything the player reads.
+- **No parentheses** in anything the player reads, except the `(to Name)` label on speech.
 - **American English**: Mom, Dad, first grade, recess, sidewalk, cookie.
 - **Nothing is explained.** The text never says what a behavior means ("she is hiding her sadness"). It shows the behavior and lets the player decide.
 - **Isla's options** are things Isla says or does, written in Isla's voice (section 3). They are never labeled good or bad.

@@ -48,10 +48,10 @@
         "repeatable": false,
         "narrative_lines": [
           "You take the chair next to hers, not too close. She doesn't look up. She turns Rabbit around so that he faces the fish tank.",
-          "Isla: Rabbit's got a good view.",
-          "Wren: He likes the snail.",
+          "Isla (to Wren): Rabbit's got a good view.",
+          "Wren (to Isla): He likes the snail.",
           "She opens the flap of Rabbit's bag, looks at a small notebook, and zips it shut again.",
-          "Wren: It's Thursday. Dad brought me.",
+          "Wren (to Isla): It's Thursday. Dad brought me.",
           "That is all she says. Her shoes stay exactly even."
         ]
       }
@@ -79,9 +79,9 @@
         "id": "about-wren",
         "label": "Ask Gloria about Wren",
         "narrative_lines": [
-          "Isla: How's she doing?",
-          "Gloria: She asked me what day it is. Twice. I said Thursday both times.",
-          "Gloria: Otherwise she's been counting the stones in the tank. The snail doesn't mind."
+          "Isla (to Gloria): How's she doing?",
+          "Gloria (to Isla): She asked me what day it is. Twice. I said Thursday both times.",
+          "Gloria (to Isla): Otherwise she's been counting the stones in the tank. The snail doesn't mind."
         ]
       }
     ]

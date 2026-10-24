@@ -98,7 +98,7 @@ fn saying_a_topic_plays_it_once_and_it_is_no_longer_offered() {
     runtime.run_turn("go inside").expect("go inside");
     let text = runtime.run_turn("say wren:greet").expect("say").text();
     assert!(
-        text.contains("Wren: It's Thursday. Dad brought me."),
+        text.contains("Wren (to Isla): It's Thursday. Dad brought me."),
         "{text}"
     );
 

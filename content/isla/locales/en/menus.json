@@ -14,9 +14,9 @@
         "title": "Dad brought you today.",
         "menu_text": "",
         "narrative_lines": [
-          "Isla: Dad brought you today.",
+          "Isla (to Wren): Dad brought you today.",
           "She nods once.",
-          "Wren: He had a job. A far one."
+          "Wren (to Isla): He had a job. A far one."
         ]
       },
       {
@@ -25,7 +25,7 @@
         "menu_text": "",
         "narrative_lines": [
           "You wait. The filter in the fish tank hums. Wren counts the stones in the tank under her breath, up to four, and stops.",
-          "Wren: Dad's got a job. It's far."
+          "Wren (to Isla): Dad's got a job. It's far."
         ]
       },
       {
@@ -33,8 +33,8 @@
         "title": "What's different about today?",
         "menu_text": "",
         "narrative_lines": [
-          "Isla: What's different about today?",
-          "Wren: Nothing.",
+          "Isla (to Wren): What's different about today?",
+          "Wren (to Isla): Nothing.",
           "She zips Rabbit's bag a second time."
         ]
       },
@@ -43,8 +43,8 @@
         "title": "That's okay. We can still start.",
         "menu_text": "",
         "narrative_lines": [
-          "Isla: That's okay. We can still start.",
-          "Wren: Okay.",
+          "Isla (to Wren): That's okay. We can still start.",
+          "Wren (to Isla): Okay.",
           "She looks down at her shoes and says nothing else."
         ]
       }
@@ -65,8 +65,8 @@
         "title": "Those ones live here.",
         "menu_text": "",
         "narrative_lines": [
-          "Isla: Those ones live here.",
-          "Wren: And those ones.",
+          "Isla (to Wren): Those ones live here.",
+          "Wren (to Isla): And those ones.",
           "She puts the pig in the left bin, next to the cow."
         ]
       },
@@ -76,7 +76,7 @@
         "menu_text": "",
         "narrative_lines": [
           "You pick up the small horse and hold him over the two bins. You don't put him down.",
-          "Wren: Left. Horses go left.",
+          "Wren (to Isla): Left. Horses go left.",
           "She doesn't look up."
         ]
       },
@@ -86,7 +86,7 @@
         "menu_text": "",
         "narrative_lines": [
           "You sit on the floor by the rug, facing the shelf and not her. Wren counts the animals as they go in, and gets to five.",
-          "Wren: Five live here."
+          "Wren (to Isla): Five live here."
         ]
       },
       {
@@ -94,8 +94,8 @@
         "title": "Why do they live there?",
         "menu_text": "",
         "narrative_lines": [
-          "Isla: Why do they live there?",
-          "Wren: Because.",
+          "Isla (to Wren): Why do they live there?",
+          "Wren (to Isla): Because.",
           "She takes the cow out and puts it back in the other bin."
         ]
       }

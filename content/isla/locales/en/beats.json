@@ -105,9 +105,9 @@
       "open_menu": "bins",
       "narrative_lines": [
         "The afternoon light lies across the rug. Wren is at the shelf between the two lidded bins, moving animals from one to the other. A cow. A pig. The small horse.",
-        "Wren: One. Two. Three.",
+        "Wren (to Isla): One. Two. Three.",
         "She stops herself. She puts the cow in the left bin, takes it out, and puts it in the right.",
-        "Wren: These ones live here."
+        "Wren (to Isla): These ones live here."
       ],
       "advance_signals": [
         "menu_selected:bins"

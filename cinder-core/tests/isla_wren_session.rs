@@ -43,7 +43,7 @@ fn greeting_wren_opens_the_first_bid() {
     let runtime = runtime();
     let text = greet(&runtime);
     assert!(
-        text.contains("Wren: It's Thursday. Dad brought me."),
+        text.contains("Wren (to Isla): It's Thursday. Dad brought me."),
         "{text}"
     );
     assert_eq!(active_menu(&runtime).as_deref(), Some("meet"));
@@ -60,7 +60,7 @@ fn a_fitting_answer_earns_a_point_and_a_miss_does_not() {
     let miss = runtime();
     greet(&miss);
     let text = turn(&miss, "3");
-    assert!(text.contains("Wren: Nothing."), "{text}");
+    assert!(text.contains("Wren (to Isla): Nothing."), "{text}");
     assert_eq!(points(&miss), 0);
 }
 
@@ -74,7 +74,10 @@ fn wren_leads_the_way_to_the_playroom_and_the_bins_follow() {
 
     turn(&runtime, "go hall");
     let text = turn(&runtime, "go playroom");
-    assert!(text.contains("Wren: These ones live here."), "{text}");
+    assert!(
+        text.contains("Wren (to Isla): These ones live here."),
+        "{text}"
+    );
     assert_eq!(active_menu(&runtime).as_deref(), Some("bins"));
 
     let text = turn(&runtime, "1");
@@ -92,4 +95,44 @@ fn points_survive_a_runtime_reload() {
     let pack = load_named_pack("isla", Some("en")).expect("isla loads");
     let reloaded = CinderRuntime::from_state(pack, state, false).expect("reload");
     assert_eq!(points(&reloaded), 1);
+}
+
+/// Speech names who is talking to whom, as `Name (to Other): text`. Apart from
+/// that label, authored lines have no parentheses.
+#[test]
+fn spoken_lines_name_who_is_talking_to_whom() {
+    let pack = load_named_pack("isla", Some("en")).expect("isla loads");
+    let mut lines: Vec<String> = Vec::new();
+    for actor in &pack.actors {
+        for topic in &actor.topics {
+            lines.extend(topic.narrative_lines.clone());
+        }
+    }
+    for menu in &pack.menus {
+        for option in &menu.options {
+            lines.extend(option.narrative_lines.clone());
+        }
+    }
+    for stage in &pack.beats.stages {
+        lines.extend(stage.narrative_lines.clone());
+    }
+    for line in lines {
+        let speech = line
+            .split_once(": ")
+            .filter(|(label, _)| {
+                label
+                    .chars()
+                    .all(|c| c.is_alphabetic() || " .()".contains(c))
+            })
+            .filter(|(label, _)| !label.contains(' ') || label.contains("(to "));
+        if let Some((label, body)) = speech {
+            assert!(
+                label.contains("(to "),
+                "speech does not say who it is to: {line}"
+            );
+            assert!(!body.contains('(') && !body.contains(')'), "{line}");
+        } else {
+            assert!(!line.contains('(') && !line.contains(')'), "{line}");
+        }
+    }
 }
