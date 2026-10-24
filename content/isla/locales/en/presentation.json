@@ -20,6 +20,7 @@
     "actor_departed": "{actor_name} steps away to the {room_title}.",
     "actor_arrived": "{actor_name} returns from the {room_title}.",
     "act_ended": "The session settles into silence as the rain keeps tapping the glass.",
-    "loose_items": "\n\nOn the ground: {items}."
+    "loose_items": "\n\nOn the ground: {items}.",
+    "party": "Beside you: {party}."
   }
 }

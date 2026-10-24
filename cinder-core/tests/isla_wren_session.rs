@@ -74,6 +74,9 @@ fn wren_follows_isla_to_the_playroom_and_the_bins_follow() {
 
     let text = turn(&runtime, "go hall");
     assert!(text.contains("Wren walks beside you."), "{text}");
+    let look = turn(&runtime, "look");
+    assert!(look.contains("Beside you: Wren."), "{look}");
+    assert!(!look.contains("Your party"), "{look}");
     let text = turn(&runtime, "go playroom");
     assert!(
         text.contains("Wren (to Isla): These ones live here."),
