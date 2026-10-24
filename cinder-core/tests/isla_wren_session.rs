@@ -323,3 +323,27 @@ fn the_cup_needs_the_quiet_secret_to_have_been_held() {
         "no cup when the quiet was not held"
     );
 }
+
+#[test]
+fn choices_wait_while_isla_is_away_from_wren() {
+    let runtime = runtime();
+    start_session(&runtime, false, None);
+    answer(&runtime, "bins", "1");
+    assert!(runtime.menu_choice_options().unwrap().is_some());
+
+    turn(&runtime, "go hall");
+    assert!(
+        runtime.current_active_menu_info().unwrap().is_none(),
+        "no choices out in the hall"
+    );
+    assert!(runtime.menu_choice_options().unwrap().is_none());
+    // A number typed in the hall answers nothing.
+    let text = turn(&runtime, "2");
+    assert!(!text.contains("I'll go and get one"), "{text}");
+    assert_eq!(active_menu(&runtime).as_deref(), Some("snack-none"));
+
+    turn(&runtime, "go playroom");
+    assert!(runtime.current_active_menu_info().unwrap().is_some());
+    let text = turn(&runtime, "2");
+    assert!(text.contains("I'll go and get one"), "{text}");
+}

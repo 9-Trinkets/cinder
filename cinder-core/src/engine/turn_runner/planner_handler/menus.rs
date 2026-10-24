@@ -1,7 +1,8 @@
 use crate::content::types::ContentPack;
 use crate::engine::events::WorldEvent;
 use crate::engine::menus::{
-    build_menu_choice_events, resolve_menu_choice, resolve_menu_choice_in_options,
+    build_menu_choice_events, menu_is_available, resolve_menu_choice,
+    resolve_menu_choice_in_options,
 };
 use crate::engine::state::{WorldState, render_dynamic_story_text};
 use crate::engine::turn_runner::types::PlannedTurn;
@@ -16,6 +17,7 @@ pub(super) fn try_resolve_menu_choice(
 ) -> Option<(Vec<WorldEvent>, bool)> {
     if let Some(menu_id) = planner_state.active_menu_id.as_deref()
         && let Some(menu) = content.menu(menu_id)
+        && menu_is_available(content, menu, planner_state)
     {
         let raw = raw_input.trim();
         let is_multi_select = menu.max_selections > 0;
@@ -77,6 +79,9 @@ pub(super) fn try_resolve_menu_choice(
                 .menus
                 .iter()
                 .find(|menu| menu.stage_id == *stage_id && !menu.options.is_empty())?;
+            if !menu_is_available(content, menu, planner_state) {
+                return None;
+            }
             let option = resolve_menu_choice(menu, raw_input)?;
             Some((
                 build_menu_choice_events(content, planner_state, menu, option),
@@ -96,7 +101,11 @@ pub(super) fn plan_unknown_command(
     raw_input: &str,
     planned: &mut PlannedTurn,
 ) -> bool {
-    if let Some(menu_id) = planner_state.active_menu_id.as_deref() {
+    if let Some(menu_id) = planner_state.active_menu_id.as_deref()
+        && content
+            .menu(menu_id)
+            .is_none_or(|menu| menu_is_available(content, menu, planner_state))
+    {
         if let Some(menu) = content.menu(menu_id) {
             planned.events.push(WorldEvent::ActionRejected {
                 message: render_dynamic_story_text(&menu.invalid_choice_text, planner_state),
@@ -112,10 +121,11 @@ pub(super) fn plan_unknown_command(
         .active_objective_stage_ids
         .iter()
         .find_map(|stage_id| {
-            content
-                .menus
-                .iter()
-                .find(|menu| menu.stage_id == *stage_id && !menu.options.is_empty())
+            content.menus.iter().find(|menu| {
+                menu.stage_id == *stage_id
+                    && !menu.options.is_empty()
+                    && menu_is_available(content, menu, planner_state)
+            })
         })
     {
         planned.events.push(WorldEvent::ActionRejected {

@@ -407,6 +407,10 @@ pub struct OpeningMenuDefinition {
     pub max_selections: usize,
     #[serde(default)]
     pub min_selections: usize,
+    /// The choices are only offered, and only accepted, while the player is in
+    /// the same room as `actor_id`. Away from that actor the menu waits.
+    #[serde(default)]
+    pub requires_actor_present: bool,
     #[serde(default)]
     pub multi_selection_var_keys: Vec<String>,
     #[serde(default)]

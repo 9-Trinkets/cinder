@@ -11,6 +11,21 @@ use crate::engine::turn_policies::actor_objective_guidance_notes;
 use std::error::Error;
 
 impl CinderRuntime {
+    fn menu_available_here(
+        &self,
+        menu: &crate::content::types::OpeningMenuDefinition,
+    ) -> Result<bool, Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for menu availability")?;
+        Ok(crate::engine::menus::menu_is_available(
+            self.content.as_ref(),
+            menu,
+            &state,
+        ))
+    }
+
     pub fn current_active_menu_info(&self) -> Result<Option<ActiveMenuInfo>, Box<dyn Error>> {
         let (menu_id, max_selections, min_selections, selected_ids) = {
             let state = self
@@ -40,6 +55,9 @@ impl CinderRuntime {
         let Some(menu) = self.content.menu(menu_id) else {
             return Ok(None);
         };
+        if !self.menu_available_here(menu)? {
+            return Ok(None);
+        }
         let prompt = {
             let state = self
                 .state
@@ -132,6 +150,9 @@ impl CinderRuntime {
         let Some(menu) = self.content.menu(menu_id) else {
             return Ok(None);
         };
+        if !self.menu_available_here(menu)? {
+            return Ok(None);
+        }
         if menu.dynamic {
             {
                 let state = self

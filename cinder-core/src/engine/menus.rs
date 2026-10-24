@@ -18,6 +18,21 @@ pub(crate) struct PendingMenuDialogue<'a> {
     pub other_person_message: Option<&'a str>,
 }
 
+/// Whether the player can answer `menu` right now. A menu that needs its actor
+/// present waits while the player is somewhere else.
+pub fn menu_is_available(
+    content: &ContentPack,
+    menu: &OpeningMenuDefinition,
+    state: &WorldState,
+) -> bool {
+    !menu.requires_actor_present
+        || state.actor_is_in_room(
+            content,
+            remap_story_actor_id(state, &menu.actor_id),
+            &state.current_room_id,
+        )
+}
+
 pub(crate) fn render_menu_prompt(
     content: &ContentPack,
     menu: &OpeningMenuDefinition,

@@ -307,6 +307,7 @@ fn append_stage_menu_overflow_actions(
     content: &cinder_core::content::types::ContentPack,
     active_stages: &[String],
     active_menu_id: Option<&str>,
+    state: &cinder_core::engine::state::WorldState,
 ) {
     for stage_id in active_stages {
         let Some(stage) = content
@@ -324,6 +325,10 @@ fn append_stage_menu_overflow_actions(
         else {
             continue;
         };
+        // A menu whose actor is somewhere else waits until the player is back.
+        if !cinder_core::engine::menus::menu_is_available(content, menu, state) {
+            continue;
+        }
         // An open menu is already shown as the docked choices; listing its
         // options here as well would show every choice twice.
         if active_menu_id == Some(menu.id.as_str()) {
@@ -429,6 +434,31 @@ mod tests {
         assert_eq!(talk[0].command.as_deref(), Some("say wren:greet"));
         assert_eq!(snapshot.ui_text.look_group_items, "Tote");
         assert!(snapshot.sidebar_sections.iter().any(|id| id == "quests"));
+    }
+
+    #[test]
+    fn isla_choices_are_hidden_while_she_is_away_from_wren() {
+        let pack = cinder_core::loader::load_named_pack("isla", Some("en")).expect("isla loads");
+        let runtime = CinderRuntime::new(pack, false).expect("runtime creates");
+        for command in ["go inside", "say wren:greet"] {
+            runtime.run_turn(command).expect(command);
+        }
+        let here = build_ui_snapshot(&runtime, "isla", &[]).expect("snapshot builds");
+        assert!(here.action_bar_actions.iter().any(|a| a.id == "menu"));
+
+        runtime.run_turn("go hall").expect("go hall");
+        let away = build_ui_snapshot(&runtime, "isla", &[]).expect("snapshot builds");
+        assert!(
+            !away.action_bar_actions.iter().any(|a| a.id == "menu"),
+            "no Choices action out in the hall"
+        );
+        assert!(
+            !away
+                .overflow_actions
+                .iter()
+                .any(|a| a.label == "Dad brought you today."),
+            "the answers are not offered as overflow buttons either"
+        );
     }
 
     #[test]

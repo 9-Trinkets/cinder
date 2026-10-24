@@ -279,6 +279,7 @@ pub(crate) fn build_overflow_actions(
             content,
             &active_stages,
             state.active_menu_id.as_deref(),
+            state,
         );
     }
 
