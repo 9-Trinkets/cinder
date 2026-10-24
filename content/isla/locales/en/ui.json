@@ -11,7 +11,6 @@
   "shell_menu_close_hint": "Use ↑/↓ and Enter to choose. Esc closes.",
   "help_label": "Help",
   "resume_label": "Resume",
-  "things_to_do_label": "Things to do",
   "language_menu_label": "Language",
   "bookmark_menu_label": "Bookmarks",
   "bookmark_modal_title": "Bookmarks",
@@ -19,7 +18,6 @@
   "bookmark_empty": "No bookmarks saved yet. Tap above to bookmark this moment.",
   "about_label": "About",
   "exit_label": "Exit",
-  "things_to_do_empty": "Nothing in particular. Take your time.",
   "about_body": "Isla\nA child psychologist, a picture book, and a six-year-old at Willow House.",
   "language_modal_title": "Display language",
   "language_changed_text": "Display language changed to {language_name}.",
@@ -39,10 +37,6 @@
       {
         "id": "resume",
         "label": "Resume"
-      },
-      {
-        "id": "goals",
-        "label": "Things to do"
       },
       {
         "id": "bookmarks",

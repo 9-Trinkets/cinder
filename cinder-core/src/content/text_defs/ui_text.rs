@@ -34,8 +34,6 @@ pub struct UiTextDefinition {
     pub help_label: String,
     #[serde(default = "default_resume_label")]
     pub resume_label: String,
-    #[serde(default = "default_things_to_do_label")]
-    pub things_to_do_label: String,
     #[serde(default = "default_about_label")]
     pub about_label: String,
     #[serde(default = "default_exit_label")]
@@ -54,8 +52,6 @@ pub struct UiTextDefinition {
     pub follow_actor_transcript: String,
     #[serde(default = "default_follow_actor_stop_transcript")]
     pub follow_actor_stop_transcript: String,
-    #[serde(default = "default_things_to_do_empty")]
-    pub things_to_do_empty: String,
     #[serde(default = "default_about_body")]
     pub about_body: String,
     #[serde(default = "default_language_modal_title")]
@@ -244,10 +240,6 @@ pub(super) fn default_resume_label() -> String {
     "Resume".to_string()
 }
 
-pub(super) fn default_things_to_do_label() -> String {
-    "Things to do".to_string()
-}
-
 pub(super) fn default_about_label() -> String {
     "About".to_string()
 }
@@ -282,10 +274,6 @@ pub(super) fn default_follow_actor_transcript() -> String {
 
 pub(super) fn default_follow_actor_stop_transcript() -> String {
     "stopped following anyone".to_string()
-}
-
-pub(super) fn default_things_to_do_empty() -> String {
-    "Nothing pressing right now.".to_string()
 }
 
 pub(super) fn default_about_body() -> String {

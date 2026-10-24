@@ -424,14 +424,12 @@ export interface UiSnapshot {
     shell_menu_title: string
     help_label: string
     resume_label: string
-    things_to_do_label: string
     about_label: string
     exit_label: string
     language_menu_label: string
     room_switcher_label: string
     room_switcher_title: string
     follow_actor_title: string
-    things_to_do_empty: string
     about_body: string
     language_modal_title: string
     modal_close_hint: string
