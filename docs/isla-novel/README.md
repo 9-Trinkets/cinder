@@ -4,6 +4,27 @@
 
 ---
 
+## 作品簡介（Synopsis）
+
+> 在孩子開口說話之前，他們的雙手就已經說出了實話。
+
+費城林登街轉角的老垂柳下，有一棟三層樓的紅磚老宅——「柳屋」。
+那扇深鼠尾草綠的大門上有兩個門把：一個在大人的高度，另一個在六歲孩子伸手就能勾到的地方。屋裡沒有時鐘，時間是由暖氣管的輕敲聲、街角教堂的鐘聲，以及一顆綠色洋梨發條計時器來丈量的。
+
+三十九歲的兒童臨床心理師艾拉・馬洛每天騎著弟弟為她組裝的舊單車來這裡上班。她的「圖書館之友」帆布托特包裡，總是收著一塊洗軟的燕麥色亞麻方布、一本套著深綠帆布書衣的日製方格手帳，以及幾本她自己至少讀過兩遍的繪本。
+
+在開口說話之前，孩子們的雙手早就說出了實話——脫下來的鞋尖怎麼對齊牆壁、哪些玩具被分進哪個箱子、哪一頁故事讓人忍不住移開視線。在柳屋，艾拉從不急著追問「為什麼」，也不負責把誰「修好」。她只是把椅子坐低，陪那些被大人誇讚「懂事、從不惹麻煩」的孩子安靜待上一小時，直到他們終於敢把懷裡抱得太緊的重量，輕輕放到地上。
+
+---
+
+## 書籍封面提示詞（Book Cover Art Prompt）
+
+```text
+Japanese light novel cover illustration, refined literary anime art style with delicate linework, soft translucent watercolor shading, and warm atmospheric lighting. A calm, gentle adult woman with dark brown hair tied in a neat low bun with a few soft strands framing her face, reading glasses pushed up on top of her head, wearing a cozy dark knit cardigan over a cream blouse. She sits quietly in a low wooden armchair beside a tall window with golden willow leaves outside and warm afternoon sunlight streaming across the room, holding an open hardcover picture book in her hands with a serene, observant expression. Softly blurred bookshelf and muted sage-green wall in the background extending naturally to the top of the frame, uncluttered composition, no text or letters --ar 2:3
+```
+
+---
+
 ## 1. 核心世界觀與敘事定位
 
 - **主角艾拉・馬洛（Dr. Isla Marlow，39 歲）**：
