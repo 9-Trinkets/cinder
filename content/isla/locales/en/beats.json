@@ -17,7 +17,8 @@
         "item_observed:note-referral",
         "item_observed:note-session-one",
         "item_observed:note-session-two",
-        "item_observed:note-schedule"
+        "item_observed:note-schedule",
+        "topic_selected:wren:greet"
       ],
       "next_stage_ids": [],
       "narrative_lines": []
@@ -33,7 +34,8 @@
       "advance_signals": [
         "item_acquired:book-bird",
         "item_acquired:book-bear",
-        "item_acquired:book-fox"
+        "item_acquired:book-fox",
+        "topic_selected:wren:greet"
       ]
     },
     {
@@ -45,7 +47,8 @@
       "id": "stage-bring-snack",
       "summary": "Bring a snack from the kitchen.",
       "advance_signals": [
-        "item_acquired:snack"
+        "item_acquired:snack",
+        "topic_selected:wren:greet"
       ]
     },
     {
@@ -81,7 +84,7 @@
       "quest_kind": "main",
       "summary": "Take Wren to the playroom.",
       "narrative_lines": [
-        "Wren slides off her chair and tucks Rabbit under one arm, her shoes in the other hand. She stays a step behind you, and she waits for you to lead."
+        "Wren slides off the chair, tucks Biscuit under one arm, and picks up her sneakers with her free hand. She stays a step behind you, waiting for you to lead the way."
       ],
       "advance_signals": [
         "room_entered:playroom"
@@ -104,10 +107,10 @@
       "quest_kind": "main",
       "summary": "Stay with Wren.",
       "narrative_lines": [
-        "The afternoon light lies across the rug. Wren is at the shelf between the two lidded bins, moving animals from one to the other. A cow. A pig. The small horse.",
-        "Wren (to Isla): One. Two. Three.",
-        "She stops herself. She puts the cow in the left bin, takes it out, and puts it in the right.",
-        "Wren (to Isla): These ones live here."
+        "Afternoon light slants across the road rug. Wren goes straight to the two lidded bins at the end of the shelf and starts moving the wooden animals between them. A cow, a pig, a little brown horse.",
+        "Wren (to Isla): One, two, three...",
+        "She catches herself counting out loud and stops. She puts the cow in the left bin, takes it back out, and sets it in the right one so both bins have the same number.",
+        "Wren (to Isla): These ones live in this house, and those ones live in that house."
       ],
       "open_menu": "bins",
       "advance_signals": [
@@ -142,6 +145,11 @@
           "kind": "set_follows_player",
           "actor_id": "wren",
           "follows": false
+        },
+        {
+          "kind": "set_story_var",
+          "key": "topic_used:gloria:about-wren",
+          "value": "true"
         }
       ]
     },
@@ -152,9 +160,9 @@
       "quest_kind": "main",
       "summary": "Answer Wren.",
       "narrative_lines": [
-        "The bins are even. Wren checks them with her eyes, left and then right, and nods once.",
-        "Wren (to Isla): Is there a clementine?",
-        "Wren (to Isla): And half a cracker. In squares."
+        "Once both bins are even, Wren checks them one more time, left and then right, and pats her hands together.",
+        "Wren (to Isla): Do you have any of the little oranges today?",
+        "Wren (to Isla): And if there's crackers, can mine be cut in squares?"
       ],
       "open_menu": "snack-have",
       "advance_signals": [
@@ -186,9 +194,9 @@
       "quest_kind": "main",
       "summary": "Answer Wren.",
       "narrative_lines": [
-        "The bins are even. Wren checks them with her eyes, left and then right, and nods once.",
-        "Wren (to Isla): Is there a clementine?",
-        "Wren (to Isla): And half a cracker. In squares."
+        "Once both bins are even, Wren checks them one more time, left and then right, and pats her hands together.",
+        "Wren (to Isla): Do you have any of the little oranges today?",
+        "Wren (to Isla): And if there's crackers, can mine be cut in squares?"
       ],
       "open_menu": "snack-none",
       "advance_signals": [
@@ -220,8 +228,8 @@
       "quest_kind": "main",
       "summary": "Stay with Wren.",
       "narrative_lines": [
-        "Wren lays the peel in a row on the napkin. When she is done she picks up Rabbit's bag, opens the flap, and takes everything out. A toothbrush. A small notebook. A sock, folded around something. She puts it all back in the same order and zips it.",
-        "Wren (to Isla): Rabbit's got his toothbrush. In case."
+        "Wren lines the orange peel up along the edge of the napkin. When the last piece of cracker is gone, she pulls Biscuit's canvas bag onto her lap and unzips it to check what's inside. A small toothbrush, a notebook, and a rolled-up sock with something hard inside it. She packs them back in the exact same order.",
+        "Wren (to Isla): I packed Biscuit's toothbrush in here too, just in case we go to the other house."
       ],
       "open_menu": "bag",
       "advance_signals": [
@@ -238,10 +246,10 @@
       "quest_kind": "main",
       "summary": "Read to Wren.",
       "narrative_lines": [
-        "You take a square of oatmeal-colored cloth out of your tote and draw it over the toy shelf. Wren watches. Then she tugs one corner so that it hangs evenly.",
-        "Isla (to Wren): Stories first. Toys are sleeping.",
-        "Wren (to Isla): It was crooked.",
-        "You turn on the lamp by the beanbag and turn the overhead light off. The room gets smaller and warmer. Wren climbs onto the mustard cushion and pulls Rabbit into her lap."
+        "You take the folded square of oatmeal cloth from your tote and drape it over the toy shelf. Wren watches you do it, then reaches out to tug the left corner down so the hem hangs straight.",
+        "Isla (to Wren): Stories first. The toys can rest for a bit.",
+        "Wren (to Isla): This side was hanging down a little crooked.",
+        "You switch on the warm lamp by the beanbag and turn off the overhead light. Wren climbs onto the mustard cushion, passing the blue one by without looking at it, and settles Biscuit in her lap."
       ],
       "open_menu": "stories",
       "advance_signals": [
@@ -286,10 +294,10 @@
       "quest_kind": "main",
       "summary": "Stay with Wren.",
       "narrative_lines": [
-        "The first picture shows a small brown bird in a tree, with a nest held in both wings.",
-        "Isla (to Wren): Bird had a nest. It was a good nest. She carried it from the first tree to the second tree, and from the second tree back to the first.",
-        "Wren leans in and traces the bird's wings with one finger.",
-        "Wren (to Isla): She's holding it the whole time."
+        "On the first page, a small brown bird sits between two tall trees, clutching a woven twig nest against her chest with both wings.",
+        "Isla (to Wren): Once there was a little bird with a very good nest. In the morning she flew to the oak tree, and in the afternoon she flew to the maple tree, and she carried her nest with her the whole way.",
+        "Wren leans over the page and traces the curve of the bird's wing with her fingertip.",
+        "Wren (to Isla): She's holding onto it the whole time she flies. Her wings must get really tired."
       ],
       "open_menu": "bird-1",
       "advance_signals": [
@@ -321,8 +329,8 @@
       "quest_kind": "main",
       "summary": "Stay with Wren.",
       "narrative_lines": [
-        "Wren reaches into Rabbit's bag and takes out the little notebook. She opens it on her knees and turns it so that you can see. A row of squares, yellow, yellow, green, yellow, each with a tick.",
-        "Wren (to Isla): Yellow is Mom. Green is Dad. I tick it every night."
+        "Wren reaches into Biscuit's bag and pulls out the small notebook. She opens it flat on her knee and tilts it toward you. Across the page is a neat row of crayon squares, yellow and green, each marked with a pencil check.",
+        "Wren (to Isla): Look, I made a calendar. Yellow is for Mom's house and green is for Dad's apartment. I check it every night before I go to sleep."
       ],
       "open_menu": "notebook-bird",
       "advance_signals": [
@@ -339,10 +347,10 @@
       "quest_kind": "main",
       "summary": "Stay with Wren.",
       "narrative_lines": [
-        "You turn the page. Rabbit and Owl are in the picture now, standing on a branch with their wings out.",
-        "Isla (to Wren): Rabbit said, I can hold it for you. Bird said, No, thank you. Owl said, I can hold it for you. Bird said, No, thank you.",
-        "Wren has stopped looking at the picture. She is looking at Rabbit.",
-        "Wren (to Isla): I can do a cartwheel. Not in here."
+        "You turn the page. In the next picture, a rabbit and a spotted owl sit on a low branch, reaching out to help.",
+        "Isla (to Wren): Let me hold that nest for a minute, said Rabbit, so you can rest your wings. No thank you, said Bird, I have to keep it safe. Let me hold it, said Owl. No thank you, said Bird.",
+        "Wren looks away from the book and glances toward the open space on the rug.",
+        "Wren (to Isla): Hey, Isla, I learned how to do three cartwheels in a row at recess. I won't do one in here because of the lamp."
       ],
       "open_menu": "bird-2",
       "advance_signals": [
@@ -374,8 +382,8 @@
       "quest_kind": "main",
       "summary": "Stay with Wren.",
       "narrative_lines": [
-        "Wren pulls Rabbit up to her face and whispers into his chewed ear. You can't hear it. Then she looks at you.",
-        "Wren (to Isla): That's a secret. He won't tell."
+        "Before you can read the next line, Wren lifts Biscuit up to her mouth and whispers something right into his chewed ear. Then she lowers him and looks at you.",
+        "Wren (to Isla): I told Biscuit a secret. He's the only one I tell, because he doesn't talk."
       ],
       "open_menu": "quiet",
       "advance_signals": [
@@ -392,10 +400,10 @@
       "quest_kind": "main",
       "summary": "Stay with Wren.",
       "narrative_lines": [
-        "You turn the last pages. It gets dark in the picture, and then it rains.",
-        "Isla (to Wren): That evening it rained. Bird was too tired to fly. She set the nest down on the ground between the two trees. And nothing terrible happened.",
-        "Wren looks at the last picture for a long time.",
-        "Wren (to Isla): She put it down."
+        "You turn to the last page. Soft gray rain falls between the two trees, and the little bird is curled on the mossy ground in the middle, her wings tucked in and the nest resting beside her.",
+        "Isla (to Wren): That evening the rain came down, and Bird's wings were too tired to fly another inch. So she set her nest down on the soft ground right between the two trees. Both trees stretched their branches over her to keep off the rain, and Bird went to sleep.",
+        "Wren stays very still, looking at the picture.",
+        "Wren (to Isla): She finally put it down, and neither tree got mad."
       ],
       "open_menu": "bird-3",
       "advance_signals": [
@@ -432,8 +440,8 @@
       "quest_kind": "main",
       "summary": "Stay with Wren.",
       "narrative_lines": [
-        "Wren is quiet for a long moment. Then she unzips Rabbit's bag, reaches to the bottom, and brings out the sock. She unrolls it on her knees. Inside is the handle of a blue cup, in one piece.",
-        "Wren (to Isla): It came off all in one bit."
+        "For a long moment the only sound is the rain-like hum from the hallway. Then Wren unzips Biscuit's bag, reaches all the way to the bottom, and takes out the rolled-up sock. She unwraps it on her knees. Inside is the curved blue handle of a teacup, broken off in one piece.",
+        "Wren (to Isla): Look. The whole handle came off in one piece."
       ],
       "open_menu": "cup",
       "advance_signals": [
@@ -450,10 +458,10 @@
       "quest_kind": "main",
       "summary": "Stay with Wren.",
       "narrative_lines": [
-        "The first picture shows a big bear standing with one paw up, and one red balloon.",
-        "Isla (to Wren): Bear had one red balloon. Then he had two. Then he had three.",
-        "Wren sits up straight and counts along with her lips moving.",
-        "Wren (to Isla): Four. Five."
+        "On the first page, a big brown bear stands in a meadow holding a single bright red balloon.",
+        "Isla (to Wren): Bear had one red balloon on a string. Then he found two yellow balloons by the fence, and three blue ones by the pond.",
+        "Wren sits up a little straighter and taps the balloons with her finger as she counts.",
+        "Wren (to Isla): Four, five, six. Look, the sixth one is stuck in the tree."
       ],
       "open_menu": "bear-1",
       "advance_signals": [
@@ -485,8 +493,8 @@
       "quest_kind": "main",
       "summary": "Stay with Wren.",
       "narrative_lines": [
-        "Wren reaches into Rabbit's bag and takes out the little notebook. She opens it on her knees and turns it so that you can see. A row of squares, yellow, yellow, green, yellow, each with a tick.",
-        "Wren (to Isla): Yellow is Mom. Green is Dad. I tick it every night."
+        "Wren reaches into Biscuit's bag and pulls out the small notebook. She opens it flat on her knee and tilts it toward you. Across the page is a neat row of crayon squares, yellow and green, each marked with a pencil check.",
+        "Wren (to Isla): Look, I made a calendar. Yellow is for Mom's house and green is for Dad's apartment. I check it every night before I go to sleep."
       ],
       "open_menu": "notebook-bear",
       "advance_signals": [
@@ -503,9 +511,9 @@
       "quest_kind": "main",
       "summary": "Stay with Wren.",
       "narrative_lines": [
-        "You turn to the last page. The bear has ten balloons, and he lets go of them one at a time.",
-        "Isla (to Wren): Nine. Ten. Bear let them all go up.",
-        "Wren (to Isla): They all go up. Ten is the end."
+        "You turn to the last page. All ten balloons float up into a wide evening sky while Bear waves from the hill.",
+        "Isla (to Wren): Nine, ten. A breeze came along, and Bear let all ten balloons float up into the sky.",
+        "Wren (to Isla): Now he doesn't have any left. Ten is the end of the book."
       ],
       "open_menu": "bear-2",
       "advance_signals": [
@@ -522,8 +530,8 @@
       "quest_kind": "main",
       "summary": "Stay with Wren.",
       "narrative_lines": [
-        "The cover shows a fox standing between two small houses. Wren looks at the cover for a long time. When you turn to the first page, she puts her hand flat on it.",
-        "Wren (to Isla): Not this one."
+        "The cover shows a little red fox standing on a path between two small houses. Wren stares at the cover without moving. As soon as you open to the first page, she puts her hand flat over the words.",
+        "Wren (to Isla): I don't want to read this one today."
       ],
       "open_menu": "fox-1",
       "advance_signals": [
@@ -540,8 +548,8 @@
       "quest_kind": "main",
       "summary": "Stay with Wren.",
       "narrative_lines": [
-        "The wind-up timer on the shelf starts to tick, and then its soft warning chimes. Wren looks at it, and then at you.",
-        "Wren (to Isla): Is it the end?"
+        "On the shelf, the little pear-shaped timer gives its soft five-minute warning click. Wren looks over at it, then back at you.",
+        "Wren (to Isla): Does that mean our time is almost up?"
       ],
       "open_menu": "closing",
       "advance_signals": [
@@ -599,13 +607,19 @@
       "quest_kind": "main",
       "summary": "Sit on the back steps. Go through the kitchen and out the back.",
       "narrative_lines": [
-        "The timer on the shelf chimes, once. Wren puts Rabbit in the crook of her arm and stands up. At the door she sets her shoes down side by side, toes even, and puts them on.",
-        "In the waiting room Gloria is already on her feet. Wren's mother stands in the doorway with her coat still on.",
-        "Mom (to Wren): Hi, baby. Ready to go?",
-        "Wren (to Isla): Bye, Isla.",
-        "She has left something on the low table.",
+        "The timer on the shelf gives its single soft chime. Wren tucks Biscuit into the crook of her arm and stands up. By the door she sets her sneakers down side by side, toes even, and slips her feet into them.",
+        "Out in the waiting room, Gloria is already on her feet. Wren's mother is standing just inside the front door with her coat still buttoned.",
+        "Mom (to Wren): Hey, baby. Sorry I'm a couple minutes late. Ready to head home?",
+        "Wren (to Isla): Bye, Isla. See you next Thursday.",
+        "Back in the playroom, she has left a sheet of paper on the low table.",
         "It is a drawing, in crayon. A row of crayons, all the same length, colored in one at a time.",
-        "The door closes behind them, and the house is quiet."
+        "The front door clicks shut behind them, and the house settles into quiet."
+      ],
+      "actor_relocations": [
+        {
+          "actor_id": "wren",
+          "to_room_id": ""
+        }
       ],
       "advance_signals": [
         "room_entered:back-yard"
@@ -621,7 +635,7 @@
       "quest_kind": "main",
       "summary": "Check your phone.",
       "narrative_lines": [
-        "The back steps are cold and the yard is gray. You lean the bike against the rail and sit down. Your phone is in your tote."
+        "The back steps are cold and the late afternoon sky is gray. You set your canvas tote beside you on the top step and sit down for five minutes before heading round to unchain your bike. Inside your tote, your phone has buzzed."
       ],
       "open_menu": "phone-1",
       "advance_signals": [
@@ -644,13 +658,19 @@
       "quest_kind": "main",
       "summary": "Sit on the back steps. Go through the kitchen and out the back.",
       "narrative_lines": [
-        "The timer on the shelf chimes, once. Wren puts Rabbit in the crook of her arm and stands up. At the door she sets her shoes down side by side, toes even, and puts them on.",
-        "In the waiting room Gloria is already on her feet. Wren's mother stands in the doorway with her coat still on.",
-        "Mom (to Wren): Hi, baby. Ready to go?",
-        "Wren (to Isla): Bye, Isla.",
-        "She has left something on the low table.",
-        "It is a drawing, in crayon. A small brown bird with a nest held in both wings, between two trees. Rabbit is in the corner of the page.",
-        "The door closes behind them, and the house is quiet."
+        "The timer on the shelf gives its single soft chime. Wren tucks Biscuit into the crook of her arm and stands up. By the door she sets her sneakers down side by side, toes even, and slips her feet into them.",
+        "Out in the waiting room, Gloria is already on her feet. Wren's mother is standing just inside the front door with her coat still buttoned.",
+        "Mom (to Wren): Hey, baby. Sorry I'm a couple minutes late. Ready to head home?",
+        "Wren (to Isla): Bye, Isla. See you next Thursday.",
+        "Back in the playroom, she has left a sheet of paper on the low table.",
+        "It is a drawing, in crayon. A small brown bird with a nest held in both wings, between two trees. Biscuit is drawn in the corner of the page.",
+        "The front door clicks shut behind them, and the house settles into quiet."
+      ],
+      "actor_relocations": [
+        {
+          "actor_id": "wren",
+          "to_room_id": ""
+        }
       ],
       "advance_signals": [
         "room_entered:back-yard"
@@ -666,7 +686,7 @@
       "quest_kind": "main",
       "summary": "Check your phone.",
       "narrative_lines": [
-        "The back steps are cold and the yard is gray. You lean the bike against the rail and sit down. Your phone is in your tote."
+        "The back steps are cold and the late afternoon sky is gray. You set your canvas tote beside you on the top step and sit down for five minutes before heading round to unchain your bike. Inside your tote, your phone has buzzed."
       ],
       "open_menu": "phone-1",
       "advance_signals": [
@@ -689,13 +709,19 @@
       "quest_kind": "main",
       "summary": "Sit on the back steps. Go through the kitchen and out the back.",
       "narrative_lines": [
-        "The timer on the shelf chimes, once. Wren puts Rabbit in the crook of her arm and stands up. At the door she sets her shoes down side by side, toes even, and puts them on.",
-        "In the waiting room Gloria is already on her feet. Wren's mother stands in the doorway with her coat still on.",
-        "Mom (to Wren): Hi, baby. Ready to go?",
-        "Wren (to Isla): Bye, Isla.",
-        "She has left something on the low table.",
+        "The timer on the shelf gives its single soft chime. Wren tucks Biscuit into the crook of her arm and stands up. By the door she sets her sneakers down side by side, toes even, and slips her feet into them.",
+        "Out in the waiting room, Gloria is already on her feet. Wren's mother is standing just inside the front door with her coat still buttoned.",
+        "Mom (to Wren): Hey, baby. Sorry I'm a couple minutes late. Ready to head home?",
+        "Wren (to Isla): Bye, Isla. See you next Thursday.",
+        "Back in the playroom, she has left a sheet of paper on the low table.",
         "It is a drawing, in crayon. A bird sitting on the ground between two trees, with no nest in her wings. Beside her, very small, a girl holds up a red stop sign.",
-        "The door closes behind them, and the house is quiet."
+        "The front door clicks shut behind them, and the house settles into quiet."
+      ],
+      "actor_relocations": [
+        {
+          "actor_id": "wren",
+          "to_room_id": ""
+        }
       ],
       "advance_signals": [
         "room_entered:back-yard"
@@ -711,7 +737,7 @@
       "quest_kind": "main",
       "summary": "Check your phone.",
       "narrative_lines": [
-        "The back steps are cold and the yard is gray. You lean the bike against the rail and sit down. Your phone is in your tote."
+        "The back steps are cold and the late afternoon sky is gray. You set your canvas tote beside you on the top step and sit down for five minutes before heading round to unchain your bike. Inside your tote, your phone has buzzed."
       ],
       "open_menu": "phone-1",
       "advance_signals": [
@@ -780,7 +806,7 @@
       "quest_kind": "main",
       "summary": "The session is over.",
       "narrative_lines": [
-        "You read it through once. Then you sit a while longer, with the bike leaning beside you, and listen to the bus sighing at the Calloway stop."
+        "You read your note through once, then close the folder. You sit on the top step a little longer, listening to a city bus sigh at the Calloway stop, before heading round to the front porch for your bike."
       ],
       "end_game": true
     }

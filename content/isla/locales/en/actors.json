@@ -47,12 +47,12 @@
         "label": "Greet Wren",
         "repeatable": false,
         "narrative_lines": [
-          "You take the chair next to hers, not too close. She doesn't look up. She turns Rabbit around so that he faces the fish tank.",
-          "Isla (to Wren): Rabbit's got a good view.",
-          "Wren (to Isla): He likes the snail.",
-          "She opens the flap of Rabbit's bag, looks at a small notebook, and zips it shut again.",
-          "Wren (to Isla): It's Thursday. Dad brought me.",
-          "That is all she says. Her shoes stay exactly even."
+          "You sit down in the low chair beside hers, leaving a little room between you. She doesn't look up right away, just turns her stuffed rabbit so he can see the fish tank.",
+          "Isla (to Wren): Hi, Wren. Looks like Rabbit's got the best seat for the fish.",
+          "Wren (to Isla): His name's Biscuit. He likes watching the snail.",
+          "She unzips the small canvas bag on her lap, checks a little notebook inside, and zips it back up.",
+          "Wren (to Isla): Today's Thursday, right? My dad brought me today.",
+          "Her feet don't quite reach the floor. Down by the chair legs, her sneakers are lined up with the toes exactly even."
         ]
       }
     ]
@@ -79,9 +79,9 @@
         "id": "about-wren",
         "label": "Ask Gloria about Wren",
         "narrative_lines": [
-          "Isla (to Gloria): How's she doing?",
-          "Gloria (to Isla): She asked me what day it is. Twice. I said Thursday both times.",
-          "Gloria (to Isla): Otherwise she's been counting the stones in the tank. The snail doesn't mind."
+          "Isla (to Gloria): How's she doing out here?",
+          "Gloria (to Isla): She came up to the desk twice to ask me if today was really Thursday. I told her yes both times, sweetheart.",
+          "Gloria (to Isla): Since then she's just been sitting there counting the stones in the fish tank. The snail doesn't seem to mind the company."
         ]
       }
     ]

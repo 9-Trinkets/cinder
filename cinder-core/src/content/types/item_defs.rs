@@ -80,6 +80,11 @@ pub struct ItemDefinition {
     /// Message key rendered when max active instances is reached.
     #[serde(default, skip_serializing_if = "String::is_empty")]
     pub max_instances_message: String,
+    /// Optional group name for mutually exclusive carryable items (e.g. `"book"`).
+    /// Picking up an item in this group returns any other carried item from the
+    /// same group to the current room.
+    #[serde(default, skip_serializing_if = "String::is_empty")]
+    pub exclusive_group: String,
 }
 
 impl ItemDefinition {

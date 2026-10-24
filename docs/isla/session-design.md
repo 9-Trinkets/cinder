@@ -6,7 +6,7 @@ Terminology: one therapy session is one **act**. An act sits inside a persistent
 
 **No clock.** The game has no time of day. Progress comes from quests, hooks and what the player does. Thursday at 4:00 and a thirty-minute session are backstory only.
 
-Status: proposal. Not implemented beyond the walkable house. Psychology 101, not real therapy: the player should learn what attunement feels like without coming away thinking they can do therapy.
+Status: implemented in `content/isla` (see section 14). Psychology 101, not real therapy: the player should learn what attunement feels like without coming away thinking they can do therapy.
 
 ## 1. What the player is doing
 
@@ -41,11 +41,11 @@ The quest log shows one quest with three small, **optional** steps. None is requ
 | **Bring a snack** | Take a clementine and some crackers from the kitchen to the playroom. | Wren will ask for a snack. If there is none ready, Isla has to leave the room to get one. |
 
 **Reading the notes is strongly encouraged but never required.** The ways the game does it, all driven by events and not by a clock:
-- **A text from Dr. Bell arrives on its own** as Isla steps inside (section 5): "Have a look at your notes before you take her, especially last week's."
-- **The notes are on the Look panel** from the start, listed with what Isla is carrying.
+- **The notes are on the Look panel** from the start, listed under Tote with what Isla is carrying.
 - **The quest log lists it first.**
-- **Gloria mentions it** the first time Isla steps inside: "You'll want to read up before you take her. It's a short one."
 - **It matters.** The notes hold the one clue that makes the right book choice easy, and a player who skips them is likelier to make the mistake.
+- **Only one picture book is carried at a time.** Taking a different book from the third-floor shelves returns the previously chosen one to the shelf.
+- **Greeting Wren closes any unfinished preparation steps** so they do not linger in the sidebar during the session.
 
 **Pacing.** There is no deadline. Wren waits, and the player can explore the whole house. Finishing a step can prompt a short line, for example Gloria saying "She's been very patient" once the notes are read.
 
@@ -77,8 +77,7 @@ None of it is about the cup.
 
 Isla's phone is in her tote, and **off while she is with a child**, so nothing arrives during the session. Messages appear in the transcript as a styled block with the sender's name, in the same style as a handler's voice.
 
-- **At the start,** as she steps inside, her phone buzzes. **Dr. Bell,** the director, is on a call upstairs: "Wren's early. Dad dropped her off. Have a look at your notes before you take her, especially last week's. Go slowly."
-- **After the session,** on the back steps, it buzzes again:
+- **After the session,** on the back steps, her phone has buzzed twice:
   - **A message from Mom** about the session. It is the feedback, and in the fullest case it says Wren hummed the Friday song in the car.
   - **A text from Dr. Bell:** "How did it go? Come and find me tomorrow."
 - Wren's drawing, which she left for Isla, is described in plain narration.

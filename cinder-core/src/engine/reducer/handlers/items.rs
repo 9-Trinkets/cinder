@@ -142,8 +142,46 @@ pub(crate) fn handle_player_took_item(ctx: &mut ReduceCtx<'_>, item_id: &str) {
         return;
     }
     if state.remove_item_from_storage(item_id, ItemStorageTarget::CurrentRoom, &room_id) {
+        let exclusive_group = content
+            .item(item_id)
+            .map(|item| item.exclusive_group.as_str())
+            .unwrap_or("");
+        let mut returned_label: Option<String> = None;
+        if !exclusive_group.is_empty() {
+            let to_return: Vec<String> = state
+                .inventory
+                .player_inventory
+                .keys()
+                .filter(|carried_id| {
+                    *carried_id != item_id
+                        && content
+                            .item(carried_id)
+                            .is_some_and(|item| item.exclusive_group == exclusive_group)
+                })
+                .cloned()
+                .collect();
+            for old_id in to_return {
+                while state.remove_item(&old_id) {
+                    state.add_item_to_storage(&old_id, ItemStorageTarget::CurrentRoom, &room_id);
+                }
+                if returned_label.is_none() {
+                    returned_label = Some(content.item_label(&old_id).to_string());
+                }
+            }
+        }
         state.add_item(item_id);
-        push_message(lines, content, "item.taken", &[("label", label)]);
+        if let Some(ref returned) = returned_label
+            && content.message("item.swapped").is_some()
+        {
+            push_message(
+                lines,
+                content,
+                "item.swapped",
+                &[("returned", returned.as_str()), ("label", label)],
+            );
+        } else {
+            push_message(lines, content, "item.taken", &[("label", label)]);
+        }
         lines.extend_lines(advance_objective_for_signal(
             state,
             content,

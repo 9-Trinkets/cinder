@@ -98,7 +98,7 @@ fn saying_a_topic_plays_it_once_and_it_is_no_longer_offered() {
     runtime.run_turn("go inside").expect("go inside");
     let text = runtime.run_turn("say wren:greet").expect("say").text();
     assert!(
-        text.contains("Wren (to Isla): It's Thursday. Dad brought me."),
+        text.contains("Wren (to Isla): Today's Thursday, right? My dad brought me today."),
         "{text}"
     );
 
@@ -112,7 +112,47 @@ fn saying_a_topic_plays_it_once_and_it_is_no_longer_offered() {
         .run_turn("say ask gloria about wren")
         .expect("typed")
         .text();
-    assert!(typed.contains("snail doesn't mind"), "{typed}");
+    assert!(typed.contains("snail doesn't seem to mind"), "{typed}");
+}
+
+#[test]
+fn taking_a_second_book_returns_the_first_to_the_shelf() {
+    let runtime = runtime();
+    for command in [
+        "go inside",
+        "go hall",
+        "go upstairs",
+        "go upstairs",
+        "go book room",
+    ] {
+        runtime.run_turn(command).expect(command);
+    }
+    runtime
+        .run_turn("take two houses for fox")
+        .expect("take fox");
+    assert_eq!(runtime.inventory_items().unwrap().get("book-fox"), Some(&1));
+
+    let swap = runtime
+        .run_turn("take the bird who carried her nest")
+        .expect("take bird")
+        .text();
+    assert!(
+        swap.contains("You put Two Houses for Fox back on the shelf"),
+        "{swap}"
+    );
+    let carried = runtime.inventory_items().unwrap();
+    assert_eq!(carried.get("book-bird"), Some(&1));
+    assert_eq!(carried.get("book-fox"), None);
+}
+
+#[test]
+fn greeting_wren_clears_unfinished_preparation_steps_from_active_objectives() {
+    let runtime = runtime();
+    runtime.run_turn("go inside").expect("go inside");
+    runtime.run_turn("say wren:greet").expect("greet");
+    let objectives = runtime.current_objective_summaries().expect("objectives");
+    assert_eq!(objectives.len(), 1);
+    assert_eq!(objectives[0].quest_id.as_deref(), Some("session"));
 }
 
 #[test]

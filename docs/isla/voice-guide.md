@@ -43,7 +43,7 @@ Calm, curious, plain. A grown-up who is in no hurry and wants nothing from the c
 - **Short.** One sentence, usually five to ten words.
 - **Comments over questions.** "You're putting the dog in this one." beats "Why are you putting the dog there?"
 - **At most one question at a time**, and never a "why" or "how do you feel".
-- **Uses Wren's own words back** instead of new ones. If she says "lives there", Isla says "lives there".
+- **Picks up Wren's meaning without parroting her last three words.** Reflecting is not mechanical repetition ("In case." / "The whole time."). Answer like a warm, observant adult who heard the whole thought: "Usually Mom brings you on Thursdays." "That way Biscuit has everything he needs, no matter which house you're at."
 - **Wonders** instead of asking: "I wonder what Rabbit thinks."
 - **Never praises or judges** ("good job", "that's wrong").
 - **Never reassures too early.** No "it's okay", no "it wasn't your fault" until it is earned.

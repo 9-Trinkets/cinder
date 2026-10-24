@@ -9,7 +9,7 @@
           "channel_id": "phone-mom",
           "speaker_id": "nadia",
           "recipient_id": "player",
-          "line": "Thank you for today. She was quiet in the car, but she's always quiet in the car. I'm sorry, I don't really know what to tell you. It's fine."
+          "line": "Hi Isla, thanks for seeing her today. She was pretty quiet in the car on the way home, though honestly she's usually quiet after school lately. Anyway, we'll see you next Thursday."
         },
         {
           "voice": "channel",
@@ -37,7 +37,7 @@
           "channel_id": "phone-mom",
           "speaker_id": "nadia",
           "recipient_id": "player",
-          "line": "She wanted to leave the hall light on tonight. She never does, she turns them all off. I left it on. Thank you."
+          "line": "Hi Isla, just wanted to let you know she asked me to leave the hallway light on tonight instead of turning every switch off like she usually does. And she put her notebook on the kitchen table for me to see. Thank you for today."
         },
         {
           "voice": "channel",
@@ -65,7 +65,7 @@
           "channel_id": "phone-mom",
           "speaker_id": "nadia",
           "recipient_id": "player",
-          "line": "She hummed the whole way home. She hasn't done that since the spring. I didn't say anything, because I didn't want her to stop. Okay. Thank you for today."
+          "line": "She hummed the whole way home in the car. It's that old song her dad and I used to play on Friday nights, and I haven't heard her hum it since the spring. I didn't say a word because I didn't want her to stop. Thank you, Isla."
         },
         {
           "voice": "channel",

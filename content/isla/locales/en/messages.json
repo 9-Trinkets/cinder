@@ -2,5 +2,6 @@
   "follow.actor_follows": "{actor} walks beside you.",
   "follow.party_follows": "{actors} walk beside you.",
   "item.taken": "You pick up {label}.",
+  "item.swapped": "You put {returned} back on the shelf and take {label}.",
   "note.written": "You slip the page into your tote, with the others."
 }

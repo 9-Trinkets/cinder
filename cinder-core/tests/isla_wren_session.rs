@@ -75,7 +75,7 @@ fn greeting_wren_opens_the_first_bid() {
     let runtime = runtime();
     let text = greet(&runtime);
     assert!(
-        text.contains("Wren (to Isla): It's Thursday. Dad brought me."),
+        text.contains("Wren (to Isla): Today's Thursday, right? My dad brought me today."),
         "{text}"
     );
     assert_eq!(active_menu(&runtime).as_deref(), Some("meet"));
@@ -86,13 +86,16 @@ fn a_fitting_answer_earns_a_point_and_a_miss_does_not() {
     let fit = runtime();
     greet(&fit);
     let text = turn(&fit, "meet-reflect");
-    assert!(text.contains("He had a job. A far one."), "{text}");
+    assert!(text.contains("way across town for a job"), "{text}");
     assert_eq!(points(&fit), 1);
 
     let miss = runtime();
     greet(&miss);
     let text = turn(&miss, "meet-probe");
-    assert!(text.contains("Wren (to Isla): Nothing."), "{text}");
+    assert!(
+        text.contains("Wren (to Isla): I don't know. Just because."),
+        "{text}"
+    );
     assert_eq!(points(&miss), 0);
 }
 
@@ -111,7 +114,7 @@ fn wren_follows_isla_to_the_playroom_and_the_bins_follow() {
     assert!(!look.contains("Your party"), "{look}");
     let text = turn(&runtime, "go playroom");
     assert!(
-        text.contains("Wren (to Isla): These ones live here."),
+        text.contains("Wren (to Isla): These ones live in this house"),
         "{text}"
     );
     assert_eq!(active_menu(&runtime).as_deref(), Some("bins"));
@@ -120,7 +123,7 @@ fn wren_follows_isla_to_the_playroom_and_the_bins_follow() {
     assert!(!state.follows_player("wren"), "she stays at the bins");
 
     let text = turn(&runtime, "bins-reflect");
-    assert!(text.contains("And those ones."), "{text}");
+    assert!(text.contains("otherwise one of them gets lonely"), "{text}");
     assert_eq!(points(&runtime), 2);
     assert_eq!(active_menu(&runtime).as_deref(), Some("snack-none"));
 }
@@ -262,7 +265,7 @@ fn the_best_session_with_the_right_book_reaches_every_secret_and_the_best_drawin
         state.active_objective_stage_ids
     );
     let after = finish_after(&runtime);
-    assert!(after.contains("She hummed the whole way home."), "{after}");
+    assert!(after.contains("She hummed the whole way home"), "{after}");
     assert!(after.contains("She showed me the handle."), "{after}");
     assert_eq!(
         runtime.export_state().expect("state").phase,
@@ -276,9 +279,12 @@ fn the_first_secret_is_the_bag_and_the_last_is_the_cup() {
     start_session(&runtime, true, Some("bird book"));
     answer(&runtime, "bins", fit("bins"));
     let text = answer(&runtime, "snack-have", fit("snack-have"));
-    assert!(text.contains("Rabbit's got his toothbrush"), "{text}");
+    assert!(text.contains("packed Biscuit's toothbrush"), "{text}");
     let text = answer(&runtime, "bag", fit("bag"));
-    assert!(text.contains("He never has to stay anywhere"), "{text}");
+    assert!(
+        text.contains("never has to leave anything behind"),
+        "{text}"
+    );
     for menu in [
         "stories",
         "bird-1",
@@ -291,7 +297,7 @@ fn the_first_secret_is_the_bag_and_the_last_is_the_cup() {
     }
     let text = turn(&runtime, fit("cup"));
     assert!(
-        text.contains("It was Mom's. I was making tea"),
+        text.contains("It was Mom's favorite blue cup"),
         "the cup should be told: {text}"
     );
 }
@@ -352,7 +358,7 @@ fn the_book_about_two_houses_makes_wren_retreat() {
         answer(&runtime, menu, fit(menu));
     }
     let text = answer(&runtime, "fox-1", fit("fox-1"));
-    assert!(text.contains("goes to the bins"), "{text}");
+    assert!(text.contains("goes back to the bins"), "{text}");
     assert_eq!(active_menu(&runtime).as_deref(), Some("closing"));
 }
 
@@ -395,13 +401,13 @@ fn choices_wait_while_isla_is_away_from_wren() {
     assert!(runtime.menu_choice_options().unwrap().is_none());
     // A number typed in the hall answers nothing.
     let text = turn(&runtime, "snack-none-offer");
-    assert!(!text.contains("I'll go and get one"), "{text}");
+    assert!(!text.contains("step into the kitchen"), "{text}");
     assert_eq!(active_menu(&runtime).as_deref(), Some("snack-none"));
 
     turn(&runtime, "go playroom");
     assert!(runtime.current_active_menu_info().unwrap().is_some());
     let text = turn(&runtime, "snack-none-offer");
-    assert!(text.contains("I'll go and get one"), "{text}");
+    assert!(text.contains("step into the kitchen"), "{text}");
 }
 
 #[test]
@@ -415,12 +421,34 @@ fn a_quieter_session_gets_a_quieter_message_and_note() {
         answer(&runtime, menu, &miss(menu));
     }
     let after = finish_after(&runtime);
-    assert!(after.contains("she's always quiet in the car"), "{after}");
+    assert!(after.contains("pretty quiet in the car"), "{after}");
     assert!(after.contains("no hurry about the book"), "{after}");
     assert_eq!(
         runtime.export_state().expect("state").phase,
         GamePhase::GameEnded
     );
+}
+
+#[test]
+fn wren_leaves_the_house_after_the_farewell_and_glorias_waiting_topic_closes() {
+    let runtime = runtime();
+    start_session(&runtime, true, Some("fox book"));
+    for menu in ["bins", "snack-have", "bag", "stories", "fox-1"] {
+        answer(&runtime, menu, fit(menu));
+    }
+    let closing_text = answer(&runtime, "closing", "closing-again");
+    assert!(
+        closing_text.contains("same place next Thursday"),
+        "{closing_text}"
+    );
+    let state = runtime.export_state().expect("state");
+    assert_eq!(state.actor_room_id("wren", "waiting-room"), "");
+    turn(&runtime, "go hall");
+    turn(&runtime, "go waiting room");
+    let topics = runtime
+        .panel_options(&cinder_core::content::types::PanelDataSource::ActorTopics)
+        .expect("topics");
+    assert!(topics.is_empty(), "Gloria's pre-session topic is retired");
 }
 
 #[test]

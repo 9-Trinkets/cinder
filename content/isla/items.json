@@ -64,6 +64,7 @@
       "the bird who carried her nest"
     ],
     "kind": "misc",
+    "exclusive_group": "book",
     "description": "A thin picture book. On the cover, a round brown bird holds a nest in both wings, with a tree on either side of her."
   },
   {
@@ -75,6 +76,7 @@
       "counting book"
     ],
     "kind": "misc",
+    "exclusive_group": "book",
     "description": "A fat, cheerful picture book. On the cover, a bear holds one paw up, and ten red balloons float over his head."
   },
   {
@@ -86,6 +88,7 @@
       "two houses"
     ],
     "kind": "misc",
+    "exclusive_group": "book",
     "description": "A picture book with a fox standing between two small houses. A sticker on the spine reads Changing Families."
   },
   {
@@ -109,7 +112,7 @@
       "my note"
     ],
     "kind": "misc",
-    "description": "Session three. Dad dropped her off, and W. noticed before I did. She sorted the animals and counted. She kept the bag close, and I did not ask about it. We did not get far. Next time, the bins first, and no hurry about the book."
+    "description": "Session three. Dad dropped her off on a Thursday, and that threw her off from the start. She sorted the animals into the two bins until both sides were even. The story did not land today, and she stayed with the things she could count. Next time, stay with the bins first, and no hurry about the book."
   },
   {
     "id": "note-three-mid",
@@ -121,7 +124,7 @@
       "my note"
     ],
     "kind": "misc",
-    "description": "Session three. W. told me some of what she keeps in the bag, and some of what she does at night so that the days stay straight. She said it to Rabbit first. Next time, no questions. Let her bring it."
+    "description": "Session three. W. showed me the notebook she keeps in Rabbit's bag, yellow squares for Mom and green for Dad, ticked every night before bed. Since the afternoon nobody came for her at school, she has been trying to keep the schedule straight on her own. Let her set the pace next week."
   },
   {
     "id": "note-three-high",
@@ -133,6 +136,6 @@
       "my note"
     ],
     "kind": "misc",
-    "description": "Session three. She showed me the handle. It was Mom's cup, and she was making tea, and she carried it with both hands. She thinks the shouting and the two houses came after it. I did not tell her it was not her fault. She will need to hear that from someone she has not been waiting to hear it from. Next session, the bins, and whatever she brings."
+    "description": "Session three. She showed me the handle. It was from one of Mom's blue cups, broken while she was trying to bring her tea, right before the first big fight she heard. She has been carrying it in Rabbit's bag since the spring because she thinks the cup is why they live in two houses now. I stayed with her and did not rush to talk her out of it. Next week, let her lead."
   }
 ]

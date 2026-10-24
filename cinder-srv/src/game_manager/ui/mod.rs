@@ -456,7 +456,7 @@ mod tests {
             !away
                 .overflow_actions
                 .iter()
-                .any(|a| a.label == "Dad brought you today."),
+                .any(|a| a.label == "Usually Mom brings you on Thursdays."),
             "the answers are not offered as overflow buttons either"
         );
     }
