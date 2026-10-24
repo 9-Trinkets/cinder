@@ -163,6 +163,7 @@
     "dynamic": false,
     "requires_actor_present": true,
     "selection_prompt": "",
+    "selection_id_var_key": "snack_none_choice",
     "invalid_choice_text": "Wren waits. Choose one of the options.",
     "selection_confirmation": "",
     "options": [
@@ -182,8 +183,7 @@
         "menu_text": "",
         "narrative_lines": [
           "Isla (to Wren): Let me step into the kitchen and get them for you.",
-          "The kitchen is warm and smells faintly of toast. You peel a clementine and break a cracker into four neat squares on a napkin. When you come back, Wren is sitting just where you left her.",
-          "Wren (to Isla): Thank you. Four squares is the right number."
+          "Wren (to Isla): Okay. I'll wait right here with Biscuit."
         ]
       },
       {
@@ -193,7 +193,8 @@
         "narrative_lines": [
           "Isla (to Wren): Why do they have to be squares instead of triangles?",
           "Wren (to Isla): Because squares are even.",
-          "She looks toward the hall door. You step out to the kitchen anyway and bring back a peeled clementine and four square pieces of cracker."
+          "Isla (to Wren): I forgot to bring snacks down today. Let's do our story first.",
+          "She sits on the edge of the beanbag with her hands tucked between her knees."
         ]
       },
       {
@@ -202,8 +203,7 @@
         "menu_text": "",
         "narrative_lines": [
           "Isla (to Wren): One clementine, and crackers in squares. I'll be right back.",
-          "The kitchen is warm and smells faintly of toast. You peel a clementine and break a cracker into four neat squares. When you return, Wren is waiting by the low table.",
-          "Wren (to Isla): Thank you. Four squares is the right number."
+          "Wren (to Isla): Okay. I'll wait right here with Biscuit."
         ]
       }
     ]

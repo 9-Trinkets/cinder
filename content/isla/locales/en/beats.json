@@ -205,10 +205,21 @@
         "Wren (to Isla): And if there's crackers, can mine be cut in squares?"
       ],
       "open_menu": "snack-none",
+      "completion_effects": [
+        {
+          "kind": "remove_item",
+          "item_id": "snack"
+        }
+      ],
       "advance_signals": [
         {
           "signal": "menu_selected:snack-none",
           "conditions": [
+            {
+              "path": "story_vars.values.snack_none_choice",
+              "operator": "equal",
+              "value": "snack-none-reassure"
+            },
             {
               "path": "actor_stats.wren.points",
               "operator": "gte",
@@ -221,6 +232,129 @@
         },
         {
           "signal": "menu_selected:snack-none",
+          "conditions": [
+            {
+              "path": "story_vars.values.snack_none_choice",
+              "operator": "equal",
+              "value": "snack-none-reassure"
+            }
+          ],
+          "next_stage_ids": [
+            "stage-stories-intro"
+          ]
+        },
+        {
+          "signal": "menu_selected:snack-none",
+          "conditions": [
+            {
+              "path": "story_vars.values.snack_none_choice",
+              "operator": "equal",
+              "value": "snack-none-probe"
+            },
+            {
+              "path": "actor_stats.wren.points",
+              "operator": "gte",
+              "value": 2
+            }
+          ],
+          "next_stage_ids": [
+            "stage-bag"
+          ]
+        },
+        {
+          "signal": "menu_selected:snack-none",
+          "conditions": [
+            {
+              "path": "story_vars.values.snack_none_choice",
+              "operator": "equal",
+              "value": "snack-none-probe"
+            }
+          ],
+          "next_stage_ids": [
+            "stage-stories-intro"
+          ]
+        },
+        {
+          "signal": "menu_selected:snack-none",
+          "conditions": [
+            {
+              "path": "inventory.snack",
+              "operator": "gte",
+              "value": 1
+            },
+            {
+              "path": "actor_stats.wren.points",
+              "operator": "gte",
+              "value": 2
+            }
+          ],
+          "next_stage_ids": [
+            "stage-bag"
+          ]
+        },
+        {
+          "signal": "menu_selected:snack-none",
+          "conditions": [
+            {
+              "path": "inventory.snack",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-stories-intro"
+          ]
+        },
+        {
+          "signal": "menu_selected:snack-none",
+          "next_stage_ids": [
+            "stage-fetch-snack"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-fetch-snack",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Fetch the clementine and crackers from the kitchen and return to Wren in the playroom.",
+      "narrative_lines": [],
+      "completion_message": "session.snack_returned",
+      "completion_effects": [
+        {
+          "kind": "remove_item",
+          "item_id": "snack"
+        }
+      ],
+      "advance_signals": [
+        {
+          "signal": "room_entered:playroom",
+          "conditions": [
+            {
+              "path": "inventory.snack",
+              "operator": "gte",
+              "value": 1
+            },
+            {
+              "path": "actor_stats.wren.points",
+              "operator": "gte",
+              "value": 2
+            }
+          ],
+          "next_stage_ids": [
+            "stage-bag"
+          ]
+        },
+        {
+          "signal": "room_entered:playroom",
+          "conditions": [
+            {
+              "path": "inventory.snack",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
           "next_stage_ids": [
             "stage-stories-intro"
           ]

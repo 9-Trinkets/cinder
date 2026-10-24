@@ -324,8 +324,36 @@ fn without_a_snack_isla_has_to_fetch_one() {
     start_session(&runtime, false, None);
     answer(&runtime, "bins", fit("bins"));
     let text = answer(&runtime, "snack-none", fit("snack-none"));
-    assert!(text.contains("The kitchen is warm"), "{text}");
+    assert!(text.contains("I'll wait right here with Biscuit"), "{text}");
     assert_eq!(points(&runtime), 3);
+    assert_eq!(
+        active_menu(&runtime),
+        None,
+        "Isla must now physically fetch the snack from the kitchen"
+    );
+    assert!(
+        runtime
+            .export_state()
+            .expect("state")
+            .active_objective_stage_ids
+            .contains(&"stage-fetch-snack".to_string())
+    );
+
+    turn(&runtime, "go hall");
+    turn(&runtime, "go kitchen");
+    turn(&runtime, "take snack");
+    assert!(runtime.export_state().expect("state").has_item("snack"));
+    turn(&runtime, "go hall");
+    let return_text = turn(&runtime, "go playroom");
+    assert!(
+        return_text.contains("Wren (to Isla): Thank you. Four squares is the right number."),
+        "{return_text}"
+    );
+    assert!(
+        !runtime.export_state().expect("state").has_item("snack"),
+        "snack is removed from Isla's tote bag upon giving it to Wren"
+    );
+    assert_eq!(active_menu(&runtime).as_deref(), Some("bag"));
 }
 
 #[test]
