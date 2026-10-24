@@ -11,7 +11,7 @@
   "shell_menu_close_hint": "Use ↑/↓ and Enter to choose. Esc closes.",
   "help_label": "Help",
   "resume_label": "Resume",
-  "things_to_do_label": "Session goals",
+  "things_to_do_label": "Things to do",
   "language_menu_label": "Language",
   "bookmark_menu_label": "Bookmarks",
   "bookmark_modal_title": "Bookmarks",
@@ -19,39 +19,14 @@
   "bookmark_empty": "No bookmarks saved yet. Tap above to bookmark this moment.",
   "about_label": "About",
   "exit_label": "Exit",
-  "things_to_do_empty": "Listen, recommend, support, and see the reading through.",
-  "about_body": "Isla\nBookstore cafe therapy session",
+  "things_to_do_empty": "Nothing in particular. Take your time.",
+  "about_body": "Isla\nA child psychologist, a picture book, and a six-year-old at Willow House.",
   "language_modal_title": "Display language",
   "language_changed_text": "Display language changed to {language_name}.",
   "modal_close_hint": "Press Enter or Esc to close.",
   "look_group_room": "Room",
   "look_group_things": "Things",
   "look_group_people": "People",
-  "act_closure_title": "Session Summary",
-  "act_closure_current_focus_label": "Current focus",
-  "act_closure_highlights_label": "Highlights",
-  "act_closure_relationships_label": "Patient status",
-  "act_closure_empty_highlights": "A quieter stretch with steady reading.",
-  "act_closure_empty_relationships": "No major emotional shift yet.",
-  "final_summary_title": "End of Session",
-  "final_summary_highlights_label": "What happened",
-  "final_summary_relationships_label": "Where Noa is now",
-  "final_summary_preview_label": "Next session",
-  "final_summary_empty_preview": "The next session remains unwritten.",
-  "act_closure": {
-    "title": "End of Session",
-    "subtitle_template": "{subject_name}",
-    "sections": [
-      {
-        "title": "Rating",
-        "source": "perspective_rating"
-      },
-      {
-        "title": "Review",
-        "source": "perspective_review"
-      }
-    ]
-  },
   "exit_confirm_title": "Leave session?",
   "exit_confirm_body": "Return to the library? Your journey is saved.",
   "projector_skip_hint": "Press Enter to skip ahead. Esc closes.",
@@ -59,7 +34,6 @@
   "error_prefix": "Error:",
   "response_worker_disconnected": "response worker disconnected.",
   "menu_unavailable": "That menu is no longer available.",
-  "npc_tick_soft_error": "Noa goes quiet for a moment, searching for words.",
   "shell_menu": {
     "items": [
       {
@@ -68,7 +42,7 @@
       },
       {
         "id": "goals",
-        "label": "Session goals"
+        "label": "Things to do"
       },
       {
         "id": "bookmarks",
@@ -90,15 +64,11 @@
       },
       {
         "id": "exit",
-        "label": "End act"
+        "label": "Exit"
       }
     ]
   },
   "look_panel_title": "Look",
-  "perspective_review_prompt": "Patient: {actor_name}\nTherapist: {other_person_name}\n\nSession Outcome\n{stats_context}\n\nSession Summary\n{act_summary}\n\nRelationship Notes\n{relationship_lines}\n\nWrite a short Yelp-style review from {actor_name}'s perspective about their therapy session with {other_person_name}. Be specific and in character.\n\nReturn ONLY valid JSON (no markdown, no backticks) with a rating field (1-5 integer) and a review_text field (string).\nThe rating should reflect the patient's genuine experience based on the session outcome.\nThe review text should be 2-5 sentences in the patient's voice — honest, specific, and a bit Yelp-flavored.",
-  "perspective_review_system": "You write a short Yelp-style review from a patient's perspective. Respond only with valid JSON.",
-  "book_recommender_instructions": "Generate exactly 3 fictional book recommendations. Each option must be a plausible novel title paired with a one-line thematic blurb that fits this specific patient and this specific conversation. None of the options should be framed as the correct answer.",
-  "dynamic_menu_context_label": "Session context",
   "channel_header_label": "Message • {speaker}",
   "look_group_items": "Tote"
 }

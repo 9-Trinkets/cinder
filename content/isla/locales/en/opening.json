@@ -4,11 +4,9 @@
   "start_room_id": "porch",
   "start_time_minutes": 935,
   "intro_text": "A gray afternoon in November. You have just ridden through the last of the school traffic.\n\nYou are Isla, a child psychologist at Willow House, a children's counseling center in an old brick house on a corner. Today is your third session with a six-year-old named Wren.\n\nYou chain the bike to the porch rail and unclip the canvas bag. Through the glass in the green door you can see her, alone on a low chair in the waiting room, with a rabbit in her lap.",
-  "help_text": "Use Look to examine the room, a person, or something in it. Use Move to go somewhere.\n- ? opens the menu",
+  "help_text": "Use Look to examine the room, a person, or something in it. Use Move to go somewhere. Use Talk to say something.\n- ? opens the menu",
   "prompt_context": {
-    "setting_notes": [
-      "A converted brick house that is a children's counseling center."
-    ],
+    "setting_notes": [],
     "subtext_notes": []
   }
 }

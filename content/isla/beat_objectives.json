@@ -1,17 +1,3 @@
 {
-  "objectives": [
-    {
-      "id": "the-session",
-      "stage_ids": [
-        "stage-before-session"
-      ],
-      "progress": {
-        "keys": []
-      },
-      "guidance": {
-        "prompt_note_if_actor_incomplete": "",
-        "prompt_note_if_others_incomplete": ""
-      }
-    }
-  ]
+  "objectives": []
 }

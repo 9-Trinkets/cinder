@@ -12,8 +12,6 @@
   "default_language": "en",
   "autonomous_actor_dialogue": false,
   "actor_tick_scope": "current_board",
-  "closure_perspective_actor_id": "gloria",
-  "act_member_alias": "patient",
   "speech_stamina_cost_floor": 0,
   "show_act_closure": false,
   "sidebar": {
