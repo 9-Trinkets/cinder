@@ -56,6 +56,8 @@ The quest log shows one quest with three small, **optional** steps. None is requ
 
 ## 5. Isla's notes and her phone **(decision)**
 
+> **As built:** the notes are pages of **Isla's journal**, not loose papers. A pack can give items a group, and the Look panel and the sidebar list the pages under a **Journal** heading, apart from the rest of the tote. The journal starts with an index page, then the intake form, the school referral, the notes from weeks one and two, and the schedule. Her note from today is added after the session, and Wren's drawing is pressed in with it.
+
 Two things, with different jobs. **What she carries is read when she chooses.** **What arrives on its own comes on her phone.**
 
 ### Her case notes (things she holds)

@@ -529,6 +529,29 @@ mod tests {
     }
 
     #[test]
+    fn journal_pages_are_listed_under_a_journal_heading() {
+        let pack = cinder_core::loader::load_named_pack("isla", Some("en")).expect("isla loads");
+        let runtime = CinderRuntime::new(pack, false).expect("runtime creates");
+        let snapshot = build_ui_snapshot(&runtime, "isla", &[]).expect("snapshot builds");
+
+        let pages: Vec<_> = snapshot
+            .look_options
+            .iter()
+            .filter(|option| option.group.as_deref() == Some("Journal"))
+            .map(|option| option.id.as_str())
+            .collect();
+        assert!(pages.contains(&"item:note-session-two"), "{pages:?}");
+        assert!(pages.contains(&"item:journal-index"), "{pages:?}");
+
+        let journal = snapshot
+            .inventory
+            .iter()
+            .filter(|item| item.group.as_deref() == Some("Journal"))
+            .count();
+        assert_eq!(journal, 6, "five notes and the index");
+    }
+
+    #[test]
     fn quests_and_levels_stay_hidden_until_player_visits_qualifying_room() {
         let pack = cinder_core::loader::load_named_pack("layla", Some("en")).expect("layla loads");
         let runtime = CinderRuntime::new(pack.clone(), false).expect("runtime creates");

@@ -8,7 +8,7 @@
       "quest_id": "read-notes",
       "quest_title": "Read your notes",
       "quest_kind": "main",
-      "summary": "Read your notes on Wren. They are in your tote bag. Use Look.",
+      "summary": "Read your notes on Wren. They are in your journal. Use Look.",
       "advance_signals": [
         {
           "signal": "item_observed:note-intake",
@@ -1080,6 +1080,14 @@
       ],
       "next_stage_ids": [
         "stage-steps-low"
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "grant_item",
+          "item_id": "wren-drawing-low",
+          "count": 1,
+          "message": "drawing.tucked"
+        }
       ]
     },
     {
@@ -1131,6 +1139,14 @@
       ],
       "next_stage_ids": [
         "stage-steps-mid"
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "grant_item",
+          "item_id": "wren-drawing-mid",
+          "count": 1,
+          "message": "drawing.tucked"
+        }
       ]
     },
     {
@@ -1182,6 +1198,14 @@
       ],
       "next_stage_ids": [
         "stage-steps-high"
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "grant_item",
+          "item_id": "wren-drawing-high",
+          "count": 1,
+          "message": "drawing.tucked"
+        }
       ]
     },
     {

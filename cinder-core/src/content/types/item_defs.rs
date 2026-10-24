@@ -108,6 +108,11 @@ pub struct ItemDefinition {
     /// Present for items that are used up in place (food, drink, clips).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub consumable: Option<ConsumableSpec>,
+    /// Names a group this item is listed under (for example `journal`). The pack
+    /// gives the group its heading in `ui_text.item_groups`; an item with no
+    /// group is listed with the rest of what is carried.
+    #[serde(default, skip_serializing_if = "String::is_empty")]
+    pub group: String,
     /// Free tags, matched against an actor's `required_consumable_tags`.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub tags: Vec<String>,

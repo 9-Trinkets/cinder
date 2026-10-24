@@ -2,6 +2,7 @@ use cinder_core::content::types::ContentPack;
 use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::{ActorStance, WorldState};
 
+use super::panels::item_group_heading;
 use super::{
     EquippedItem, InventoryItem, PanelOptionData, PartyMember, PartySkill, PlayerSkillItem,
     PlayerStatus, StatValue,
@@ -169,6 +170,7 @@ pub(super) fn build_party_members(
                     InventoryItem {
                         label,
                         count,
+                        group: item_group_heading(content, &id),
                         id: Some(id),
                         usable: false,
                     }
@@ -450,6 +452,7 @@ pub(super) fn build_inventory(
             InventoryItem {
                 label,
                 count,
+                group: item_group_heading(content, &id),
                 id: Some(id),
                 usable,
             }
@@ -479,6 +482,7 @@ pub(super) fn build_current_room_items(
             InventoryItem {
                 label,
                 count,
+                group: item_group_heading(content, &item_id),
                 id: Some(item_id.clone()),
                 usable: false,
             }

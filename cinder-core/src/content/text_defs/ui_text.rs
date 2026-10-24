@@ -126,6 +126,10 @@ pub struct UiTextDefinition {
     /// them listed with the room's things.
     #[serde(default)]
     pub look_group_items: String,
+    /// Headings for item groups, group id to heading, e.g. `journal` to
+    /// "Journal". Items whose group is not named here are listed normally.
+    #[serde(default)]
+    pub item_groups: std::collections::BTreeMap<String, String>,
     /// Labels for the quest list and quest log. Empty keeps the client's
     /// default wording ("Quests", "Quest Log", "Active", "Completed", "Failed").
     #[serde(default)]

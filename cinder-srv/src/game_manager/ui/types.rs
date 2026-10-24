@@ -44,6 +44,9 @@ pub struct InventoryItem {
     pub id: Option<String>,
     #[serde(default, skip_serializing_if = "is_false")]
     pub usable: bool,
+    /// Heading of the item group this item is listed under (e.g. "Journal").
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub group: Option<String>,
 }
 
 /// An item worn in one of the player's equipment slots.
@@ -260,6 +263,9 @@ pub struct LookOptionData {
     pub id: String,
     pub title: String,
     pub command: String,
+    /// Heading of the item group this option belongs to (e.g. "Journal").
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub group: Option<String>,
 }
 
 #[derive(Clone, Serialize)]

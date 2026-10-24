@@ -83,7 +83,7 @@ If a child asks a personal question, she answers the safe ones in a sentence and
 
 - **She over-prepares** and sometimes stays too long in her own head.
 - **She keeps people at a distance** without meaning to. She is better at being a witness than at being known.
-- **She takes the sentences home.** She has a notebook of things children have said, and she cannot stop reading it.
+- **She takes the sentences home.** She keeps a journal, a Hobonichi-style planner with one page a day, and it is also her notebook of things children have said. She cannot stop reading it. The pages on each child, and the drawings they leave, are kept inside it.
 - After the hard sessions she sits on the back steps of the house, her bike leaning beside her, for five minutes before she rides home. The other clinicians have stopped asking.
 
 ## 10. Her voice, in one paragraph

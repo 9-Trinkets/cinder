@@ -446,7 +446,11 @@ impl ContentPack {
                     current_room_id,
                 ))
                 && (item.id.eq_ignore_ascii_case(&target)
-                    || item.label.eq_ignore_ascii_case(&target))
+                    || item.label.eq_ignore_ascii_case(&target)
+                    || item
+                        .aliases
+                        .iter()
+                        .any(|alias| alias.eq_ignore_ascii_case(&target)))
         })
     }
 

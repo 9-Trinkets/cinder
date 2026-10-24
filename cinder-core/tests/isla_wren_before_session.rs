@@ -236,3 +236,50 @@ fn the_book_a_swap_puts_back_returns_to_the_shelves() {
     let room = runtime.run_turn("look").expect("look").text();
     assert!(!room.contains("On the ground"), "{room}");
 }
+
+#[test]
+fn the_pages_of_the_journal_are_grouped_and_the_index_comes_with_them() {
+    let pack = load_named_pack("isla", Some("en")).expect("isla loads");
+    assert_eq!(
+        pack.ui_text.item_groups.get("journal").map(String::as_str),
+        Some("Journal")
+    );
+    let pages: Vec<_> = pack
+        .items
+        .iter()
+        .filter(|item| item.group == "journal")
+        .map(|item| item.id.as_str())
+        .collect();
+    for page in [
+        "journal-index",
+        "note-intake",
+        "note-referral",
+        "note-session-one",
+        "note-session-two",
+        "note-schedule",
+    ] {
+        assert!(pages.contains(&page), "{page} is not in the journal");
+    }
+    let carried = runtime().inventory_items().expect("inventory");
+    assert_eq!(carried.get("journal-index"), Some(&1));
+}
+
+#[test]
+fn a_page_can_be_read_by_its_old_name_as_well_as_its_new_one() {
+    let runtime = runtime();
+    for name in ["wren, last week", "notes from last week", "last week"] {
+        let text = runtime
+            .run_turn(&format!("look at {name}"))
+            .expect("look")
+            .text();
+        assert!(text.contains("Did not name the move"), "{name}: {text}");
+    }
+    let index = runtime
+        .run_turn("look at journal index")
+        .expect("look")
+        .text();
+    assert!(
+        index.contains("A tab down the edge for each child"),
+        "{index}"
+    );
+}

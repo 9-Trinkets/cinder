@@ -42,13 +42,26 @@ export function groupLookOptions(
   if (room.length > 0) grouped.push([uiText.look_group_room, room])
 
   const itemsGroupLabel = uiText.look_group_items?.trim()
+  const isGroupedItem = (option: api.LookOptionData) => option.id.startsWith('item:') && Boolean(option.group)
   const things = options.filter(
-    option => option.id.startsWith('feature:') || (!itemsGroupLabel && option.id.startsWith('item:')),
+    option =>
+      option.id.startsWith('feature:') ||
+      (!itemsGroupLabel && option.id.startsWith('item:') && !isGroupedItem(option)),
   )
   if (things.length > 0) grouped.push([uiText.look_group_things, things])
 
-  const carried = itemsGroupLabel ? options.filter(option => option.id.startsWith('item:')) : []
+  const carried = itemsGroupLabel
+    ? options.filter(option => option.id.startsWith('item:') && !isGroupedItem(option))
+    : []
   if (carried.length > 0) grouped.push([itemsGroupLabel!, carried])
+
+  // Items a pack groups together, such as the pages of a journal, each get their own heading.
+  const itemGroups = new Map<string, api.LookOptionData[]>()
+  for (const option of options.filter(isGroupedItem)) {
+    const heading = option.group as string
+    itemGroups.set(heading, [...(itemGroups.get(heading) ?? []), option])
+  }
+  for (const [heading, members] of itemGroups) grouped.push([heading, members])
 
   const people = options.filter(option => option.id.startsWith('actor:'))
   if (people.length > 0) {

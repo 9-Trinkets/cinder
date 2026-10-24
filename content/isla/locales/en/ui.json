@@ -69,5 +69,8 @@
   "quests_menu_title": "To do",
   "quests_active_label": "Still to do",
   "quests_completed_label": "Done",
-  "quests_empty": "Nothing to do right now."
+  "quests_empty": "Nothing to do right now.",
+  "item_groups": {
+    "journal": "Journal"
+  }
 }

@@ -12,6 +12,10 @@ pub(crate) fn build_look_options(runtime: &CinderRuntime) -> Result<Vec<LookOpti
         .map_err(|error| error.to_string())?
         .into_iter()
         .map(|option| LookOptionData {
+            group: option
+                .id
+                .strip_prefix("item:")
+                .and_then(|item_id| item_group_heading(runtime.content(), item_id)),
             id: option.id,
             title: option.title,
             command: option.command,
@@ -195,11 +199,13 @@ mod tests {
     fn interactable_labels_include_room_exits() {
         let look_opts = vec![
             LookOptionData {
+                group: None,
                 id: "__room__".to_string(),
                 title: "Village Square".to_string(),
                 command: "look".to_string(),
             },
             LookOptionData {
+                group: None,
                 id: "feature:f1".to_string(),
                 title: "steam pipes".to_string(),
                 command: "x steam pipes".to_string(),
@@ -223,4 +229,13 @@ mod tests {
             ]
         );
     }
+}
+
+/// The heading an item is listed under, when its group is named by the pack.
+pub(crate) fn item_group_heading(content: &ContentPack, item_id: &str) -> Option<String> {
+    let group = &content.item(item_id)?.group;
+    if group.is_empty() {
+        return None;
+    }
+    content.ui_text.item_groups.get(group).cloned()
 }

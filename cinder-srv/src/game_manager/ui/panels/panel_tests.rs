@@ -347,6 +347,7 @@ fn take_surfaces_in_overflow_items_group_when_companion_has_items_even_without_r
         order_panel: "order:zayd".to_string(),
         equipped_items: vec![],
         inventory: vec![super::super::InventoryItem {
+            group: None,
             id: Some("torch".to_string()),
             label: "torch".to_string(),
             count: 1,
@@ -411,6 +412,7 @@ fn items_section_orders_take_give_drop() {
         order_panel: "order:zayd".to_string(),
         equipped_items: vec![],
         inventory: vec![super::super::InventoryItem {
+            group: None,
             id: Some("torch".to_string()),
             label: "torch".to_string(),
             count: 1,
@@ -489,6 +491,7 @@ fn take_and_give_exclude_party_members_not_in_current_room() {
         order_panel: "order:zayd".to_string(),
         equipped_items: vec![],
         inventory: vec![super::super::InventoryItem {
+            group: None,
             id: Some("torch".to_string()),
             label: "torch".to_string(),
             count: 1,

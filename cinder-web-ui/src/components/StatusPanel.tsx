@@ -302,19 +302,39 @@ export default function StatusPanel({
         </Section>
       ) : null,
 
-    inventory: () =>
-      uiSnapshot.inventory.length > 0 ? (
-        <Section title={uiSnapshot.ui_text.look_group_items || t('hud.inventory')}>
-          <ul className="space-y-0.5">
-            {uiSnapshot.inventory.map((item, i) => (
-              <li key={i} className="text-text text-xs">
-                • {titleize(item.label)}
-                {item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}
-              </li>
-            ))}
-          </ul>
-        </Section>
-      ) : null,
+    inventory: () => {
+      if (uiSnapshot.inventory.length === 0) return null
+      const ungrouped = uiSnapshot.inventory.filter(item => !item.group)
+      const groups = new Map<string, typeof uiSnapshot.inventory>()
+      for (const item of uiSnapshot.inventory.filter(item => item.group)) {
+        const heading = item.group as string
+        groups.set(heading, [...(groups.get(heading) ?? []), item])
+      }
+      const list = (items: typeof uiSnapshot.inventory) => (
+        <ul className="space-y-0.5">
+          {items.map((item, i) => (
+            <li key={i} className="text-text text-xs">
+              • {titleize(item.label)}
+              {item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}
+            </li>
+          ))}
+        </ul>
+      )
+      return (
+        <>
+          {ungrouped.length > 0 && (
+            <Section title={uiSnapshot.ui_text.look_group_items || t('hud.inventory')}>
+              {list(ungrouped)}
+            </Section>
+          )}
+          {Array.from(groups.entries()).map(([heading, items]) => (
+            <Section key={heading} title={heading}>
+              {list(items)}
+            </Section>
+          ))}
+        </>
+      )
+    },
 
     room_items: () =>
       uiSnapshot.current_room_items.length > 0 ? (

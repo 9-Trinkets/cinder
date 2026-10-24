@@ -273,6 +273,13 @@ fn the_best_session_with_the_right_book_reaches_every_secret_and_the_best_drawin
         "{:?}",
         state.active_objective_stage_ids
     );
+    assert!(
+        runtime
+            .inventory_items()
+            .unwrap()
+            .contains_key("wren-drawing-high"),
+        "the drawing is tucked into the journal"
+    );
     let after = finish_after(&runtime);
     assert!(after.contains("She hummed the whole way home"), "{after}");
     assert!(after.contains("She showed me the handle."), "{after}");

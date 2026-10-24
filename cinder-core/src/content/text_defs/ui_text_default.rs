@@ -12,6 +12,7 @@ impl Default for super::ui_text::UiTextDefinition {
             menu_action_label: default_menu_action_label(),
             channel_header_label: String::new(),
             look_group_items: String::new(),
+            item_groups: Default::default(),
             quests_sidebar_label: String::new(),
             quests_menu_title: String::new(),
             quests_active_label: String::new(),

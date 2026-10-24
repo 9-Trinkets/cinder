@@ -1,58 +1,81 @@
 [
   {
+    "id": "journal-index",
+    "label": "journal index",
+    "aliases": [
+      "index",
+      "contents",
+      "tabs",
+      "journal"
+    ],
+    "kind": "misc",
+    "group": "journal",
+    "description": "The first page of your journal, ruled by hand. A tab down the edge for each child you see. There is one so far, Wren, and under it a column of weeks, with a gap at the bottom where today will go."
+  },
+  {
     "id": "note-intake",
-    "label": "intake form",
+    "label": "Wren, intake form",
     "aliases": [
       "intake form",
       "intake",
-      "form"
+      "form",
+      "wren intake"
     ],
     "kind": "misc",
-    "description": "The intake form, filled in by two hands in two pens. Under what brought you here, Mom has written that Wren has been so good, honestly no trouble at all. Dad has written that she is a good little trooper.\n\nUnder changes in the family, both of them have ticked the box for separation."
+    "description": "The intake form, clipped inside the front cover of your journal, filled in by two hands in two pens. Under what brought you here, Mom has written that Wren has been so good, honestly no trouble at all. Dad has written that she is a good little trooper.\n\nUnder changes in the family, both of them have ticked the box for separation.",
+    "group": "journal"
   },
   {
     "id": "note-referral",
-    "label": "school referral",
+    "label": "Wren, school referral",
     "aliases": [
       "school referral",
       "referral",
-      "letter"
+      "letter",
+      "wren referral"
     ],
     "kind": "misc",
-    "description": "A letter on school letterhead, from Ms. Okafor. She writes that Wren used to share news every morning and lately just says pass. At lunch Wren sorts the class library into piles by color.\n\nShe adds that Wren is kind to everyone and has never once been a problem."
+    "description": "A letter on school letterhead, from Ms. Okafor, folded into the back pocket of your journal. She writes that Wren used to share news every morning and lately just says pass. At lunch Wren sorts the class library into piles by color.\n\nShe adds that Wren is kind to everyone and has never once been a problem.",
+    "group": "journal"
   },
   {
     "id": "note-session-one",
-    "label": "notes from week one",
+    "label": "Wren, week one",
     "aliases": [
       "week one",
       "session one",
-      "first notes"
+      "first notes",
+      "notes from week one"
     ],
     "kind": "misc",
-    "description": "Your own notes, in your small square writing. Wren stayed by the door for ten minutes, holding the rabbit by one ear. She lined her shoes up. She told you her name and the day of the week, and nothing else."
+    "description": "Your own notes, in your small square writing. Wren stayed by the door for ten minutes, holding the rabbit by one ear. She lined her shoes up. She told you her name and the day of the week, and nothing else.",
+    "group": "journal"
   },
   {
     "id": "note-session-two",
-    "label": "notes from last week",
+    "label": "Wren, last week",
     "aliases": [
       "last week",
       "session two",
       "week two",
-      "notes from week two"
+      "notes from week two",
+      "notes from last week"
     ],
     "kind": "misc",
-    "description": "Last week. Wren built a tower of blocks without a word, knocked it down, and put every block back in the bin. She counted under her breath, and then stopped herself.\n\nUnderlined in pencil. Did not name the move. W. left the table when I said \"two houses.\""
+    "description": "Last week. Wren built a tower of blocks without a word, knocked it down, and put every block back in the bin. She counted under her breath, and then stopped herself.\n\nUnderlined in pencil. Did not name the move. W. left the table when I said \"two houses.\"",
+    "group": "journal"
   },
   {
     "id": "note-schedule",
-    "label": "family schedule",
+    "label": "Wren, family schedule",
     "aliases": [
       "family schedule",
-      "schedule"
+      "schedule",
+      "wren schedule"
     ],
     "kind": "misc",
-    "description": "A typed page. Weekdays are at Mom's. Tuesday nights are at Dad's, and every second weekend. Thursday is a Mom day.\n\nIn the margin, in Dr. Bell's green ink. Both parents attentive. Child very tidy. Go slowly."
+    "description": "A typed page, taped into your journal. Weekdays are at Mom's. Tuesday nights are at Dad's, and every second weekend. Thursday is a Mom day.\n\nIn the margin, in Dr. Bell's green ink. Both parents attentive. Child very tidy. Go slowly.",
+    "group": "journal"
   },
   {
     "id": "book-bird",
@@ -104,38 +127,80 @@
   },
   {
     "id": "note-three-low",
-    "label": "notes from today",
+    "label": "Wren, today",
     "aliases": [
       "notes from today",
       "today",
       "session three",
-      "my note"
+      "my note",
+      "wren today"
     ],
     "kind": "misc",
-    "description": "Session three. Dad dropped her off on a Thursday, and that threw her off from the start. She sorted the animals into the two bins until both sides were even. The story did not land today, and she stayed with the things she could count. Next time, stay with the bins first, and no hurry about the book."
+    "description": "Session three. Dad dropped her off on a Thursday, and that threw her off from the start. She sorted the animals into the two bins until both sides were even. The story did not land today, and she stayed with the things she could count. Next time, stay with the bins first, and no hurry about the book.",
+    "group": "journal"
   },
   {
     "id": "note-three-mid",
-    "label": "notes from today",
+    "label": "Wren, today",
     "aliases": [
       "notes from today",
       "today",
       "session three",
-      "my note"
+      "my note",
+      "wren today"
     ],
     "kind": "misc",
-    "description": "Session three. W. showed me the notebook she keeps in Rabbit's bag, yellow squares for Mom and green for Dad, ticked every night before bed. Since the afternoon nobody came for her at school, she has been trying to keep the schedule straight on her own. Let her set the pace next week."
+    "description": "Session three. W. showed me the notebook she keeps in Rabbit's bag, yellow squares for Mom and green for Dad, ticked every night before bed. Since the afternoon nobody came for her at school, she has been trying to keep the schedule straight on her own. Let her set the pace next week.",
+    "group": "journal"
   },
   {
     "id": "note-three-high",
-    "label": "notes from today",
+    "label": "Wren, today",
     "aliases": [
       "notes from today",
       "today",
       "session three",
-      "my note"
+      "my note",
+      "wren today"
     ],
     "kind": "misc",
-    "description": "Session three. She showed me the handle. It was from one of Mom's blue cups, broken while she was trying to bring her tea, right before the first big fight she heard. She has been carrying it in Rabbit's bag since the spring because she thinks the cup is why they live in two houses now. I stayed with her and did not rush to talk her out of it. Next week, let her lead."
+    "description": "Session three. She showed me the handle. It was from one of Mom's blue cups, broken while she was trying to bring her tea, right before the first big fight she heard. She has been carrying it in Rabbit's bag since the spring because she thinks the cup is why they live in two houses now. I stayed with her and did not rush to talk her out of it. Next week, let her lead.",
+    "group": "journal"
+  },
+  {
+    "id": "wren-drawing-low",
+    "label": "Wren, her drawing",
+    "aliases": [
+      "drawing",
+      "wren's drawing",
+      "her drawing"
+    ],
+    "kind": "misc",
+    "group": "journal",
+    "description": "Wren's drawing, in crayon, pressed between two pages. A row of crayons, all the same length, colored in one at a time."
+  },
+  {
+    "id": "wren-drawing-mid",
+    "label": "Wren, her drawing",
+    "aliases": [
+      "drawing",
+      "wren's drawing",
+      "her drawing"
+    ],
+    "kind": "misc",
+    "group": "journal",
+    "description": "Wren's drawing, in crayon, pressed between two pages. A small brown bird with a nest held in both wings, between two trees. Biscuit is drawn in the corner of the page."
+  },
+  {
+    "id": "wren-drawing-high",
+    "label": "Wren, her drawing",
+    "aliases": [
+      "drawing",
+      "wren's drawing",
+      "her drawing"
+    ],
+    "kind": "misc",
+    "group": "journal",
+    "description": "Wren's drawing, in crayon, pressed between two pages. A bird sitting on the ground between two trees, with no nest in her wings. Beside her, very small, a girl holds up a red stop sign."
   }
 ]

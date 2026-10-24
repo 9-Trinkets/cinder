@@ -206,6 +206,8 @@ export interface LookOptionData {
   id: string
   title: string
   command: string
+  /** Heading of the item group this option is listed under, e.g. "Journal". */
+  group?: string
 }
 
 export interface ActiveMenuData {
@@ -241,6 +243,8 @@ export interface InventoryItem {
   /** Set for loose room items or inventory items so the UI can dispatch commands. */
   id?: string
   usable?: boolean
+  /** Heading of the item group this item is listed under, e.g. "Journal". */
+  group?: string
 }
 
 export interface EquippedItem {
