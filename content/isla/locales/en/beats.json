@@ -287,7 +287,7 @@
       "summary": "Stay with Wren.",
       "narrative_lines": [
         "The first picture shows a small brown bird in a tree, with a nest held in both wings.",
-        "Book: Bird had a nest. It was a good nest. She carried it from the first tree to the second tree, and from the second tree back to the first.",
+        "Isla (to Wren): Bird had a nest. It was a good nest. She carried it from the first tree to the second tree, and from the second tree back to the first.",
         "Wren leans in and traces the bird's wings with one finger.",
         "Wren (to Isla): She's holding it the whole time."
       ],
@@ -340,7 +340,7 @@
       "summary": "Stay with Wren.",
       "narrative_lines": [
         "You turn the page. Rabbit and Owl are in the picture now, standing on a branch with their wings out.",
-        "Book: Rabbit said, I can hold it for you. Bird said, No, thank you. Owl said, I can hold it for you. Bird said, No, thank you.",
+        "Isla (to Wren): Rabbit said, I can hold it for you. Bird said, No, thank you. Owl said, I can hold it for you. Bird said, No, thank you.",
         "Wren has stopped looking at the picture. She is looking at Rabbit.",
         "Wren (to Isla): I can do a cartwheel. Not in here."
       ],
@@ -393,7 +393,7 @@
       "summary": "Stay with Wren.",
       "narrative_lines": [
         "You turn the last pages. It gets dark in the picture, and then it rains.",
-        "Book: That evening it rained. Bird was too tired to fly. She set the nest down on the ground between the two trees. And nothing terrible happened.",
+        "Isla (to Wren): That evening it rained. Bird was too tired to fly. She set the nest down on the ground between the two trees. And nothing terrible happened.",
         "Wren looks at the last picture for a long time.",
         "Wren (to Isla): She put it down."
       ],
@@ -451,7 +451,7 @@
       "summary": "Stay with Wren.",
       "narrative_lines": [
         "The first picture shows a big bear standing with one paw up, and one red balloon.",
-        "Book: Bear had one red balloon. Then he had two. Then he had three.",
+        "Isla (to Wren): Bear had one red balloon. Then he had two. Then he had three.",
         "Wren sits up straight and counts along with her lips moving.",
         "Wren (to Isla): Four. Five."
       ],
@@ -504,7 +504,7 @@
       "summary": "Stay with Wren.",
       "narrative_lines": [
         "You turn to the last page. The bear has ten balloons, and he lets go of them one at a time.",
-        "Book: Nine. Ten. Bear let them all go up.",
+        "Isla (to Wren): Nine. Ten. Bear let them all go up.",
         "Wren (to Isla): They all go up. Ten is the end."
       ],
       "open_menu": "bear-2",
@@ -549,9 +549,9 @@
           "signal": "menu_selected:closing",
           "conditions": [
             {
-              "path": "actor_stats.wren.points",
+              "path": "actor_stats.wren.s4_held",
               "operator": "gte",
-              "value": 11
+              "value": 1
             }
           ],
           "next_stage_ids": [
@@ -562,9 +562,22 @@
           "signal": "menu_selected:closing",
           "conditions": [
             {
-              "path": "actor_stats.wren.points",
+              "path": "actor_stats.wren.s3_held",
               "operator": "gte",
-              "value": 6
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-farewell-mid"
+          ]
+        },
+        {
+          "signal": "menu_selected:closing",
+          "conditions": [
+            {
+              "path": "actor_stats.wren.s2_held",
+              "operator": "gte",
+              "value": 1
             }
           ],
           "next_stage_ids": [
@@ -584,7 +597,7 @@
       "quest_id": "session",
       "quest_title": "The session",
       "quest_kind": "main",
-      "summary": "The session is over.",
+      "summary": "Sit on the back steps. Go through the kitchen and out the back.",
       "narrative_lines": [
         "The timer on the shelf chimes, once. Wren puts Rabbit in the crook of her arm and stands up. At the door she sets her shoes down side by side, toes even, and puts them on.",
         "In the waiting room Gloria is already on her feet. Wren's mother stands in the doorway with her coat still on.",
@@ -594,14 +607,42 @@
         "It is a drawing, in crayon. A row of crayons, all the same length, colored in one at a time.",
         "The door closes behind them, and the house is quiet."
       ],
-      "end_game": true
+      "advance_signals": [
+        "room_entered:back-yard"
+      ],
+      "next_stage_ids": [
+        "stage-steps-low"
+      ]
+    },
+    {
+      "id": "stage-steps-low",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Check your phone.",
+      "narrative_lines": [
+        "The back steps are cold and the yard is gray. You lean the bike against the rail and sit down. Your phone is in your tote."
+      ],
+      "open_menu": "phone-1",
+      "advance_signals": [
+        "menu_selected:phone-1"
+      ],
+      "next_stage_ids": [
+        "stage-phone-2"
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "queue_sequence",
+          "sequence_id": "after-low"
+        }
+      ]
     },
     {
       "id": "stage-farewell-mid",
       "quest_id": "session",
       "quest_title": "The session",
       "quest_kind": "main",
-      "summary": "The session is over.",
+      "summary": "Sit on the back steps. Go through the kitchen and out the back.",
       "narrative_lines": [
         "The timer on the shelf chimes, once. Wren puts Rabbit in the crook of her arm and stands up. At the door she sets her shoes down side by side, toes even, and puts them on.",
         "In the waiting room Gloria is already on her feet. Wren's mother stands in the doorway with her coat still on.",
@@ -611,14 +652,42 @@
         "It is a drawing, in crayon. A small brown bird with a nest held in both wings, between two trees. Rabbit is in the corner of the page.",
         "The door closes behind them, and the house is quiet."
       ],
-      "end_game": true
+      "advance_signals": [
+        "room_entered:back-yard"
+      ],
+      "next_stage_ids": [
+        "stage-steps-mid"
+      ]
+    },
+    {
+      "id": "stage-steps-mid",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Check your phone.",
+      "narrative_lines": [
+        "The back steps are cold and the yard is gray. You lean the bike against the rail and sit down. Your phone is in your tote."
+      ],
+      "open_menu": "phone-1",
+      "advance_signals": [
+        "menu_selected:phone-1"
+      ],
+      "next_stage_ids": [
+        "stage-phone-2"
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "queue_sequence",
+          "sequence_id": "after-mid"
+        }
+      ]
     },
     {
       "id": "stage-farewell-high",
       "quest_id": "session",
       "quest_title": "The session",
       "quest_kind": "main",
-      "summary": "The session is over.",
+      "summary": "Sit on the back steps. Go through the kitchen and out the back.",
       "narrative_lines": [
         "The timer on the shelf chimes, once. Wren puts Rabbit in the crook of her arm and stands up. At the door she sets her shoes down side by side, toes even, and puts them on.",
         "In the waiting room Gloria is already on her feet. Wren's mother stands in the doorway with her coat still on.",
@@ -627,6 +696,91 @@
         "She has left something on the low table.",
         "It is a drawing, in crayon. A bird sitting on the ground between two trees, with no nest in her wings. Beside her, very small, a girl holds up a red stop sign.",
         "The door closes behind them, and the house is quiet."
+      ],
+      "advance_signals": [
+        "room_entered:back-yard"
+      ],
+      "next_stage_ids": [
+        "stage-steps-high"
+      ]
+    },
+    {
+      "id": "stage-steps-high",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Check your phone.",
+      "narrative_lines": [
+        "The back steps are cold and the yard is gray. You lean the bike against the rail and sit down. Your phone is in your tote."
+      ],
+      "open_menu": "phone-1",
+      "advance_signals": [
+        "menu_selected:phone-1"
+      ],
+      "next_stage_ids": [
+        "stage-phone-2"
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "queue_sequence",
+          "sequence_id": "after-high"
+        }
+      ]
+    },
+    {
+      "id": "stage-phone-2",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Check your phone.",
+      "narrative_lines": [],
+      "open_menu": "phone-2",
+      "advance_signals": [
+        "menu_selected:phone-2"
+      ],
+      "next_stage_ids": [
+        "stage-note"
+      ]
+    },
+    {
+      "id": "stage-note",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Write your note.",
+      "narrative_lines": [],
+      "open_menu": "note",
+      "advance_signals": [
+        "menu_selected:note"
+      ],
+      "next_stage_ids": [
+        "stage-read-note"
+      ]
+    },
+    {
+      "id": "stage-read-note",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Read your note.",
+      "narrative_lines": [],
+      "advance_signals": [
+        "item_observed:note-three-low",
+        "item_observed:note-three-mid",
+        "item_observed:note-three-high"
+      ],
+      "next_stage_ids": [
+        "stage-end"
+      ]
+    },
+    {
+      "id": "stage-end",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "The session is over.",
+      "narrative_lines": [
+        "You read it through once. Then you sit a while longer, with the bike leaning beside you, and listen to the bus sighing at the Calloway stop."
       ],
       "end_game": true
     }

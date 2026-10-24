@@ -223,9 +223,10 @@ const TranscriptLine = memo(function TranscriptLine({
 
   // 2. Channel / Handler Comms
   if (line.kind === 'channel') {
-    const match = line.text.match(/^([^:：]+)[:：]\s*(.*)$/s)
+    const match = line.text.match(/^([^:：(（]+?)(?:\s*[(（]\s*(?:to\s+|對\s*)?([^)）]+)[)）])?\s*[:：]\s*(.*)$/s)
     const speaker = match ? match[1].trim() : t('hud.comms')
-    const content = match ? match[2].trim() : line.text
+    const target = match?.[2]?.trim()
+    const content = match ? match[3].trim() : line.text
 
     return (
       <div className="my-3.5 pl-4 border-l-2 border-rose/60 font-prose">
@@ -233,6 +234,11 @@ const TranscriptLine = memo(function TranscriptLine({
           {channelHeaderLabel
             ? channelHeaderLabel.replace('{speaker}', speaker)
             : t('hud.dispatch', { speaker })}
+          {target && (
+            <span className="ml-2 font-prose normal-case tracking-normal italic text-muted">
+              {t('hud.toTarget', { target })}
+            </span>
+          )}
         </span>
         <div className="text-text text-base leading-[1.8] italic">
           <HighlightedText

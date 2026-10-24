@@ -98,5 +98,41 @@
     ],
     "kind": "misc",
     "description": "A clementine and four square crackers on a paper napkin."
+  },
+  {
+    "id": "note-three-low",
+    "label": "notes from today",
+    "aliases": [
+      "notes from today",
+      "today",
+      "session three",
+      "my note"
+    ],
+    "kind": "misc",
+    "description": "Session three. Dad dropped her off, and W. noticed before I did. She sorted the animals and counted. She kept the bag close, and I did not ask about it. We did not get far. Next time, the bins first, and no hurry about the book."
+  },
+  {
+    "id": "note-three-mid",
+    "label": "notes from today",
+    "aliases": [
+      "notes from today",
+      "today",
+      "session three",
+      "my note"
+    ],
+    "kind": "misc",
+    "description": "Session three. W. told me some of what she keeps in the bag, and some of what she does at night so that the days stay straight. She said it to Rabbit first. Next time, no questions. Let her bring it."
+  },
+  {
+    "id": "note-three-high",
+    "label": "notes from today",
+    "aliases": [
+      "notes from today",
+      "today",
+      "session three",
+      "my note"
+    ],
+    "kind": "misc",
+    "description": "Session three. She showed me the handle. It was Mom's cup, and she was making tea, and she carried it with both hands. She thinks the shouting and the two houses came after it. I did not tell her it was not her fault. She will need to hear that from someone she has not been waiting to hear it from. Next session, the bins, and whatever she brings."
   }
 ]

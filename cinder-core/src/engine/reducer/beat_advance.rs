@@ -219,6 +219,9 @@ fn apply_stage_effect(
             }
             return Ok(());
         }
+        AdvanceEffect::QueueSequence { sequence_id } => {
+            return state.queue_scripted_sequence(sequence_id);
+        }
         AdvanceEffect::SetFollowsPlayer { actor_id, follows } => {
             state.set_follows_player(actor_id, *follows);
             return Ok(());

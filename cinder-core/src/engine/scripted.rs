@@ -203,6 +203,7 @@ fn completion_effect_events(sequence: &ScriptedSequence) -> Vec<WorldEvent> {
             }],
             AdvanceEffect::GrantItem { .. }
             | AdvanceEffect::SetFollowsPlayer { .. }
+            | AdvanceEffect::QueueSequence { .. }
             | AdvanceEffect::ResolveSurvivorRewards { .. } => {
                 vec![WorldEvent::StageEffectApplied {
                     effect: effect.clone(),

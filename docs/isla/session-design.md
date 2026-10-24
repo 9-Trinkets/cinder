@@ -188,7 +188,7 @@ So the notes need almost nothing. The phone needs a small generic change, and th
 
 ## 14. As built: the session so far
 
-Implemented in `content/isla` and tested in `cinder-core/tests/isla_wren_session.rs`. Everything from the greeting to the last farewell is playable. After the farewell the game ends. **Not built yet:** Mom's phone message, Dr. Bell's check-in, and Isla's session three note.
+Implemented in `content/isla` and tested in `cinder-core/tests/isla_wren_session.rs`. Everything from the greeting to the end is playable, including the after.
 
 **Flow.** Greet Wren (Talk) → meeting bid → Wren follows Isla to the playroom → bins → snack → bag (first secret) → Stories first → book read in stops → closing → farewell and drawing.
 
@@ -205,6 +205,8 @@ Implemented in `content/isla` and tested in `cinder-core/tests/isla_wren_session
 
 **Snack.** If Isla is carrying it she hands it over, and if not she goes to the kitchen and back.
 
-**Farewell.** Wren leaves a drawing, chosen by total points: under 6 a row of crayons, 6 to 10 the bird with her nest, 11 or more the bird on the ground and a girl with a stop sign.
+**Farewell.** Wren leaves a drawing, chosen by the deepest secret Isla held: the cup gives the bird on the ground and a girl with a stop sign, the notebook or the quiet gives the bird with her nest, and anything less gives a row of crayons.
 
-**Engine pieces added for this:** `item_observed`, room items, actor topics, stage-set following, and `inventory.<id>` in stage conditions.
+**After.** Isla goes out to the back steps. Her phone has buzzed twice. Reading it plays Mom's message and Dr. Bell's check-in, one per turn, as `Mom (to Isla)` and `Dr. Bell (to Isla)` under a `Message` header. Mom's text matches the same three tiers: the car ride, the hall light, the humming. Writing the note adds Isla's session three note to her Tote, in the matching tier, and reading it ends the game.
+
+**Engine pieces added for this:** `item_observed`, room items, actor topics, stage-set following, `inventory.<id>` in stage conditions, menus that wait for their actor, and a stage effect that queues a scripted sequence.

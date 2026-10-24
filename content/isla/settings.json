@@ -51,13 +51,24 @@
   "show_player_input": false,
   "channels": [
     {
-      "id": "phone",
+      "id": "phone-bell",
       "kind": "direct",
       "privacy": "private",
       "availability": "always",
       "participants": [
         "player",
         "dr-bell"
+      ],
+      "label": "Phone"
+    },
+    {
+      "id": "phone-mom",
+      "kind": "direct",
+      "privacy": "private",
+      "availability": "always",
+      "participants": [
+        "player",
+        "nadia"
       ],
       "label": "Phone"
     }

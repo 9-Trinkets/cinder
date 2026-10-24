@@ -1,0 +1,88 @@
+{
+  "sequences": [
+    {
+      "id": "after-low",
+      "label": "Messages (low)",
+      "steps": [
+        {
+          "voice": "channel",
+          "channel_id": "phone-mom",
+          "speaker_id": "nadia",
+          "recipient_id": "player",
+          "line": "Thank you for today. She was quiet in the car, but she's always quiet in the car. I'm sorry, I don't really know what to tell you. It's fine."
+        },
+        {
+          "voice": "channel",
+          "channel_id": "phone-bell",
+          "speaker_id": "dr-bell",
+          "recipient_id": "player",
+          "line": "How did it go? Come and find me tomorrow."
+        }
+      ],
+      "completion_effects": [
+        {
+          "kind": "grant_item",
+          "item_id": "note-three-low",
+          "count": 1,
+          "message": "note.written"
+        }
+      ]
+    },
+    {
+      "id": "after-mid",
+      "label": "Messages (mid)",
+      "steps": [
+        {
+          "voice": "channel",
+          "channel_id": "phone-mom",
+          "speaker_id": "nadia",
+          "recipient_id": "player",
+          "line": "She wanted to leave the hall light on tonight. She never does, she turns them all off. I left it on. Thank you."
+        },
+        {
+          "voice": "channel",
+          "channel_id": "phone-bell",
+          "speaker_id": "dr-bell",
+          "recipient_id": "player",
+          "line": "How did it go? Come and find me tomorrow."
+        }
+      ],
+      "completion_effects": [
+        {
+          "kind": "grant_item",
+          "item_id": "note-three-mid",
+          "count": 1,
+          "message": "note.written"
+        }
+      ]
+    },
+    {
+      "id": "after-high",
+      "label": "Messages (high)",
+      "steps": [
+        {
+          "voice": "channel",
+          "channel_id": "phone-mom",
+          "speaker_id": "nadia",
+          "recipient_id": "player",
+          "line": "She hummed the whole way home. She hasn't done that since the spring. I didn't say anything, because I didn't want her to stop. Okay. Thank you for today."
+        },
+        {
+          "voice": "channel",
+          "channel_id": "phone-bell",
+          "speaker_id": "dr-bell",
+          "recipient_id": "player",
+          "line": "How did it go? Come and find me tomorrow."
+        }
+      ],
+      "completion_effects": [
+        {
+          "kind": "grant_item",
+          "item_id": "note-three-high",
+          "count": 1,
+          "message": "note.written"
+        }
+      ]
+    }
+  ]
+}

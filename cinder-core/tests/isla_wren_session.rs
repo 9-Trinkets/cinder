@@ -131,7 +131,6 @@ fn spoken_lines_name_who_is_talking_to_whom() {
                     .chars()
                     .all(|c| c.is_alphabetic() || " .()".contains(c))
             })
-            .filter(|(label, _)| *label != "Book")
             .filter(|(label, _)| !label.contains(' ') || label.contains("(to "));
         if let Some((label, body)) = speech {
             assert!(
@@ -180,6 +179,19 @@ fn start_session(runtime: &CinderRuntime, snack: bool, book: Option<&str>) {
     turn(runtime, "go playroom");
 }
 
+/// Walks to the back steps, reads both messages, writes the note and reads it.
+fn finish_after(runtime: &CinderRuntime) -> String {
+    let mut text = String::new();
+    for step in ["go hall", "go kitchen", "go back yard"] {
+        text += &turn(runtime, step);
+    }
+    text += &answer(runtime, "phone-1", "1");
+    text += &answer(runtime, "phone-2", "1");
+    text += &answer(runtime, "note", "1");
+    text += &turn(runtime, "look at notes from today");
+    text
+}
+
 fn answer(runtime: &CinderRuntime, menu: &str, choice: &str) -> String {
     assert_eq!(
         active_menu(runtime).as_deref(),
@@ -210,13 +222,19 @@ fn the_best_session_with_the_right_book_reaches_every_secret_and_the_best_drawin
     }
     assert_eq!(points(&runtime), 15);
     let state = runtime.export_state().expect("state");
-    assert_eq!(state.phase, GamePhase::GameEnded);
     assert!(
         state
             .active_objective_stage_ids
             .contains(&"stage-farewell-high".to_string()),
         "{:?}",
         state.active_objective_stage_ids
+    );
+    let after = finish_after(&runtime);
+    assert!(after.contains("She hummed the whole way home."), "{after}");
+    assert!(after.contains("She showed me the handle."), "{after}");
+    assert_eq!(
+        runtime.export_state().expect("state").phase,
+        GamePhase::GameEnded
     );
 }
 
@@ -281,7 +299,13 @@ fn the_default_book_is_the_shallow_counting_book() {
         answer(&runtime, menu, "1");
     }
     let state = runtime.export_state().expect("state");
-    assert_eq!(state.phase, GamePhase::GameEnded, "the session ends");
+    assert!(
+        state
+            .active_objective_stage_ids
+            .iter()
+            .any(|id| id.starts_with("stage-farewell")),
+        "the session ends with a farewell"
+    );
     assert!(
         !state.completed_stage_ids.contains("stage-quiet"),
         "the counting book never reaches the quiet secret"
@@ -346,4 +370,54 @@ fn choices_wait_while_isla_is_away_from_wren() {
     assert!(runtime.current_active_menu_info().unwrap().is_some());
     let text = turn(&runtime, "2");
     assert!(text.contains("I'll go and get one"), "{text}");
+}
+
+#[test]
+fn a_quieter_session_gets_a_quieter_message_and_note() {
+    let runtime = runtime();
+    start_session(&runtime, false, None);
+    answer(&runtime, "bins", "4");
+    answer(&runtime, "snack-none", "4");
+    answer(&runtime, "stories", "1");
+    for menu in ["bear-1", "bear-2", "closing"] {
+        answer(&runtime, menu, "4");
+    }
+    let after = finish_after(&runtime);
+    assert!(after.contains("she's always quiet in the car"), "{after}");
+    assert!(after.contains("no hurry about the book"), "{after}");
+    assert_eq!(
+        runtime.export_state().expect("state").phase,
+        GamePhase::GameEnded
+    );
+}
+
+#[test]
+fn the_messages_come_from_mom_and_dr_bell_and_say_who_they_are_to() {
+    let runtime = runtime();
+    start_session(&runtime, true, Some("bird book"));
+    for menu in [
+        "bins",
+        "snack-have",
+        "bag",
+        "stories",
+        "bird-1",
+        "notebook-bird",
+        "bird-2",
+        "quiet",
+        "bird-3",
+        "cup",
+        "closing",
+    ] {
+        answer(&runtime, menu, "1");
+    }
+    for step in ["go hall", "go kitchen", "go back yard"] {
+        turn(&runtime, step);
+    }
+    let first = answer(&runtime, "phone-1", "1");
+    assert!(first.contains("Mom (to Isla): She hummed"), "{first}");
+    let second = answer(&runtime, "phone-2", "1");
+    assert!(
+        second.contains("Dr. Bell (to Isla): How did it go?"),
+        "{second}"
+    );
 }

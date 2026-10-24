@@ -331,6 +331,21 @@
             {
               "path": "option_id",
               "operator": "equal",
+              "value": "notebook-bird-reflect"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "wren",
+            "stat": "s2_held",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
               "value": "notebook-bird-wait"
             }
           ],
@@ -339,6 +354,21 @@
             "actor_id": "wren",
             "stat": "points",
             "delta": 2
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "notebook-bird-wait"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "wren",
+            "stat": "s2_held",
+            "delta": 1
           }
         }
       ]
@@ -556,6 +586,21 @@
             {
               "path": "option_id",
               "operator": "equal",
+              "value": "cup-reflect"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "wren",
+            "stat": "s4_held",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
               "value": "cup-wait"
             }
           ],
@@ -564,6 +609,21 @@
             "actor_id": "wren",
             "stat": "points",
             "delta": 2
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "cup-wait"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "wren",
+            "stat": "s4_held",
+            "delta": 1
           }
         }
       ]
@@ -661,6 +721,21 @@
             {
               "path": "option_id",
               "operator": "equal",
+              "value": "notebook-bear-reflect"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "wren",
+            "stat": "s2_held",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
               "value": "notebook-bear-wait"
             }
           ],
@@ -669,6 +744,21 @@
             "actor_id": "wren",
             "stat": "points",
             "delta": 2
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "notebook-bear-wait"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "wren",
+            "stat": "s2_held",
+            "delta": 1
           }
         }
       ]

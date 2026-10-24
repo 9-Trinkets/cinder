@@ -827,5 +827,66 @@
         ]
       }
     ]
+  },
+  {
+    "id": "phone-1",
+    "actor_id": "wren",
+    "stage_id": "stage-steps-low",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "requires_actor_present": false,
+    "selection_prompt": "",
+    "invalid_choice_text": "Your phone is in your tote.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "phone-1-open",
+        "title": "Take out your phone.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You take the phone out of your tote. It has buzzed twice."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "phone-2",
+    "actor_id": "wren",
+    "stage_id": "stage-phone-2",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "requires_actor_present": false,
+    "selection_prompt": "",
+    "invalid_choice_text": "There is another message waiting.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "phone-2-next",
+        "title": "Read the other message.",
+        "menu_text": "",
+        "narrative_lines": []
+      }
+    ]
+  },
+  {
+    "id": "note",
+    "actor_id": "wren",
+    "stage_id": "stage-note",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "requires_actor_present": false,
+    "selection_prompt": "",
+    "invalid_choice_text": "Your note is waiting to be written.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "note-write",
+        "title": "Write your note.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You take the pencil stub out of your tote and write on your knee, the way you always do, after."
+        ]
+      }
+    ]
   }
 ]

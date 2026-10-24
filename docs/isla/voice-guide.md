@@ -10,7 +10,7 @@ How everyone in the Wren act sounds, and how the story is told. Read with `wren-
 - **American English**: Mom, Dad, first grade, recess, sidewalk, cookie.
 - **Nothing is explained.** The text never says what a behavior means ("she is hiding her sadness"). It shows the behavior and lets the player decide.
 - **Isla's options** are things Isla says or does, written in Isla's voice (section 3). They are never labeled good or bad.
-- **Book text** is its own block, labeled `Book:`, and is always in the picture-book voice (section 14).
+- **Book text** is read aloud by Isla, so it is her speech: `Isla (to Wren): ...`, always in the picture-book voice (section 14). It follows a line of narration that describes the picture.
 
 ## 2. The narrative voice
 
@@ -182,7 +182,7 @@ Picture-book voice: third person, past tense, short declaratives, repetition, a 
 - A plain sentence after each page describes the picture.
 
 **Calibration:**
-> Book: Bird had a nest. It was a good nest. She carried it from the first tree to the second tree, and from the second tree back to the first. And she never put it down.
+> Isla (to Wren): Bird had a nest. It was a good nest. She carried it from the first tree to the second tree, and from the second tree back to the first. And she never put it down.
 
 ## 15. Gloria (office manager, nineteen years)
 

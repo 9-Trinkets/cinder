@@ -124,6 +124,11 @@ pub enum AdvanceEffect {
         #[serde(default)]
         message: String,
     },
+    /// Starts a scripted sequence from its first line. Its lines then play
+    /// one per advancing turn.
+    QueueSequence {
+        sequence_id: String,
+    },
     /// Makes an actor walk with the player, or stay where they are.
     SetFollowsPlayer {
         actor_id: String,
