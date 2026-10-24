@@ -133,7 +133,7 @@ pub(crate) fn sync_followers_to_room(
             continue;
         }
 
-        if state.actor_stat(&follower_id, &content.settings.combat.health_stat_id) <= 0 {
+        if state.actor_is_defeated(&follower_id, &content.settings.combat.health_stat_id) {
             continue;
         }
         if state.actor_is_imprisoned(content, &follower_id) {

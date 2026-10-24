@@ -124,6 +124,12 @@ pub enum AdvanceEffect {
         #[serde(default)]
         message: String,
     },
+    /// Makes an actor walk with the player, or stay where they are.
+    SetFollowsPlayer {
+        actor_id: String,
+        #[serde(default = "default_follows")]
+        follows: bool,
+    },
     ResolveSurvivorRewards {
         rewards: Vec<SurvivorRewardDefinition>,
         survivor_count_story_var: String,
@@ -132,6 +138,10 @@ pub enum AdvanceEffect {
         #[serde(default)]
         all_survived_message: String,
     },
+}
+
+fn default_follows() -> bool {
+    true
 }
 
 fn default_grant_count() -> u32 {

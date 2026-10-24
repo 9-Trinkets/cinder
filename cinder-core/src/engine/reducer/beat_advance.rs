@@ -219,6 +219,10 @@ fn apply_stage_effect(
             }
             return Ok(());
         }
+        AdvanceEffect::SetFollowsPlayer { actor_id, follows } => {
+            state.set_follows_player(actor_id, *follows);
+            return Ok(());
+        }
         AdvanceEffect::ResolveSurvivorRewards {
             rewards,
             survivor_count_story_var,

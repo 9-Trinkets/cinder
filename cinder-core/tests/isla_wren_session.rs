@@ -65,20 +65,24 @@ fn a_fitting_answer_earns_a_point_and_a_miss_does_not() {
 }
 
 #[test]
-fn wren_leads_the_way_to_the_playroom_and_the_bins_follow() {
+fn wren_follows_isla_to_the_playroom_and_the_bins_follow() {
     let runtime = runtime();
     greet(&runtime);
     let text = turn(&runtime, "1");
-    assert!(text.contains("She knows the way."), "{text}");
+    assert!(text.contains("She stays a step behind you"), "{text}");
     assert_eq!(active_menu(&runtime), None);
 
-    turn(&runtime, "go hall");
+    let text = turn(&runtime, "go hall");
+    assert!(text.contains("Wren walks beside you."), "{text}");
     let text = turn(&runtime, "go playroom");
     assert!(
         text.contains("Wren (to Isla): These ones live here."),
         "{text}"
     );
     assert_eq!(active_menu(&runtime).as_deref(), Some("bins"));
+    let state = runtime.export_state().expect("state");
+    assert_eq!(state.actor_room_id("wren", "waiting-room"), "playroom");
+    assert!(!state.follows_player("wren"), "she stays at the bins");
 
     let text = turn(&runtime, "1");
     assert!(text.contains("And those ones."), "{text}");

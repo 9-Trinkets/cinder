@@ -164,7 +164,8 @@ fn validate_stage_effects(
             }
             AdvanceEffect::AdjustActorStat { .. }
             | AdvanceEffect::AdjustPairStat { .. }
-            | AdvanceEffect::SetStoryVar { .. } => {}
+            | AdvanceEffect::SetStoryVar { .. }
+            | AdvanceEffect::SetFollowsPlayer { .. } => {}
         }
     }
 }

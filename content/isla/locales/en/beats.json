@@ -79,21 +79,22 @@
       "quest_title": "The session",
       "quest_kind": "main",
       "id": "stage-follow",
-      "summary": "Follow Wren to the playroom.",
+      "summary": "Take Wren to the playroom.",
       "narrative_lines": [
-        "Wren slides off her chair and tucks Rabbit under one arm. She carries her shoes down the hall in the other hand. She knows the way."
-      ],
-      "actor_relocations": [
-        {
-          "actor_id": "wren",
-          "to_room_id": "playroom"
-        }
+        "Wren slides off her chair and tucks Rabbit under one arm, her shoes in the other hand. She stays a step behind you, and she waits for you to lead."
       ],
       "advance_signals": [
         "room_entered:playroom"
       ],
       "next_stage_ids": [
         "stage-bins"
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "set_follows_player",
+          "actor_id": "wren",
+          "follows": true
+        }
       ]
     },
     {
@@ -114,6 +115,19 @@
       ],
       "next_stage_ids": [
         "stage-after-bins"
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "set_follows_player",
+          "actor_id": "wren",
+          "follows": false
+        }
+      ],
+      "actor_relocations": [
+        {
+          "actor_id": "wren",
+          "to_room_id": "playroom"
+        }
       ]
     },
     {
