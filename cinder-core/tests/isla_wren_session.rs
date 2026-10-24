@@ -285,8 +285,16 @@ fn the_best_session_with_the_right_book_reaches_every_secret_and_the_best_drawin
 fn the_first_secret_is_the_bag_and_the_last_is_the_cup() {
     let runtime = runtime();
     start_session(&runtime, true, Some("bird book"));
+    assert!(
+        runtime.export_state().expect("state").has_item("snack"),
+        "Isla should carry the snack into the playroom"
+    );
     answer(&runtime, "bins", fit("bins"));
     let text = answer(&runtime, "snack-have", fit("snack-have"));
+    assert!(
+        !runtime.export_state().expect("state").has_item("snack"),
+        "snack should be removed from Isla's tote bag after she gives it to Wren"
+    );
     assert!(text.contains("packed Biscuit's toothbrush"), "{text}");
     let text = answer(&runtime, "bag", fit("bag"));
     assert!(

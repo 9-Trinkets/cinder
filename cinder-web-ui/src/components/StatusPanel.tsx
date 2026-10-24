@@ -304,7 +304,7 @@ export default function StatusPanel({
 
     inventory: () =>
       uiSnapshot.inventory.length > 0 ? (
-        <Section title={t('hud.inventory')}>
+        <Section title={uiSnapshot.ui_text.look_group_items || t('hud.inventory')}>
           <ul className="space-y-0.5">
             {uiSnapshot.inventory.map((item, i) => (
               <li key={i} className="text-text text-xs">

@@ -11,7 +11,7 @@
       "quest_id": "read-notes",
       "quest_title": "Read your notes",
       "quest_kind": "main",
-      "summary": "Read your notes on Wren. They are in your tote. Use Look.",
+      "summary": "Read your notes on Wren. They are in your tote bag. Use Look.",
       "advance_signals": [
         "item_observed:note-intake",
         "item_observed:note-referral",
@@ -165,6 +165,12 @@
         "Wren (to Isla): And if there's crackers, can mine be cut in squares?"
       ],
       "open_menu": "snack-have",
+      "completion_effects": [
+        {
+          "kind": "remove_item",
+          "item_id": "snack"
+        }
+      ],
       "advance_signals": [
         {
           "signal": "menu_selected:snack-have",
