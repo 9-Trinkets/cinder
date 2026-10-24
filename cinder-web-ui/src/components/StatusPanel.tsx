@@ -375,7 +375,7 @@ export default function StatusPanel({
       ) : null,
 
     quests: () => (
-      <Section title={t('hud.quests')} defaultOpen>
+      <Section title={uiSnapshot.ui_text.quests_sidebar_label || t('hud.quests')} defaultOpen>
         {uiSnapshot.objectives && uiSnapshot.objectives.length > 0 ? (
           <div className="space-y-2.5">
             {uiSnapshot.objectives.map((obj, idx) => {

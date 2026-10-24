@@ -433,6 +433,8 @@ mod tests {
         assert_eq!(titles, vec!["Greet Wren", "Ask Gloria about Wren"]);
         assert_eq!(talk[0].command.as_deref(), Some("say wren:greet"));
         assert_eq!(snapshot.ui_text.look_group_items, "Tote bag");
+        assert_eq!(snapshot.ui_text.quests_sidebar_label, "To do");
+        assert_eq!(snapshot.ui_text.quests_completed_label, "Done");
         assert!(snapshot.sidebar_sections.iter().any(|id| id == "inventory"));
         assert!(snapshot.sidebar_sections.iter().any(|id| id == "quests"));
     }

@@ -165,12 +165,12 @@ export default function ShellMenu({
 
   if (view === 'quests') {
     const groups = [
-      { status: 'active', label: (t.quests_active_label as string) || i18n('common.active') },
-      { status: 'completed', label: (t.quests_completed_label as string) || i18n('hud.completed') },
-      { status: 'failed', label: (t.quests_failed_label as string) || i18n('hud.failed') },
+      { status: 'active', label: t.quests_active_label || i18n('common.active') },
+      { status: 'completed', label: t.quests_completed_label || i18n('hud.completed') },
+      { status: 'failed', label: t.quests_failed_label || i18n('hud.failed') },
     ] as const
     return (
-      <Modal title={(t.quests_menu_title as string) || i18n('hud.questLog')} onClose={onClose}>
+      <Modal title={t.quests_menu_title || i18n('hud.questLog')} onClose={onClose}>
         <MenuBackButton onClick={() => onViewChange('main')} />
         {ui.quests.length > 0 ? (
           <div className="space-y-5">
@@ -228,7 +228,7 @@ export default function ShellMenu({
           </div>
         ) : (
           <p className="border-y border-subtle/40 py-5 text-center text-sm text-muted">
-            {(t.quests_empty as string) || i18n('hud.noQuestsRecorded')}
+            {t.quests_empty || i18n('hud.noQuestsRecorded')}
           </p>
         )}
       </Modal>

@@ -444,6 +444,12 @@ export interface UiSnapshot {
     look_group_room: string
     look_group_things: string
     look_group_items?: string
+    quests_sidebar_label?: string
+    quests_menu_title?: string
+    quests_active_label?: string
+    quests_completed_label?: string
+    quests_failed_label?: string
+    quests_empty?: string
     look_group_people: string
     look_group_party?: string
     room_items_sidebar_label: string

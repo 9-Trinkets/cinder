@@ -130,6 +130,20 @@ pub struct UiTextDefinition {
     /// them listed with the room's things.
     #[serde(default)]
     pub look_group_items: String,
+    /// Labels for the quest list and quest log. Empty keeps the client's
+    /// default wording ("Quests", "Quest Log", "Active", "Completed", "Failed").
+    #[serde(default)]
+    pub quests_sidebar_label: String,
+    #[serde(default)]
+    pub quests_menu_title: String,
+    #[serde(default)]
+    pub quests_active_label: String,
+    #[serde(default)]
+    pub quests_completed_label: String,
+    #[serde(default)]
+    pub quests_failed_label: String,
+    #[serde(default)]
+    pub quests_empty: String,
     #[serde(default = "default_look_group_people")]
     pub look_group_people: String,
     #[serde(default = "default_look_group_party")]
