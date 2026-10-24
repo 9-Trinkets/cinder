@@ -27,6 +27,7 @@ fn fit(menu: &str) -> &'static str {
         "snack-none" => "snack-none-offer",
         "bag" => "bag-reflect",
         "stories" => "stories-read",
+        "fetch-book" => "fetch-book-read",
         "bird-1" => "bird-1-reflect",
         "notebook-bird" => "notebook-bird-reflect",
         "bird-2" => "bird-2-follow",
@@ -370,9 +371,9 @@ fn poor_answers_close_the_deeper_secrets() {
 }
 
 #[test]
-fn the_default_book_is_the_shallow_counting_book() {
+fn the_counting_book_is_the_shallow_book() {
     let runtime = runtime();
-    start_session(&runtime, true, None);
+    start_session(&runtime, true, Some("bear book"));
     for menu in ["bins", "snack-have", "bag", "stories"] {
         answer(&runtime, menu, fit(menu));
     }
@@ -457,7 +458,7 @@ fn choices_wait_while_isla_is_away_from_wren() {
 #[test]
 fn a_quieter_session_gets_a_quieter_message_and_note() {
     let runtime = runtime();
-    start_session(&runtime, false, None);
+    start_session(&runtime, false, Some("bear book"));
     answer(&runtime, "bins", &miss("bins"));
     answer(&runtime, "snack-none", &miss("snack-none"));
     answer(&runtime, "stories", fit("stories"));
@@ -523,5 +524,53 @@ fn the_messages_come_from_mom_and_dr_bell_and_say_who_they_are_to() {
     assert!(
         second.contains("Dr. Bell (to Isla): How did it go?"),
         "{second}"
+    );
+}
+
+#[test]
+fn the_session_cannot_go_on_until_isla_has_fetched_a_book() {
+    let runtime = runtime();
+    start_session(&runtime, true, None);
+    for menu in ["bins", "snack-have"] {
+        answer(&runtime, menu, fit(menu));
+    }
+    if active_menu(&runtime).as_deref() == Some("bag") {
+        answer(&runtime, "bag", fit("bag"));
+    }
+    let text = answer(&runtime, "stories", fit("stories"));
+    assert!(text.contains("no book"), "{text}");
+    assert_eq!(active_menu(&runtime).as_deref(), Some("fetch-book"));
+
+    // Opening the tote again without a book changes nothing.
+    let again = answer(&runtime, "fetch-book", fit("fetch-book"));
+    assert!(again.contains("no book"), "{again}");
+    assert_eq!(active_menu(&runtime).as_deref(), Some("fetch-book"));
+
+    // Fetching one from the book room lets the story begin.
+    for step in ["go hall", "go upstairs", "go upstairs", "go book room"] {
+        turn(&runtime, step);
+    }
+    turn(&runtime, "take bear book");
+    for step in [
+        "go landing",
+        "go downstairs",
+        "go downstairs",
+        "go playroom",
+    ] {
+        turn(&runtime, step);
+    }
+    answer(&runtime, "fetch-book", fit("fetch-book"));
+    assert_eq!(active_menu(&runtime).as_deref(), Some("bear-1"));
+}
+
+#[test]
+fn the_opening_says_where_the_books_are() {
+    let pack = load_named_pack("isla", Some("en")).expect("isla loads");
+    assert!(
+        pack.opening
+            .intro_text
+            .contains("book room, at the top of the house"),
+        "{}",
+        pack.opening.intro_text
     );
 }

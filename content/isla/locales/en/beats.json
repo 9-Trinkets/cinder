@@ -421,8 +421,21 @@
         },
         {
           "signal": "menu_selected:stories",
+          "conditions": [
+            {
+              "path": "inventory.book-bear",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
           "next_stage_ids": [
             "stage-bear-1"
+          ]
+        },
+        {
+          "signal": "menu_selected:stories",
+          "next_stage_ids": [
+            "stage-fetch-book"
           ]
         }
       ]
@@ -949,6 +962,65 @@
         "You read your note through once, then close the folder. You sit on the top step a little longer, listening to a city bus sigh at the Calloway stop, before heading round to the front porch for your bike."
       ],
       "end_game": true
+    },
+    {
+      "id": "stage-fetch-book",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Fetch a picture book from the book room, at the top of the house.",
+      "narrative_lines": [
+        "You reach into your tote bag for a picture book. There is a pencil stub, a tissue and the timer, and no book.",
+        "Isla (to Wren): I left the books upstairs. I'll be right back."
+      ],
+      "open_menu": "fetch-book",
+      "advance_signals": [
+        {
+          "signal": "menu_selected:fetch-book",
+          "conditions": [
+            {
+              "path": "inventory.book-bird",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-bird-1"
+          ]
+        },
+        {
+          "signal": "menu_selected:fetch-book",
+          "conditions": [
+            {
+              "path": "inventory.book-fox",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-fox-1"
+          ]
+        },
+        {
+          "signal": "menu_selected:fetch-book",
+          "conditions": [
+            {
+              "path": "inventory.book-bear",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-bear-1"
+          ]
+        },
+        {
+          "signal": "menu_selected:fetch-book",
+          "next_stage_ids": [
+            "stage-fetch-book"
+          ]
+        }
+      ]
     }
   ]
 }

@@ -887,5 +887,26 @@
         ]
       }
     ]
+  },
+  {
+    "id": "fetch-book",
+    "actor_id": "wren",
+    "stage_id": "stage-fetch-book",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "requires_actor_present": true,
+    "selection_prompt": "",
+    "invalid_choice_text": "Wren is waiting for the story.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "fetch-book-read",
+        "title": "Open the picture book.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You sit on the low chair beside her and open the book across your knees so she has a clear view of the pages."
+        ]
+      }
+    ]
   }
 ]

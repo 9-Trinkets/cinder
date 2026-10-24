@@ -49,7 +49,7 @@ The quest log shows one quest with three small, **optional** steps. None is requ
 
 **Pacing.** There is no deadline. Wren waits, and the player can explore the whole house. Finishing a step can prompt a short line, for example Gloria saying "She's been very patient" once the notes are read.
 
-**If she does nothing.** She walks in and greets Wren with only the tote. The book defaults to the safe one in the tote (a counting book, section 9), there is no snack, and she has read nothing. The act still works, with less to go on.
+**If she does nothing.** She walks in and greets Wren with only the tote, and she has read nothing. There is no default book: when Stories first comes and she is not carrying one, she tells Wren she left the books upstairs, and the story waits until she has fetched one from the book room. The opening text says where the books are.
 
 ## 5. Isla's notes and her phone **(decision)**
 
@@ -118,7 +118,7 @@ The shelves in the book room are sorted loosely by subject. There are many books
 | Book | What it is | Effect |
 |---|---|---|
 | ***The Bird Who Carried Her Nest*** | A bird who will not set down her nest because she is afraid either tree will be sad. | **The fit.** It opens the later secrets. |
-| ***Bear Counts to Ten*** | A cheerful counting book. Wren will love it. | **Safe and shallow.** It reaches the first secret or two, and no more. This is the default in Isla's tote. |
+| ***Bear Counts to Ten*** | A cheerful counting book. Wren will love it. | **Safe and shallow.** It reaches the first secret or two, and no more. |
 | ***Two Houses for Fox*** | A book about a fox whose parents live apart. It is on the low DIVORCE shelf. | **Too direct.** Wren goes quiet and the session retreats. |
 
 The third is the instructive one. The file says her parents are separating, and a book about exactly that looks like the obvious choice. A player who read Isla's note from session two ("W. left the table when I said 'two houses'") has the clue to avoid it. A player who skipped the file is more likely to fall in, and learns, through play, that a child may not be ready to meet her own story head on.
@@ -202,7 +202,7 @@ Implemented in `content/isla` and tested in `cinder-core/tests/isla_wren_session
 
 **Secrets are gated by fixed point thresholds,** a simplification of "60% of the points so far". The thresholds are 2 for the bag, 4 for the notebook, 6 for the quiet, and 8 for the cup. The cup also needs the quiet to have been held. A player who has not fit the first answers never hears the deeper ones.
 
-**The book decides the path.** The branch is read from what Isla carries when she opens the book: *The Bird Who Carried Her Nest* reaches every secret, *Bear Counts to Ten* (the default) reaches the notebook, and *Two Houses for Fox* makes Wren retreat to the bins.
+**The book decides the path.** The branch is read from what Isla carries when she opens the book: *The Bird Who Carried Her Nest* reaches every secret, *Bear Counts to Ten* reaches the notebook, and *Two Houses for Fox* makes Wren retreat to the bins.
 
 **Snack.** If Isla is carrying it she hands it over, and if not she goes to the kitchen and back.
 
