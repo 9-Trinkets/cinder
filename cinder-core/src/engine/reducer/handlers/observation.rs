@@ -40,7 +40,7 @@ pub(crate) fn handle_feature_observed(ctx: &mut ReduceCtx<'_>, room_id: &str, fe
         if let Some(consumables_line) =
             render_feature_items_line(content, state, room_id, feature_id)
         {
-            lines.narration(consumables_line);
+            lines.narration(consumables_line.trim_start().to_string());
         }
     } else {
         lines.narration(content.presentation.error_text.room_missing.clone());

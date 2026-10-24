@@ -202,6 +202,14 @@ fn the_books_sit_on_the_shelves_and_the_snack_on_the_snack_shelf() {
         "{shelves}"
     );
     assert!(shelves.contains("Two Houses for Fox"), "{shelves}");
+    assert!(
+        !shelves.contains("\n\n\n"),
+        "the shelf listing has no extra blank lines: {shelves:?}"
+    );
+    assert!(
+        !shelves.contains("where a child could find"),
+        "the spines are described without saying who should find them"
+    );
 
     runtime.run_turn("take bear book").expect("take");
     let after = runtime.run_turn("look at shelves").expect("shelves").text();

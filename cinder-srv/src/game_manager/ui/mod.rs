@@ -127,11 +127,15 @@ pub(super) fn build_ui_snapshot(
     let exit_labels = runtime
         .current_room_exit_labels()
         .map_err(|e| e.to_string())?;
+    let current_room_items = build_current_room_items(content, &state, &current_room_id);
+    // Carried items and items here (on the floor or on a shelf) are all things
+    // the transcript can highlight.
     let inventory_labels = state
         .inventory
         .player_inventory
         .keys()
         .filter_map(|item_id| content.item(item_id).map(|item| item.label.clone()))
+        .chain(current_room_items.iter().map(|item| item.label.clone()))
         .collect::<Vec<_>>();
     let interactable_labels =
         build_interactable_labels(&look_options, &exit_labels, &inventory_labels);
@@ -223,7 +227,7 @@ pub(super) fn build_ui_snapshot(
             None
         },
         sidebar_sections,
-        current_room_items: build_current_room_items(content, &state, &current_room_id),
+        current_room_items,
         equipped_items: build_equipped_items(&state, content),
         inventory: build_inventory(runtime, content),
         room_consumables: build_room_consumables(runtime, content, &current_room_id),
@@ -499,6 +503,21 @@ mod tests {
             titles.contains(&"The Bird Who Carried Her Nest"),
             "{titles:?}"
         );
+
+        for book in [
+            "Bear Counts to Ten",
+            "The Bird Who Carried Her Nest",
+            "Two Houses for Fox",
+        ] {
+            assert!(
+                snapshot
+                    .interactable_labels
+                    .iter()
+                    .any(|label| label == book),
+                "{book} is highlighted while it sits on the shelf: {:?}",
+                snapshot.interactable_labels
+            );
+        }
 
         let take = &snapshot.panel_options["take"];
         let bear = take
