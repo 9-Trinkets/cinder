@@ -524,6 +524,7 @@ pub(super) fn world_state_condition_input(state: &WorldState) -> serde_json::Val
         "actor_stats": state.combat.actor_stats,
         "pair_stats": state.combat.pair_stats,
         "story_vars": state.story_vars,
+        "inventory": state.inventory.player_inventory,
     })
 }
 

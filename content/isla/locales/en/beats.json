@@ -60,13 +60,13 @@
       ]
     },
     {
+      "id": "stage-meet",
       "quest_id": "session",
       "quest_title": "The session",
       "quest_kind": "main",
-      "id": "stage-meet",
       "summary": "Answer Wren.",
-      "open_menu": "meet",
       "narrative_lines": [],
+      "open_menu": "meet",
       "advance_signals": [
         "menu_selected:meet"
       ],
@@ -75,10 +75,10 @@
       ]
     },
     {
+      "id": "stage-follow",
       "quest_id": "session",
       "quest_title": "The session",
       "quest_kind": "main",
-      "id": "stage-follow",
       "summary": "Take Wren to the playroom.",
       "narrative_lines": [
         "Wren slides off her chair and tucks Rabbit under one arm, her shoes in the other hand. She stays a step behind you, and she waits for you to lead."
@@ -98,29 +98,37 @@
       ]
     },
     {
+      "id": "stage-bins",
       "quest_id": "session",
       "quest_title": "The session",
       "quest_kind": "main",
-      "id": "stage-bins",
       "summary": "Stay with Wren.",
-      "open_menu": "bins",
       "narrative_lines": [
         "The afternoon light lies across the rug. Wren is at the shelf between the two lidded bins, moving animals from one to the other. A cow. A pig. The small horse.",
         "Wren (to Isla): One. Two. Three.",
         "She stops herself. She puts the cow in the left bin, takes it out, and puts it in the right.",
         "Wren (to Isla): These ones live here."
       ],
+      "open_menu": "bins",
       "advance_signals": [
-        "menu_selected:bins"
-      ],
-      "next_stage_ids": [
-        "stage-after-bins"
-      ],
-      "on_advance_effects": [
         {
-          "kind": "set_follows_player",
-          "actor_id": "wren",
-          "follows": false
+          "signal": "menu_selected:bins",
+          "conditions": [
+            {
+              "path": "inventory.snack",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-snack-have"
+          ]
+        },
+        {
+          "signal": "menu_selected:bins",
+          "next_stage_ids": [
+            "stage-snack-none"
+          ]
         }
       ],
       "actor_relocations": [
@@ -128,15 +136,499 @@
           "actor_id": "wren",
           "to_room_id": "playroom"
         }
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "set_follows_player",
+          "actor_id": "wren",
+          "follows": false
+        }
       ]
     },
     {
+      "id": "stage-snack-have",
       "quest_id": "session",
       "quest_title": "The session",
       "quest_kind": "main",
-      "id": "stage-after-bins",
+      "summary": "Answer Wren.",
+      "narrative_lines": [
+        "The bins are even. Wren checks them with her eyes, left and then right, and nods once.",
+        "Wren (to Isla): Is there a clementine?",
+        "Wren (to Isla): And half a cracker. In squares."
+      ],
+      "open_menu": "snack-have",
+      "advance_signals": [
+        {
+          "signal": "menu_selected:snack-have",
+          "conditions": [
+            {
+              "path": "actor_stats.wren.points",
+              "operator": "gte",
+              "value": 2
+            }
+          ],
+          "next_stage_ids": [
+            "stage-bag"
+          ]
+        },
+        {
+          "signal": "menu_selected:snack-have",
+          "next_stage_ids": [
+            "stage-stories-intro"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-snack-none",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Answer Wren.",
+      "narrative_lines": [
+        "The bins are even. Wren checks them with her eyes, left and then right, and nods once.",
+        "Wren (to Isla): Is there a clementine?",
+        "Wren (to Isla): And half a cracker. In squares."
+      ],
+      "open_menu": "snack-none",
+      "advance_signals": [
+        {
+          "signal": "menu_selected:snack-none",
+          "conditions": [
+            {
+              "path": "actor_stats.wren.points",
+              "operator": "gte",
+              "value": 2
+            }
+          ],
+          "next_stage_ids": [
+            "stage-bag"
+          ]
+        },
+        {
+          "signal": "menu_selected:snack-none",
+          "next_stage_ids": [
+            "stage-stories-intro"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-bag",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
       "summary": "Stay with Wren.",
-      "narrative_lines": []
+      "narrative_lines": [
+        "Wren lays the peel in a row on the napkin. When she is done she picks up Rabbit's bag, opens the flap, and takes everything out. A toothbrush. A small notebook. A sock, folded around something. She puts it all back in the same order and zips it.",
+        "Wren (to Isla): Rabbit's got his toothbrush. In case."
+      ],
+      "open_menu": "bag",
+      "advance_signals": [
+        "menu_selected:bag"
+      ],
+      "next_stage_ids": [
+        "stage-stories-intro"
+      ]
+    },
+    {
+      "id": "stage-stories-intro",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Read to Wren.",
+      "narrative_lines": [
+        "You take a square of oatmeal-colored cloth out of your tote and draw it over the toy shelf. Wren watches. Then she tugs one corner so that it hangs evenly.",
+        "Isla (to Wren): Stories first. Toys are sleeping.",
+        "Wren (to Isla): It was crooked.",
+        "You turn on the lamp by the beanbag and turn the overhead light off. The room gets smaller and warmer. Wren climbs onto the mustard cushion and pulls Rabbit into her lap."
+      ],
+      "open_menu": "stories",
+      "advance_signals": [
+        {
+          "signal": "menu_selected:stories",
+          "conditions": [
+            {
+              "path": "inventory.book-bird",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-bird-1"
+          ]
+        },
+        {
+          "signal": "menu_selected:stories",
+          "conditions": [
+            {
+              "path": "inventory.book-fox",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-fox-1"
+          ]
+        },
+        {
+          "signal": "menu_selected:stories",
+          "next_stage_ids": [
+            "stage-bear-1"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-bird-1",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Stay with Wren.",
+      "narrative_lines": [
+        "The first picture shows a small brown bird in a tree, with a nest held in both wings.",
+        "Book: Bird had a nest. It was a good nest. She carried it from the first tree to the second tree, and from the second tree back to the first.",
+        "Wren leans in and traces the bird's wings with one finger.",
+        "Wren (to Isla): She's holding it the whole time."
+      ],
+      "open_menu": "bird-1",
+      "advance_signals": [
+        {
+          "signal": "menu_selected:bird-1",
+          "conditions": [
+            {
+              "path": "actor_stats.wren.points",
+              "operator": "gte",
+              "value": 4
+            }
+          ],
+          "next_stage_ids": [
+            "stage-notebook-bird"
+          ]
+        },
+        {
+          "signal": "menu_selected:bird-1",
+          "next_stage_ids": [
+            "stage-bird-2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-notebook-bird",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Stay with Wren.",
+      "narrative_lines": [
+        "Wren reaches into Rabbit's bag and takes out the little notebook. She opens it on her knees and turns it so that you can see. A row of squares, yellow, yellow, green, yellow, each with a tick.",
+        "Wren (to Isla): Yellow is Mom. Green is Dad. I tick it every night."
+      ],
+      "open_menu": "notebook-bird",
+      "advance_signals": [
+        "menu_selected:notebook-bird"
+      ],
+      "next_stage_ids": [
+        "stage-bird-2"
+      ]
+    },
+    {
+      "id": "stage-bird-2",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Stay with Wren.",
+      "narrative_lines": [
+        "You turn the page. Rabbit and Owl are in the picture now, standing on a branch with their wings out.",
+        "Book: Rabbit said, I can hold it for you. Bird said, No, thank you. Owl said, I can hold it for you. Bird said, No, thank you.",
+        "Wren has stopped looking at the picture. She is looking at Rabbit.",
+        "Wren (to Isla): I can do a cartwheel. Not in here."
+      ],
+      "open_menu": "bird-2",
+      "advance_signals": [
+        {
+          "signal": "menu_selected:bird-2",
+          "conditions": [
+            {
+              "path": "actor_stats.wren.points",
+              "operator": "gte",
+              "value": 6
+            }
+          ],
+          "next_stage_ids": [
+            "stage-quiet"
+          ]
+        },
+        {
+          "signal": "menu_selected:bird-2",
+          "next_stage_ids": [
+            "stage-bird-3"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-quiet",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Stay with Wren.",
+      "narrative_lines": [
+        "Wren pulls Rabbit up to her face and whispers into his chewed ear. You can't hear it. Then she looks at you.",
+        "Wren (to Isla): That's a secret. He won't tell."
+      ],
+      "open_menu": "quiet",
+      "advance_signals": [
+        "menu_selected:quiet"
+      ],
+      "next_stage_ids": [
+        "stage-bird-3"
+      ]
+    },
+    {
+      "id": "stage-bird-3",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Stay with Wren.",
+      "narrative_lines": [
+        "You turn the last pages. It gets dark in the picture, and then it rains.",
+        "Book: That evening it rained. Bird was too tired to fly. She set the nest down on the ground between the two trees. And nothing terrible happened.",
+        "Wren looks at the last picture for a long time.",
+        "Wren (to Isla): She put it down."
+      ],
+      "open_menu": "bird-3",
+      "advance_signals": [
+        {
+          "signal": "menu_selected:bird-3",
+          "conditions": [
+            {
+              "path": "actor_stats.wren.points",
+              "operator": "gte",
+              "value": 8
+            },
+            {
+              "path": "actor_stats.wren.s3_held",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-cup"
+          ]
+        },
+        {
+          "signal": "menu_selected:bird-3",
+          "next_stage_ids": [
+            "stage-closing"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-cup",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Stay with Wren.",
+      "narrative_lines": [
+        "Wren is quiet for a long moment. Then she unzips Rabbit's bag, reaches to the bottom, and brings out the sock. She unrolls it on her knees. Inside is the handle of a blue cup, in one piece.",
+        "Wren (to Isla): It came off all in one bit."
+      ],
+      "open_menu": "cup",
+      "advance_signals": [
+        "menu_selected:cup"
+      ],
+      "next_stage_ids": [
+        "stage-closing"
+      ]
+    },
+    {
+      "id": "stage-bear-1",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Stay with Wren.",
+      "narrative_lines": [
+        "The first picture shows a big bear standing with one paw up, and one red balloon.",
+        "Book: Bear had one red balloon. Then he had two. Then he had three.",
+        "Wren sits up straight and counts along with her lips moving.",
+        "Wren (to Isla): Four. Five."
+      ],
+      "open_menu": "bear-1",
+      "advance_signals": [
+        {
+          "signal": "menu_selected:bear-1",
+          "conditions": [
+            {
+              "path": "actor_stats.wren.points",
+              "operator": "gte",
+              "value": 4
+            }
+          ],
+          "next_stage_ids": [
+            "stage-notebook-bear"
+          ]
+        },
+        {
+          "signal": "menu_selected:bear-1",
+          "next_stage_ids": [
+            "stage-bear-2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-notebook-bear",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Stay with Wren.",
+      "narrative_lines": [
+        "Wren reaches into Rabbit's bag and takes out the little notebook. She opens it on her knees and turns it so that you can see. A row of squares, yellow, yellow, green, yellow, each with a tick.",
+        "Wren (to Isla): Yellow is Mom. Green is Dad. I tick it every night."
+      ],
+      "open_menu": "notebook-bear",
+      "advance_signals": [
+        "menu_selected:notebook-bear"
+      ],
+      "next_stage_ids": [
+        "stage-bear-2"
+      ]
+    },
+    {
+      "id": "stage-bear-2",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Stay with Wren.",
+      "narrative_lines": [
+        "You turn to the last page. The bear has ten balloons, and he lets go of them one at a time.",
+        "Book: Nine. Ten. Bear let them all go up.",
+        "Wren (to Isla): They all go up. Ten is the end."
+      ],
+      "open_menu": "bear-2",
+      "advance_signals": [
+        "menu_selected:bear-2"
+      ],
+      "next_stage_ids": [
+        "stage-closing"
+      ]
+    },
+    {
+      "id": "stage-fox-1",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Stay with Wren.",
+      "narrative_lines": [
+        "The cover shows a fox standing between two small houses. Wren looks at the cover for a long time. When you turn to the first page, she puts her hand flat on it.",
+        "Wren (to Isla): Not this one."
+      ],
+      "open_menu": "fox-1",
+      "advance_signals": [
+        "menu_selected:fox-1"
+      ],
+      "next_stage_ids": [
+        "stage-closing"
+      ]
+    },
+    {
+      "id": "stage-closing",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Stay with Wren.",
+      "narrative_lines": [
+        "The wind-up timer on the shelf starts to tick, and then its soft warning chimes. Wren looks at it, and then at you.",
+        "Wren (to Isla): Is it the end?"
+      ],
+      "open_menu": "closing",
+      "advance_signals": [
+        {
+          "signal": "menu_selected:closing",
+          "conditions": [
+            {
+              "path": "actor_stats.wren.points",
+              "operator": "gte",
+              "value": 11
+            }
+          ],
+          "next_stage_ids": [
+            "stage-farewell-high"
+          ]
+        },
+        {
+          "signal": "menu_selected:closing",
+          "conditions": [
+            {
+              "path": "actor_stats.wren.points",
+              "operator": "gte",
+              "value": 6
+            }
+          ],
+          "next_stage_ids": [
+            "stage-farewell-mid"
+          ]
+        },
+        {
+          "signal": "menu_selected:closing",
+          "next_stage_ids": [
+            "stage-farewell-low"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-farewell-low",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "The session is over.",
+      "narrative_lines": [
+        "The timer on the shelf chimes, once. Wren puts Rabbit in the crook of her arm and stands up. At the door she sets her shoes down side by side, toes even, and puts them on.",
+        "In the waiting room Gloria is already on her feet. Wren's mother stands in the doorway with her coat still on.",
+        "Mom (to Wren): Hi, baby. Ready to go?",
+        "Wren (to Isla): Bye, Isla.",
+        "She has left something on the low table.",
+        "It is a drawing, in crayon. A row of crayons, all the same length, colored in one at a time.",
+        "The door closes behind them, and the house is quiet."
+      ],
+      "end_game": true
+    },
+    {
+      "id": "stage-farewell-mid",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "The session is over.",
+      "narrative_lines": [
+        "The timer on the shelf chimes, once. Wren puts Rabbit in the crook of her arm and stands up. At the door she sets her shoes down side by side, toes even, and puts them on.",
+        "In the waiting room Gloria is already on her feet. Wren's mother stands in the doorway with her coat still on.",
+        "Mom (to Wren): Hi, baby. Ready to go?",
+        "Wren (to Isla): Bye, Isla.",
+        "She has left something on the low table.",
+        "It is a drawing, in crayon. A small brown bird with a nest held in both wings, between two trees. Rabbit is in the corner of the page.",
+        "The door closes behind them, and the house is quiet."
+      ],
+      "end_game": true
+    },
+    {
+      "id": "stage-farewell-high",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "The session is over.",
+      "narrative_lines": [
+        "The timer on the shelf chimes, once. Wren puts Rabbit in the crook of her arm and stands up. At the door she sets her shoes down side by side, toes even, and puts them on.",
+        "In the waiting room Gloria is already on her feet. Wren's mother stands in the doorway with her coat still on.",
+        "Mom (to Wren): Hi, baby. Ready to go?",
+        "Wren (to Isla): Bye, Isla.",
+        "She has left something on the low table.",
+        "It is a drawing, in crayon. A bird sitting on the ground between two trees, with no nest in her wings. Beside her, very small, a girl holds up a red stop sign.",
+        "The door closes behind them, and the house is quiet."
+      ],
+      "end_game": true
     }
   ]
 }

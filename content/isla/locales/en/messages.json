@@ -1,4 +1,5 @@
 {
   "follow.actor_follows": "{actor} walks beside you.",
-  "follow.party_follows": "{actors} walk beside you."
+  "follow.party_follows": "{actors} walk beside you.",
+  "item.taken": "You pick up {label}."
 }

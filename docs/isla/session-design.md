@@ -185,3 +185,26 @@ So the notes need almost nothing. The phone needs a small generic change, and th
 4. **One new page, or one per outcome?** The session three note has several versions depending on what happened. Is that the right size?
 5. **Would Mom really message her psychologist?** Clinics often have secure messaging for this. The alternative is a note left at the desk.
 6. **Three books enough?** Should there be a fourth, and what would it be?
+
+## 14. As built: the session so far
+
+Implemented in `content/isla` and tested in `cinder-core/tests/isla_wren_session.rs`. Everything from the greeting to the last farewell is playable. After the farewell the game ends. **Not built yet:** Mom's phone message, Dr. Bell's check-in, and Isla's session three note.
+
+**Flow.** Greet Wren (Talk) → meeting bid → Wren follows Isla to the playroom → bins → snack → bag (first secret) → Stories first → book read in stops → closing → farewell and drawing.
+
+**Bids and points.** Every bid has four answers. Fitting answers score and the others do not.
+
+| Bid | Fitting answers | Points |
+|---|---|---|
+| Meeting, bins, snack, each book stop, closing | reflect, wait, join or follow, plain answer | 1 each |
+| Secrets (bag, notebook, quiet, cup) | reflect, wait | 2 each |
+
+**Secrets are gated by fixed point thresholds,** a simplification of "60% of the points so far". The thresholds are 2 for the bag, 4 for the notebook, 6 for the quiet, and 8 for the cup. The cup also needs the quiet to have been held. A player who has not fit the first answers never hears the deeper ones.
+
+**The book decides the path.** The branch is read from what Isla carries when she opens the book: *The Bird Who Carried Her Nest* reaches every secret, *Bear Counts to Ten* (the default) reaches the notebook, and *Two Houses for Fox* makes Wren retreat to the bins.
+
+**Snack.** If Isla is carrying it she hands it over, and if not she goes to the kitchen and back.
+
+**Farewell.** Wren leaves a drawing, chosen by total points: under 6 a row of crayons, 6 to 10 the bird with her nest, 11 or more the bird on the ground and a girl with a stop sign.
+
+**Engine pieces added for this:** `item_observed`, room items, actor topics, stage-set following, and `inventory.<id>` in stage conditions.

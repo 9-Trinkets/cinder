@@ -2,7 +2,7 @@
 
 use cinder_core::content::loader::load_named_pack;
 use cinder_core::engine::runtime::CinderRuntime;
-use cinder_core::engine::state::WorldState;
+use cinder_core::engine::state::{GamePhase, WorldState};
 
 fn runtime() -> CinderRuntime {
     let pack = load_named_pack("isla", Some("en")).expect("isla loads");
@@ -90,7 +90,7 @@ fn wren_follows_isla_to_the_playroom_and_the_bins_follow() {
     let text = turn(&runtime, "1");
     assert!(text.contains("And those ones."), "{text}");
     assert_eq!(points(&runtime), 2);
-    assert_eq!(active_menu(&runtime), None);
+    assert_eq!(active_menu(&runtime).as_deref(), Some("snack-none"));
 }
 
 #[test]
@@ -131,6 +131,7 @@ fn spoken_lines_name_who_is_talking_to_whom() {
                     .chars()
                     .all(|c| c.is_alphabetic() || " .()".contains(c))
             })
+            .filter(|(label, _)| *label != "Book")
             .filter(|(label, _)| !label.contains(' ') || label.contains("(to "));
         if let Some((label, body)) = speech {
             assert!(
@@ -142,4 +143,183 @@ fn spoken_lines_name_who_is_talking_to_whom() {
             assert!(!line.contains('(') && !line.contains(')'), "{line}");
         }
     }
+}
+
+// ---------------------------------------------------------------- the whole session
+
+fn take_from(runtime: &CinderRuntime, route: &[&str], item: &str) {
+    for step in route {
+        turn(runtime, step);
+    }
+    turn(runtime, &format!("take {item}"));
+}
+
+/// Prepares as the player may: optionally the snack and a book, then greets
+/// Wren and walks her to the playroom, answering the first two bids with `1`.
+fn start_session(runtime: &CinderRuntime, snack: bool, book: Option<&str>) {
+    turn(runtime, "go inside");
+    turn(runtime, "go hall");
+    if snack {
+        take_from(runtime, &["go kitchen"], "snack");
+        turn(runtime, "go hall");
+    }
+    if let Some(book) = book {
+        take_from(
+            runtime,
+            &["go upstairs", "go upstairs", "go book room"],
+            book,
+        );
+        for step in ["go landing", "go downstairs", "go downstairs"] {
+            turn(runtime, step);
+        }
+    }
+    turn(runtime, "go waiting room");
+    turn(runtime, "say wren:greet");
+    turn(runtime, "1");
+    turn(runtime, "go hall");
+    turn(runtime, "go playroom");
+}
+
+fn answer(runtime: &CinderRuntime, menu: &str, choice: &str) -> String {
+    assert_eq!(
+        active_menu(runtime).as_deref(),
+        Some(menu),
+        "expected the {menu} menu to be open"
+    );
+    turn(runtime, choice)
+}
+
+#[test]
+fn the_best_session_with_the_right_book_reaches_every_secret_and_the_best_drawing() {
+    let runtime = runtime();
+    start_session(&runtime, true, Some("bird book"));
+    for menu in [
+        "bins",
+        "snack-have",
+        "bag",
+        "stories",
+        "bird-1",
+        "notebook-bird",
+        "bird-2",
+        "quiet",
+        "bird-3",
+        "cup",
+        "closing",
+    ] {
+        answer(&runtime, menu, "1");
+    }
+    assert_eq!(points(&runtime), 15);
+    let state = runtime.export_state().expect("state");
+    assert_eq!(state.phase, GamePhase::GameEnded);
+    assert!(
+        state
+            .active_objective_stage_ids
+            .contains(&"stage-farewell-high".to_string()),
+        "{:?}",
+        state.active_objective_stage_ids
+    );
+}
+
+#[test]
+fn the_first_secret_is_the_bag_and_the_last_is_the_cup() {
+    let runtime = runtime();
+    start_session(&runtime, true, Some("bird book"));
+    answer(&runtime, "bins", "1");
+    let text = answer(&runtime, "snack-have", "1");
+    assert!(text.contains("Rabbit's got his toothbrush"), "{text}");
+    let text = answer(&runtime, "bag", "1");
+    assert!(text.contains("He never has to stay anywhere"), "{text}");
+    for menu in [
+        "stories",
+        "bird-1",
+        "notebook-bird",
+        "bird-2",
+        "quiet",
+        "bird-3",
+    ] {
+        answer(&runtime, menu, "1");
+    }
+    let text = turn(&runtime, "1");
+    assert!(
+        text.contains("It was Mom's. I was making tea"),
+        "the cup should be told: {text}"
+    );
+}
+
+#[test]
+fn without_a_snack_isla_has_to_fetch_one() {
+    let runtime = runtime();
+    start_session(&runtime, false, None);
+    answer(&runtime, "bins", "1");
+    let text = answer(&runtime, "snack-none", "2");
+    assert!(text.contains("The kitchen is warm"), "{text}");
+    assert_eq!(points(&runtime), 3);
+}
+
+#[test]
+fn poor_answers_close_the_deeper_secrets() {
+    let runtime = runtime();
+    start_session(&runtime, false, None);
+    answer(&runtime, "bins", "4");
+    answer(&runtime, "snack-none", "4");
+    assert_eq!(
+        active_menu(&runtime).as_deref(),
+        Some("stories"),
+        "no bag secret when the answers have not fit"
+    );
+}
+
+#[test]
+fn the_default_book_is_the_shallow_counting_book() {
+    let runtime = runtime();
+    start_session(&runtime, true, None);
+    for menu in ["bins", "snack-have", "bag", "stories"] {
+        answer(&runtime, menu, "1");
+    }
+    assert_eq!(active_menu(&runtime).as_deref(), Some("bear-1"));
+    for menu in ["bear-1", "notebook-bear", "bear-2", "closing"] {
+        answer(&runtime, menu, "1");
+    }
+    let state = runtime.export_state().expect("state");
+    assert_eq!(state.phase, GamePhase::GameEnded, "the session ends");
+    assert!(
+        !state.completed_stage_ids.contains("stage-quiet"),
+        "the counting book never reaches the quiet secret"
+    );
+}
+
+#[test]
+fn the_book_about_two_houses_makes_wren_retreat() {
+    let runtime = runtime();
+    start_session(&runtime, true, Some("fox book"));
+    for menu in ["bins", "snack-have", "bag", "stories"] {
+        answer(&runtime, menu, "1");
+    }
+    let text = answer(&runtime, "fox-1", "1");
+    assert!(text.contains("goes to the bins"), "{text}");
+    assert_eq!(active_menu(&runtime).as_deref(), Some("closing"));
+}
+
+#[test]
+fn the_cup_needs_the_quiet_secret_to_have_been_held() {
+    let runtime = runtime();
+    start_session(&runtime, true, Some("bird book"));
+    for menu in [
+        "bins",
+        "snack-have",
+        "bag",
+        "stories",
+        "bird-1",
+        "notebook-bird",
+        "bird-2",
+    ] {
+        answer(&runtime, menu, "1");
+    }
+    answer(&runtime, "quiet", "3");
+    answer(&runtime, "bird-3", "1");
+    assert_eq!(
+        active_menu(&runtime).as_deref(),
+        Some("closing"),
+        "no cup when the quiet was not held"
+    );
 }
