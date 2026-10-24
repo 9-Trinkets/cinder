@@ -183,6 +183,19 @@ export function HighlightedText({
   )
 }
 
+// A spoken line: `Name: text`, `Name (to Other): text`, or the full-width forms.
+const DIALOGUE_PATTERN =
+  /^([\p{L}][\p{L}\p{N}_\s.'-]{0,63}?)(?:\s*(?:\(\s*(?:to\s+)?([^)]+)\)|（\s*(?:對\s*)?([^）]+)）))?\s*[:：]\s*(.*)$/su
+
+// A single narration line that holds several paragraphs is shown paragraph by
+// paragraph, so that a spoken paragraph still gets the speech style.
+function paragraphsWithSpeech(line: Line): string[] | null {
+  if (line.kind !== 'narration' || !/\n\s*\n/.test(line.text)) return null
+  const paragraphs = line.text.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean)
+  if (paragraphs.length < 2) return null
+  return paragraphs.some(p => DIALOGUE_PATTERN.test(p)) ? paragraphs : null
+}
+
 const TranscriptLine = memo(function TranscriptLine({
   line,
   searchQuery,
@@ -197,6 +210,24 @@ const TranscriptLine = memo(function TranscriptLine({
   channelHeaderLabel?: string
 }) {
   const { t } = useI18n()
+
+  const paragraphs = paragraphsWithSpeech(line)
+  if (paragraphs) {
+    return (
+      <>
+        {paragraphs.map((text, index) => (
+          <TranscriptLine
+            key={index}
+            line={{ ...line, text }}
+            searchQuery={searchQuery}
+            craftedLabels={craftedLabels}
+            interactableLabels={interactableLabels}
+            channelHeaderLabel={channelHeaderLabel}
+          />
+        ))}
+      </>
+    )
+  }
 
   // 1. Room Transition Banner (Heading)
   if (line.kind === 'heading') {
@@ -302,9 +333,7 @@ const TranscriptLine = memo(function TranscriptLine({
   }
 
   // 6. In-Room Character Dialogue (e.g. "Bess: ...", "Daichi (to Ren): ...", "garrison sentry (to Layla): ...")
-  const dialogueMatch = line.text.match(
-    /^([\p{L}][\p{L}\p{N}_\s.'-]{0,63}?)(?:\s*(?:\(\s*(?:to\s+)?([^)]+)\)|（\s*(?:對\s*)?([^）]+)）))?\s*[:：]\s*(.*)$/su
-  )
+  const dialogueMatch = line.text.match(DIALOGUE_PATTERN)
   if (dialogueMatch) {
     const speaker = dialogueMatch[1].trim()
     const target = (dialogueMatch[2] || dialogueMatch[3])?.trim()
