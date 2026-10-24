@@ -34,8 +34,7 @@
       "advance_signals": [
         "item_acquired:book-bird",
         "item_acquired:book-bear",
-        "item_acquired:book-fox",
-        "topic_selected:wren:greet"
+        "item_acquired:book-fox"
       ]
     },
     {

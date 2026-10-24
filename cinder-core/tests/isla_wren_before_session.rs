@@ -146,13 +146,17 @@ fn taking_a_second_book_returns_the_first_to_the_shelf() {
 }
 
 #[test]
-fn greeting_wren_clears_unfinished_preparation_steps_from_active_objectives() {
+fn greeting_wren_clears_the_optional_steps_but_keeps_choosing_a_book() {
     let runtime = runtime();
     runtime.run_turn("go inside").expect("go inside");
     runtime.run_turn("say wren:greet").expect("greet");
     let objectives = runtime.current_objective_summaries().expect("objectives");
-    assert_eq!(objectives.len(), 1);
-    assert_eq!(objectives[0].quest_id.as_deref(), Some("session"));
+    let mut quests: Vec<_> = objectives
+        .iter()
+        .filter_map(|o| o.quest_id.as_deref())
+        .collect();
+    quests.sort();
+    assert_eq!(quests, vec!["choose-book", "session"]);
 }
 
 #[test]
@@ -173,4 +177,28 @@ fn the_book_room_and_kitchen_start_stocked_for_taking() {
     let text = runtime.run_turn("take snack").expect("take").text();
     assert!(text.to_lowercase().contains("clementine"), "{text}");
     assert_eq!(runtime.inventory_items().unwrap().get("snack"), Some(&1));
+}
+
+#[test]
+fn choosing_a_book_stays_on_the_list_after_greeting_wren_until_a_book_is_taken() {
+    let runtime = runtime();
+    runtime.run_turn("go inside").expect("go inside");
+    runtime.run_turn("say wren:greet").expect("greet");
+    let status = |runtime: &CinderRuntime| {
+        runtime
+            .quest_summaries()
+            .unwrap()
+            .into_iter()
+            .find(|q| q.title == "Choose a book")
+            .map(|q| q.status)
+    };
+    assert_eq!(status(&runtime).as_deref(), Some("active"));
+
+    // Wren leads the way; Isla fetches a book on the way to the playroom.
+    runtime.run_turn("meet-reflect").expect("answer");
+    for step in ["go hall", "go upstairs", "go upstairs", "go book room"] {
+        runtime.run_turn(step).expect(step);
+    }
+    runtime.run_turn("take bear book").expect("take");
+    assert_eq!(status(&runtime).as_deref(), Some("completed"));
 }
