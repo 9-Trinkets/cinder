@@ -1,1 +1,107 @@
-{}
+{
+  "menu.meet.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "meet-reflect"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "wren",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "meet-wait"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "wren",
+            "stat": "points",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "menu.bins.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "bins-reflect"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "wren",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "bins-join"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "wren",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "bins-wait"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "wren",
+            "stat": "points",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  }
+}

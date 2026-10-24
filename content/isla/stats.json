@@ -1,4 +1,10 @@
 {
-  "actor": {},
+  "actor": {
+    "points": {
+      "default": 0,
+      "min": 0,
+      "max": 16
+    }
+  },
   "pair": {}
 }

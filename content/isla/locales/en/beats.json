@@ -2,7 +2,8 @@
   "initial_stage_ids": [
     "stage-read-notes",
     "stage-choose-book",
-    "stage-bring-snack"
+    "stage-bring-snack",
+    "stage-waiting"
   ],
   "stages": [
     {
@@ -46,6 +47,82 @@
       "advance_signals": [
         "item_acquired:snack"
       ]
+    },
+    {
+      "id": "stage-waiting",
+      "summary": "Greet Wren when you are ready. Use Talk in the waiting room.",
+      "narrative_lines": [],
+      "advance_signals": [
+        "topic_selected:wren:greet"
+      ],
+      "next_stage_ids": [
+        "stage-meet"
+      ]
+    },
+    {
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "id": "stage-meet",
+      "summary": "Answer Wren.",
+      "open_menu": "meet",
+      "narrative_lines": [],
+      "advance_signals": [
+        "menu_selected:meet"
+      ],
+      "next_stage_ids": [
+        "stage-follow"
+      ]
+    },
+    {
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "id": "stage-follow",
+      "summary": "Follow Wren to the playroom.",
+      "narrative_lines": [
+        "Wren slides off her chair and tucks Rabbit under one arm. She carries her shoes down the hall in the other hand. She knows the way."
+      ],
+      "actor_relocations": [
+        {
+          "actor_id": "wren",
+          "to_room_id": "playroom"
+        }
+      ],
+      "advance_signals": [
+        "room_entered:playroom"
+      ],
+      "next_stage_ids": [
+        "stage-bins"
+      ]
+    },
+    {
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "id": "stage-bins",
+      "summary": "Stay with Wren.",
+      "open_menu": "bins",
+      "narrative_lines": [
+        "The afternoon light lies across the rug. Wren is at the shelf between the two lidded bins, moving animals from one to the other. A cow. A pig. The small horse.",
+        "Wren: One. Two. Three.",
+        "She stops herself. She puts the cow in the left bin, takes it out, and puts it in the right.",
+        "Wren: These ones live here."
+      ],
+      "advance_signals": [
+        "menu_selected:bins"
+      ],
+      "next_stage_ids": [
+        "stage-after-bins"
+      ]
+    },
+    {
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "id": "stage-after-bins",
+      "summary": "Stay with Wren.",
+      "narrative_lines": []
     }
   ]
 }

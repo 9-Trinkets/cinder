@@ -1,0 +1,104 @@
+[
+  {
+    "id": "meet",
+    "actor_id": "wren",
+    "stage_id": "stage-meet",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "selection_prompt": "",
+    "invalid_choice_text": "Wren waits. Choose one of the options.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "meet-reflect",
+        "title": "Dad brought you today.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla: Dad brought you today.",
+          "She nods once.",
+          "Wren: He had a job. A far one."
+        ]
+      },
+      {
+        "id": "meet-wait",
+        "title": "Wait.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You wait. The filter in the fish tank hums. Wren counts the stones in the tank under her breath, up to four, and stops.",
+          "Wren: Dad's got a job. It's far."
+        ]
+      },
+      {
+        "id": "meet-probe",
+        "title": "What's different about today?",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla: What's different about today?",
+          "Wren: Nothing.",
+          "She zips Rabbit's bag a second time."
+        ]
+      },
+      {
+        "id": "meet-reassure",
+        "title": "That's okay. We can still start.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla: That's okay. We can still start.",
+          "Wren: Okay.",
+          "She looks down at her shoes and says nothing else."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bins",
+    "actor_id": "wren",
+    "stage_id": "stage-bins",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "selection_prompt": "",
+    "invalid_choice_text": "Wren is busy with the bins. Choose one of the options.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "bins-reflect",
+        "title": "Those ones live here.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla: Those ones live here.",
+          "Wren: And those ones.",
+          "She puts the pig in the left bin, next to the cow."
+        ]
+      },
+      {
+        "id": "bins-join",
+        "title": "Hold the small horse over the bins.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You pick up the small horse and hold him over the two bins. You don't put him down.",
+          "Wren: Left. Horses go left.",
+          "She doesn't look up."
+        ]
+      },
+      {
+        "id": "bins-wait",
+        "title": "Sit on the floor and watch.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You sit on the floor by the rug, facing the shelf and not her. Wren counts the animals as they go in, and gets to five.",
+          "Wren: Five live here."
+        ]
+      },
+      {
+        "id": "bins-probe",
+        "title": "Why do they live there?",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla: Why do they live there?",
+          "Wren: Because.",
+          "She takes the cow out and puts it back in the other bin."
+        ]
+      }
+    ]
+  }
+]
