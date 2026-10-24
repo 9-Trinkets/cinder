@@ -56,7 +56,8 @@ pub fn reducer_test_pack() -> ContentPack {
                 label: SOFA_LABEL.to_string(),
                 aliases: vec!["sofa".to_string()],
                 allow_rest: true,
-                consumables: vec![],
+                items: Default::default(),
+                items_text: String::new(),
                 inspect_text: "The sofa looks like the room's best place to rest.".to_string(),
             }],
             exits: vec![RoomExitDefinition {

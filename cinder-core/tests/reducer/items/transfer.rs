@@ -90,6 +90,7 @@ fn player_take_moves_loose_item_to_inventory() {
         &mut state,
         &pack,
         &[TimestampedWorldEvent::now(WorldEvent::PlayerTookItem {
+            feature_id: None,
             item_id: "ring".to_string(),
         })],
     );
@@ -158,6 +159,7 @@ fn player_take_is_denied_for_trace_mark_items() {
         &mut state,
         &pack,
         &[TimestampedWorldEvent::now(WorldEvent::PlayerTookItem {
+            feature_id: None,
             item_id: "chalk-sigil".to_string(),
         })],
     );

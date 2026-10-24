@@ -139,7 +139,7 @@ pub(crate) fn resolve_command_consumable_fields(
     };
     Ok((
         Some(consumable.feature.id.clone()),
-        Some(consumable.consumable.id.clone()),
+        Some(consumable.consumable.id.to_string()),
     ))
 }
 

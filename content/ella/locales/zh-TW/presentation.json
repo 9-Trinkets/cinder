@@ -14,7 +14,7 @@
     "features": "\n\n你注意到：{features}。",
     "people": "\n\n這裡的人：{people}。",
     "exits": "",
-    "feature_consumables": "\n\n{feature_label}這裡現在有：{items}。",
+    "feature_items": "\n\n{feature_label}這裡現在有：{items}。",
     "actor_speech": "{actor_name}：{text}",
     "actor_targeted_speech": "{actor_name}（對 {target_name}）：{text}",
     "actor_departed": "{actor_name}往{room_title}那邊去了。",

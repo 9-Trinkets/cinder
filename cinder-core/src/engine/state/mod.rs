@@ -89,7 +89,9 @@ pub struct WorldState {
     pub stages_completed: usize,
     #[serde(default)]
     pub completed_stage_ids: BTreeSet<String>,
-    pub feature_consumable_stock: BTreeMap<String, u32>,
+    /// Items held by room features, keyed `room::feature::item`.
+    #[serde(default, alias = "feature_consumable_stock")]
+    pub feature_item_stock: BTreeMap<String, u32>,
     #[serde(flatten)]
     pub relations: RelationshipGraph,
     /// Faction-agnostic command groups keyed by party id. The player party
@@ -325,7 +327,7 @@ impl WorldState {
             },
             stages_completed: 0,
             completed_stage_ids: BTreeSet::new(),
-            feature_consumable_stock: seeded_feature_consumable_stock(content),
+            feature_item_stock: seeded_feature_item_stock(content),
             relations: RelationshipGraph {
                 relationships: content
                     .actors
@@ -707,8 +709,8 @@ fn feature_key(room_id: &str, feature_id: &str) -> String {
     format!("{room_id}::{feature_id}")
 }
 
-fn consumable_key(room_id: &str, feature_id: &str, consumable_id: &str) -> String {
-    format!("{room_id}::{feature_id}::{consumable_id}")
+fn feature_item_key(room_id: &str, feature_id: &str, item_id: &str) -> String {
+    format!("{room_id}::{feature_id}::{item_id}")
 }
 
 fn seeded_room_item_stock(content: &ContentPack) -> BTreeMap<String, u32> {
@@ -762,7 +764,7 @@ mod seeding;
 use seeding::{
     seeded_actor_equipment, seeded_actor_inventories, seeded_actor_levels,
     seeded_actor_skill_levels, seeded_actor_skill_sp, seeded_actor_skills, seeded_actor_stats,
-    seeded_feature_consumable_stock, seeded_pair_stats,
+    seeded_feature_item_stock, seeded_pair_stats,
 };
 mod act_cast;
 pub use act_cast::{

@@ -4,7 +4,7 @@ use crate::engine::narrative::NarrativeLines;
 use crate::engine::reducer::beat_advance::advance_objective_for_signal;
 use crate::engine::reducer::context::ReduceCtx;
 use crate::engine::reducer::observation::{
-    render_feature_consumables_line, render_room_observation, render_story_text,
+    render_feature_items_line, render_room_observation, render_story_text,
 };
 use crate::engine::state::WorldState;
 use crate::engine::topics::topic_used_var;
@@ -38,7 +38,7 @@ pub(crate) fn handle_feature_observed(ctx: &mut ReduceCtx<'_>, room_id: &str, fe
     if let Some(feature) = content.feature(room_id, feature_id) {
         lines.narration(feature.inspect_text.clone());
         if let Some(consumables_line) =
-            render_feature_consumables_line(content, state, room_id, feature_id)
+            render_feature_items_line(content, state, room_id, feature_id)
         {
             lines.narration(consumables_line);
         }

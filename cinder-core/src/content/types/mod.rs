@@ -64,12 +64,12 @@ pub use world_defs::{
     BeatObjectiveConditionalGuidanceDefinition, BeatObjectiveDefinition,
     BeatObjectiveGuidanceDefinition, BeatObjectiveProgressDefinition,
     BeatObjectiveProgressKeyDefinition, BeatObjectivesDefinition, BehaviorActorDefinition,
-    BehaviorDefinition, ConsumableDefinition, ConsumableKind, DropChanceSpec, DropConditionSpec,
-    DropPoolEntry, DropPoolSpec, DropSpec, ErrorTextDefinition, MovementConfigDefinition,
-    MovementDefaultsDefinition, MovementOrderDefinition, MovementTargetBehavior,
-    PresentationDefinition, PresentationTextDefinition, RoomDefinition, RoomDescriptionOverride,
-    RoomExitDefinition, RoomFeatureDefinition, SpeechConfigDefinition, StatDefinition,
-    StatsDefinition, TeleportAnchorDefinition, TeleportNetworkDefinition, TransformationRename,
+    BehaviorDefinition, DropChanceSpec, DropConditionSpec, DropPoolEntry, DropPoolSpec, DropSpec,
+    ErrorTextDefinition, MovementConfigDefinition, MovementDefaultsDefinition,
+    MovementOrderDefinition, MovementTargetBehavior, PresentationDefinition,
+    PresentationTextDefinition, RoomDefinition, RoomDescriptionOverride, RoomExitDefinition,
+    RoomFeatureDefinition, SpeechConfigDefinition, StatDefinition, StatsDefinition,
+    TeleportAnchorDefinition, TeleportNetworkDefinition, TransformationRename,
     TransformationTrigger,
 };
 
@@ -88,10 +88,10 @@ pub use action_defs::{
 };
 
 mod content_pack;
-pub use content_pack::{ContentPack, RoomConsumableRef};
+pub use content_pack::{ConsumableView, ContentPack, RoomConsumableRef};
 
 mod item_defs;
-pub use item_defs::{ItemDefinition, ItemKind};
+pub use item_defs::{ConsumableKind, ConsumableSpec, ItemDefinition, ItemKind};
 
 mod skills;
 pub use skills::*;

@@ -1,5 +1,5 @@
 use super::WorldState;
-use super::consumable_key;
+use super::feature_item_key;
 use crate::content::types::{ContentPack, DropPoolSpec, DropSpec, StatDefinition};
 use rand::Rng;
 use rand::seq::SliceRandom;
@@ -118,15 +118,12 @@ pub(super) fn seeded_actor_skill_sp(
     result
 }
 
-pub(super) fn seeded_feature_consumable_stock(content: &ContentPack) -> BTreeMap<String, u32> {
+pub(super) fn seeded_feature_item_stock(content: &ContentPack) -> BTreeMap<String, u32> {
     let mut stock = BTreeMap::new();
     for room in &content.rooms {
         for feature in &room.features {
-            for consumable in &feature.consumables {
-                stock.insert(
-                    consumable_key(&room.id, &feature.id, &consumable.id),
-                    consumable.initial_stock,
-                );
+            for (item_id, count) in &feature.items {
+                stock.insert(feature_item_key(&room.id, &feature.id, item_id), *count);
             }
         }
     }

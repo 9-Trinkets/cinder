@@ -33,6 +33,15 @@ impl CinderRuntime {
                     }
                     Some((item_id.clone(), item.label.clone()))
                 })
+                .chain(
+                    state
+                        .takeable_feature_items(&self.content, current_room_id)
+                        .into_iter()
+                        .map(|(_, item_id, _)| {
+                            let title = self.content.item_label(&item_id).to_string();
+                            (item_id, title)
+                        }),
+                )
                 .map(|(item_id, title)| PanelOption {
                     id: item_id.clone(),
                     title,
@@ -242,7 +251,7 @@ impl CinderRuntime {
                 .into_iter()
                 .any(|candidate| {
                     candidate.consumable.id == item.id
-                        && state.remaining_consumable_stock(
+                        && state.feature_item_count(
                             current_room_id,
                             &candidate.feature.id,
                             &candidate.consumable.id,

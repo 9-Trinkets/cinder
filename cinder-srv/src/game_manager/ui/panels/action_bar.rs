@@ -73,6 +73,24 @@ pub(crate) fn build_action_bar_items(
                 panel: None,
             });
         }
+        // Items held by features of the room, such as books on a shelf
+        for (feature_id, item_id, _) in
+            state.takeable_feature_items(content, &state.current_room_id)
+        {
+            let feature_label = content
+                .feature(&state.current_room_id, &feature_id)
+                .map(|feature| title_case(&feature.label));
+            options.push(PanelOptionData {
+                id: format!("feature:{feature_id}:{item_id}"),
+                title: title_case(content.item_label(&item_id)),
+                subtitle: feature_label,
+                command: Some(format!("take {item_id}")),
+                disabled: false,
+                selected: false,
+                group: None,
+                panel: None,
+            });
+        }
         // Companion items
         for member in &present_party {
             for item in &member.inventory {

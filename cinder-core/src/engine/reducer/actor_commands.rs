@@ -274,7 +274,7 @@ pub(super) fn apply_actor_command_realization_effects(
                 else {
                     return false;
                 };
-                if !state.consume_feature_consumable(context.room_id, feature_id, consumable_id)
+                if !state.remove_feature_item(context.room_id, feature_id, consumable_id)
                     && !state.remove_item_from_storage(
                         consumable_id,
                         ItemStorageTarget::CurrentRoom,
@@ -441,7 +441,7 @@ pub(super) fn resolve_actor_command_labels(
             content.room_consumable(context.room_id, feature_id, consumable_id)
     {
         return Some((
-            consumable.consumable.label.clone(),
+            consumable.consumable.label.to_string(),
             consumable.feature.label.clone(),
         ));
     }

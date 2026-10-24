@@ -17,7 +17,6 @@
           "floor"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
@@ -61,7 +60,6 @@
           "stone ring"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
@@ -114,7 +112,6 @@
           "corner"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
@@ -167,7 +164,6 @@
           "grease"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
@@ -220,7 +216,6 @@
           "floor"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
@@ -273,7 +268,6 @@
           "stone ring"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
@@ -326,7 +320,6 @@
           "corner"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
@@ -379,7 +372,6 @@
           "grease"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
@@ -432,7 +424,6 @@
           "floor"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
@@ -476,7 +467,6 @@
           "stone ring"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
@@ -529,7 +519,6 @@
           "corner"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
@@ -591,7 +580,6 @@
           "grease"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
@@ -653,7 +641,6 @@
           "floor"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
@@ -715,7 +702,6 @@
           "stone ring"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
@@ -777,7 +763,6 @@
           "corner"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
@@ -839,7 +824,6 @@
           "grease"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
@@ -901,7 +885,6 @@
           "floor"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
@@ -963,7 +946,6 @@
           "stone ring"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
@@ -1016,7 +998,6 @@
           "corner"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
@@ -1069,7 +1050,6 @@
           "grease"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
@@ -1131,7 +1111,6 @@
           "chest"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A pale chalk ring is marked on the golem’s chest and brow, in the same pale light as the frost on the sleeping wall."
       }
     ],
@@ -1193,7 +1172,6 @@
           "stone ring"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
@@ -1255,7 +1233,6 @@
           "corner"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
@@ -1317,7 +1294,6 @@
           "grease"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
@@ -1379,7 +1355,6 @@
           "chest"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A pale chalk ring is marked on the golem’s chest and brow, barely glowing in the dim."
       }
     ],
@@ -1441,7 +1416,6 @@
           "stone ring"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
@@ -1503,7 +1477,6 @@
           "corner"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
@@ -1556,7 +1529,6 @@
           "grease"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
@@ -1609,7 +1581,6 @@
           "floor"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
@@ -1671,7 +1642,6 @@
           "stone ring"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
@@ -1733,7 +1703,6 @@
           "corner"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A collection of thick hide bundles and carved bone amulets, dusted with fine lime chalk."
       }
     ],
@@ -1795,7 +1764,6 @@
           "grease"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A massive dressing slab, dark and greasy, flanked by neat rows of flint wedges and bone carving chisels."
       }
     ],
@@ -1857,7 +1825,6 @@
           "floor"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Deep grooves converging like lines on a grid, whitened by chalk dust dragged in on small feet."
       }
     ],
@@ -1919,7 +1886,6 @@
           "stone ring"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
@@ -1981,7 +1947,6 @@
           "corner"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
@@ -2043,7 +2008,6 @@
           "grease"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
@@ -2096,7 +2060,6 @@
           "floor"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
@@ -2149,7 +2112,6 @@
           "stone ring"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
@@ -2211,7 +2173,6 @@
           "corner"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
@@ -2273,7 +2234,6 @@
           "grease"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A massive dressing slab, dark and greasy, flanked by neat rows of flint wedges and bone carving chisels."
       }
     ],
@@ -2335,7 +2295,6 @@
           "floor"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A circle of chalk drawn on the cave floor, wide enough to stand in, glowing the pale color of your own marks. It is the largest of its kind you have seen."
       }
     ],
@@ -2414,7 +2373,6 @@
           "stone ring"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A heavy stone trough glowing white and cherry-red, radiating fierce heat that makes the air shimmer."
       }
     ],
@@ -2476,7 +2434,6 @@
           "corner"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
@@ -2538,7 +2495,6 @@
           "grease"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
@@ -2600,7 +2556,6 @@
           "floor"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
@@ -2653,7 +2608,6 @@
           "stone ring"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
@@ -2706,7 +2660,6 @@
           "corner"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
@@ -2768,7 +2721,6 @@
           "grease"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
@@ -2830,7 +2782,6 @@
           "floor"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Deep grooves converging like lines on a grid, whitened by chalk dust dragged in on small feet."
       }
     ],
@@ -2892,7 +2843,6 @@
           "stone ring"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A heavy stone trough glowing white and cherry-red, radiating fierce heat that makes the air shimmer."
       }
     ],
@@ -2954,7 +2904,6 @@
           "corner"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A collection of thick hide bundles and carved bone amulets, dusted with fine lime chalk."
       }
     ],
@@ -3016,7 +2965,6 @@
           "grease"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
@@ -3078,7 +3026,6 @@
           "floor"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
@@ -3140,7 +3087,6 @@
           "stone ring"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
@@ -3193,7 +3139,6 @@
           "corner"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
@@ -3246,7 +3191,6 @@
           "grease"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
@@ -3308,7 +3252,6 @@
           "chest"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A pale chalk ring is marked on the golem’s chest and brow, in the same pale light as the frost on the sleeping wall."
       }
     ],
@@ -3370,7 +3313,6 @@
           "stone ring"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
@@ -3432,7 +3374,6 @@
           "corner"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
@@ -3494,7 +3435,6 @@
           "grease"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
@@ -3556,7 +3496,6 @@
           "chest"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A pale chalk ring is marked on the golem’s chest and brow, barely glowing in the dim."
       }
     ],
@@ -3618,7 +3557,6 @@
           "stone ring"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
@@ -3680,7 +3618,6 @@
           "corner"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
@@ -3733,7 +3670,6 @@
           "grease"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
@@ -3786,7 +3722,6 @@
           "floor"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
@@ -3848,7 +3783,6 @@
           "stone ring"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
@@ -3910,7 +3844,6 @@
           "corner"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
@@ -3972,7 +3905,6 @@
           "grease"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
@@ -4034,7 +3966,6 @@
           "floor"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
@@ -4096,7 +4027,6 @@
           "stone ring"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
@@ -4158,7 +4088,6 @@
           "corner"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
@@ -4220,7 +4149,6 @@
           "grease"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
@@ -4273,7 +4201,6 @@
           "floor"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
@@ -4317,7 +4244,6 @@
           "stone ring"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
@@ -4370,7 +4296,6 @@
           "corner"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
@@ -4423,7 +4348,6 @@
           "grease"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
@@ -4476,7 +4400,6 @@
           "floor"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
@@ -4529,7 +4452,6 @@
           "stone ring"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
@@ -4582,7 +4504,6 @@
           "corner"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
@@ -4635,7 +4556,6 @@
           "grease"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
@@ -4688,7 +4608,6 @@
           "floor"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
@@ -4732,7 +4651,6 @@
           "pale mushrooms"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Cluster after cluster of knee-high mushrooms sprout from the moist cave soil. Their pale spongy caps all lean uniformly toward the canopy above, as if turning toward a subterranean sun."
       },
       {
@@ -4745,7 +4663,6 @@
           "glowing canopy"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "High above, living roots knit into an expansive vaulted ceiling woven with luminescent lichen and moss. A soft teal glow filters down through the gloom."
       }
     ],
@@ -4801,7 +4718,6 @@
           "motes"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Glittering spores drift through the still air in lazy arcs, pulsing brighter and dimmer on an even, four-second cadence like a slow subterranean breath."
       },
       {
@@ -4815,7 +4731,6 @@
           "glow"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The cavern ceiling shimmers like an artificial twilight sky. It offers just enough illumination to cast sharp shadows and reveal the path ahead."
       }
     ],
@@ -4868,7 +4783,6 @@
           "motes"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Glittering spores drift through the still air in lazy arcs, pulsing brighter and dimmer on an even, four-second cadence like a slow subterranean breath."
       },
       {
@@ -4882,7 +4796,6 @@
           "glow"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The cavern ceiling shimmers like an artificial twilight sky. It offers just enough illumination to cast sharp shadows and reveal the path ahead."
       }
     ],
@@ -4935,7 +4848,6 @@
           "motes"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Glittering spores drift through the still air in lazy arcs, pulsing brighter and dimmer on an even, four-second cadence like a slow subterranean breath."
       },
       {
@@ -4949,7 +4861,6 @@
           "glow"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The cavern ceiling shimmers like an artificial twilight sky. It offers just enough illumination to cast sharp shadows and reveal the path ahead."
       }
     ],
@@ -5002,7 +4913,6 @@
           "motes"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Glittering spores drift through the still air in lazy arcs, pulsing brighter and dimmer on an even, four-second cadence like a slow subterranean breath."
       },
       {
@@ -5016,7 +4926,6 @@
           "glow"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The cavern ceiling shimmers like an artificial twilight sky. It offers just enough illumination to cast sharp shadows and reveal the path ahead."
       }
     ],
@@ -5069,7 +4978,6 @@
           "motes"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Glittering spores drift through the still air in lazy arcs, pulsing brighter and dimmer on an even, four-second cadence like a slow subterranean breath."
       },
       {
@@ -5083,7 +4991,6 @@
           "glow"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The cavern ceiling shimmers like an artificial twilight sky. It offers just enough illumination to cast sharp shadows and reveal the path ahead."
       }
     ],
@@ -5136,7 +5043,6 @@
           "motes"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Glittering spores drift through the still air in lazy arcs, pulsing brighter and dimmer on an even, four-second cadence like a slow subterranean breath."
       },
       {
@@ -5150,7 +5056,6 @@
           "glow"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The cavern ceiling shimmers like an artificial twilight sky. It offers just enough illumination to cast sharp shadows and reveal the path ahead."
       }
     ],
@@ -5203,7 +5108,6 @@
           "motes"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Glittering spores drift through the still air in lazy arcs, pulsing brighter and dimmer on an even, four-second cadence like a slow subterranean breath."
       },
       {
@@ -5217,7 +5121,6 @@
           "glow"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The cavern ceiling shimmers like an artificial twilight sky. It offers just enough illumination to cast sharp shadows and reveal the path ahead."
       }
     ],
@@ -5261,7 +5164,6 @@
           "wood"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Gnarled roots as thick as your torso twist through cracks in the stone walls. They pulse with faint sap-warmth, flexing almost imperceptibly against the rock."
       },
       {
@@ -5275,7 +5177,6 @@
           "crevices"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Limestone blocks split by ancient wood. Cool water weeps down the fissures, feeding dense coats of dark moss."
       }
     ],
@@ -5328,7 +5229,6 @@
           "wood"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Gnarled roots as thick as your torso twist through cracks in the stone walls. They pulse with faint sap-warmth, flexing almost imperceptibly against the rock."
       },
       {
@@ -5342,7 +5242,6 @@
           "crevices"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Limestone blocks split by ancient wood. Cool water weeps down the fissures, feeding dense coats of dark moss."
       }
     ],
@@ -5404,7 +5303,6 @@
           "wood"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Gnarled roots as thick as your torso twist through cracks in the stone walls. They pulse with faint sap-warmth, flexing almost imperceptibly against the rock."
       },
       {
@@ -5418,7 +5316,6 @@
           "crevices"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Limestone blocks split by ancient wood. Cool water weeps down the fissures, feeding dense coats of dark moss."
       }
     ],
@@ -5480,7 +5377,6 @@
           "wood"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Gnarled roots as thick as your torso twist through cracks in the stone walls. They pulse with faint sap-warmth, flexing almost imperceptibly against the rock."
       },
       {
@@ -5494,7 +5390,6 @@
           "crevices"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Limestone blocks split by ancient wood. Cool water weeps down the fissures, feeding dense coats of dark moss."
       }
     ],
@@ -5556,7 +5451,6 @@
           "wood"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Gnarled roots as thick as your torso twist through cracks in the stone walls. They pulse with faint sap-warmth, flexing almost imperceptibly against the rock."
       },
       {
@@ -5570,7 +5464,6 @@
           "crevices"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Limestone blocks split by ancient wood. Cool water weeps down the fissures, feeding dense coats of dark moss."
       }
     ],
@@ -5632,7 +5525,6 @@
           "wood"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Gnarled roots as thick as your torso twist through cracks in the stone walls. They pulse with faint sap-warmth, flexing almost imperceptibly against the rock."
       },
       {
@@ -5646,7 +5538,6 @@
           "crevices"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Limestone blocks split by ancient wood. Cool water weeps down the fissures, feeding dense coats of dark moss."
       }
     ],
@@ -5708,7 +5599,6 @@
           "wood"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Gnarled roots as thick as your torso twist through cracks in the stone walls. They pulse with faint sap-warmth, flexing almost imperceptibly against the rock."
       },
       {
@@ -5722,7 +5612,6 @@
           "crevices"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Limestone blocks split by ancient wood. Cool water weeps down the fissures, feeding dense coats of dark moss."
       }
     ],
@@ -5784,7 +5673,6 @@
           "wood"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Gnarled roots as thick as your torso twist through cracks in the stone walls. They pulse with faint sap-warmth, flexing almost imperceptibly against the rock."
       },
       {
@@ -5798,7 +5686,6 @@
           "crevices"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Limestone blocks split by ancient wood. Cool water weeps down the fissures, feeding dense coats of dark moss."
       }
     ],
@@ -5850,7 +5737,6 @@
           "basin"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A wide limestone basin filled with clear, mineral-rich water. Its surface glows with reflected canopy light, deep enough to swallow a spear."
       },
       {
@@ -5863,7 +5749,6 @@
           "water ripples"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Concentric rings disturb the pool's glassy skin every few moments, though no water drips from above. Something stirs in deep subterranean channels below."
       }
     ],
@@ -5915,7 +5800,6 @@
           "basin"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A wide limestone basin filled with clear, mineral-rich water. Its surface glows with reflected canopy light, deep enough to swallow a spear."
       },
       {
@@ -5928,7 +5812,6 @@
           "water ripples"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Concentric rings disturb the pool's glassy skin every few moments, though no water drips from above. Something stirs in deep subterranean channels below."
       }
     ],
@@ -5989,7 +5872,6 @@
           "basin"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A wide limestone basin filled with clear, mineral-rich water. Its surface glows with reflected canopy light, deep enough to swallow a spear."
       },
       {
@@ -6002,7 +5884,6 @@
           "water ripples"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Concentric rings disturb the pool's glassy skin every few moments, though no water drips from above. Something stirs in deep subterranean channels below."
       }
     ],
@@ -6063,7 +5944,6 @@
           "basin"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A wide limestone basin filled with clear, mineral-rich water. Its surface glows with reflected canopy light, deep enough to swallow a spear."
       },
       {
@@ -6076,7 +5956,6 @@
           "water ripples"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Concentric rings disturb the pool's glassy skin every few moments, though no water drips from above. Something stirs in deep subterranean channels below."
       }
     ],
@@ -6137,7 +6016,6 @@
           "basin"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A wide limestone basin filled with clear, mineral-rich water. Its surface glows with reflected canopy light, deep enough to swallow a spear."
       },
       {
@@ -6150,7 +6028,6 @@
           "water ripples"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Concentric rings disturb the pool's glassy skin every few moments, though no water drips from above. Something stirs in deep subterranean channels below."
       }
     ],
@@ -6211,7 +6088,6 @@
           "basin"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A wide limestone basin filled with clear, mineral-rich water. Its surface glows with reflected canopy light, deep enough to swallow a spear."
       },
       {
@@ -6224,7 +6100,6 @@
           "water ripples"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Concentric rings disturb the pool's glassy skin every few moments, though no water drips from above. Something stirs in deep subterranean channels below."
       }
     ],
@@ -6285,7 +6160,6 @@
           "basin"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A wide limestone basin filled with clear, mineral-rich water. Its surface glows with reflected canopy light, deep enough to swallow a spear."
       },
       {
@@ -6298,7 +6172,6 @@
           "water ripples"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Concentric rings disturb the pool's glassy skin every few moments, though no water drips from above. Something stirs in deep subterranean channels below."
       }
     ],
@@ -6359,7 +6232,6 @@
           "basin"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A wide limestone basin filled with clear, mineral-rich water. Its surface glows with reflected canopy light, deep enough to swallow a spear."
       },
       {
@@ -6372,7 +6244,6 @@
           "water ripples"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Concentric rings disturb the pool's glassy skin every few moments, though no water drips from above. Something stirs in deep subterranean channels below."
       }
     ],
@@ -6425,7 +6296,6 @@
           "sentinel mushrooms"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Stout mushrooms stand in orderly, grid-like rows across the damp earth. Their flat caps cast pale rings of light onto the soil like miniature lanterns."
       },
       {
@@ -6438,7 +6308,6 @@
           "glow"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Cool phosphorescence emanating from beneath the mushroom gills, lighting up the soil in quiet pools."
       }
     ],
@@ -6491,7 +6360,6 @@
           "sentinel mushrooms"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Stout mushrooms stand in orderly, grid-like rows across the damp earth. Their flat caps cast pale rings of light onto the soil like miniature lanterns."
       },
       {
@@ -6504,7 +6372,6 @@
           "glow"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Cool phosphorescence emanating from beneath the mushroom gills, lighting up the soil in quiet pools."
       }
     ],
@@ -6566,7 +6433,6 @@
           "sentinel mushrooms"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Stout mushrooms stand in orderly, grid-like rows across the damp earth. Their flat caps cast pale rings of light onto the soil like miniature lanterns."
       },
       {
@@ -6579,7 +6445,6 @@
           "glow"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Cool phosphorescence emanating from beneath the mushroom gills, lighting up the soil in quiet pools."
       }
     ],
@@ -6641,7 +6506,6 @@
           "sentinel mushrooms"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Stout mushrooms stand in orderly, grid-like rows across the damp earth. Their flat caps cast pale rings of light onto the soil like miniature lanterns."
       },
       {
@@ -6654,7 +6518,6 @@
           "glow"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Cool phosphorescence emanating from beneath the mushroom gills, lighting up the soil in quiet pools."
       }
     ],
@@ -6716,7 +6579,6 @@
           "sentinel mushrooms"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Stout mushrooms stand in orderly, grid-like rows across the damp earth. Their flat caps cast pale rings of light onto the soil like miniature lanterns."
       },
       {
@@ -6729,7 +6591,6 @@
           "glow"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Cool phosphorescence emanating from beneath the mushroom gills, lighting up the soil in quiet pools."
       }
     ],
@@ -6791,7 +6652,6 @@
           "sentinel mushrooms"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Stout mushrooms stand in orderly, grid-like rows across the damp earth. Their flat caps cast pale rings of light onto the soil like miniature lanterns."
       },
       {
@@ -6804,7 +6664,6 @@
           "glow"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Cool phosphorescence emanating from beneath the mushroom gills, lighting up the soil in quiet pools."
       }
     ],
@@ -6866,7 +6725,6 @@
           "sentinel mushrooms"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Stout mushrooms stand in orderly, grid-like rows across the damp earth. Their flat caps cast pale rings of light onto the soil like miniature lanterns."
       },
       {
@@ -6879,7 +6737,6 @@
           "glow"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Cool phosphorescence emanating from beneath the mushroom gills, lighting up the soil in quiet pools."
       }
     ],
@@ -6941,7 +6798,6 @@
           "sentinel mushrooms"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Stout mushrooms stand in orderly, grid-like rows across the damp earth. Their flat caps cast pale rings of light onto the soil like miniature lanterns."
       },
       {
@@ -6954,7 +6810,6 @@
           "glow"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Cool phosphorescence emanating from beneath the mushroom gills, lighting up the soil in quiet pools."
       }
     ],
@@ -7007,7 +6862,6 @@
           "chalk lines"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Thin white lines drawn with ancient mineral chalk trace the floor down the center of the lane. They have faded over decades of foot traffic, yet the geometry remains straight and deliberate."
       },
       {
@@ -7021,7 +6875,6 @@
           "grooves"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Faint geometric intersections scored into the bedrock. Someone mapped this corridor with precision long before you walked it."
       }
     ],
@@ -7074,7 +6927,6 @@
           "chalk lines"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Thin white lines drawn with ancient mineral chalk trace the floor down the center of the lane. They have faded over decades of foot traffic, yet the geometry remains straight and deliberate."
       },
       {
@@ -7088,7 +6940,6 @@
           "grooves"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Faint geometric intersections scored into the bedrock. Someone mapped this corridor with precision long before you walked it."
       }
     ],
@@ -7150,7 +7001,6 @@
           "chalk lines"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Thin white lines drawn with ancient mineral chalk trace the floor down the center of the lane. They have faded over decades of foot traffic, yet the geometry remains straight and deliberate."
       },
       {
@@ -7164,7 +7014,6 @@
           "grooves"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Faint geometric intersections scored into the bedrock. Someone mapped this corridor with precision long before you walked it."
       }
     ],
@@ -7226,7 +7075,6 @@
           "chalk lines"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Thin white lines drawn with ancient mineral chalk trace the floor down the center of the lane. They have faded over decades of foot traffic, yet the geometry remains straight and deliberate."
       },
       {
@@ -7240,7 +7088,6 @@
           "grooves"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Faint geometric intersections scored into the bedrock. Someone mapped this corridor with precision long before you walked it."
       }
     ],
@@ -7302,7 +7149,6 @@
           "chalk lines"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Thin white lines drawn with ancient mineral chalk trace the floor down the center of the lane. They have faded over decades of foot traffic, yet the geometry remains straight and deliberate."
       },
       {
@@ -7316,7 +7162,6 @@
           "grooves"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Faint geometric intersections scored into the bedrock. Someone mapped this corridor with precision long before you walked it."
       }
     ],
@@ -7378,7 +7223,6 @@
           "chalk lines"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Thin white lines drawn with ancient mineral chalk trace the floor down the center of the lane. They have faded over decades of foot traffic, yet the geometry remains straight and deliberate."
       },
       {
@@ -7392,7 +7236,6 @@
           "grooves"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Faint geometric intersections scored into the bedrock. Someone mapped this corridor with precision long before you walked it."
       }
     ],
@@ -7454,7 +7297,6 @@
           "chalk lines"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Thin white lines drawn with ancient mineral chalk trace the floor down the center of the lane. They have faded over decades of foot traffic, yet the geometry remains straight and deliberate."
       },
       {
@@ -7468,7 +7310,6 @@
           "grooves"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Faint geometric intersections scored into the bedrock. Someone mapped this corridor with precision long before you walked it."
       }
     ],
@@ -7530,7 +7371,6 @@
           "chalk lines"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Thin white lines drawn with ancient mineral chalk trace the floor down the center of the lane. They have faded over decades of foot traffic, yet the geometry remains straight and deliberate."
       },
       {
@@ -7544,7 +7384,6 @@
           "grooves"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Faint geometric intersections scored into the bedrock. Someone mapped this corridor with precision long before you walked it."
       }
     ],
@@ -7596,7 +7435,6 @@
           "whispering ferns"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Towering fronds as tall as your shoulder rustle against each other in dry, rhythmic sibilance. In the rustling you catch fragments that sound uncannily like whispered syllables."
       },
       {
@@ -7610,7 +7448,6 @@
           "rustle"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The fronds move without wind, swaying in gentle synchrony with the breathing of the root-canopy."
       }
     ],
@@ -7662,7 +7499,6 @@
           "whispering ferns"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Towering fronds as tall as your shoulder rustle against each other in dry, rhythmic sibilance. In the rustling you catch fragments that sound uncannily like whispered syllables."
       },
       {
@@ -7676,7 +7512,6 @@
           "rustle"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The fronds move without wind, swaying in gentle synchrony with the breathing of the root-canopy."
       }
     ],
@@ -7737,7 +7572,6 @@
           "whispering ferns"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Towering fronds as tall as your shoulder rustle against each other in dry, rhythmic sibilance. In the rustling you catch fragments that sound uncannily like whispered syllables."
       },
       {
@@ -7751,7 +7585,6 @@
           "rustle"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The fronds move without wind, swaying in gentle synchrony with the breathing of the root-canopy."
       }
     ],
@@ -7812,7 +7645,6 @@
           "whispering ferns"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Towering fronds as tall as your shoulder rustle against each other in dry, rhythmic sibilance. In the rustling you catch fragments that sound uncannily like whispered syllables."
       },
       {
@@ -7826,7 +7658,6 @@
           "rustle"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The fronds move without wind, swaying in gentle synchrony with the breathing of the root-canopy."
       }
     ],
@@ -7887,7 +7718,6 @@
           "whispering ferns"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Towering fronds as tall as your shoulder rustle against each other in dry, rhythmic sibilance. In the rustling you catch fragments that sound uncannily like whispered syllables."
       },
       {
@@ -7901,7 +7731,6 @@
           "rustle"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The fronds move without wind, swaying in gentle synchrony with the breathing of the root-canopy."
       }
     ],
@@ -7962,7 +7791,6 @@
           "whispering ferns"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Towering fronds as tall as your shoulder rustle against each other in dry, rhythmic sibilance. In the rustling you catch fragments that sound uncannily like whispered syllables."
       },
       {
@@ -7976,7 +7804,6 @@
           "rustle"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The fronds move without wind, swaying in gentle synchrony with the breathing of the root-canopy."
       }
     ],
@@ -8037,7 +7864,6 @@
           "whispering ferns"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Towering fronds as tall as your shoulder rustle against each other in dry, rhythmic sibilance. In the rustling you catch fragments that sound uncannily like whispered syllables."
       },
       {
@@ -8051,7 +7877,6 @@
           "rustle"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The fronds move without wind, swaying in gentle synchrony with the breathing of the root-canopy."
       }
     ],
@@ -8112,7 +7937,6 @@
           "whispering ferns"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Towering fronds as tall as your shoulder rustle against each other in dry, rhythmic sibilance. In the rustling you catch fragments that sound uncannily like whispered syllables."
       },
       {
@@ -8126,7 +7950,6 @@
           "rustle"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The fronds move without wind, swaying in gentle synchrony with the breathing of the root-canopy."
       }
     ],
@@ -8180,7 +8003,6 @@
           "starlight"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A sheer chimney cut into the vault far above. Through it falls a clean, vertical beam of silver starlight, cutting through the damp mist like a spear."
       },
       {
@@ -8193,7 +8015,6 @@
           "cushion"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A thick velvet carpet of emerald moss thriving directly in the beam of starlight. It is cool and resilient beneath your boots."
       }
     ],
@@ -8247,7 +8068,6 @@
           "starlight"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A sheer chimney cut into the vault far above. Through it falls a clean, vertical beam of silver starlight, cutting through the damp mist like a spear."
       },
       {
@@ -8260,7 +8080,6 @@
           "cushion"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A thick velvet carpet of emerald moss thriving directly in the beam of starlight. It is cool and resilient beneath your boots."
       }
     ],
@@ -8323,7 +8142,6 @@
           "starlight"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A sheer chimney cut into the vault far above. Through it falls a clean, vertical beam of silver starlight, cutting through the damp mist like a spear."
       },
       {
@@ -8336,7 +8154,6 @@
           "cushion"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A thick velvet carpet of emerald moss thriving directly in the beam of starlight. It is cool and resilient beneath your boots."
       }
     ],
@@ -8399,7 +8216,6 @@
           "starlight"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A sheer chimney cut into the vault far above. Through it falls a clean, vertical beam of silver starlight, cutting through the damp mist like a spear."
       },
       {
@@ -8412,7 +8228,6 @@
           "cushion"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A thick velvet carpet of emerald moss thriving directly in the beam of starlight. It is cool and resilient beneath your boots."
       }
     ],
@@ -8475,7 +8290,6 @@
           "starlight"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A sheer chimney cut into the vault far above. Through it falls a clean, vertical beam of silver starlight, cutting through the damp mist like a spear."
       },
       {
@@ -8488,7 +8302,6 @@
           "cushion"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A thick velvet carpet of emerald moss thriving directly in the beam of starlight. It is cool and resilient beneath your boots."
       }
     ],
@@ -8551,7 +8364,6 @@
           "starlight"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A sheer chimney cut into the vault far above. Through it falls a clean, vertical beam of silver starlight, cutting through the damp mist like a spear."
       },
       {
@@ -8564,7 +8376,6 @@
           "cushion"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A thick velvet carpet of emerald moss thriving directly in the beam of starlight. It is cool and resilient beneath your boots."
       }
     ],
@@ -8627,7 +8438,6 @@
           "starlight"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A sheer chimney cut into the vault far above. Through it falls a clean, vertical beam of silver starlight, cutting through the damp mist like a spear."
       },
       {
@@ -8640,7 +8450,6 @@
           "cushion"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A thick velvet carpet of emerald moss thriving directly in the beam of starlight. It is cool and resilient beneath your boots."
       }
     ],
@@ -8703,7 +8512,6 @@
           "starlight"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A sheer chimney cut into the vault far above. Through it falls a clean, vertical beam of silver starlight, cutting through the damp mist like a spear."
       },
       {
@@ -8716,7 +8524,6 @@
           "cushion"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A thick velvet carpet of emerald moss thriving directly in the beam of starlight. It is cool and resilient beneath your boots."
       }
     ],
@@ -8769,7 +8576,6 @@
           "tendrils"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Thick curtains of braided vine hang from the boughs like tapestries. Their pale teal veins throb in time with the forest's deep pulse."
       },
       {
@@ -8782,7 +8588,6 @@
           "canopy"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A low vibration that thrums in your teeth and chest. The deep roots of the back rank anchor the entire cavern."
       }
     ],
@@ -8826,7 +8631,6 @@
           "tendrils"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Thick curtains of braided vine hang from the boughs like tapestries. Their pale teal veins throb in time with the forest's deep pulse."
       },
       {
@@ -8839,7 +8643,6 @@
           "canopy"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A low vibration that thrums in your teeth and chest. The deep roots of the back rank anchor the entire cavern."
       }
     ],
@@ -8892,7 +8695,6 @@
           "tendrils"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Thick curtains of braided vine hang from the boughs like tapestries. Their pale teal veins throb in time with the forest's deep pulse."
       },
       {
@@ -8905,7 +8707,6 @@
           "canopy"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A low vibration that thrums in your teeth and chest. The deep roots of the back rank anchor the entire cavern."
       }
     ],
@@ -8958,7 +8759,6 @@
           "tendrils"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Thick curtains of braided vine hang from the boughs like tapestries. Their pale teal veins throb in time with the forest's deep pulse."
       },
       {
@@ -8971,7 +8771,6 @@
           "canopy"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A low vibration that thrums in your teeth and chest. The deep roots of the back rank anchor the entire cavern."
       }
     ],
@@ -9025,7 +8824,6 @@
           "wood"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A grand seat grown seamlessly out of living ash-grey roots and curled bark. Ancient carvings mark its high backrest, worn smooth by centuries of royal repose."
       },
       {
@@ -9038,7 +8836,6 @@
           "radiance"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A concentrated corona of silver-green illumination bathing the center of the grove, undisturbed by drafts or smoke."
       }
     ],
@@ -9109,7 +8906,6 @@
           "tendrils"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Thick curtains of braided vine hang from the boughs like tapestries. Their pale teal veins throb in time with the forest's deep pulse."
       },
       {
@@ -9122,7 +8918,6 @@
           "canopy"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A low vibration that thrums in your teeth and chest. The deep roots of the back rank anchor the entire cavern."
       }
     ],
@@ -9175,7 +8970,6 @@
           "tendrils"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Thick curtains of braided vine hang from the boughs like tapestries. Their pale teal veins throb in time with the forest's deep pulse."
       },
       {
@@ -9188,7 +8982,6 @@
           "canopy"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A low vibration that thrums in your teeth and chest. The deep roots of the back rank anchor the entire cavern."
       }
     ],
@@ -9241,7 +9034,6 @@
           "tendrils"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Thick curtains of braided vine hang from the boughs like tapestries. Their pale teal veins throb in time with the forest's deep pulse."
       },
       {
@@ -9254,7 +9046,6 @@
           "canopy"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A low vibration that thrums in your teeth and chest. The deep roots of the back rank anchor the entire cavern."
       }
     ],
@@ -9299,7 +9090,6 @@
           "dish"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A wide dish of black glass, deep as a man's chest. Its lip is scored where embers have been poured in and cleared away a thousand times."
       },
       {
@@ -9312,7 +9102,6 @@
           "black glass"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Sheets of polished volcanic glass form the foundation of the north store, cool and slick beneath your boots."
       }
     ],
@@ -9383,7 +9172,6 @@
           "dish"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A wide dish of black glass. A single ember smoulders at its bottom, the last seed of the south store."
       },
       {
@@ -9397,7 +9185,6 @@
           "banked ember"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A stubborn node of cherry-red heat pulsing softly in the soot of the south store."
       }
     ],
@@ -9455,7 +9242,6 @@
           "bowl chamber"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A single coal breathes in the depression, skirted by black glass. It does not warm the room — only the memory of warmth."
       },
       {
@@ -9469,7 +9255,6 @@
           "glass"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Hairline fractures spiderweb through the black glass floor, radiating dull warmth from heat chambers below."
       }
     ],
@@ -9518,7 +9303,6 @@
           "bowl chamber"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Tiny embers fleck the floor like a scatter of seed, slightly warmer under the fingers than the surrounding glass."
       },
       {
@@ -9532,7 +9316,6 @@
           "glass"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Hairline fractures spiderweb through the black glass floor, radiating dull warmth from heat chambers below."
       }
     ],
@@ -9581,7 +9364,6 @@
           "bowl chamber"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Two scored lines run out of this chamber and vanish around the curve of the ring."
       },
       {
@@ -9595,7 +9377,6 @@
           "glass"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Hairline fractures spiderweb through the black glass floor, radiating dull warmth from heat chambers below."
       }
     ],
@@ -9644,7 +9425,6 @@
           "bowl chamber"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The crack runs through the center of the bowl. Whatever burned here has long been taken."
       },
       {
@@ -9658,7 +9438,6 @@
           "glass"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Hairline fractures spiderweb through the black glass floor, radiating dull warmth from heat chambers below."
       }
     ],
@@ -9707,7 +9486,6 @@
           "bowl chamber"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Heat wells up gently through the seams. Beneath, you sense the same dead fire you have felt all along: banked, waiting."
       },
       {
@@ -9721,7 +9499,6 @@
           "glass"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Hairline fractures spiderweb through the black glass floor, radiating dull warmth from heat chambers below."
       }
     ],
@@ -9770,7 +9547,6 @@
           "bowl chamber"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The southern store is a tall column of shadow on the rim, its dish holding the last of the board's gathered light."
       },
       {
@@ -9784,7 +9560,6 @@
           "glass"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Hairline fractures spiderweb through the black glass floor, radiating dull warmth from heat chambers below."
       }
     ],
@@ -9833,7 +9608,6 @@
           "bowl chamber"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The floor is glass worn mirror-smooth, the recorded arc of a thousand unseen moves."
       },
       {
@@ -9847,7 +9621,6 @@
           "ash drifts"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Fine grey soot and volcanic silt collected in the corners and grooves of the basin, shifting under draft and footstep."
       }
     ],
@@ -9896,7 +9669,6 @@
           "bowl chamber"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Embers sit one by one, evenly spaced, exactly as seeds would be set out before a game."
       },
       {
@@ -9910,7 +9682,6 @@
           "ash drifts"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Fine grey soot and volcanic silt collected in the corners and grooves of the basin, shifting under draft and footstep."
       }
     ],
@@ -9959,7 +9730,6 @@
           "bowl chamber"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The air is cold and still. Even the ancient warmth of the board does not reach here."
       },
       {
@@ -9973,7 +9743,6 @@
           "ash drifts"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Fine grey soot and volcanic silt collected in the corners and grooves of the basin, shifting under draft and footstep."
       }
     ],
@@ -10022,7 +9791,6 @@
           "bowl chamber"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The ring doubles back on itself for a long way before either store or center appears."
       },
       {
@@ -10036,7 +9804,6 @@
           "ash drifts"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Fine grey soot and volcanic silt collected in the corners and grooves of the basin, shifting under draft and footstep."
       }
     ],
@@ -10085,7 +9852,6 @@
           "bowl chamber"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Across the dark the heart-pit burns at a steady, unhurried orange."
       },
       {
@@ -10099,7 +9865,6 @@
           "ash drifts"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Fine grey soot and volcanic silt collected in the corners and grooves of the basin, shifting under draft and footstep."
       }
     ],
@@ -10148,7 +9913,6 @@
           "bowl chamber"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The north store's dish shelves up beyond the rim, its mouth drinking the ring."
       },
       {
@@ -10162,7 +9926,6 @@
           "ash drifts"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Fine grey soot and volcanic silt collected in the corners and grooves of the basin, shifting under draft and footstep."
       }
     ],
@@ -10212,7 +9975,6 @@
           "cradle"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "In the cradle of the pit, a clot of embers burns with a deep, steady heat. It does not crackle. It does not spread. It simply holds."
       },
       {
@@ -10226,7 +9988,6 @@
           "glass"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A sunken saucer of seamless black glass engineered to concentrate the cavern's elemental heat at its center."
       }
     ],
@@ -10296,7 +10057,6 @@
           "brass"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The bulkhead is banded iron over riveted brass, three spans wide, and it is bolted from the far side. You cannot find a handle anywhere on this face, and you run your hand along the seam anyway. The warm air stops dead at the metal. Somebody has tied a strip of red cloth to a rivet at knee height, and it has faded almost through."
       }
     ],
@@ -10361,7 +10121,6 @@
           "tools"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The bench is scarred with tiny brass swarf and burned at the edges. Loupes, tweezers, a jeweler's saw and four cogwheels sit where he left them, which means he put them down mid-job to go and look at something. You can see where his knee has worn the boards pale. Sketches are pinned above the bench, all the same escapement drawn over and over, each one a little more wrong than the last."
       }
     ],
@@ -10407,7 +10166,6 @@
           "wash"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The trough is cut from stone and lined with zinc, and it is full to a hand's width of water hot enough to sting. Six wooden pegs are lined up on the near lip. Only four of them are wet, and you find yourself counting the dry ones twice. The scrub brush at the end has its handle worn smooth in one place, exactly where a thumb goes."
       },
       {
@@ -10422,7 +10180,6 @@
           "overpressure valve"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A cast-iron wheel at waist height on a brass junction where four pipes meet. You put a hand on the wheel and it turns a quarter turn before it binds, which tells you it is not seized. The rust on the hub is broken away in a band where a gloved hand has been. Turn it the rest of the way and the line pressure vents into the flue at once. It will be loud enough to be heard everywhere on this floor."
       }
     ],
@@ -10467,7 +10224,6 @@
           "water"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The spring comes up through a moss-edged hollow in bare limestone, clear enough that you can see the grit on the bottom. The moss is thickest on the side facing away from the pipes, which tells you the water has been running here a good deal longer than the village has."
       }
     ],
@@ -10512,7 +10268,6 @@
           "square"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The stairs are cut from one piece of granite, wide enough for four abreast, and worn into shallow bowls where everyone puts their feet going up. You take one of the bowls in your stride without meaning to. The dark at the top has a draft coming down it, hot and dry, that smells of old smoke and hot glass. Somebody has scratched a row of short marks up the second step and stopped halfway."
       }
     ],
@@ -10571,7 +10326,6 @@
           "writ"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A single sheet under Malik's iron seal, demanding one youth from the village and giving a date. Rashid's signature sits at the bottom, gone over so many times the nib has torn the parchment. On the back, in a much younger hand, somebody has written ASK HIM FIRST, and then scratched it out. You read it twice."
       }
     ],
@@ -10616,7 +10370,6 @@
           "balcony"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The wall is laid in limestone blocks with scuppers cut through the base to let the wet out, and it has been patched so many times the joints are a patchwork. Along the top the stone is dished into one long shallow groove, and your palm finds it without your looking. That is not weather wearing it down. That is shoulders."
       }
     ],
@@ -10661,7 +10414,6 @@
           "counter"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The hearth is a broad brick dome with steam pipes wrapped around its base, and the fire inside is banked so low you have to look twice to find it. You put your palm flat on the bricks and the heat comes through, even and enormous. There is a shelf of finished loaves going cold on your left, and more going in on your right, and nobody is turning the right-hand side."
       }
     ],
@@ -10707,7 +10459,6 @@
           "garden"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The planters are carved out of the limestone itself, so the roots have something to grip that will not move. Blue moss fills the gaps between the compost and glows steady enough to read by. Where a plant has been lifted out there is a clean ring of unfaded stone. You count the empty rings. There are four, and none of them have been replanted."
       }
     ],
@@ -10753,7 +10504,6 @@
           "switch"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "The lever is brass on iron, worn to bright metal along the grip. Somebody has scratched a tally into the console beside it and stopped at nine. You put your palm on the pin housing and it is still warm. Whatever last ran through this, the pressure has not been off the lines long."
       }
     ],
@@ -10812,7 +10562,6 @@
           "walkway"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Four pipes clamped to the rock on steel brackets, two of them sweating and one hissing. A joint at head height has been re-banded in clean copper against old rust, so somebody has been up here after something started leaking. The clamp nearest you is loose enough to rock by hand. It would hold your weight. You would rather not find out by standing on it."
       }
     ],
@@ -10859,7 +10608,6 @@
           "padlock"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Iron bars, close enough together that you could not get a hand through, and a floor of the same. The brass padlock on the gate is good work and has no keyhole big enough to pick. The chains are greased, and grease means somebody does this on purpose. Under the floor the cage swings a little with every breath out of the vent, always the same direction, always the same inch."
       }
     ],
@@ -10911,7 +10659,6 @@
           "valves"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Round glass faces in brass housings, and behind the glass the needles sit in a tight band and never stray from it. The lowest gauge in the row is painted round the rim in red, and its needle is just inside the paint. There is a date scratched into the housing beside it, and a set of initials. Under the gauges the wall is scorched in a long strip, and the paint there has blistered and peeled away in flakes. You could read the initials if you stepped closer, and you decide not to."
       }
     ],
@@ -10958,7 +10705,6 @@
           "combination"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "An iron body with brass dials and reinforced hinges, bolted through the stone rather than into it. There is a clean rectangle in the dust on the floor in front of it, the size of somebody kneeling. The tumblers are well used and the brass around them is bright where hands have gone. You try to imagine the combination and there are too many ways to be wrong."
       }
     ],
@@ -11026,7 +10772,6 @@
           "grille"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A brass searchlight on a tripod, fed by its own heavy steam conduit, with the reflector lens angled down and away. There is no shutter and no hood, so it burns the same all night regardless of what walks into it. The tripod feet are sunk into the steel and the bolts have been backed off and retightened more than once. On the housing somebody has scratched a child's height mark and a date, and then scratched the date out. Your hand is bigger than the mark. You know it, and you look at it anyway."
       }
     ],
@@ -11076,7 +10821,6 @@
           "circuits"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A brass disc, wider than your arms are long, cut with two triangles that cross and a circle drawn round the crossing. The metal is warm, and it is not the geothermal heat making it warm. Where boots have worn it the brass is bright; at the rim it is still black with scale, and the scale rings the edge in clean steps, showing the water rising and falling over years. The geometry is the same one your chalk draws. It was not always the size of a room. It has been added to."
       }
     ],
@@ -11118,7 +10862,6 @@
           "conduits"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A broad circular brass dais inlaid with geometric conduits. It pulses with pale turquoise energy, serving as the sole teleportation anchor linking this isolated citadel back to the Floor 4 platform. Without any physical connection between floors, stepping onto the transit circuit and using teleport is the only way back."
       },
       {
@@ -11133,7 +10876,6 @@
           "offerings"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Four heavy iron cages labeled BLOCK 01, BLOCK 04, BLOCK 07, and BLOCK 12. Shivering elderly commoners and frightened children peer through the frosted bars. A massive padlocked gate keeps them sealed inside."
       }
     ],
@@ -11228,7 +10970,6 @@
           "frost-wolf"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Banners of heavy navy silk bearing the snarling silver wolf crest of House Frost-Wolf."
       },
       {
@@ -11242,7 +10983,6 @@
           "doors"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A massive spiked gate of black iron and rime frost, barring passage into House Frost-Wolf Manor. It is barred from within."
       }
     ],
@@ -11319,7 +11059,6 @@
           "battlements"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Thick granite crenels providing solid cover against incoming missile fire and funneling attackers into a narrow breach."
       }
     ],
@@ -11383,7 +11122,6 @@
           "iron-ram"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Banners of coarse crimson wool displaying the horned iron ram skull over cross-hammers."
       },
       {
@@ -11396,7 +11134,6 @@
           "doors"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A three-ton portcullis of interlocking forged iron teeth, dropped firmly in place to seal the bastion entrance."
       }
     ],
@@ -11474,7 +11211,6 @@
           "barricade"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Enormous gates of banded iron and mountain oak, reinforced by heavy crossbars. They stand closed against the howling blizzard outside."
       }
     ],
@@ -11540,7 +11276,6 @@
           "frost-leopard"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Silken ash-grey banners with ice-blue trim, portraying a snarling snow leopard mid-leap."
       },
       {
@@ -11553,7 +11288,6 @@
           "hall doors"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Heavy wrought-iron conservatory doors fitted with frosted glass panels, bolted from inside House Frost-Leopard Hall."
       }
     ],
@@ -11632,7 +11366,6 @@
           "stairs"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A narrow, single-file walkway along the battlements. Any force attempting to cross here must march in a narrow column, making it ideal for defense."
       }
     ],
@@ -11696,7 +11429,6 @@
           "flame"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Iron baskets filled with cold-burning blue witchfire. They emit intense light with virtually no warmth, casting the long gallery in pale twilight."
       }
     ],
@@ -11745,7 +11477,6 @@
           "pavises"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Sturdy iron stands holding notched frost-axes and spiked heater shields bearing the wolf crest."
       }
     ],
@@ -11793,7 +11524,6 @@
           "dais"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A towering throne of ancient compressed glacier ice, surrounded by cold mist and wolf trophies."
       }
     ],
@@ -11829,7 +11559,6 @@
           "valves"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Heavy insulated copper and bronze conduits delivering geothermal steam from the citadel boilers."
       }
     ],
@@ -11878,7 +11607,6 @@
           "machinery"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Pneumatic winches designed to lift heavy iron plates and barricade balks into place across the bastion."
       }
     ],
@@ -11927,7 +11655,6 @@
           "forge"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A colossal chair forged from dark cast iron and tempered steel, shaped like a horn-crowned anvil."
       }
     ],
@@ -11963,7 +11690,6 @@
           "lights"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Delicate geometric lanterns of faceted frost-glass containing soft, self-illuminating white crystals."
       }
     ],
@@ -12012,7 +11738,6 @@
           "screens"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Deep niches set with frosted mirrors that reflect light at disorienting angles, concealing sentry positions."
       }
     ],
@@ -12061,7 +11786,6 @@
           "chair"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "An exquisite throne carved from shimmering glacial opal, cold as winter glass and cushioned in snow-leopard pelts."
       }
     ],
@@ -12097,7 +11821,6 @@
           "ice"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Workers cut neat slabs from shallow mineral pools. Blue ice shows beneath a crust of clean white salt."
       }
     ],
@@ -12121,7 +11844,6 @@
           "lights"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Each lamp uses a different cut of glass to send a clear color through snow and fog."
       }
     ],
@@ -12145,7 +11867,6 @@
           "rope"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Heavy wooden looms beat in a steady rhythm as red, gold, and deep blue threads become warm mountain cloth."
       }
     ],
@@ -12169,7 +11890,6 @@
           "plants"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Carefully labeled beds hold bitter leaves, pale mushrooms, and warming roots used by the town's healers."
       }
     ],
@@ -12193,7 +11913,6 @@
           "tools"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Every bench holds labeled trays of screws, gears, seals, and careful drawings for machines used across the worker towns."
       }
     ],
@@ -12217,7 +11936,6 @@
           "view"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "White stone carved with geometric reliefs. Beyond it, rolling banks of mist drift through mountain gorges far below."
       }
     ],
@@ -12271,7 +11989,6 @@
           "basin"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Clear mountain water flows steadily through tiered marble bowls into a wide reflection basin."
       }
     ],
@@ -12363,7 +12080,6 @@
           "carvings"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Smooth silver masks hide the faces of the carved figures, reflecting the sky in polished metal."
       }
     ],
@@ -12414,7 +12130,6 @@
           "light"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Vibrant stained glass depicting geometric celestial wheels filters the sunlight into deep blues and golds."
       }
     ],
@@ -12490,7 +12205,6 @@
           "censers"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A solid block of golden limestone polished smooth. Intricate geometric runes are inlaid around the rim in thin silver wire."
       }
     ],
@@ -12541,7 +12255,6 @@
           "masks"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Rows of immaculate white vestments hang beside silver masks with narrow eye-slits."
       }
     ],
@@ -12591,7 +12304,6 @@
           "plates"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Heavy oak doors with small grated peepholes. Brass nameplates denote monastic offices."
       }
     ],
@@ -12640,7 +12352,6 @@
           "arch"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Stone reliefs celebrating the recording and preservation of sacred texts across the centuries."
       }
     ],
@@ -12691,7 +12402,6 @@
           "ink"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Neat wooden desks fitted with inkstands and brass paperweights. Sheets of half-copied liturgical texts lie drying."
       }
     ],
@@ -12767,7 +12477,6 @@
           "ladders"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Neat rows of calfskin and vellum spines titled in gilt letters. A narrow seam runs along the baseboard behind the history section."
       }
     ],
@@ -12819,7 +12528,6 @@
           "scrolls"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Iron-banded drawers labeled by liturgical degree. These scrolls detail the exact doctrinal questions asked at sanctuary checkpoints."
       }
     ],
@@ -12870,7 +12578,6 @@
           "racks"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Chilling entries matching living names to monster classes: miners turned into steam golems, forest scouts bound into shadow elves. You recognize the recorded names of Siraj, Nur, Orin, Mari, Ferid, and Hana."
       }
     ],
@@ -12921,7 +12628,6 @@
           "arch"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Large glazed pots filled with blooming rosemary and wild mountain thyme."
       }
     ],
@@ -12972,7 +12678,6 @@
           "moss"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Neatly pruned clusters of silver moss, blue winter-sage, and pungent mint growing in dark, rich loam."
       }
     ],
@@ -13065,7 +12770,6 @@
           "pots"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Rows of sealed glazed jars labeled with herbal extracts, soothing balms, and powdered minerals."
       }
     ],
@@ -13116,7 +12820,6 @@
           "tubes"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Large burnished copper alembics connected by serpentine condenser coils bubbling with herbal extracts."
       }
     ],
@@ -13166,7 +12869,6 @@
           "gears"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A masterwork of hydraulic engineering. Tiered bronze bowls drip measured amounts of water to turn floating gear-teeth and mark the change of guard shifts."
       }
     ],
@@ -13219,7 +12921,6 @@
           "soil"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Low wild herbs rooted in dark alpine loam, pulsing with faint azure light in rhythm with the steam vent. Droplets of fresh, luminous dew cling to the leaf tips—the key ingredient used to brew the Spirit Capsule."
       },
       {
@@ -13234,7 +12935,6 @@
           "steps"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A heavy stone slab reinforced by crude iron chains, concealing a hidden spiral staircase that leads down directly into the Reanimation Sanctum."
       }
     ],
@@ -13290,7 +12990,6 @@
           "flames"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Stylized torches carved from veined marble, tipped with polished silver leaf."
       }
     ],
@@ -13342,7 +13041,6 @@
           "walls"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Sturdy brass oil lamps burning with pale, smoke-free flame."
       }
     ],
@@ -13420,7 +13118,6 @@
           "stone"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Heavy limestone coffins carved with geometric knots and seal-marks."
       }
     ],
@@ -13471,7 +13168,6 @@
           "shells"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Smooth slabs of black slate where empty stone shells and mechanical limbs rest under rune-inscribed clamps."
       }
     ],
@@ -13521,7 +13217,6 @@
           "braziers"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A bronze altar surrounded by glowing silver circles. Faint magical humming vibrates through the metal."
       },
       {
@@ -13535,7 +13230,6 @@
           "captives"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Dozens of pale, translucent human spirits floating silently above the altar. Their faces resemble the miners and villagers of Deepwell and Salt Reach, waiting to be stripped of memory and bound into dungeon monsters."
       },
       {
@@ -13550,7 +13244,6 @@
           "names"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A heavy black leather ledger detailing the horrifying transformation pipeline: Siraj bound into the stone guard Sakhra, Nur into the Elf White Queen, Orin (Mr. Black) into Black Golem 1, Mari (Miss Black) into Black Golem 2, Ferid (Mr. White) into White Golem 1, and Hana (Miss White) into White Golem 2."
       }
     ],
@@ -13640,7 +13333,6 @@
           "bronze"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A colossal bronze circle etched with four interlocked rings. It awaits a command pulse to synchronize with the lower floor teleport pads."
       },
       {
@@ -13655,7 +13347,6 @@
           "ascent"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A staircase woven from pure white light floating over the cliff edge, leading up into the calm mist toward Floor 7: The White Antechamber."
       }
     ],
@@ -13718,7 +13409,6 @@
           "bronze"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Colossal bells of green-patinated bronze embossed with liturgical prayers. When struck, their chimes carry across the entire mountain range."
       }
     ],
@@ -13782,7 +13472,6 @@
           "view"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Sturdy limestone battlements notched for bowmen, offering an unobstructed vista of northern peaks."
       }
     ],
@@ -13831,7 +13520,6 @@
           "racks"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Long polished horns of sheet copper mounted on swivel brackets to sound sanctuary-wide alerts."
       }
     ],
@@ -13895,7 +13583,6 @@
           "wall"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Stone chimney cowls venting warm exhaust from the lower shell workshops into the open mountain air."
       }
     ],
@@ -13943,7 +13630,6 @@
           "walls"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Deep splayed arrow loops looking out over the clouds and lower glacier terraces."
       }
     ],
@@ -14008,7 +13694,6 @@
           "terrace"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Limestone battlements overlooking the terraced ascent path climbing up through the mountain gap from Floor 5."
       }
     ],
@@ -14070,7 +13755,6 @@
           "vines"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Resilient alpine mint and dark green ivy clinging to the sun-warmed stone parapet."
       }
     ],
@@ -14134,7 +13818,6 @@
           "wall"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "Stout limestone merlons overlooking the western peaks and sunset horizon."
       }
     ],
@@ -14184,7 +13867,6 @@
           "tea"
         ],
         "allow_rest": false,
-        "consumables": [],
         "inspect_text": "A simple oak table with two chairs. Steam rises quietly from an antique brass teapot next to a familiar portable radio."
       }
     ],

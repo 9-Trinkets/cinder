@@ -12,7 +12,7 @@
   "/presentation_text/people": "\n\n在你身邊的：{people}。",
   "/presentation_text/party": "你的隊伍：{party}。",
   "/presentation_text/exits": "\n\n出口：{exits}。",
-  "/presentation_text/feature_consumables": "\n\n{feature_label}可取得：{items}。",
+  "/presentation_text/feature_items": "\n\n{feature_label}可取得：{items}。",
   "/presentation_text/actor_speech": "{actor_name}：{text}",
   "/presentation_text/actor_targeted_speech": "{actor_name}（對{target_name}）：{text}",
   "/presentation_text/actor_departed": "{actor_name}離開，走向{room_title}。",

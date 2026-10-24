@@ -16,7 +16,7 @@
     "actor_targeted_speech": "{actor_name}（對{target_name}）：{text}",
     "ally_suffix": "（同伴）",
     "exits": "\n\n出口：{exits}。",
-    "feature_consumables": "\n\n{feature_label}可取得：{items}。",
+    "feature_items": "\n\n{feature_label}可取得：{items}。",
     "features": "\n\n你注意到：{features}。",
     "hostile_suffix": "（敵人）",
     "loose_items": "\n\n地上：{items}。",

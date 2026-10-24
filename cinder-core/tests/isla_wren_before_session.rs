@@ -180,3 +180,51 @@ fn the_book_room_and_kitchen_start_stocked_for_taking() {
     assert!(text.to_lowercase().contains("clementine"), "{text}");
     assert_eq!(runtime.inventory_items().unwrap().get("snack"), Some(&1));
 }
+
+#[test]
+fn the_books_sit_on_the_shelves_and_the_snack_on_the_snack_shelf() {
+    let runtime = runtime();
+    for step in [
+        "go inside",
+        "go hall",
+        "go upstairs",
+        "go upstairs",
+        "go book room",
+    ] {
+        runtime.run_turn(step).expect(step);
+    }
+    let room = runtime.run_turn("look").expect("look").text();
+    assert!(!room.contains("On the ground"), "{room}");
+
+    let shelves = runtime.run_turn("look at shelves").expect("shelves").text();
+    assert!(
+        shelves.contains("On the shelves: Bear Counts to Ten"),
+        "{shelves}"
+    );
+    assert!(shelves.contains("Two Houses for Fox"), "{shelves}");
+
+    runtime.run_turn("take bear book").expect("take");
+    let after = runtime.run_turn("look at shelves").expect("shelves").text();
+    assert!(!after.contains("Bear Counts to Ten"), "{after}");
+}
+
+#[test]
+fn the_book_a_swap_puts_back_returns_to_the_shelves() {
+    let runtime = runtime();
+    for step in [
+        "go inside",
+        "go hall",
+        "go upstairs",
+        "go upstairs",
+        "go book room",
+    ] {
+        runtime.run_turn(step).expect(step);
+    }
+    runtime.run_turn("take bear book").expect("take bear");
+    runtime.run_turn("take fox book").expect("take fox");
+    let shelves = runtime.run_turn("look at shelves").expect("shelves").text();
+    assert!(shelves.contains("Bear Counts to Ten"), "{shelves}");
+    assert!(!shelves.contains("Two Houses for Fox"), "{shelves}");
+    let room = runtime.run_turn("look").expect("look").text();
+    assert!(!room.contains("On the ground"), "{room}");
+}

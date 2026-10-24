@@ -131,10 +131,13 @@ pub enum WorldEvent {
         raw_input: String,
     },
     ActEnded,
-    /// A player moved a loose item from the current room into their
-    /// inventory via the generic `take <item>` command.
+    /// A player moved an item from the current room into their inventory via
+    /// the generic `take <item>` command. It lay loose in the room, or sat in
+    /// the feature named by `feature_id`.
     PlayerTookItem {
         item_id: String,
+        #[serde(default)]
+        feature_id: Option<String>,
     },
     /// A player moved an inventory item into the current room via the generic
     /// `drop <item>` command.

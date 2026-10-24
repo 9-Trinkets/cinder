@@ -15,6 +15,26 @@ pub enum ItemKind {
     Key,
 }
 
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum ConsumableKind {
+    Eat,
+    Drink,
+    Consume,
+    VideoClip,
+}
+
+/// What using up an item does. An item with this is a consumable: it is eaten,
+/// drunk, consumed or watched where it is, and is not carried off.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct ConsumableSpec {
+    pub kind: ConsumableKind,
+    #[serde(default)]
+    pub hunger_recovery: u32,
+    #[serde(default)]
+    pub stamina_recovery: u32,
+}
+
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ItemDefinition {
     pub id: String,
@@ -85,6 +105,12 @@ pub struct ItemDefinition {
     /// same group to the current room.
     #[serde(default, skip_serializing_if = "String::is_empty")]
     pub exclusive_group: String,
+    /// Present for items that are used up in place (food, drink, clips).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub consumable: Option<ConsumableSpec>,
+    /// Free tags, matched against an actor's `required_consumable_tags`.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub tags: Vec<String>,
 }
 
 impl ItemDefinition {
@@ -98,7 +124,7 @@ impl ItemDefinition {
     }
 
     pub fn is_takeable(&self) -> bool {
-        !self.trace_mark
+        !self.trace_mark && self.consumable.is_none()
     }
 }
 

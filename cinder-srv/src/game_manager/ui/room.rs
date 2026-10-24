@@ -1,4 +1,4 @@
-use cinder_core::content::types::{ConsumableDefinition, ContentPack};
+use cinder_core::content::types::{ContentPack, RoomConsumableRef};
 use cinder_core::engine::runtime::CinderRuntime;
 use std::collections::BTreeSet;
 
@@ -6,9 +6,9 @@ use super::{ConsumableInfo, RoomConsumableGroup};
 
 pub(super) fn highlighted_consumable(
     crafted_consumable_ids: &BTreeSet<String>,
-    consumable: &ConsumableDefinition,
+    consumable: &RoomConsumableRef<'_>,
 ) -> bool {
-    crafted_consumable_ids.contains(&consumable.id) || consumable.initial_stock > 0
+    crafted_consumable_ids.contains(consumable.consumable.id) || consumable.initial_stock > 0
 }
 
 pub(super) fn build_room_consumables(
@@ -48,8 +48,8 @@ pub(super) fn crafted_consumable_labels(
     content
         .room_consumables(current_room_id)
         .into_iter()
-        .filter(|c| highlighted_consumable(&crafted_consumable_ids, c.consumable))
-        .map(|c| c.consumable.label.clone())
+        .filter(|c| highlighted_consumable(&crafted_consumable_ids, c))
+        .map(|c| c.consumable.label.to_string())
         .collect::<BTreeSet<_>>()
         .into_iter()
         .collect()
@@ -58,26 +58,26 @@ pub(super) fn crafted_consumable_labels(
 fn remaining_in_room(
     runtime: &CinderRuntime,
     current_room_id: &str,
-    c: &cinder_core::content::types::RoomConsumableRef<'_>,
+    c: &RoomConsumableRef<'_>,
 ) -> u32 {
     runtime
-        .current_room_item_count(&c.consumable.id)
+        .current_room_item_count(c.consumable.id)
         .unwrap_or(0)
         + runtime
-            .feature_consumable_count(current_room_id, &c.feature.id, &c.consumable.id)
+            .feature_item_count(current_room_id, &c.feature.id, c.consumable.id)
             .unwrap_or(0)
 }
 
 fn room_consumable(
     crafted_consumable_ids: &BTreeSet<String>,
-    c: cinder_core::content::types::RoomConsumableRef<'_>,
+    c: RoomConsumableRef<'_>,
     remaining: u32,
 ) -> ConsumableInfo {
     ConsumableInfo {
-        id: c.consumable.id.clone(),
-        label: c.consumable.label.clone(),
+        id: c.consumable.id.to_string(),
+        label: c.consumable.label.to_string(),
         kind: format!("{:?}", c.consumable.kind).to_lowercase(),
         stock: remaining,
-        is_crafted: highlighted_consumable(crafted_consumable_ids, c.consumable),
+        is_crafted: highlighted_consumable(crafted_consumable_ids, &c),
     }
 }

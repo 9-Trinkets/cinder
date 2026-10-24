@@ -285,7 +285,11 @@ pub(super) fn render_objective(content: &ContentPack, state: &WorldState) -> Str
     )
 }
 
-pub(super) fn render_feature_consumables_line(
+/// The line listing what a feature holds, shown when the feature is inspected.
+/// An item counts as available when the feature holds some, or when a consumable
+/// that belongs to the feature (it is listed with a count of zero) is lying in
+/// the room, as a dish that has just been cooked is.
+pub(super) fn render_feature_items_line(
     content: &ContentPack,
     state: &WorldState,
     room_id: &str,
@@ -293,23 +297,35 @@ pub(super) fn render_feature_consumables_line(
 ) -> Option<String> {
     let feature = content.feature(room_id, feature_id)?;
     let available = feature
-        .consumables
-        .iter()
-        .filter(|consumable| {
-            state.remaining_consumable_stock(room_id, feature_id, &consumable.id) > 0
-                || state.has_item_in_storage(
-                    &consumable.id,
-                    crate::content::types::ItemStorageTarget::CurrentRoom,
-                    room_id,
-                )
+        .items
+        .keys()
+        .filter(|item_id| {
+            state.feature_item_count(room_id, feature_id, item_id) > 0
+                || content
+                    .item(item_id)
+                    .is_some_and(|item| item.consumable.is_some())
+                    && state.has_item_in_storage(
+                        item_id,
+                        crate::content::types::ItemStorageTarget::CurrentRoom,
+                        room_id,
+                    )
         })
-        .map(|consumable| consumable.label.as_str())
+        .map(|item_id| content.item_label(item_id))
         .collect::<Vec<_>>();
     if available.is_empty() {
         return None;
     }
+    let template = if feature.items_text.trim().is_empty() {
+        content
+            .presentation
+            .presentation_text
+            .feature_items
+            .as_str()
+    } else {
+        feature.items_text.as_str()
+    };
     Some(content.render_template(
-        &content.presentation.presentation_text.feature_consumables,
+        template,
         &[
             ("feature_label", feature.label.as_str()),
             ("items", &content.join_list(&available)),

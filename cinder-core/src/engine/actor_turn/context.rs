@@ -1,4 +1,4 @@
-use crate::content::types::{ActorDefinition, ConsumableDefinition, ConsumableKind, ContentPack};
+use crate::content::types::{ActorDefinition, ConsumableKind, ConsumableView, ContentPack};
 use crate::engine::dialogue::ActorTurnConsumeCandidate;
 use crate::engine::state::WorldState;
 
@@ -55,7 +55,7 @@ pub(crate) fn available_consume_candidates(
         .room_consumables(current_room_id)
         .into_iter()
         .filter(|candidate| {
-            state.remaining_consumable_stock(
+            state.feature_item_count(
                 current_room_id,
                 &candidate.feature.id,
                 &candidate.consumable.id,
@@ -68,8 +68,8 @@ pub(crate) fn available_consume_candidates(
         })
         .filter(|candidate| consumable_matches_actor_requirements(actor, candidate.consumable))
         .map(|candidate| ActorTurnConsumeCandidate {
-            item_id: candidate.consumable.id.clone(),
-            item_label: candidate.consumable.label.clone(),
+            item_id: candidate.consumable.id.to_string(),
+            item_label: candidate.consumable.label.to_string(),
             feature_label: candidate.feature.label.clone(),
             kind: candidate.consumable.kind,
             hunger_recovery: candidate.consumable.hunger_recovery,
@@ -155,7 +155,7 @@ pub(crate) fn inspect_actor_candidates(
 
 fn consumable_matches_actor_requirements(
     actor: &ActorDefinition,
-    consumable: &ConsumableDefinition,
+    consumable: ConsumableView<'_>,
 ) -> bool {
     actor.required_consumable_tags.is_empty()
         || actor.required_consumable_tags.iter().all(|tag| {

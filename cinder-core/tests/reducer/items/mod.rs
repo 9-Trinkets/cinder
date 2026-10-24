@@ -3,6 +3,7 @@
 
 mod consumption;
 mod creation;
+mod feature_items;
 mod transfer;
 
 use super::common::*;

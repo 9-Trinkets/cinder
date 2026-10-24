@@ -32,8 +32,7 @@ pub use movement::{
 };
 pub use presentation::{ErrorTextDefinition, PresentationDefinition, PresentationTextDefinition};
 pub use rooms::{
-    ConsumableDefinition, ConsumableKind, RoomDefinition, RoomDescriptionOverride,
-    RoomExitDefinition, RoomFeatureDefinition,
+    RoomDefinition, RoomDescriptionOverride, RoomExitDefinition, RoomFeatureDefinition,
 };
 pub use speech::SpeechConfigDefinition;
 pub use stats::{StatDefinition, StatsDefinition};

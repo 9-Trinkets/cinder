@@ -226,26 +226,18 @@ impl WorldState {
             .collect()
     }
 
-    pub fn remaining_consumable_stock(
-        &self,
-        room_id: &str,
-        feature_id: &str,
-        consumable_id: &str,
-    ) -> u32 {
-        self.feature_consumable_stock
-            .get(&consumable_key(room_id, feature_id, consumable_id))
+    /// How many of `item_id` the feature holds right now.
+    pub fn feature_item_count(&self, room_id: &str, feature_id: &str, item_id: &str) -> u32 {
+        self.feature_item_stock
+            .get(&feature_item_key(room_id, feature_id, item_id))
             .copied()
             .unwrap_or(0)
     }
 
-    pub fn consume_feature_consumable(
-        &mut self,
-        room_id: &str,
-        feature_id: &str,
-        consumable_id: &str,
-    ) -> bool {
-        let key = consumable_key(room_id, feature_id, consumable_id);
-        let Some(stock) = self.feature_consumable_stock.get_mut(&key) else {
+    /// Takes one `item_id` out of the feature. False when it holds none.
+    pub fn remove_feature_item(&mut self, room_id: &str, feature_id: &str, item_id: &str) -> bool {
+        let key = feature_item_key(room_id, feature_id, item_id);
+        let Some(stock) = self.feature_item_stock.get_mut(&key) else {
             return false;
         };
         if *stock == 0 {
@@ -255,17 +247,51 @@ impl WorldState {
         true
     }
 
-    pub fn restock_feature_consumable(
+    /// Puts `amount` more of `item_id` into the feature.
+    pub fn add_feature_item(
         &mut self,
         room_id: &str,
         feature_id: &str,
-        consumable_id: &str,
+        item_id: &str,
         amount: u32,
-    ) -> bool {
-        let key = consumable_key(room_id, feature_id, consumable_id);
-        let entry = self.feature_consumable_stock.entry(key).or_insert(0);
-        *entry += amount;
-        true
+    ) {
+        *self
+            .feature_item_stock
+            .entry(feature_item_key(room_id, feature_id, item_id))
+            .or_insert(0) += amount;
+    }
+
+    /// What the feature holds right now, as `(item_id, count)`.
+    pub fn feature_items(&self, room_id: &str, feature_id: &str) -> Vec<(String, u32)> {
+        let prefix = format!("{room_id}::{feature_id}::");
+        self.feature_item_stock
+            .iter()
+            .filter(|(key, count)| key.starts_with(&prefix) && **count > 0)
+            .map(|(key, count)| (key[prefix.len()..].to_string(), *count))
+            .collect()
+    }
+
+    /// Everything the player could pick up from the features of `room_id`, as
+    /// `(feature_id, item_id, count)`. Consumables are used in place, so they are
+    /// left out.
+    pub fn takeable_feature_items(
+        &self,
+        content: &ContentPack,
+        room_id: &str,
+    ) -> Vec<(String, String, u32)> {
+        let Some(room) = content.room(room_id) else {
+            return Vec::new();
+        };
+        room.features
+            .iter()
+            .flat_map(|feature| {
+                self.feature_items(room_id, &feature.id)
+                    .into_iter()
+                    .filter(|(item_id, _)| content.item(item_id).is_some_and(|i| i.is_takeable()))
+                    .map(|(item_id, count)| (feature.id.clone(), item_id, count))
+                    .collect::<Vec<_>>()
+            })
+            .collect()
     }
 
     /// Adds an item to the player's inventory and actor inventory simultaneously.

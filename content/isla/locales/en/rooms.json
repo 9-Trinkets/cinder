@@ -498,6 +498,9 @@
           "clementines",
           "shelf"
         ],
+        "items": {
+          "snack": 1
+        },
         "inspect_text": "Crackers in two kinds, a bowl of clementines for the winter, a tin of oat cookies, and a pitcher of water with a clean cloth over it."
       },
       {
@@ -554,10 +557,7 @@
           "door to the yard"
         ]
       }
-    ],
-    "items": {
-      "snack": 1
-    }
+    ]
   },
   {
     "id": "back-yard",
@@ -1095,6 +1095,11 @@
           "books",
           "picture books"
         ],
+        "items": {
+          "book-bird": 1,
+          "book-bear": 1,
+          "book-fox": 1
+        },
         "inspect_text": "The spines are labeled in marker. MOVING, NEW BABY, BIG FEELINGS, BEDTIME, SCHOOL, DEATH, DIVORCE. The last two are low, where a child could find them."
       },
       {
@@ -1134,12 +1139,7 @@
           "door"
         ]
       }
-    ],
-    "items": {
-      "book-bird": 1,
-      "book-bear": 1,
-      "book-fox": 1
-    }
+    ]
   },
   {
     "id": "basement",

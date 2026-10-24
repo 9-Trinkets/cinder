@@ -66,33 +66,15 @@ pub struct RoomFeatureDefinition {
     pub aliases: Vec<String>,
     #[serde(default)]
     pub allow_rest: bool,
+    /// Items this feature holds, item id → how many are there when play starts.
+    /// The player can take them (unless the item is a consumable, which is used
+    /// in place), and a count of zero marks an item that belongs here and shows
+    /// up once something puts it there.
     #[serde(default)]
-    pub consumables: Vec<ConsumableDefinition>,
+    pub items: BTreeMap<String, u32>,
+    /// How the feature's items are listed when it is inspected, with `{items}`
+    /// and `{feature_label}`. Empty uses the pack's `feature_items` line.
+    #[serde(default)]
+    pub items_text: String,
     pub inspect_text: String,
-}
-
-#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = "snake_case")]
-pub enum ConsumableKind {
-    Eat,
-    Drink,
-    Consume,
-    VideoClip,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ConsumableDefinition {
-    pub id: String,
-    pub label: String,
-    #[serde(default)]
-    pub aliases: Vec<String>,
-    #[serde(default)]
-    pub tags: Vec<String>,
-    pub kind: ConsumableKind,
-    #[serde(default)]
-    pub initial_stock: u32,
-    #[serde(default)]
-    pub hunger_recovery: u32,
-    #[serde(default)]
-    pub stamina_recovery: u32,
 }

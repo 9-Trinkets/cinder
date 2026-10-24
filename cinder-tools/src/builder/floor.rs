@@ -72,7 +72,8 @@ impl FloorBuilder {
             label: feature_label.into(),
             aliases: feature_aliases,
             allow_rest: false,
-            consumables: Vec::new(),
+            items: Default::default(),
+            items_text: String::new(),
             inspect_text: feature_inspect.into(),
         };
 
@@ -106,7 +107,8 @@ impl FloorBuilder {
                 label: feature_label.into(),
                 aliases: feature_aliases,
                 allow_rest: false,
-                consumables: Vec::new(),
+                items: Default::default(),
+                items_text: String::new(),
                 inspect_text: feature_inspect.into(),
             });
         }

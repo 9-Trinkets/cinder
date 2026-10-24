@@ -10,8 +10,11 @@ use crate::engine::state::WorldState;
 
 pub(super) fn dispatch(ctx: &mut ReduceCtx<'_>, event: &WorldEvent) -> bool {
     match event {
-        WorldEvent::PlayerTookItem { item_id } => {
-            handle_player_took_item(ctx, item_id);
+        WorldEvent::PlayerTookItem {
+            item_id,
+            feature_id,
+        } => {
+            handle_player_took_item(ctx, item_id, feature_id.as_deref());
             true
         }
         WorldEvent::PlayerDroppedItem { item_id } => {

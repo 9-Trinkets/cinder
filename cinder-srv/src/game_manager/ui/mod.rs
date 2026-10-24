@@ -477,6 +477,39 @@ mod tests {
     }
 
     #[test]
+    fn books_on_the_shelves_are_offered_by_the_take_panel_and_the_room_items() {
+        let pack = cinder_core::loader::load_named_pack("isla", Some("en")).expect("isla loads");
+        let runtime = CinderRuntime::new(pack, false).expect("runtime creates");
+        for command in [
+            "go inside",
+            "go hall",
+            "go upstairs",
+            "go upstairs",
+            "go book room",
+        ] {
+            runtime.run_turn(command).expect(command);
+        }
+        let snapshot = build_ui_snapshot(&runtime, "isla", &[]).expect("snapshot builds");
+        let titles: Vec<_> = snapshot
+            .current_room_items
+            .iter()
+            .map(|item| item.label.as_str())
+            .collect();
+        assert!(
+            titles.contains(&"The Bird Who Carried Her Nest"),
+            "{titles:?}"
+        );
+
+        let take = &snapshot.panel_options["take"];
+        let bear = take
+            .iter()
+            .find(|option| option.title == "Bear Counts To Ten")
+            .expect("bear book offered");
+        assert_eq!(bear.subtitle.as_deref(), Some("Shelves"));
+        assert_eq!(bear.command.as_deref(), Some("take book-bear"));
+    }
+
+    #[test]
     fn quests_and_levels_stay_hidden_until_player_visits_qualifying_room() {
         let pack = cinder_core::loader::load_named_pack("layla", Some("en")).expect("layla loads");
         let runtime = CinderRuntime::new(pack.clone(), false).expect("runtime creates");

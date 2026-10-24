@@ -468,6 +468,12 @@ pub(super) fn build_current_room_items(
         .loose_room_items(current_room_id)
         .into_iter()
         .filter(|(item_id, _)| content.item(item_id).is_none_or(|item| item.is_takeable()))
+        .chain(
+            state
+                .takeable_feature_items(content, current_room_id)
+                .into_iter()
+                .map(|(_, item_id, count)| (item_id, count)),
+        )
         .map(|(item_id, count)| {
             let label = content.item_label(&item_id).to_string();
             InventoryItem {

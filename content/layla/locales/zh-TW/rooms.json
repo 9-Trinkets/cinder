@@ -35,7 +35,6 @@
           "磨損的交叉軌跡"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r1c1-feature",
         "inspect_text": "淺槽磨進冰冷的石中。淤積的泥沙沉在溝裡，但它們相交的那個直角依然銳利而刻意。",
         "label": "磨損的交叉軌跡"
@@ -92,7 +91,6 @@
           "餘燼坑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r1c2-feature",
         "inspect_text": "焦黑的河石圍著灰燼和將熄的橘紅炭火。石頭的外緣摸來冰涼。",
         "label": "餘燼坑"
@@ -149,7 +147,6 @@
           "骨堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r1c3-feature",
         "inspect_text": "一小堆乾燥、被啃過的骨頭，按大小分成了整齊的小捆。",
         "label": "骨堆"
@@ -206,7 +203,6 @@
           "剖獸石"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r1c4-feature",
         "inspect_text": "一塊被刮刀劃出傷痕的扁平石灰岩，四周散著乾燥的鹿角和骨屑。",
         "label": "剖獸石"
@@ -263,7 +259,6 @@
           "磨損的交叉軌跡"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r1c5-feature",
         "inspect_text": "淺槽磨進冰冷的石中。淤積的泥沙沉在溝裡，但它們相交的那個直角依然銳利而刻意。",
         "label": "磨損的交叉軌跡"
@@ -320,7 +315,6 @@
           "餘燼坑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r1c6-feature",
         "inspect_text": "焦黑的河石圍著灰燼和將熄的橘紅炭火。石頭的外緣摸來冰涼。",
         "label": "餘燼坑"
@@ -377,7 +371,6 @@
           "骨堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r1c7-feature",
         "inspect_text": "一小堆乾燥、被啃過的骨頭，按大小分成了整齊的小捆。",
         "label": "骨堆"
@@ -434,7 +427,6 @@
           "剖獸石"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r1c8-feature",
         "inspect_text": "一塊被刮刀劃出傷痕的扁平石灰岩，四周散著乾燥的鹿角和骨屑。",
         "label": "剖獸石"
@@ -481,7 +473,6 @@
           "磨損的交叉軌跡"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r1c9-feature",
         "inspect_text": "淺槽磨進冰冷的石中。淤積的泥沙沉在溝裡，但它們相交的那個直角依然銳利而刻意。",
         "label": "磨損的交叉軌跡"
@@ -538,7 +529,6 @@
           "餘燼坑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r2c1-feature",
         "inspect_text": "焦黑的河石圍著灰燼和將熄的橘紅炭火。石頭的外緣摸來冰涼。",
         "label": "餘燼坑"
@@ -605,7 +595,6 @@
           "骨堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r2c2-feature",
         "inspect_text": "一小堆乾燥、被啃過的骨頭，按大小分成了整齊的小捆。",
         "label": "骨堆"
@@ -672,7 +661,6 @@
           "剖獸石"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r2c3-feature",
         "inspect_text": "一塊被刮刀劃出傷痕的扁平石灰岩，四周散著乾燥的鹿角和骨屑。",
         "label": "剖獸石"
@@ -739,7 +727,6 @@
           "磨損的交叉軌跡"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r2c4-feature",
         "inspect_text": "淺槽磨進冰冷的石中。淤積的泥沙沉在溝裡，但它們相交的那個直角依然銳利而刻意。",
         "label": "磨損的交叉軌跡"
@@ -806,7 +793,6 @@
           "餘燼坑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r2c5-feature",
         "inspect_text": "焦黑的河石圍著灰燼和將熄的橘紅炭火。石頭的外緣摸來冰涼。",
         "label": "餘燼坑"
@@ -873,7 +859,6 @@
           "骨堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r2c6-feature",
         "inspect_text": "一小堆乾燥、被啃過的骨頭，按大小分成了整齊的小捆。",
         "label": "骨堆"
@@ -940,7 +925,6 @@
           "剖獸石"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r2c7-feature",
         "inspect_text": "一塊被刮刀劃出傷痕的扁平石灰岩，四周散著乾燥的鹿角和骨屑。",
         "label": "剖獸石"
@@ -1007,7 +991,6 @@
           "磨損的交叉軌跡"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r2c8-feature",
         "inspect_text": "淺槽磨進冰冷的石中。淤積的泥沙沉在溝裡，但它們相交的那個直角依然銳利而刻意。",
         "label": "磨損的交叉軌跡"
@@ -1064,7 +1047,6 @@
           "餘燼坑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r2c9-feature",
         "inspect_text": "焦黑的河石圍著灰燼和將熄的橘紅炭火。石頭的外緣摸來冰涼。",
         "label": "餘燼坑"
@@ -1121,7 +1103,6 @@
           "骨堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r3c1-feature",
         "inspect_text": "一小堆乾燥、被啃過的骨頭，按大小分成了整齊的小捆。",
         "label": "骨堆"
@@ -1188,7 +1169,6 @@
           "剖獸石"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r3c2-feature",
         "inspect_text": "一塊被刮刀劃出傷痕的扁平石灰岩，四周散著乾燥的鹿角和骨屑。",
         "label": "剖獸石"
@@ -1255,7 +1235,6 @@
           "粉筆圈記號"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r3c3-feature",
         "inspect_text": "魔像的胸口和額頭標著一圈淺色粉筆，透著與沉睡之牆上白霜同樣的淡光。",
         "label": "粉筆圈記號"
@@ -1322,7 +1301,6 @@
           "餘燼坑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r3c4-feature",
         "inspect_text": "一圈被火燒出疤的石頭，裡頭的餘燼從未真正熄滅。炭火在呼吸，橘紅而耐心。",
         "label": "餘燼坑"
@@ -1389,7 +1367,6 @@
           "骨堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r3c5-feature",
         "inspect_text": "一整齊堆放的長骨，被啃得乾乾淨淨，擺得近乎隨意——就像隨手收攏一件也許還會再用的東西。",
         "label": "骨堆"
@@ -1456,7 +1433,6 @@
           "剖獸石"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r3c6-feature",
         "inspect_text": "一塊岩石台面，中央磨得又黑又滑，部族就在這裡處理獵物。這裡的氣味最濃。",
         "label": "剖獸石"
@@ -1523,7 +1499,6 @@
           "粉筆圈記號"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r3c7-feature",
         "inspect_text": "魔像的胸口和額頭標著一圈淺色粉筆，在昏暗中透著極淡的光。",
         "label": "粉筆圈記號"
@@ -1590,7 +1565,6 @@
           "餘燼坑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r3c8-feature",
         "inspect_text": "焦黑的河石圍著灰燼和將熄的橘紅炭火。石頭的外緣摸來冰涼。",
         "label": "餘燼坑"
@@ -1647,7 +1621,6 @@
           "骨堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r3c9-feature",
         "inspect_text": "一小堆乾燥、被啃過的骨頭，按大小分成了整齊的小捆。",
         "label": "骨堆"
@@ -1704,7 +1677,6 @@
           "剖獸石"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r4c1-feature",
         "inspect_text": "一塊被刮刀劃出傷痕的扁平石灰岩，四周散著乾燥的鹿角和骨屑。",
         "label": "剖獸石"
@@ -1771,7 +1743,6 @@
           "磨損的交叉軌跡"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r4c2-feature",
         "inspect_text": "淺槽磨進冰冷的石中。淤積的泥沙沉在溝裡，但它們相交的那個直角依然銳利而刻意。",
         "label": "磨損的交叉軌跡"
@@ -1838,7 +1809,6 @@
           "餘燼坑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r4c3-feature",
         "inspect_text": "一圈被火燒出疤的石頭，裡頭的餘燼從未真正熄滅。炭火在呼吸，橘紅而耐心。",
         "label": "餘燼坑"
@@ -1905,7 +1875,6 @@
           "骨堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r4c4-feature",
         "inspect_text": "一堆厚獸皮包裹和雕骨護符，落著一層細石灰粉。",
         "label": "骨堆"
@@ -1972,7 +1941,6 @@
           "剖獸石"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r4c5-feature",
         "inspect_text": "一塊巨大的處理石台，又黑又油，兩旁整整齊齊排著燧石楔和骨雕鑿。",
         "label": "剖獸石"
@@ -2039,7 +2007,6 @@
           "磨損的交叉軌跡"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r4c6-feature",
         "inspect_text": "深槽如格線般交會，被小小的腳掌帶進來的粉筆灰染得發白。",
         "label": "磨損的交叉軌跡"
@@ -2106,7 +2073,6 @@
           "餘燼坑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r4c7-feature",
         "inspect_text": "一圈被火燒出疤的石頭，裡頭的餘燼從未真正熄滅。炭火在呼吸，橘紅而耐心。",
         "label": "餘燼坑"
@@ -2173,7 +2139,6 @@
           "骨堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r4c8-feature",
         "inspect_text": "一小堆乾燥、被啃過的骨頭，按大小分成了整齊的小捆。",
         "label": "骨堆"
@@ -2230,7 +2195,6 @@
           "剖獸石"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r4c9-feature",
         "inspect_text": "一塊被刮刀劃出傷痕的扁平石灰岩，四周散著乾燥的鹿角和骨屑。",
         "label": "剖獸石"
@@ -2287,7 +2251,6 @@
           "磨損的交叉軌跡"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r5c1-feature",
         "inspect_text": "淺槽磨進冰冷的石中。淤積的泥沙沉在溝裡，但它們相交的那個直角依然銳利而刻意。",
         "label": "磨損的交叉軌跡"
@@ -2354,7 +2317,6 @@
           "餘燼坑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r5c2-feature",
         "inspect_text": "焦黑的河石圍著灰燼和將熄的橘紅炭火。石頭的外緣摸來冰涼。",
         "label": "餘燼坑"
@@ -2421,7 +2383,6 @@
           "骨堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r5c3-feature",
         "inspect_text": "一整齊堆放的長骨，被啃得乾乾淨淨，擺得近乎隨意——就像隨手收攏一件也許還會再用的東西。",
         "label": "骨堆"
@@ -2488,7 +2449,6 @@
           "剖獸石"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r5c4-feature",
         "inspect_text": "一塊巨大的處理石台，又黑又油，兩旁整整齊齊排著燧石楔和骨雕鑿。",
         "label": "剖獸石"
@@ -2572,7 +2532,6 @@
           "粉筆圈"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r5c5-feature",
         "inspect_text": "洞窟地面上畫著一圈粉筆，足夠站進一個人，透出和你自己畫的記號一樣的淡光。這是你見過最大的一個。",
         "label": "粉筆圈"
@@ -2639,7 +2598,6 @@
           "餘燼坑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r5c6-feature",
         "inspect_text": "一只沉重的石槽透著白與櫻桃紅的光，散出灼人的熱，讓空氣也扭曲起來。",
         "label": "餘燼坑"
@@ -2706,7 +2664,6 @@
           "骨堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r5c7-feature",
         "inspect_text": "一整齊堆放的長骨，被啃得乾乾淨淨，擺得近乎隨意——就像隨手收攏一件也許還會再用的東西。",
         "label": "骨堆"
@@ -2773,7 +2730,6 @@
           "剖獸石"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r5c8-feature",
         "inspect_text": "一塊被刮刀劃出傷痕的扁平石灰岩，四周散著乾燥的鹿角和骨屑。",
         "label": "剖獸石"
@@ -2830,7 +2786,6 @@
           "磨損的交叉軌跡"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r5c9-feature",
         "inspect_text": "淺槽磨進冰冷的石中。淤積的泥沙沉在溝裡，但它們相交的那個直角依然銳利而刻意。",
         "label": "磨損的交叉軌跡"
@@ -2887,7 +2842,6 @@
           "餘燼坑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r6c1-feature",
         "inspect_text": "焦黑的河石圍著灰燼和將熄的橘紅炭火。石頭的外緣摸來冰涼。",
         "label": "餘燼坑"
@@ -2954,7 +2908,6 @@
           "骨堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r6c2-feature",
         "inspect_text": "一小堆乾燥、被啃過的骨頭，按大小分成了整齊的小捆。",
         "label": "骨堆"
@@ -3021,7 +2974,6 @@
           "剖獸石"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r6c3-feature",
         "inspect_text": "一塊岩石台面，中央磨得又黑又滑，部族就在這裡處理獵物。這裡的氣味最濃。",
         "label": "剖獸石"
@@ -3088,7 +3040,6 @@
           "磨損的交叉軌跡"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r6c4-feature",
         "inspect_text": "深槽如格線般交會，被小小的腳掌帶進來的粉筆灰染得發白。",
         "label": "磨損的交叉軌跡"
@@ -3155,7 +3106,6 @@
           "餘燼坑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r6c5-feature",
         "inspect_text": "一只沉重的石槽透著白與櫻桃紅的光，散出灼人的熱，讓空氣也扭曲起來。",
         "label": "餘燼坑"
@@ -3222,7 +3172,6 @@
           "骨堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r6c6-feature",
         "inspect_text": "一堆厚獸皮包裹和雕骨護符，落著一層細石灰粉。",
         "label": "骨堆"
@@ -3289,7 +3238,6 @@
           "剖獸石"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r6c7-feature",
         "inspect_text": "一塊岩石台面，中央磨得又黑又滑，部族就在這裡處理獵物。這裡的氣味最濃。",
         "label": "剖獸石"
@@ -3356,7 +3304,6 @@
           "磨損的交叉軌跡"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r6c8-feature",
         "inspect_text": "淺槽磨進冰冷的石中。淤積的泥沙沉在溝裡，但它們相交的那個直角依然銳利而刻意。",
         "label": "磨損的交叉軌跡"
@@ -3413,7 +3360,6 @@
           "餘燼坑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r6c9-feature",
         "inspect_text": "焦黑的河石圍著灰燼和將熄的橘紅炭火。石頭的外緣摸來冰涼。",
         "label": "餘燼坑"
@@ -3470,7 +3416,6 @@
           "骨堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r7c1-feature",
         "inspect_text": "一小堆乾燥、被啃過的骨頭，按大小分成了整齊的小捆。",
         "label": "骨堆"
@@ -3537,7 +3482,6 @@
           "剖獸石"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r7c2-feature",
         "inspect_text": "一塊被刮刀劃出傷痕的扁平石灰岩，四周散著乾燥的鹿角和骨屑。",
         "label": "剖獸石"
@@ -3604,7 +3548,6 @@
           "粉筆圈記號"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r7c3-feature",
         "inspect_text": "魔像的胸口和額頭標著一圈淺色粉筆，透著與沉睡之牆上白霜同樣的淡光。",
         "label": "粉筆圈記號"
@@ -3671,7 +3614,6 @@
           "餘燼坑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r7c4-feature",
         "inspect_text": "一圈被火燒出疤的石頭，裡頭的餘燼從未真正熄滅。炭火在呼吸，橘紅而耐心。",
         "label": "餘燼坑"
@@ -3738,7 +3680,6 @@
           "骨堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r7c5-feature",
         "inspect_text": "一整齊堆放的長骨，被啃得乾乾淨淨，擺得近乎隨意——就像隨手收攏一件也許還會再用的東西。",
         "label": "骨堆"
@@ -3805,7 +3746,6 @@
           "剖獸石"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r7c6-feature",
         "inspect_text": "一塊岩石台面，中央磨得又黑又滑，部族就在這裡處理獵物。這裡的氣味最濃。",
         "label": "剖獸石"
@@ -3872,7 +3812,6 @@
           "粉筆圈記號"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r7c7-feature",
         "inspect_text": "魔像的胸口和額頭標著一圈淺色粉筆，在昏暗中透著極淡的光。",
         "label": "粉筆圈記號"
@@ -3939,7 +3878,6 @@
           "餘燼坑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r7c8-feature",
         "inspect_text": "焦黑的河石圍著灰燼和將熄的橘紅炭火。石頭的外緣摸來冰涼。",
         "label": "餘燼坑"
@@ -3996,7 +3934,6 @@
           "骨堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r7c9-feature",
         "inspect_text": "一小堆乾燥、被啃過的骨頭，按大小分成了整齊的小捆。",
         "label": "骨堆"
@@ -4053,7 +3990,6 @@
           "剖獸石"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r8c1-feature",
         "inspect_text": "一塊被刮刀劃出傷痕的扁平石灰岩，四周散著乾燥的鹿角和骨屑。",
         "label": "剖獸石"
@@ -4120,7 +4056,6 @@
           "磨損的交叉軌跡"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r8c2-feature",
         "inspect_text": "淺槽磨進冰冷的石中。淤積的泥沙沉在溝裡，但它們相交的那個直角依然銳利而刻意。",
         "label": "磨損的交叉軌跡"
@@ -4187,7 +4122,6 @@
           "餘燼坑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r8c3-feature",
         "inspect_text": "焦黑的河石圍著灰燼和將熄的橘紅炭火。石頭的外緣摸來冰涼。",
         "label": "餘燼坑"
@@ -4254,7 +4188,6 @@
           "骨堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r8c4-feature",
         "inspect_text": "一小堆乾燥、被啃過的骨頭，按大小分成了整齊的小捆。",
         "label": "骨堆"
@@ -4321,7 +4254,6 @@
           "剖獸石"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r8c5-feature",
         "inspect_text": "一塊被刮刀劃出傷痕的扁平石灰岩，四周散著乾燥的鹿角和骨屑。",
         "label": "剖獸石"
@@ -4388,7 +4320,6 @@
           "磨損的交叉軌跡"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r8c6-feature",
         "inspect_text": "淺槽磨進冰冷的石中。淤積的泥沙沉在溝裡，但它們相交的那個直角依然銳利而刻意。",
         "label": "磨損的交叉軌跡"
@@ -4455,7 +4386,6 @@
           "餘燼坑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r8c7-feature",
         "inspect_text": "焦黑的河石圍著灰燼和將熄的橘紅炭火。石頭的外緣摸來冰涼。",
         "label": "餘燼坑"
@@ -4522,7 +4452,6 @@
           "骨堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r8c8-feature",
         "inspect_text": "一小堆乾燥、被啃過的骨頭，按大小分成了整齊的小捆。",
         "label": "骨堆"
@@ -4579,7 +4508,6 @@
           "剖獸石"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r8c9-feature",
         "inspect_text": "一塊被刮刀劃出傷痕的扁平石灰岩，四周散著乾燥的鹿角和骨屑。",
         "label": "剖獸石"
@@ -4626,7 +4554,6 @@
           "磨損的交叉軌跡"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r9c1-feature",
         "inspect_text": "淺槽磨進冰冷的石中。淤積的泥沙沉在溝裡，但它們相交的那個直角依然銳利而刻意。",
         "label": "磨損的交叉軌跡"
@@ -4683,7 +4610,6 @@
           "餘燼坑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r9c2-feature",
         "inspect_text": "焦黑的河石圍著灰燼和將熄的橘紅炭火。石頭的外緣摸來冰涼。",
         "label": "餘燼坑"
@@ -4740,7 +4666,6 @@
           "骨堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r9c3-feature",
         "inspect_text": "一小堆乾燥、被啃過的骨頭，按大小分成了整齊的小捆。",
         "label": "骨堆"
@@ -4797,7 +4722,6 @@
           "剖獸石"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r9c4-feature",
         "inspect_text": "一塊被刮刀劃出傷痕的扁平石灰岩，四周散著乾燥的鹿角和骨屑。",
         "label": "剖獸石"
@@ -4854,7 +4778,6 @@
           "磨損的交叉軌跡"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r9c5-feature",
         "inspect_text": "淺槽磨進冰冷的石中。淤積的泥沙沉在溝裡，但它們相交的那個直角依然銳利而刻意。",
         "label": "磨損的交叉軌跡"
@@ -4911,7 +4834,6 @@
           "餘燼坑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r9c6-feature",
         "inspect_text": "焦黑的河石圍著灰燼和將熄的橘紅炭火。石頭的外緣摸來冰涼。",
         "label": "餘燼坑"
@@ -4968,7 +4890,6 @@
           "骨堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r9c7-feature",
         "inspect_text": "一小堆乾燥、被啃過的骨頭，按大小分成了整齊的小捆。",
         "label": "骨堆"
@@ -5025,7 +4946,6 @@
           "剖獸石"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r9c8-feature",
         "inspect_text": "一塊被刮刀劃出傷痕的扁平石灰岩，四周散著乾燥的鹿角和骨屑。",
         "label": "剖獸石"
@@ -5072,7 +4992,6 @@
           "磨損的交叉軌跡"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "r9c9-feature",
         "inspect_text": "淺槽磨進冰冷的石中。淤積的泥沙沉在溝裡，但它們相交的那個直角依然銳利而刻意。",
         "label": "磨損的交叉軌跡"
@@ -5131,7 +5050,6 @@
           "淺色蘑菇"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d1c1-mushrooms",
         "inspect_text": "一叢叢及膝高的蘑菇從潮濕的洞土裡冒出。它們淺色鬆軟的傘蓋全都一致地朝上方的冠蓋傾斜，彷彿轉向一輪地底的太陽。",
         "label": "淺色蘑菇"
@@ -5145,7 +5063,6 @@
           "發光的冠蓋"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d1c1-canopy",
         "inspect_text": "高高在上，活著的樹根編織成一片廣闊的拱頂，其間交織著發光的地衣與苔蘚。柔和的青綠光芒從昏暗中篩落而下。",
         "label": "發光的冠蓋"
@@ -5202,7 +5119,6 @@
           "飄移的孢子"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d1c2-spores",
         "inspect_text": "閃爍的孢子在靜止的空氣中懶懶劃弧飄移，以均勻的四秒節奏一亮一暗，像地底一次緩慢的呼吸。",
         "label": "飄移的孢子"
@@ -5217,7 +5133,6 @@
           "假天空"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d1c2-sky",
         "inspect_text": "洞窟的頂部閃爍著，像一片人造的暮色天空。它散出的光剛好足以投下銳利的影子，照出前方的路。",
         "label": "假天空"
@@ -5274,7 +5189,6 @@
           "飄移的孢子"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d1c3-spores",
         "inspect_text": "閃爍的孢子在靜止的空氣中懶懶劃弧飄移，以均勻的四秒節奏一亮一暗，像地底一次緩慢的呼吸。",
         "label": "飄移的孢子"
@@ -5289,7 +5203,6 @@
           "假天空"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d1c3-sky",
         "inspect_text": "洞窟的頂部閃爍著，像一片人造的暮色天空。它散出的光剛好足以投下銳利的影子，照出前方的路。",
         "label": "假天空"
@@ -5346,7 +5259,6 @@
           "飄移的孢子"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d1c4-spores",
         "inspect_text": "閃爍的孢子在靜止的空氣中懶懶劃弧飄移，以均勻的四秒節奏一亮一暗，像地底一次緩慢的呼吸。",
         "label": "飄移的孢子"
@@ -5361,7 +5273,6 @@
           "假天空"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d1c4-sky",
         "inspect_text": "洞窟的頂部閃爍著，像一片人造的暮色天空。它散出的光剛好足以投下銳利的影子，照出前方的路。",
         "label": "假天空"
@@ -5418,7 +5329,6 @@
           "飄移的孢子"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d1c5-spores",
         "inspect_text": "閃爍的孢子在靜止的空氣中懶懶劃弧飄移，以均勻的四秒節奏一亮一暗，像地底一次緩慢的呼吸。",
         "label": "飄移的孢子"
@@ -5433,7 +5343,6 @@
           "假天空"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d1c5-sky",
         "inspect_text": "洞窟的頂部閃爍著，像一片人造的暮色天空。它散出的光剛好足以投下銳利的影子，照出前方的路。",
         "label": "假天空"
@@ -5490,7 +5399,6 @@
           "飄移的孢子"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d1c6-spores",
         "inspect_text": "閃爍的孢子在靜止的空氣中懶懶劃弧飄移，以均勻的四秒節奏一亮一暗，像地底一次緩慢的呼吸。",
         "label": "飄移的孢子"
@@ -5505,7 +5413,6 @@
           "假天空"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d1c6-sky",
         "inspect_text": "洞窟的頂部閃爍著，像一片人造的暮色天空。它散出的光剛好足以投下銳利的影子，照出前方的路。",
         "label": "假天空"
@@ -5562,7 +5469,6 @@
           "飄移的孢子"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d1c7-spores",
         "inspect_text": "閃爍的孢子在靜止的空氣中懶懶劃弧飄移，以均勻的四秒節奏一亮一暗，像地底一次緩慢的呼吸。",
         "label": "飄移的孢子"
@@ -5577,7 +5483,6 @@
           "假天空"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d1c7-sky",
         "inspect_text": "洞窟的頂部閃爍著，像一片人造的暮色天空。它散出的光剛好足以投下銳利的影子，照出前方的路。",
         "label": "假天空"
@@ -5624,7 +5529,6 @@
           "飄移的孢子"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d1c8-spores",
         "inspect_text": "閃爍的孢子在靜止的空氣中懶懶劃弧飄移，以均勻的四秒節奏一亮一暗，像地底一次緩慢的呼吸。",
         "label": "飄移的孢子"
@@ -5639,7 +5543,6 @@
           "假天空"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d1c8-sky",
         "inspect_text": "洞窟的頂部閃爍著，像一片人造的暮色天空。它散出的光剛好足以投下銳利的影子，照出前方的路。",
         "label": "假天空"
@@ -5696,7 +5599,6 @@
           "樹根纏結"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d2c1-roots",
         "inspect_text": "有你軀幹般粗的虯結樹根從石牆的裂縫裡扭穿而出。它們透著微弱的樹液暖意，貼著岩石幾乎難以察覺地起伏。",
         "label": "樹根纏結"
@@ -5711,7 +5613,6 @@
           "活的牆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d2c1-walls",
         "inspect_text": "石灰岩塊被古樹撐裂。清涼的水從縫隙裡滲下，滋養著厚厚一層深色苔蘚。",
         "label": "活的牆"
@@ -5778,7 +5679,6 @@
           "樹根纏結"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d2c2-roots",
         "inspect_text": "有你軀幹般粗的虯結樹根從石牆的裂縫裡扭穿而出。它們透著微弱的樹液暖意，貼著岩石幾乎難以察覺地起伏。",
         "label": "樹根纏結"
@@ -5793,7 +5693,6 @@
           "活的牆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d2c2-walls",
         "inspect_text": "石灰岩塊被古樹撐裂。清涼的水從縫隙裡滲下，滋養著厚厚一層深色苔蘚。",
         "label": "活的牆"
@@ -5860,7 +5759,6 @@
           "樹根纏結"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d2c3-roots",
         "inspect_text": "有你軀幹般粗的虯結樹根從石牆的裂縫裡扭穿而出。它們透著微弱的樹液暖意，貼著岩石幾乎難以察覺地起伏。",
         "label": "樹根纏結"
@@ -5875,7 +5773,6 @@
           "活的牆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d2c3-walls",
         "inspect_text": "石灰岩塊被古樹撐裂。清涼的水從縫隙裡滲下，滋養著厚厚一層深色苔蘚。",
         "label": "活的牆"
@@ -5942,7 +5839,6 @@
           "樹根纏結"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d2c4-roots",
         "inspect_text": "有你軀幹般粗的虯結樹根從石牆的裂縫裡扭穿而出。它們透著微弱的樹液暖意，貼著岩石幾乎難以察覺地起伏。",
         "label": "樹根纏結"
@@ -5957,7 +5853,6 @@
           "活的牆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d2c4-walls",
         "inspect_text": "石灰岩塊被古樹撐裂。清涼的水從縫隙裡滲下，滋養著厚厚一層深色苔蘚。",
         "label": "活的牆"
@@ -6024,7 +5919,6 @@
           "樹根纏結"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d2c5-roots",
         "inspect_text": "有你軀幹般粗的虯結樹根從石牆的裂縫裡扭穿而出。它們透著微弱的樹液暖意，貼著岩石幾乎難以察覺地起伏。",
         "label": "樹根纏結"
@@ -6039,7 +5933,6 @@
           "活的牆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d2c5-walls",
         "inspect_text": "石灰岩塊被古樹撐裂。清涼的水從縫隙裡滲下，滋養著厚厚一層深色苔蘚。",
         "label": "活的牆"
@@ -6106,7 +5999,6 @@
           "樹根纏結"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d2c6-roots",
         "inspect_text": "有你軀幹般粗的虯結樹根從石牆的裂縫裡扭穿而出。它們透著微弱的樹液暖意，貼著岩石幾乎難以察覺地起伏。",
         "label": "樹根纏結"
@@ -6121,7 +6013,6 @@
           "活的牆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d2c6-walls",
         "inspect_text": "石灰岩塊被古樹撐裂。清涼的水從縫隙裡滲下，滋養著厚厚一層深色苔蘚。",
         "label": "活的牆"
@@ -6188,7 +6079,6 @@
           "樹根纏結"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d2c7-roots",
         "inspect_text": "有你軀幹般粗的虯結樹根從石牆的裂縫裡扭穿而出。它們透著微弱的樹液暖意，貼著岩石幾乎難以察覺地起伏。",
         "label": "樹根纏結"
@@ -6203,7 +6093,6 @@
           "活的牆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d2c7-walls",
         "inspect_text": "石灰岩塊被古樹撐裂。清涼的水從縫隙裡滲下，滋養著厚厚一層深色苔蘚。",
         "label": "活的牆"
@@ -6260,7 +6149,6 @@
           "樹根纏結"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d2c8-roots",
         "inspect_text": "有你軀幹般粗的虯結樹根從石牆的裂縫裡扭穿而出。它們透著微弱的樹液暖意，貼著岩石幾乎難以察覺地起伏。",
         "label": "樹根纏結"
@@ -6275,7 +6163,6 @@
           "活的牆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d2c8-walls",
         "inspect_text": "石灰岩塊被古樹撐裂。清涼的水從縫隙裡滲下，滋養著厚厚一層深色苔蘚。",
         "label": "活的牆"
@@ -6331,7 +6218,6 @@
           "靜池"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d3c1-pool",
         "inspect_text": "一只寬闊的石灰岩水池，盛著清澈、富含礦物質的水。水面映著冠蓋的光，深得足以沒過一支長矛。",
         "label": "靜池"
@@ -6345,7 +6231,6 @@
           "漣漪"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d3c1-ripples",
         "inspect_text": "一圈圈同心波紋每隔片刻就擾動池面如鏡的水皮，儘管上頭沒有水滴落。底下深處的地下水道裡，有東西在攪動。",
         "label": "漣漪"
@@ -6411,7 +6296,6 @@
           "靜池"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d3c2-pool",
         "inspect_text": "一只寬闊的石灰岩水池，盛著清澈、富含礦物質的水。水面映著冠蓋的光，深得足以沒過一支長矛。",
         "label": "靜池"
@@ -6425,7 +6309,6 @@
           "漣漪"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d3c2-ripples",
         "inspect_text": "一圈圈同心波紋每隔片刻就擾動池面如鏡的水皮，儘管上頭沒有水滴落。底下深處的地下水道裡，有東西在攪動。",
         "label": "漣漪"
@@ -6491,7 +6374,6 @@
           "靜池"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d3c3-pool",
         "inspect_text": "一只寬闊的石灰岩水池，盛著清澈、富含礦物質的水。水面映著冠蓋的光，深得足以沒過一支長矛。",
         "label": "靜池"
@@ -6505,7 +6387,6 @@
           "漣漪"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d3c3-ripples",
         "inspect_text": "一圈圈同心波紋每隔片刻就擾動池面如鏡的水皮，儘管上頭沒有水滴落。底下深處的地下水道裡，有東西在攪動。",
         "label": "漣漪"
@@ -6571,7 +6452,6 @@
           "靜池"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d3c4-pool",
         "inspect_text": "一只寬闊的石灰岩水池，盛著清澈、富含礦物質的水。水面映著冠蓋的光，深得足以沒過一支長矛。",
         "label": "靜池"
@@ -6585,7 +6465,6 @@
           "漣漪"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d3c4-ripples",
         "inspect_text": "一圈圈同心波紋每隔片刻就擾動池面如鏡的水皮，儘管上頭沒有水滴落。底下深處的地下水道裡，有東西在攪動。",
         "label": "漣漪"
@@ -6651,7 +6530,6 @@
           "靜池"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d3c5-pool",
         "inspect_text": "一只寬闊的石灰岩水池，盛著清澈、富含礦物質的水。水面映著冠蓋的光，深得足以沒過一支長矛。",
         "label": "靜池"
@@ -6665,7 +6543,6 @@
           "漣漪"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d3c5-ripples",
         "inspect_text": "一圈圈同心波紋每隔片刻就擾動池面如鏡的水皮，儘管上頭沒有水滴落。底下深處的地下水道裡，有東西在攪動。",
         "label": "漣漪"
@@ -6731,7 +6608,6 @@
           "靜池"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d3c6-pool",
         "inspect_text": "一只寬闊的石灰岩水池，盛著清澈、富含礦物質的水。水面映著冠蓋的光，深得足以沒過一支長矛。",
         "label": "靜池"
@@ -6745,7 +6621,6 @@
           "漣漪"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d3c6-ripples",
         "inspect_text": "一圈圈同心波紋每隔片刻就擾動池面如鏡的水皮，儘管上頭沒有水滴落。底下深處的地下水道裡，有東西在攪動。",
         "label": "漣漪"
@@ -6811,7 +6686,6 @@
           "靜池"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d3c7-pool",
         "inspect_text": "一只寬闊的石灰岩水池，盛著清澈、富含礦物質的水。水面映著冠蓋的光，深得足以沒過一支長矛。",
         "label": "靜池"
@@ -6825,7 +6699,6 @@
           "漣漪"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d3c7-ripples",
         "inspect_text": "一圈圈同心波紋每隔片刻就擾動池面如鏡的水皮，儘管上頭沒有水滴落。底下深處的地下水道裡，有東西在攪動。",
         "label": "漣漪"
@@ -6881,7 +6754,6 @@
           "靜池"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d3c8-pool",
         "inspect_text": "一只寬闊的石灰岩水池，盛著清澈、富含礦物質的水。水面映著冠蓋的光，深得足以沒過一支長矛。",
         "label": "靜池"
@@ -6895,7 +6767,6 @@
           "漣漪"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d3c8-ripples",
         "inspect_text": "一圈圈同心波紋每隔片刻就擾動池面如鏡的水皮，儘管上頭沒有水滴落。底下深處的地下水道裡，有東西在攪動。",
         "label": "漣漪"
@@ -6952,7 +6823,6 @@
           "哨兵蘑菇"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d4c1-mushrooms",
         "inspect_text": "粗壯的蘑菇在潮濕的泥土上排成井然有序的格狀行列。它們平坦的傘蓋把一圈圈淡光投在土上，像一盞盞小燈。",
         "label": "哨兵蘑菇"
@@ -6966,7 +6836,6 @@
           "孢子之光"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d4c1-light",
         "inspect_text": "清涼的磷光從蘑菇傘褶下透出，把土壤照成一窪窪靜謐的光。",
         "label": "孢子之光"
@@ -7033,7 +6902,6 @@
           "哨兵蘑菇"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d4c2-mushrooms",
         "inspect_text": "粗壯的蘑菇在潮濕的泥土上排成井然有序的格狀行列。它們平坦的傘蓋把一圈圈淡光投在土上，像一盞盞小燈。",
         "label": "哨兵蘑菇"
@@ -7047,7 +6915,6 @@
           "孢子之光"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d4c2-light",
         "inspect_text": "清涼的磷光從蘑菇傘褶下透出，把土壤照成一窪窪靜謐的光。",
         "label": "孢子之光"
@@ -7114,7 +6981,6 @@
           "哨兵蘑菇"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d4c3-mushrooms",
         "inspect_text": "粗壯的蘑菇在潮濕的泥土上排成井然有序的格狀行列。它們平坦的傘蓋把一圈圈淡光投在土上，像一盞盞小燈。",
         "label": "哨兵蘑菇"
@@ -7128,7 +6994,6 @@
           "孢子之光"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d4c3-light",
         "inspect_text": "清涼的磷光從蘑菇傘褶下透出，把土壤照成一窪窪靜謐的光。",
         "label": "孢子之光"
@@ -7195,7 +7060,6 @@
           "哨兵蘑菇"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d4c4-mushrooms",
         "inspect_text": "粗壯的蘑菇在潮濕的泥土上排成井然有序的格狀行列。它們平坦的傘蓋把一圈圈淡光投在土上，像一盞盞小燈。",
         "label": "哨兵蘑菇"
@@ -7209,7 +7073,6 @@
           "孢子之光"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d4c4-light",
         "inspect_text": "清涼的磷光從蘑菇傘褶下透出，把土壤照成一窪窪靜謐的光。",
         "label": "孢子之光"
@@ -7276,7 +7139,6 @@
           "哨兵蘑菇"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d4c5-mushrooms",
         "inspect_text": "粗壯的蘑菇在潮濕的泥土上排成井然有序的格狀行列。它們平坦的傘蓋把一圈圈淡光投在土上，像一盞盞小燈。",
         "label": "哨兵蘑菇"
@@ -7290,7 +7152,6 @@
           "孢子之光"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d4c5-light",
         "inspect_text": "清涼的磷光從蘑菇傘褶下透出，把土壤照成一窪窪靜謐的光。",
         "label": "孢子之光"
@@ -7357,7 +7218,6 @@
           "哨兵蘑菇"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d4c6-mushrooms",
         "inspect_text": "粗壯的蘑菇在潮濕的泥土上排成井然有序的格狀行列。它們平坦的傘蓋把一圈圈淡光投在土上，像一盞盞小燈。",
         "label": "哨兵蘑菇"
@@ -7371,7 +7231,6 @@
           "孢子之光"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d4c6-light",
         "inspect_text": "清涼的磷光從蘑菇傘褶下透出，把土壤照成一窪窪靜謐的光。",
         "label": "孢子之光"
@@ -7438,7 +7297,6 @@
           "哨兵蘑菇"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d4c7-mushrooms",
         "inspect_text": "粗壯的蘑菇在潮濕的泥土上排成井然有序的格狀行列。它們平坦的傘蓋把一圈圈淡光投在土上，像一盞盞小燈。",
         "label": "哨兵蘑菇"
@@ -7452,7 +7310,6 @@
           "孢子之光"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d4c7-light",
         "inspect_text": "清涼的磷光從蘑菇傘褶下透出，把土壤照成一窪窪靜謐的光。",
         "label": "孢子之光"
@@ -7509,7 +7366,6 @@
           "哨兵蘑菇"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d4c8-mushrooms",
         "inspect_text": "粗壯的蘑菇在潮濕的泥土上排成井然有序的格狀行列。它們平坦的傘蓋把一圈圈淡光投在土上，像一盞盞小燈。",
         "label": "哨兵蘑菇"
@@ -7523,7 +7379,6 @@
           "孢子之光"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d4c8-light",
         "inspect_text": "清涼的磷光從蘑菇傘褶下透出，把土壤照成一窪窪靜謐的光。",
         "label": "孢子之光"
@@ -7580,7 +7435,6 @@
           "粉筆小徑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d5c1-trail",
         "inspect_text": "用古老礦物粉筆畫出的細白線，沿著巷道中央的地面延伸。歷經數十年的腳步，它們已經褪色，但那幾何的走向依然筆直而刻意。",
         "label": "粉筆小徑"
@@ -7595,7 +7449,6 @@
           "磨損的記號"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d5c1-marks",
         "inspect_text": "基岩上刻著淡淡的幾何交線。早在你走過之前，早有人精準地測繪過這條走廊。",
         "label": "磨損的記號"
@@ -7662,7 +7515,6 @@
           "粉筆小徑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d5c2-trail",
         "inspect_text": "用古老礦物粉筆畫出的細白線，沿著巷道中央的地面延伸。歷經數十年的腳步，它們已經褪色，但那幾何的走向依然筆直而刻意。",
         "label": "粉筆小徑"
@@ -7677,7 +7529,6 @@
           "磨損的記號"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d5c2-marks",
         "inspect_text": "基岩上刻著淡淡的幾何交線。早在你走過之前，早有人精準地測繪過這條走廊。",
         "label": "磨損的記號"
@@ -7744,7 +7595,6 @@
           "粉筆小徑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d5c3-trail",
         "inspect_text": "用古老礦物粉筆畫出的細白線，沿著巷道中央的地面延伸。歷經數十年的腳步，它們已經褪色，但那幾何的走向依然筆直而刻意。",
         "label": "粉筆小徑"
@@ -7759,7 +7609,6 @@
           "磨損的記號"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d5c3-marks",
         "inspect_text": "基岩上刻著淡淡的幾何交線。早在你走過之前，早有人精準地測繪過這條走廊。",
         "label": "磨損的記號"
@@ -7826,7 +7675,6 @@
           "粉筆小徑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d5c4-trail",
         "inspect_text": "用古老礦物粉筆畫出的細白線，沿著巷道中央的地面延伸。歷經數十年的腳步，它們已經褪色，但那幾何的走向依然筆直而刻意。",
         "label": "粉筆小徑"
@@ -7841,7 +7689,6 @@
           "磨損的記號"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d5c4-marks",
         "inspect_text": "基岩上刻著淡淡的幾何交線。早在你走過之前，早有人精準地測繪過這條走廊。",
         "label": "磨損的記號"
@@ -7908,7 +7755,6 @@
           "粉筆小徑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d5c5-trail",
         "inspect_text": "用古老礦物粉筆畫出的細白線，沿著巷道中央的地面延伸。歷經數十年的腳步，它們已經褪色，但那幾何的走向依然筆直而刻意。",
         "label": "粉筆小徑"
@@ -7923,7 +7769,6 @@
           "磨損的記號"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d5c5-marks",
         "inspect_text": "基岩上刻著淡淡的幾何交線。早在你走過之前，早有人精準地測繪過這條走廊。",
         "label": "磨損的記號"
@@ -7990,7 +7835,6 @@
           "粉筆小徑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d5c6-trail",
         "inspect_text": "用古老礦物粉筆畫出的細白線，沿著巷道中央的地面延伸。歷經數十年的腳步，它們已經褪色，但那幾何的走向依然筆直而刻意。",
         "label": "粉筆小徑"
@@ -8005,7 +7849,6 @@
           "磨損的記號"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d5c6-marks",
         "inspect_text": "基岩上刻著淡淡的幾何交線。早在你走過之前，早有人精準地測繪過這條走廊。",
         "label": "磨損的記號"
@@ -8072,7 +7915,6 @@
           "粉筆小徑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d5c7-trail",
         "inspect_text": "用古老礦物粉筆畫出的細白線，沿著巷道中央的地面延伸。歷經數十年的腳步，它們已經褪色，但那幾何的走向依然筆直而刻意。",
         "label": "粉筆小徑"
@@ -8087,7 +7929,6 @@
           "磨損的記號"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d5c7-marks",
         "inspect_text": "基岩上刻著淡淡的幾何交線。早在你走過之前，早有人精準地測繪過這條走廊。",
         "label": "磨損的記號"
@@ -8144,7 +7985,6 @@
           "粉筆小徑"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d5c8-trail",
         "inspect_text": "用古老礦物粉筆畫出的細白線，沿著巷道中央的地面延伸。歷經數十年的腳步，它們已經褪色，但那幾何的走向依然筆直而刻意。",
         "label": "粉筆小徑"
@@ -8159,7 +7999,6 @@
           "磨損的記號"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d5c8-marks",
         "inspect_text": "基岩上刻著淡淡的幾何交線。早在你走過之前，早有人精準地測繪過這條走廊。",
         "label": "磨損的記號"
@@ -8215,7 +8054,6 @@
           "低語蕨叢"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d6c1-ferns",
         "inspect_text": "及肩高、高聳的葉片互相摩擦，發出乾澀而有節奏的沙沙聲。在那沙沙聲中，你捕捉到一些片段，聽起來詭異地像低語的音節。",
         "label": "低語蕨叢"
@@ -8230,7 +8068,6 @@
           "沙沙聲"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d6c1-whispers",
         "inspect_text": "葉片在無風中擺動，與根冠的呼吸輕柔而同步地搖曳。",
         "label": "沙沙聲"
@@ -8296,7 +8133,6 @@
           "低語蕨叢"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d6c2-ferns",
         "inspect_text": "及肩高、高聳的葉片互相摩擦，發出乾澀而有節奏的沙沙聲。在那沙沙聲中，你捕捉到一些片段，聽起來詭異地像低語的音節。",
         "label": "低語蕨叢"
@@ -8311,7 +8147,6 @@
           "沙沙聲"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d6c2-whispers",
         "inspect_text": "葉片在無風中擺動，與根冠的呼吸輕柔而同步地搖曳。",
         "label": "沙沙聲"
@@ -8377,7 +8212,6 @@
           "低語蕨叢"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d6c3-ferns",
         "inspect_text": "及肩高、高聳的葉片互相摩擦，發出乾澀而有節奏的沙沙聲。在那沙沙聲中，你捕捉到一些片段，聽起來詭異地像低語的音節。",
         "label": "低語蕨叢"
@@ -8392,7 +8226,6 @@
           "沙沙聲"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d6c3-whispers",
         "inspect_text": "葉片在無風中擺動，與根冠的呼吸輕柔而同步地搖曳。",
         "label": "沙沙聲"
@@ -8458,7 +8291,6 @@
           "低語蕨叢"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d6c4-ferns",
         "inspect_text": "及肩高、高聳的葉片互相摩擦，發出乾澀而有節奏的沙沙聲。在那沙沙聲中，你捕捉到一些片段，聽起來詭異地像低語的音節。",
         "label": "低語蕨叢"
@@ -8473,7 +8305,6 @@
           "沙沙聲"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d6c4-whispers",
         "inspect_text": "葉片在無風中擺動，與根冠的呼吸輕柔而同步地搖曳。",
         "label": "沙沙聲"
@@ -8539,7 +8370,6 @@
           "低語蕨叢"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d6c5-ferns",
         "inspect_text": "及肩高、高聳的葉片互相摩擦，發出乾澀而有節奏的沙沙聲。在那沙沙聲中，你捕捉到一些片段，聽起來詭異地像低語的音節。",
         "label": "低語蕨叢"
@@ -8554,7 +8384,6 @@
           "沙沙聲"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d6c5-whispers",
         "inspect_text": "葉片在無風中擺動，與根冠的呼吸輕柔而同步地搖曳。",
         "label": "沙沙聲"
@@ -8620,7 +8449,6 @@
           "低語蕨叢"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d6c6-ferns",
         "inspect_text": "及肩高、高聳的葉片互相摩擦，發出乾澀而有節奏的沙沙聲。在那沙沙聲中，你捕捉到一些片段，聽起來詭異地像低語的音節。",
         "label": "低語蕨叢"
@@ -8635,7 +8463,6 @@
           "沙沙聲"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d6c6-whispers",
         "inspect_text": "葉片在無風中擺動，與根冠的呼吸輕柔而同步地搖曳。",
         "label": "沙沙聲"
@@ -8701,7 +8528,6 @@
           "低語蕨叢"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d6c7-ferns",
         "inspect_text": "及肩高、高聳的葉片互相摩擦，發出乾澀而有節奏的沙沙聲。在那沙沙聲中，你捕捉到一些片段，聽起來詭異地像低語的音節。",
         "label": "低語蕨叢"
@@ -8716,7 +8542,6 @@
           "沙沙聲"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d6c7-whispers",
         "inspect_text": "葉片在無風中擺動，與根冠的呼吸輕柔而同步地搖曳。",
         "label": "沙沙聲"
@@ -8772,7 +8597,6 @@
           "低語蕨叢"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d6c8-ferns",
         "inspect_text": "及肩高、高聳的葉片互相摩擦，發出乾澀而有節奏的沙沙聲。在那沙沙聲中，你捕捉到一些片段，聽起來詭異地像低語的音節。",
         "label": "低語蕨叢"
@@ -8787,7 +8611,6 @@
           "沙沙聲"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d6c8-whispers",
         "inspect_text": "葉片在無風中擺動，與根冠的呼吸輕柔而同步地搖曳。",
         "label": "沙沙聲"
@@ -8845,7 +8668,6 @@
           "天空的裂口"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d7c1-shaft",
         "inspect_text": "一道筆直的煙囪鑿在高遠的穹頂上。一道澄淨的垂直銀色星光從中落下，如長矛般穿透潮濕的霧氣。",
         "label": "天空的裂口"
@@ -8859,7 +8681,6 @@
           "苔床"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d7c1-moss",
         "inspect_text": "一層如天鵝絨般厚實的翠綠苔蘚，恰在星光的光束下繁茂生長。靴底下踩來沁涼而有彈性。",
         "label": "苔床"
@@ -8927,7 +8748,6 @@
           "天空的裂口"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d7c2-shaft",
         "inspect_text": "一道筆直的煙囪鑿在高遠的穹頂上。一道澄淨的垂直銀色星光從中落下，如長矛般穿透潮濕的霧氣。",
         "label": "天空的裂口"
@@ -8941,7 +8761,6 @@
           "苔床"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d7c2-moss",
         "inspect_text": "一層如天鵝絨般厚實的翠綠苔蘚，恰在星光的光束下繁茂生長。靴底下踩來沁涼而有彈性。",
         "label": "苔床"
@@ -9009,7 +8828,6 @@
           "天空的裂口"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d7c3-shaft",
         "inspect_text": "一道筆直的煙囪鑿在高遠的穹頂上。一道澄淨的垂直銀色星光從中落下，如長矛般穿透潮濕的霧氣。",
         "label": "天空的裂口"
@@ -9023,7 +8841,6 @@
           "苔床"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d7c3-moss",
         "inspect_text": "一層如天鵝絨般厚實的翠綠苔蘚，恰在星光的光束下繁茂生長。靴底下踩來沁涼而有彈性。",
         "label": "苔床"
@@ -9091,7 +8908,6 @@
           "天空的裂口"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d7c4-shaft",
         "inspect_text": "一道筆直的煙囪鑿在高遠的穹頂上。一道澄淨的垂直銀色星光從中落下，如長矛般穿透潮濕的霧氣。",
         "label": "天空的裂口"
@@ -9105,7 +8921,6 @@
           "苔床"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d7c4-moss",
         "inspect_text": "一層如天鵝絨般厚實的翠綠苔蘚，恰在星光的光束下繁茂生長。靴底下踩來沁涼而有彈性。",
         "label": "苔床"
@@ -9173,7 +8988,6 @@
           "天空的裂口"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d7c5-shaft",
         "inspect_text": "一道筆直的煙囪鑿在高遠的穹頂上。一道澄淨的垂直銀色星光從中落下，如長矛般穿透潮濕的霧氣。",
         "label": "天空的裂口"
@@ -9187,7 +9001,6 @@
           "苔床"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d7c5-moss",
         "inspect_text": "一層如天鵝絨般厚實的翠綠苔蘚，恰在星光的光束下繁茂生長。靴底下踩來沁涼而有彈性。",
         "label": "苔床"
@@ -9255,7 +9068,6 @@
           "天空的裂口"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d7c6-shaft",
         "inspect_text": "一道筆直的煙囪鑿在高遠的穹頂上。一道澄淨的垂直銀色星光從中落下，如長矛般穿透潮濕的霧氣。",
         "label": "天空的裂口"
@@ -9269,7 +9081,6 @@
           "苔床"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d7c6-moss",
         "inspect_text": "一層如天鵝絨般厚實的翠綠苔蘚，恰在星光的光束下繁茂生長。靴底下踩來沁涼而有彈性。",
         "label": "苔床"
@@ -9337,7 +9148,6 @@
           "天空的裂口"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d7c7-shaft",
         "inspect_text": "一道筆直的煙囪鑿在高遠的穹頂上。一道澄淨的垂直銀色星光從中落下，如長矛般穿透潮濕的霧氣。",
         "label": "天空的裂口"
@@ -9351,7 +9161,6 @@
           "苔床"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d7c7-moss",
         "inspect_text": "一層如天鵝絨般厚實的翠綠苔蘚，恰在星光的光束下繁茂生長。靴底下踩來沁涼而有彈性。",
         "label": "苔床"
@@ -9409,7 +9218,6 @@
           "天空的裂口"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d7c8-shaft",
         "inspect_text": "一道筆直的煙囪鑿在高遠的穹頂上。一道澄淨的垂直銀色星光從中落下，如長矛般穿透潮濕的霧氣。",
         "label": "天空的裂口"
@@ -9423,7 +9231,6 @@
           "苔床"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d7c8-moss",
         "inspect_text": "一層如天鵝絨般厚實的翠綠苔蘚，恰在星光的光束下繁茂生長。靴底下踩來沁涼而有彈性。",
         "label": "苔床"
@@ -9470,7 +9277,6 @@
           "發光的藤蔓"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d8c1-vines",
         "inspect_text": "編織的藤蔓如掛毯般從樹枝上垂落。它們淡青的葉脈隨著樹林深處的脈搏一同搏動。",
         "label": "發光的藤蔓"
@@ -9484,7 +9290,6 @@
           "樹林的嗡鳴"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d8c1-hum",
         "inspect_text": "一陣低沉震動，在你的牙齒和胸腔裡嗡嗡作響。後排深處的樹根錨住了整座洞窟。",
         "label": "樹林的嗡鳴"
@@ -9541,7 +9346,6 @@
           "發光的藤蔓"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d8c2-vines",
         "inspect_text": "編織的藤蔓如掛毯般從樹枝上垂落。它們淡青的葉脈隨著樹林深處的脈搏一同搏動。",
         "label": "發光的藤蔓"
@@ -9555,7 +9359,6 @@
           "樹林的嗡鳴"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d8c2-hum",
         "inspect_text": "一陣低沉震動，在你的牙齒和胸腔裡嗡嗡作響。後排深處的樹根錨住了整座洞窟。",
         "label": "樹林的嗡鳴"
@@ -9612,7 +9415,6 @@
           "發光的藤蔓"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d8c3-vines",
         "inspect_text": "編織的藤蔓如掛毯般從樹枝上垂落。它們淡青的葉脈隨著樹林深處的脈搏一同搏動。",
         "label": "發光的藤蔓"
@@ -9626,7 +9428,6 @@
           "樹林的嗡鳴"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d8c3-hum",
         "inspect_text": "一陣低沉震動，在你的牙齒和胸腔裡嗡嗡作響。後排深處的樹根錨住了整座洞窟。",
         "label": "樹林的嗡鳴"
@@ -9683,7 +9484,6 @@
           "發光的藤蔓"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d8c4-vines",
         "inspect_text": "編織的藤蔓如掛毯般從樹枝上垂落。它們淡青的葉脈隨著樹林深處的脈搏一同搏動。",
         "label": "發光的藤蔓"
@@ -9697,7 +9497,6 @@
           "樹林的嗡鳴"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d8c4-hum",
         "inspect_text": "一陣低沉震動，在你的牙齒和胸腔裡嗡嗡作響。後排深處的樹根錨住了整座洞窟。",
         "label": "樹林的嗡鳴"
@@ -9773,7 +9572,6 @@
           "樹根王座"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d8c5-throne",
         "inspect_text": "一張宏偉的座椅，由活生生的灰白樹根和蜷曲的樹皮渾然長成。古老的雕刻綴在高高的椅背上，被數百年的王室安坐磨得光滑。",
         "label": "樹根王座"
@@ -9787,7 +9585,6 @@
           "淡光"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d8c5-glow",
         "inspect_text": "一團凝聚的銀綠色光暈，浸潤著樹林中央，不受氣流與煙塵干擾。",
         "label": "淡光"
@@ -9844,7 +9641,6 @@
           "發光的藤蔓"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d8c6-vines",
         "inspect_text": "編織的藤蔓如掛毯般從樹枝上垂落。它們淡青的葉脈隨著樹林深處的脈搏一同搏動。",
         "label": "發光的藤蔓"
@@ -9858,7 +9654,6 @@
           "樹林的嗡鳴"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d8c6-hum",
         "inspect_text": "一陣低沉震動，在你的牙齒和胸腔裡嗡嗡作響。後排深處的樹根錨住了整座洞窟。",
         "label": "樹林的嗡鳴"
@@ -9915,7 +9710,6 @@
           "發光的藤蔓"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d8c7-vines",
         "inspect_text": "編織的藤蔓如掛毯般從樹枝上垂落。它們淡青的葉脈隨著樹林深處的脈搏一同搏動。",
         "label": "發光的藤蔓"
@@ -9929,7 +9723,6 @@
           "樹林的嗡鳴"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d8c7-hum",
         "inspect_text": "一陣低沉震動，在你的牙齒和胸腔裡嗡嗡作響。後排深處的樹根錨住了整座洞窟。",
         "label": "樹林的嗡鳴"
@@ -9976,7 +9769,6 @@
           "發光的藤蔓"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d8c8-vines",
         "inspect_text": "編織的藤蔓如掛毯般從樹枝上垂落。它們淡青的葉脈隨著樹林深處的脈搏一同搏動。",
         "label": "發光的藤蔓"
@@ -9990,7 +9782,6 @@
           "樹林的嗡鳴"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "d8c8-hum",
         "inspect_text": "一陣低沉震動，在你的牙齒和胸腔裡嗡嗡作響。後排深處的樹根錨住了整座洞窟。",
         "label": "樹林的嗡鳴"
@@ -10064,7 +9855,6 @@
           "火盆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "oan-fire-bowl",
         "inspect_text": "一只寬闊的黑玻璃碟，深及人胸。邊沿刻痕累累，是餘燼被倒進又清走千百次留下的。",
         "label": "火盆"
@@ -10078,7 +9868,6 @@
           "黑玻璃"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "oan-glass",
         "inspect_text": "一片片打磨過的火山玻璃構成北倉的地基，靴底下踩來又涼又滑。",
         "label": "黑玻璃"
@@ -10140,7 +9929,6 @@
           "火盆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "oas-fire-bowl",
         "inspect_text": "一只寬闊的黑玻璃碟。底下一粒餘燼悶燒著，是南倉最後的一顆種子。",
         "label": "火盆"
@@ -10155,7 +9943,6 @@
           "悶著的餘燼"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "oas-ember",
         "inspect_text": "一團頑固的櫻桃紅熱塊，在南倉的煤灰裡輕輕搏動。",
         "label": "悶著的餘燼"
@@ -10206,7 +9993,6 @@
           "玻璃盆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o1-basin",
         "inspect_text": "一塊孤炭在淺窩裡呼吸，四周是黑玻璃。它暖不了屋子——只是暖意的記憶。",
         "label": "玻璃盆"
@@ -10221,7 +10007,6 @@
           "熱裂縫"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o1-cracks",
         "inspect_text": "細如髮絲的裂痕如蛛網般爬過黑玻璃地板，從下層的加熱室散出沉悶的暖意。",
         "label": "熱裂縫"
@@ -10272,7 +10057,6 @@
           "玻璃盆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o2-basin",
         "inspect_text": "細小的餘燼如散落的種子點綴地面，指尖觸來比周圍的玻璃略暖。",
         "label": "玻璃盆"
@@ -10287,7 +10071,6 @@
           "熱裂縫"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o2-cracks",
         "inspect_text": "細如髮絲的裂痕如蛛網般爬過黑玻璃地板，從下層的加熱室散出沉悶的暖意。",
         "label": "熱裂縫"
@@ -10338,7 +10121,6 @@
           "玻璃盆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o3-basin",
         "inspect_text": "兩道刻線自這間石室延伸出去，繞過那圈紋路的彎處消失。",
         "label": "玻璃盆"
@@ -10353,7 +10135,6 @@
           "熱裂縫"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o3-cracks",
         "inspect_text": "細如髮絲的裂痕如蛛網般爬過黑玻璃地板，從下層的加熱室散出沉悶的暖意。",
         "label": "熱裂縫"
@@ -10404,7 +10185,6 @@
           "玻璃盆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o4-basin",
         "inspect_text": "裂縫貫穿碗心。曾在這裡燒過的，早已被取走。",
         "label": "玻璃盆"
@@ -10419,7 +10199,6 @@
           "熱裂縫"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o4-cracks",
         "inspect_text": "細如髮絲的裂痕如蛛網般爬過黑玻璃地板，從下層的加熱室散出沉悶的暖意。",
         "label": "熱裂縫"
@@ -10470,7 +10249,6 @@
           "玻璃盆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o5-basin",
         "inspect_text": "熱從縫隙裡緩緩湧上。底下，你感到一路以來那股死火：悶著，等待著。",
         "label": "玻璃盆"
@@ -10485,7 +10263,6 @@
           "熱裂縫"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o5-cracks",
         "inspect_text": "細如髮絲的裂痕如蛛網般爬過黑玻璃地板，從下層的加熱室散出沉悶的暖意。",
         "label": "熱裂縫"
@@ -10536,7 +10313,6 @@
           "玻璃盆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o6-basin",
         "inspect_text": "南倉是邊沿上一道高聳的暗影之柱，它的盤碟盛著棋盤積攢的最後一點光。",
         "label": "玻璃盆"
@@ -10551,7 +10327,6 @@
           "熱裂縫"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o6-cracks",
         "inspect_text": "細如髮絲的裂痕如蛛網般爬過黑玻璃地板，從下層的加熱室散出沉悶的暖意。",
         "label": "熱裂縫"
@@ -10602,7 +10377,6 @@
           "玻璃盆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o7-basin",
         "inspect_text": "地板是磨得像鏡子般光滑的玻璃，記著千百次無人目睹的落子弧跡。",
         "label": "玻璃盆"
@@ -10617,7 +10391,6 @@
           "灰堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o7-ash",
         "inspect_text": "細灰的煤煙和火山泥沙積在盆谷的角落與溝紋裡，隨氣流和腳步而移。",
         "label": "灰堆"
@@ -10668,7 +10441,6 @@
           "玻璃盆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o8-basin",
         "inspect_text": "餘燼一粒粒擺著，間距均勻，恰如下棋前擺好的種子。",
         "label": "玻璃盆"
@@ -10683,7 +10455,6 @@
           "灰堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o8-ash",
         "inspect_text": "細灰的煤煙和火山泥沙積在盆谷的角落與溝紋裡，隨氣流和腳步而移。",
         "label": "灰堆"
@@ -10734,7 +10505,6 @@
           "玻璃盆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o9-basin",
         "inspect_text": "空氣又冷又靜。連棋盤那古老的暖意也到不了這裡。",
         "label": "玻璃盆"
@@ -10749,7 +10519,6 @@
           "灰堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o9-ash",
         "inspect_text": "細灰的煤煙和火山泥沙積在盆谷的角落與溝紋裡，隨氣流和腳步而移。",
         "label": "灰堆"
@@ -10800,7 +10569,6 @@
           "玻璃盆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o10-basin",
         "inspect_text": "那圈紋路折回自身，延伸了很長一段，才見著倉或心。",
         "label": "玻璃盆"
@@ -10815,7 +10583,6 @@
           "灰堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o10-ash",
         "inspect_text": "細灰的煤煙和火山泥沙積在盆谷的角落與溝紋裡，隨氣流和腳步而移。",
         "label": "灰堆"
@@ -10866,7 +10633,6 @@
           "玻璃盆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o11-basin",
         "inspect_text": "黑暗中，那火心坑穩定而不慌不忙地燒著橘紅的光。",
         "label": "玻璃盆"
@@ -10881,7 +10647,6 @@
           "灰堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o11-ash",
         "inspect_text": "細灰的煤煙和火山泥沙積在盆谷的角落與溝紋裡，隨氣流和腳步而移。",
         "label": "灰堆"
@@ -10932,7 +10697,6 @@
           "玻璃盆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o12-basin",
         "inspect_text": "北倉的盤碟探出邊沿之外，張口飲著那圈紋路。",
         "label": "玻璃盆"
@@ -10947,7 +10711,6 @@
           "灰堆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "o12-ash",
         "inspect_text": "細灰的煤煙和火山泥沙積在盆谷的角落與溝紋裡，隨氣流和腳步而移。",
         "label": "灰堆"
@@ -11020,7 +10783,6 @@
           "炭火"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "oh-coals",
         "inspect_text": "坑的搖籃裡，一團餘燼以深沉穩定的熱度燃著。它不噼啪作響。也不蔓延。只是維持著。",
         "label": "炭火"
@@ -11035,7 +10797,6 @@
           "黑曜石搖籃"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "oh-cradle",
         "inspect_text": "一只下陷的無縫黑玻璃碟，設計來把洞窟的元素之熱匯聚到中心。",
         "label": "黑曜石搖籃"
@@ -11102,7 +10863,6 @@
           "巨大的黃銅艙壁"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "village_north_gate-feature",
         "inspect_text": "那道艙壁是鉚接黃銅外裹鐵箍，三個跨距寬，從對側上了栓。這一面你到處都找不到把手，還是用手沿著接縫摸了一遍。暖空氣在金屬前戛然而止。有人在齊膝高的一顆鉚釘上繫了一條紅布，已經褪色得幾乎透了。",
         "label": "巨大的黃銅艙壁"
@@ -11149,7 +10909,6 @@
           "鐘錶工作檯"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "village_west_2-feature",
         "inspect_text": "工作檯上布滿細小的黃銅碎屑留下的疤，邊沿有燒痕。放大鏡、鑷子、一把珠寶鋸和四個齒輪還擱在他放下的地方，這意味著他做到一半就撂下去看別的東西了。你能看出他的膝蓋把檯板磨白的地方。檯子上方釘著幾張草圖，畫的都是同一組擒縱機構，一遍又一遍，一張比一張更不對。",
         "label": "鐘錶工作檯"
@@ -11196,7 +10955,6 @@
           "公用洗滌槽"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "village_west_1-feature",
         "inspect_text": "這只水槽由石頭鑿成，內襯鋅皮，水滿到距邊沿一掌寬，熱得發燙。近側的槽沿上排著六個木栓。其中只有四個是濕的，你發現自己把那幾個乾的數了兩遍。末端的刷子柄有一處磨得光滑，正是拇指落下的地方。",
         "label": "公用洗滌槽"
@@ -11212,7 +10970,6 @@
           "蒸汽減壓閥"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "village_west_1-valve",
         "inspect_text": "四條管道交會處的黃銅接頭上，齊腰高裝著一個鑄鐵閥輪。你把手放上去，它轉了四分之一圈才卡住，說明並沒有鏽死。輪軸上的鏽被磨掉了一圈，是戴手套的手留下的。再把它轉到底，管線壓力就會立刻從煙道排出。那聲響會大到整層樓都聽得見。",
         "label": "蒸汽減壓閥"
@@ -11258,7 +11015,6 @@
           "天然石泉"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "village_sw_corner-feature",
         "inspect_text": "泉水從裸岩上一處鑲著苔邊的窪地湧出，清澈得能看見底下的沙礫。背對管道那一側的苔蘚最厚，這告訴你這水在此流淌的歲月比這座山村久得多。",
         "label": "天然石泉"
@@ -11317,7 +11073,6 @@
           "中央石梯"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "village_square-feature",
         "inspect_text": "這道石梯由整塊花崗岩鑿成，寬得可容四人並行，在人人上樓落腳之處磨出一窪窪淺窩。你不經意間就順著一個淺窩落了一步。頂端的黑暗裡有一股氣流下來，又熱又乾，帶著陳煙和熱玻璃的味道。有人在第二級台階上刻了一排短短的記號，刻到一半就停了。",
         "label": "中央石梯"
@@ -11364,7 +11119,6 @@
           "領用名冊"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "village_south_1-feature",
         "inspect_text": "一張蓋著馬利克鐵印的單頁，要求村裡交出一名少年，還寫了期限。拉希德的簽名在底端，被描過太多次，筆尖把羊皮紙都劃破了。背面有人用稚嫩許多的筆跡寫著「先問問他」，然後又劃掉了。你讀了兩遍。",
         "label": "領用名冊"
@@ -11410,7 +11164,6 @@
           "胸牆遠望牆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "village_se_corner-feature",
         "inspect_text": "這堵牆以石灰岩塊砌成，底部開著排水口讓水流出，補過的次數太多，接縫已成一張拼布。牆頂的石頭凹成一條長長的淺槽，你的手掌沒看就找到了它。那不是風化磨出來的。那是肩膀。",
         "label": "胸牆遠望牆"
@@ -11456,7 +11209,6 @@
           "蒸汽加熱烤爐"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "village_east_2-feature",
         "inspect_text": "爐子是一座寬闊的磚穹頂，底部盤繞著蒸汽管，裡頭的火壓得極低，你得看兩眼才找得到。你把掌心貼平在磚上，熱透了過來，均勻而巨大。你左手邊的架子上，烤好的麵包正變涼，右手邊還有更多正送進去，卻沒人翻動右邊那一側。",
         "label": "蒸汽加熱烤爐"
@@ -11503,7 +11255,6 @@
           "磷光苗箱"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "village_east_1-feature",
         "inspect_text": "這些苗圃是從石灰岩本身鑿出來的，好讓根有不會移動的東西可抓。藍苔填滿堆肥之間的縫隙，發出的光穩定得足以就著看書。一株植物被移走的地方，會留下一圈未褪色的乾淨石面。你數了數那些空圈。一共四個，而且一個都沒有補種。",
         "label": "磷光苗箱"
@@ -11563,7 +11314,6 @@
           "液壓閘門桿"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "fortress_gate-feature",
         "inspect_text": "那槓桿是鐵上包銅，握處磨出亮金屬。有人在旁邊的控制台上刻了一串計數，停在九。你把掌心貼上銷座，還是溫的。不管最後是什麼跑過這裡，管線洩壓並不久。",
         "label": "液壓閘門桿"
@@ -11610,7 +11360,6 @@
           "頭頂蒸汽管"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "west_iron_walkway-feature",
         "inspect_text": "四條管道用鋼托架夾在岩壁上，兩條在滲汗，一條在嘶嘶作響。齊頭高的一處接頭重新箍上了一道新銅，壓著舊鏽——可見漏了之後有人上來過。最靠近你的那個夾具鬆得用手就能晃動。它應該禁得住你的體重。但你寧可不靠站上去來印證。",
         "label": "頭頂蒸汽管"
@@ -11664,7 +11413,6 @@
           "懸吊的鐵籠"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "steam_prison_cage-feature",
         "inspect_text": "鐵條密得連一隻手都伸不進去，地板也是如此。門上的黃銅掛鎖做工精良，鎖孔小得無法撬開。鏈條上了油，上油就意味著有人刻意為之。地板底下，鐵籠隨著通風口每一次呼氣微微晃動，總是同一個方向，總是同樣的一寸。",
         "label": "懸吊的鐵籠"
@@ -11711,7 +11459,6 @@
           "黃銅壓力錶"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "south_steam_gantry-feature",
         "inspect_text": "黃銅殼裡的圓玻璃錶面，玻璃後的指針擠在窄窄的一段區間裡，從不偏離。那排最下面的錶，邊沿漆了一圈紅色，它的指針就停在紅漆裡側。旁邊的殼上刻著一個日期，還有一組姓名的縮寫。錶的下方，牆被燻出一長條焦痕，那裡的漆起泡、剝落成片。你只要靠近些就能看清那組縮寫，而你決定不看。",
         "label": "黃銅壓力錶"
@@ -11781,7 +11528,6 @@
           "指揮官的鐵保險箱"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "command_bastion-feature",
         "inspect_text": "一個帶黃銅錶盤和加固鉸鏈的鐵箱，用螺栓穿透石頭固定，而非嵌進石裡。它前方的灰塵上留著一個乾淨的長方形，大小恰好是一個人跪著。鎖裡的轉輪用得很舊，周圍的黃銅被手摸得發亮。你想像著密碼會是什麼，錯的可能實在太多了。",
         "label": "指揮官的鐵保險箱"
@@ -11831,7 +11577,6 @@
           "黃銅探照燈架"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "east_sentry_walk-feature",
         "inspect_text": "一盞架在三腳架上的黃銅探照燈，由自己那條粗重的蒸汽管供氣，反射鏡片朝下、朝外斜著。沒有遮光板，也沒有燈罩，所以不管什麼走進光裡，它整夜都這麼亮著。三腳架的腳陷進了鋼板，螺栓被鬆開再擰緊過不止一次。燈殼上有人刻了一道小孩的身高記號和一個日期，又把日期劃掉了。你的手比那道記號大。你心裡清楚，卻還是看了一眼。",
         "label": "黃銅探照燈架"
@@ -11874,7 +11619,6 @@
           "圓形黃銅傳送平台"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "teleport_platform-feature",
         "inspect_text": "一面黃銅圓盤，比你的雙臂張開還寬，上面刻著兩個交疊的三角形，交點外圍畫著一圈圓。金屬是溫熱的，而且不是地熱焐熱的。靴子磨過的地方露出銅亮，邊緣卻仍積著一層黑垢，垢痕在盤沿一圈圈疊成清晰的階梯，記著這些年水位的漲落。這圖形和你粉筆畫的是同一個。它原本並不是一間屋子那麼大——是後來擴建上去的。",
         "label": "圓形黃銅傳送平台"
@@ -11971,7 +11715,6 @@
           "黃銅傳送平台"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "courtyard_center-teleport",
         "inspect_text": "一座寬闊的圓形黃銅高台，嵌著幾何形的導管。它透出淡淡的青綠色能量脈動，是這座孤立堡壘連回四樓平台的唯一傳送錨點。各層之間沒有任何實體通道，踏上傳送迴路、使用傳送，是回去的唯一辦法。",
         "label": "黃銅傳送平台"
@@ -11987,7 +11730,6 @@
           "祭品籠"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "courtyard_center-cages",
         "inspect_text": "四只沉重的鐵籠，標著 01 區、04 區、07 區和 12 區。瑟瑟發抖的年邁平民和驚恐的孩子透過結霜的鐵條向外張望。一道巨大的掛鎖閘門把他們封在裡面。",
         "label": "祭品籠"
@@ -12065,7 +11807,6 @@
           "狼旗"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "courtyard_north-banners",
         "inspect_text": "厚重的深海藍絲旗，上繡霜狼家齜牙的銀狼紋章。",
         "label": "狼旗"
@@ -12080,7 +11821,6 @@
           "霜狼宅邸大門"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "courtyard_north-manor_gate",
         "inspect_text": "一道巨大的黑鐵尖刺大門，結著白霜，擋住了通往霜狼家宅邸的路。門是從裡面閂上的。",
         "label": "霜狼宅邸大門"
@@ -12145,7 +11885,6 @@
           "石垛口"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "courtyard_northeast-crenels",
         "inspect_text": "厚實的花崗岩垛口，為來襲的投射火力提供堅實掩護，並把來犯者導入一處狹窄的缺口。",
         "label": "石垛口"
@@ -12224,7 +11963,6 @@
           "公羊旗"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "courtyard_southeast-banners",
         "inspect_text": "粗織的深紅羊毛旗幡，上繡帶角的鐵羊頭骨，下方是交叉的鐵鎚。",
         "label": "公羊旗"
@@ -12238,7 +11976,6 @@
           "鐵羊閘門"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "courtyard_southeast-portcullis",
         "inspect_text": "一道三噸重的閘門，由互扣的鍛鐵尖齒組成，牢牢落下，封住稜堡的入口。",
         "label": "鐵羊閘門"
@@ -12305,7 +12042,6 @@
           "堡門"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "courtyard_south-doors",
         "inspect_text": "巨大的鐵箍與山橡木大門，以沉重的橫閂加固。門緊閉著，擋住外頭呼嘯的暴風雪。",
         "label": "堡門"
@@ -12385,7 +12121,6 @@
           "雪豹旗幟"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "courtyard_southwest-banners",
         "inspect_text": "灰白絲旗綴著冰藍滾邊，上繡一隻躍起時齜牙的雪豹。",
         "label": "雪豹旗幟"
@@ -12399,7 +12134,6 @@
           "溫室門"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "courtyard_southwest-doors",
         "inspect_text": "沉重的鍛鐵溫室門，嵌著磨砂玻璃板，從霜豹廳裡側上了閂。",
         "label": "溫室門"
@@ -12464,7 +12198,6 @@
           "石棧道"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "courtyard_northwest-catwalk",
         "inspect_text": "一道沿城垛鋪開的狹窄單行步道。任何想從這裡通過的隊伍都只能排成窄窄一列前進，因此極易防守。",
         "label": "石棧道"
@@ -12515,7 +12248,6 @@
           "巫火盆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "frost_wolf_gallery-braziers",
         "inspect_text": "鐵籃裡盛著冷燃的藍色巫火。它們發出強烈卻幾乎沒有溫度的光，把長長的走廊罩在一片蒼白的暮色裡。",
         "label": "巫火盆"
@@ -12564,7 +12296,6 @@
           "武器架"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "frost_wolf_muster-weapon_racks",
         "inspect_text": "結實的鐵架上擱著帶缺口的霜斧和飾有狼紋章的尖刺盾。",
         "label": "武器架"
@@ -12601,7 +12332,6 @@
           "冰川王座"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "frost_wolf_throne-throne",
         "inspect_text": "一張高聳的王座，由遠古受壓的冰川之冰雕成，四周瀰漫著冷霧和狼的戰利品。",
         "label": "冰川王座"
@@ -12651,7 +12381,6 @@
           "蒸汽管"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "iron_ram_gallery-pipes",
         "inspect_text": "沉重的隔熱銅與青銅導管，從堡壘的鍋爐輸送地熱蒸汽。",
         "label": "蒸汽管"
@@ -12701,7 +12430,6 @@
           "液壓吊車"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "iron_ram_muster-cranes",
         "inspect_text": "氣動絞盤，設計來吊起沉重的鐵板，把拒馬木樑架設到位，橫在稜堡各處。",
         "label": "液壓吊車"
@@ -12738,7 +12466,6 @@
           "鐵砧王座"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "iron_ram_throne-throne",
         "inspect_text": "一張巨椅，由深色鑄鐵和回火鋼鍛成，形如一座帶角的鐵砧。",
         "label": "鐵砧王座"
@@ -12788,7 +12515,6 @@
           "水晶燈籠"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "frost_leopard_gallery-lanterns",
         "inspect_text": "精緻的幾何燈籠，由多面的霜玻璃製成，裡頭盛著柔和自發光的白色晶石。",
         "label": "水晶燈籠"
@@ -12838,7 +12564,6 @@
           "裝鏡的壁龕"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "frost_leopard_muster-alcoves",
         "inspect_text": "深邃的壁龕嵌著磨砂鏡，以令人迷失方向的角度反射光線，掩藏著哨位。",
         "label": "裝鏡的壁龕"
@@ -12875,7 +12600,6 @@
           "蛋白石王座"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "frost_leopard_throne-throne",
         "inspect_text": "一張精緻的王座，由閃爍的冰川蛋白石雕成，冷如冬日的玻璃，墊著雪豹皮毛。",
         "label": "蛋白石王座"
@@ -12900,7 +12624,6 @@
           "結凍的鹽滷池"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "salt_reach-brine_pans",
         "inspect_text": "工人從淺淺的礦物池裡切出齊整的鹽板。潔白的鹽殼下透出藍色的冰。",
         "label": "結凍的鹽滷池"
@@ -12925,7 +12648,6 @@
           "信號燈"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "glassbank-signal_lamps",
         "inspect_text": "每盞燈都用不同切割的玻璃，把清晰的色彩穿過雪與霧送去。",
         "label": "信號燈"
@@ -12950,7 +12672,6 @@
           "公家織機"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "woolcross-community_looms",
         "inspect_text": "沉重的木織機以穩定的節奏叩響，紅、金和深藍的線織成暖厚的山間布料。",
         "label": "公家織機"
@@ -12975,7 +12696,6 @@
           "藥草園"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "greenrest-medicine_gardens",
         "inspect_text": "仔細標好的圃畦裡種著苦葉、淺色蘑菇和暖身的根莖，供鎮上的醫者使用。",
         "label": "藥草園"
@@ -13000,7 +12720,6 @@
           "修補工作檯"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "brass_yard-repair_benches",
         "inspect_text": "每張工作檯上都擺著標好的托盤，裡頭是螺絲、齒輪、密封件，以及供各工人城鎮使用的機械的精密圖樣。",
         "label": "修補工作檯"
@@ -13056,7 +12775,6 @@
           "雕花欄杆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "sanctuary_grand_terrace-balustrade",
         "inspect_text": "刻著幾何浮雕的白石。它之外，翻捲的霧靄在下方深處的山峽間飄移。",
         "label": "雕花欄杆"
@@ -13148,7 +12866,6 @@
           "中央大理石噴泉"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "sanctuary_crossroads-fountain",
         "inspect_text": "清澈的山泉穩定地流過層疊的大理石碗，注入一座寬闊的倒影池。",
         "label": "中央大理石噴泉"
@@ -13201,7 +12918,6 @@
           "戴面具的雕像"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "basilica_portal-statues",
         "inspect_text": "光滑的銀面具遮住雕像的面孔，以打磨過的金屬映著天空。",
         "label": "戴面具的雕像"
@@ -13277,7 +12993,6 @@
           "大玫瑰窗"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "basilica_nave-rose_window",
         "inspect_text": "鮮豔的彩繪玻璃描繪著幾何天輪，把陽光篩成深藍與金黃。",
         "label": "大玫瑰窗"
@@ -13329,7 +13044,6 @@
           "金色祭壇桌"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "basilica_high_altar-table",
         "inspect_text": "一整塊打磨光滑的金色石灰岩。繁複的幾何符文以細銀絲嵌在邊沿一圈。",
         "label": "金色祭壇桌"
@@ -13380,7 +13094,6 @@
           "雪松衣櫃"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "basilica_vestry-wardrobes",
         "inspect_text": "一排排一塵不染的白色法衣掛著，旁邊是留著窄窄眼縫的銀面具。",
         "label": "雪松衣櫃"
@@ -13430,7 +13143,6 @@
           "靜室門"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "basilica_clergy_cells-doors",
         "inspect_text": "厚重的橡木門，上有帶柵的小窺孔。黃銅名牌標示著修道院的職務。",
         "label": "靜室門"
@@ -13482,7 +13194,6 @@
           "學者雕像"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "scriptorium_portal-carvings",
         "inspect_text": "石浮雕頌揚著數百年來對聖典的記錄與保存。",
         "label": "學者雕像"
@@ -13559,7 +13270,6 @@
           "斜面書桌"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "scriptorium_cloister-desks",
         "inspect_text": "齊整的木書桌，配著墨座和黃銅鎮紙。幾張只抄了一半的禮拜經文攤著晾乾。",
         "label": "斜面書桌"
@@ -13612,7 +13322,6 @@
           "高聳的書架"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "scriptorium_library-shelves",
         "inspect_text": "一排排齊整的犢皮紙和羊皮紙書脊，燙金標著書名。歷史區後方的踢腳板邊有一道窄窄的接縫。",
         "label": "高聳的書架"
@@ -13664,7 +13373,6 @@
           "手稿抽屜"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "scriptorium_archive_vault-drawers",
         "inspect_text": "按禮拜等級標示的鐵箍抽屜。這些卷軸詳載著聖所檢查站所問的教義問題原文。",
         "label": "手稿抽屜"
@@ -13716,7 +13424,6 @@
           "機密殮房帳冊"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "scriptorium_secret_archive-ledgers",
         "inspect_text": "令人不寒而慄的紀錄，將活人的名字與魔物階級一一對應：礦工被變成蒸汽魔像，森林斥候被縛成幽影精靈。你清楚認出了西拉傑、努爾、歐林、瑪莉、法瑞德與哈娜的名字。",
         "label": "機密殮房帳冊"
@@ -13768,7 +13475,6 @@
           "雕花苗圃"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "herbarium_portal-planters",
         "inspect_text": "大陶盆裡種著開花的迷迭香和野生山百里香。",
         "label": "雕花苗圃"
@@ -13866,7 +13572,6 @@
           "墊高的藥草圃"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "herbarium_garden-beds",
         "inspect_text": "修剪齊整的銀苔、藍冬鼠尾草和辛香的薄荷，長在深色肥沃的壤土中。",
         "label": "墊高的藥草圃"
@@ -13918,7 +13623,6 @@
           "標籤陶罐"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "herbarium_apothecary-jars",
         "inspect_text": "一排排密封的釉陶罐，標著草藥萃取液、鎮痛藥膏和礦物粉末。",
         "label": "標籤陶罐"
@@ -13969,7 +13673,6 @@
           "銅蒸餾器"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "herbarium_still_room-alembic",
         "inspect_text": "大型擦亮的銅蒸餾甑以蛇形冷凝管相連，裡頭沸著草藥萃取液。",
         "label": "銅蒸餾器"
@@ -14021,7 +13724,6 @@
           "青銅水鐘"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "herbarium_water_clock-clepsydra",
         "inspect_text": "一件水力工程的傑作。層層疊疊的青銅碗滴下定量之水，帶動漂浮的齒輪，標記換班的時刻。",
         "label": "青銅水鐘"
@@ -14092,7 +13794,6 @@
           "露水"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "herbarium_cliff_balcony-soul_grass",
         "inspect_text": "生長在高山黑土中的低矮野生草葉，葉面上浮動著幽藍的微光光點，隨著蒸汽呼吐緩慢明暗。葉尖正凝結著一滴滴晶瑩露水——正是調配靈視膠囊的關鍵核心。",
         "label": "野生靈魂草"
@@ -14110,7 +13811,6 @@
           "鐵門"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "herbarium_cliff_balcony-iron_door",
         "inspect_text": "以粗重生鐵鎖鏈加固的厚重石門，後方是一條避開聖堂巡邏、直達底層靈柩殿的隱密螺旋石階。",
         "label": "生鐵鎖鏈石門"
@@ -14163,7 +13863,6 @@
           "銀色石火炬"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "mortuary_portal-torches",
         "inspect_text": "由帶紋大理石雕成的風格化火炬，頂端綴著打磨過的銀箔。",
         "label": "銀色石火炬"
@@ -14242,7 +13941,6 @@
           "黃銅壁燈"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "mortuary_descent-sconces",
         "inspect_text": "結實的黃銅油燈，燃著蒼白無煙的火焰。",
         "label": "黃銅壁燈"
@@ -14294,7 +13992,6 @@
           "雕花石棺"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "mortuary_crypt-sarcophagi",
         "inspect_text": "沉重的石灰岩石棺，雕著幾何結與封印記號。",
         "label": "雕花石棺"
@@ -14345,7 +14042,6 @@
           "板岩雕刻台"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "mortuary_embalming_hall-tables",
         "inspect_text": "光滑的黑板岩石板，空白的石殼和機械肢體擱在刻有符文的夾具之下。",
         "label": "板岩雕刻台"
@@ -14440,7 +14136,6 @@
           "返魂祭壇"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "mortuary_reanimation_sanctum-altar",
         "inspect_text": "一座青銅祭壇，四周環繞著發光的銀色圓環。微弱的魔法低鳴在金屬中震顫。",
         "label": "返魂祭壇"
@@ -14455,7 +14150,6 @@
           "被囚的靈魂"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "mortuary_reanimation_sanctum-spirits",
         "inspect_text": "數十個蒼白、半透明的人類靈魂靜靜飄浮在祭壇上方。他們的臉孔像深井鎮和鹽灘的礦工與村民，正等著被剝去記憶、縛成地牢魔物。",
         "label": "被囚的靈魂"
@@ -14472,7 +14166,6 @@
           "名冊"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "mortuary_reanimation_sanctum-ledger",
         "inspect_text": "一本厚重的黑皮鎖魂名冊，靈視的光芒穿透墨字，清晰映出殘酷的轉化紀錄：西拉傑抽離記憶繫入外圍蒸汽石守、努爾抹除記憶繫入迷霧林地白棋王后、切石匠歐林繫入一號黑石魔像、磨坊匠瑪莉繫入二號黑石魔像、礦工法瑞德繫入一號白石魔像、織布匠哈娜繫入二號白石魔像。",
         "label": "黑色鎖魂名冊"
@@ -14536,7 +14229,6 @@
           "主共鳴錨"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "sanctuary_main_platform-anchor",
         "inspect_text": "一個巨大的青銅圓環，蝕刻著四個相扣的環。它正等待一道指令脈衝，與下層的傳送台同步。",
         "label": "主共鳴錨"
@@ -14552,7 +14244,6 @@
           "發光的白梯"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "sanctuary_main_platform-ascent",
         "inspect_text": "一道由純白之光織成的階梯，漂浮在崖邊，向上沒入平靜的霧中，通往七樓：白色前廳。",
         "label": "發光的白梯"
@@ -14617,7 +14308,6 @@
           "巨大的青銅值守鐘"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "sanctuary_wall_nw_tower-bells",
         "inspect_text": "巨大的青綠銅鏽之鐘，鐘身浮雕著禮拜禱文。敲響時，鐘聲傳遍整片山脈。",
         "label": "巨大的青銅值守鐘"
@@ -14667,7 +14357,6 @@
           "石垛口"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "sanctuary_wall_north-crenels",
         "inspect_text": "結實的石灰岩城垛開著供弓手使用的垛口，北面群峰一覽無遺。",
         "label": "石垛口"
@@ -14732,7 +14421,6 @@
           "銅信號號角"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "sanctuary_wall_ne_tower-horns",
         "inspect_text": "擦得發亮的長銅號，裝在旋轉托架上，用來吹響全聖所的警報。",
         "label": "銅信號號角"
@@ -14782,7 +14470,6 @@
           "煙囪煙道"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "sanctuary_wall_east-flues",
         "inspect_text": "石砌的煙囪罩，把下層軀殼工坊的暖廢氣排進開闊的山間空氣中。",
         "label": "煙囪煙道"
@@ -14847,7 +14534,6 @@
           "箭孔"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "sanctuary_wall_se_tower-slits",
         "inspect_text": "深邃外擴的箭孔，望向雲海和下方的冰川台地。",
         "label": "箭孔"
@@ -14910,7 +14596,6 @@
           "南胸牆"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "sanctuary_wall_south-parapet",
         "inspect_text": "石灰岩城垛俯瞰著一路層疊攀升、從五樓穿過山隘而上的台階小徑。",
         "label": "南胸牆"
@@ -14975,7 +14660,6 @@
           "攀爬的常春藤與薄荷"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "sanctuary_wall_sw_tower-ivy",
         "inspect_text": "頑強的高山薄荷和深綠常春藤攀附在曬暖的石砌胸牆上。",
         "label": "攀爬的常春藤與薄荷"
@@ -15025,7 +14709,6 @@
           "西面城垛"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "sanctuary_wall_west-battlements",
         "inspect_text": "厚實的石灰岩城垛，俯瞰著西面的山峰與日落的地平線。",
         "label": "西面城垛"
@@ -15066,7 +14749,6 @@
           "木桌"
         ],
         "allow_rest": false,
-        "consumables": [],
         "id": "floor7_antechamber-table",
         "inspect_text": "一張樸素的橡木桌，兩把椅子。一只古舊的黃銅茶壺旁，靜靜升著熱氣，旁邊是一台熟悉的攜帶式收音機。",
         "label": "木桌"

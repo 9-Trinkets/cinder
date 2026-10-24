@@ -47,10 +47,41 @@ pub struct ContentPack {
     pub skill_index: HashMap<String, usize>,
 }
 
+/// A consumable item as a feature offers it: the item's own properties, read
+/// from the item catalog.
+#[derive(Debug, Clone, Copy)]
+pub struct ConsumableView<'a> {
+    pub id: &'a str,
+    pub label: &'a str,
+    pub aliases: &'a [String],
+    pub tags: &'a [String],
+    pub kind: ConsumableKind,
+    pub hunger_recovery: u32,
+    pub stamina_recovery: u32,
+}
+
+impl<'a> ConsumableView<'a> {
+    /// The consumable view of `item`, when it is one.
+    pub fn of(item: &'a ItemDefinition) -> Option<Self> {
+        let spec = item.consumable.as_ref()?;
+        Some(Self {
+            id: &item.id,
+            label: &item.label,
+            aliases: &item.aliases,
+            tags: &item.tags,
+            kind: spec.kind,
+            hunger_recovery: spec.hunger_recovery,
+            stamina_recovery: spec.stamina_recovery,
+        })
+    }
+}
+
 #[derive(Debug, Clone, Copy)]
 pub struct RoomConsumableRef<'a> {
     pub feature: &'a RoomFeatureDefinition,
-    pub consumable: &'a ConsumableDefinition,
+    pub consumable: ConsumableView<'a>,
+    /// How many the feature held when play started.
+    pub initial_stock: u32,
 }
 
 impl ContentPack {
@@ -536,13 +567,14 @@ impl ContentPack {
                 room.features
                     .iter()
                     .flat_map(|feature| {
-                        feature
-                            .consumables
-                            .iter()
-                            .map(|consumable| RoomConsumableRef {
+                        feature.items.iter().filter_map(move |(item_id, stock)| {
+                            let consumable = ConsumableView::of(self.item(item_id)?)?;
+                            Some(RoomConsumableRef {
                                 feature,
                                 consumable,
+                                initial_stock: *stock,
                             })
+                        })
                     })
                     .collect()
             })
@@ -578,14 +610,13 @@ impl ContentPack {
             if feature.id != feature_id {
                 return None;
             }
-            feature
-                .consumables
-                .iter()
-                .find(|consumable| consumable.id == consumable_id)
-                .map(|consumable| RoomConsumableRef {
-                    feature,
-                    consumable,
-                })
+            let initial_stock = *feature.items.get(consumable_id)?;
+            let consumable = ConsumableView::of(self.item(consumable_id)?)?;
+            Some(RoomConsumableRef {
+                feature,
+                consumable,
+                initial_stock,
+            })
         })
     }
 

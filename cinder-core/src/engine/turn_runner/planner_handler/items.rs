@@ -22,7 +22,8 @@ pub(crate) fn plan_take_command(
     }
     let trimmed = target.trim();
     let loose = planner_state.loose_room_items(current_room_id);
-    if loose.is_empty() || trimmed.is_empty() {
+    let held = planner_state.takeable_feature_items(content, current_room_id);
+    if (loose.is_empty() && held.is_empty()) || trimmed.is_empty() {
         planned.events.push(WorldEvent::ActionRejected {
             message: content
                 .render_message("item.take_nothing", &[])
@@ -34,7 +35,10 @@ pub(crate) fn plan_take_command(
     let candidates = matching_items(content, trimmed);
     let in_room = candidates
         .into_iter()
-        .filter(|item| loose.iter().any(|(id, _)| id == &item.id))
+        .filter(|item| {
+            loose.iter().any(|(id, _)| id == &item.id)
+                || held.iter().any(|(_, id, _)| id == &item.id)
+        })
         .collect::<Vec<_>>();
 
     if in_room.is_empty() {
@@ -64,8 +68,18 @@ pub(crate) fn plan_take_command(
         return false;
     }
 
+    // An item lying loose is picked up first. Otherwise it comes from the first
+    // feature that holds one.
+    let feature_id = if loose.iter().any(|(id, _)| id == &chosen.id) {
+        None
+    } else {
+        held.iter()
+            .find(|(_, id, _)| id == &chosen.id)
+            .map(|(feature_id, _, _)| feature_id.clone())
+    };
     planned.events.push(WorldEvent::PlayerTookItem {
         item_id: chosen.id.clone(),
+        feature_id,
     });
     true
 }

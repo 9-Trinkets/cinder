@@ -298,10 +298,13 @@ fn action_has_available_target(
             !crate::engine::topics::room_topics(content, state).is_empty()
         }
         PanelDataSource::TeleportAnchors => content.has_any_teleport_destination(state),
-        PanelDataSource::LooseRoomItems => state
-            .loose_room_items(room_id)
-            .iter()
-            .any(|(item_id, _)| content.item(item_id).is_none_or(|item| item.is_takeable())),
+        PanelDataSource::LooseRoomItems => {
+            state
+                .loose_room_items(room_id)
+                .iter()
+                .any(|(item_id, _)| content.item(item_id).is_none_or(|item| item.is_takeable()))
+                || !state.takeable_feature_items(content, room_id).is_empty()
+        }
         PanelDataSource::InventoryItems => state
             .inventory
             .player_inventory

@@ -128,7 +128,11 @@ pub(crate) fn handle_item_acquired(
 
 /// Moves a loose item from the current room into the player's inventory in
 /// response to the generic `take <item>` command.
-pub(crate) fn handle_player_took_item(ctx: &mut ReduceCtx<'_>, item_id: &str) {
+pub(crate) fn handle_player_took_item(
+    ctx: &mut ReduceCtx<'_>,
+    item_id: &str,
+    feature_id: Option<&str>,
+) {
     let state = &mut *ctx.state;
     let content = ctx.content;
     let lines = &mut *ctx.lines;
@@ -141,7 +145,11 @@ pub(crate) fn handle_player_took_item(ctx: &mut ReduceCtx<'_>, item_id: &str) {
         push_message(lines, content, "item.takedenied", &[("label", label)]);
         return;
     }
-    if state.remove_item_from_storage(item_id, ItemStorageTarget::CurrentRoom, &room_id) {
+    let taken = match feature_id {
+        Some(feature_id) => state.remove_feature_item(&room_id, feature_id, item_id),
+        None => state.remove_item_from_storage(item_id, ItemStorageTarget::CurrentRoom, &room_id),
+    };
+    if taken {
         let exclusive_group = content
             .item(item_id)
             .map(|item| item.exclusive_group.as_str())
@@ -161,8 +169,22 @@ pub(crate) fn handle_player_took_item(ctx: &mut ReduceCtx<'_>, item_id: &str) {
                 .cloned()
                 .collect();
             for old_id in to_return {
+                // A returned item goes back where it belongs: the feature that
+                // lists it here, or else onto the floor.
+                let home = content.room(&room_id).and_then(|room| {
+                    room.features
+                        .iter()
+                        .find(|feature| feature.items.contains_key(&old_id))
+                });
                 while state.remove_item(&old_id) {
-                    state.add_item_to_storage(&old_id, ItemStorageTarget::CurrentRoom, &room_id);
+                    match home {
+                        Some(feature) => state.add_feature_item(&room_id, &feature.id, &old_id, 1),
+                        None => state.add_item_to_storage(
+                            &old_id,
+                            ItemStorageTarget::CurrentRoom,
+                            &room_id,
+                        ),
+                    }
                 }
                 if returned_label.is_none() {
                     returned_label = Some(content.item_label(&old_id).to_string());

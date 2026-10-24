@@ -109,7 +109,7 @@ impl CinderRuntime {
         ))
     }
 
-    pub fn feature_consumable_count(
+    pub fn feature_item_count(
         &self,
         room_id: &str,
         feature_id: &str,
@@ -119,7 +119,7 @@ impl CinderRuntime {
             .state
             .lock()
             .map_err(|_| "failed to lock runtime state for consumable stock")?;
-        Ok(state.remaining_consumable_stock(room_id, feature_id, consumable_id))
+        Ok(state.feature_item_count(room_id, feature_id, consumable_id))
     }
 
     pub fn active_stage_ids(&self) -> Result<Vec<String>, Box<dyn Error>> {

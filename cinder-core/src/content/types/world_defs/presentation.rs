@@ -25,7 +25,7 @@ pub struct PresentationTextDefinition {
     #[serde(default = "default_party_presentation")]
     pub party: String,
     pub exits: String,
-    pub feature_consumables: String,
+    pub feature_items: String,
     pub actor_speech: String,
     #[serde(default = "default_actor_targeted_speech")]
     pub actor_targeted_speech: String,

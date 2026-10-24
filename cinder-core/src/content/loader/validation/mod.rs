@@ -6,6 +6,7 @@
 //! error list in a single load instead of one failure at a time.
 
 mod protection;
+mod rooms;
 mod skills;
 
 use crate::content::types::ContentPack;
@@ -93,6 +94,7 @@ fn validators() -> &'static [&'static dyn ContentValidator] {
         &skills::SkillReferencesValidator,
         &skills::CombatActorSkillsValidator,
         &protection::ProtectionRulesValidator,
+        &rooms::RoomItemsValidator,
     ]
 }
 
