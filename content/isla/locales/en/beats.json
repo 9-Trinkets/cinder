@@ -1,9 +1,6 @@
 {
   "initial_stage_ids": [
-    "stage-read-notes",
-    "stage-choose-book",
-    "stage-bring-snack",
-    "stage-waiting"
+    "stage-read-notes"
   ],
   "stages": [
     {
@@ -13,53 +10,59 @@
       "quest_kind": "main",
       "summary": "Read your notes on Wren. They are in your tote bag. Use Look.",
       "advance_signals": [
-        "item_observed:note-intake",
-        "item_observed:note-referral",
-        "item_observed:note-session-one",
-        "item_observed:note-session-two",
-        "item_observed:note-schedule",
-        "topic_selected:wren:greet"
+        {
+          "signal": "item_observed:note-intake",
+          "next_stage_ids": [
+            "stage-waiting"
+          ]
+        },
+        {
+          "signal": "item_observed:note-referral",
+          "next_stage_ids": [
+            "stage-waiting"
+          ]
+        },
+        {
+          "signal": "item_observed:note-session-one",
+          "next_stage_ids": [
+            "stage-waiting"
+          ]
+        },
+        {
+          "signal": "item_observed:note-session-two",
+          "next_stage_ids": [
+            "stage-waiting"
+          ]
+        },
+        {
+          "signal": "item_observed:note-schedule",
+          "next_stage_ids": [
+            "stage-waiting"
+          ]
+        },
+        {
+          "signal": "topic_selected:wren:greet",
+          "next_stage_ids": [
+            "stage-meet"
+          ]
+        }
       ],
       "next_stage_ids": [],
       "narrative_lines": []
     },
     {
-      "quest_id": "choose-book",
-      "quest_title": "Choose a book",
-      "quest_kind": "main",
-      "next_stage_ids": [],
-      "narrative_lines": [],
-      "id": "stage-choose-book",
-      "summary": "Choose a picture book from the book room on the third floor.",
-      "advance_signals": [
-        "item_acquired:book-bird",
-        "item_acquired:book-bear",
-        "item_acquired:book-fox"
-      ]
-    },
-    {
-      "quest_id": "bring-snack",
-      "quest_title": "Bring a snack",
-      "quest_kind": "main",
-      "next_stage_ids": [],
-      "narrative_lines": [],
-      "id": "stage-bring-snack",
-      "summary": "Bring a snack from the kitchen.",
-      "advance_signals": [
-        "item_acquired:snack",
-        "topic_selected:wren:greet"
-      ]
-    },
-    {
       "id": "stage-waiting",
-      "summary": "Greet Wren when you are ready. Use Talk in the waiting room.",
+      "summary": "Say hello to Wren. Use Talk in the waiting room.",
       "narrative_lines": [],
       "advance_signals": [
         "topic_selected:wren:greet"
       ],
       "next_stage_ids": [
         "stage-meet"
-      ]
+      ],
+      "quest_id": "greet-wren",
+      "quest_title": "Greet Wren",
+      "quest_kind": "main"
     },
     {
       "id": "stage-meet",

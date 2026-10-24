@@ -32,6 +32,9 @@ The game starts here because it is the last moment Isla can choose what to do be
 
 ## 4. The first quest: "Get ready for Wren" **(decision)**
 
+> **As built:** the list grows one step at a time instead of showing everything at the start. It opens with **Read your notes**, then **Greet Wren** (greeting Wren without reading skips straight on), then the session's own steps: take Wren to the playroom, fetch the snack when she asks for it, and fetch a picture book when it is time for the story. Choosing a book and bringing a snack are no longer listed up front, but taking either earlier is still honored.
+
+
 The quest log shows one quest with three small, **optional** steps. None is required, and none is scored. Together they decide how well Isla knows Wren, what she holds, and what the room contains.
 
 | Step | How it is done | What it changes |

@@ -34,42 +34,58 @@ fn wren_is_waiting_in_the_waiting_room() {
 }
 
 #[test]
-fn reading_a_note_prints_it_and_finishes_that_quest_step() {
+fn the_list_starts_with_only_reading_the_notes() {
     let runtime = runtime();
-    let before = quest_status(&runtime);
     assert_eq!(
-        before,
-        vec![
-            ("Read your notes".to_string(), "active".to_string()),
-            ("Choose a book".to_string(), "active".to_string()),
-            ("Bring a snack".to_string(), "active".to_string()),
-        ]
+        quest_status(&runtime),
+        vec![("Read your notes".to_string(), "active".to_string())]
     );
+}
 
+#[test]
+fn reading_a_note_prints_it_and_moves_the_list_on_to_greeting_wren() {
+    let runtime = runtime();
     let text = runtime
         .run_turn("look at notes from last week")
         .expect("look")
         .text();
     assert!(text.contains("Did not name the move"), "{text}");
 
-    assert_eq!(quest_status(&runtime)[0].1, "completed");
-    assert_eq!(quest_status(&runtime)[1].1, "active");
+    assert_eq!(
+        quest_status(&runtime),
+        vec![
+            ("Read your notes".to_string(), "completed".to_string()),
+            ("Greet Wren".to_string(), "active".to_string()),
+        ]
+    );
 }
 
 #[test]
-fn taking_the_snack_and_a_book_finish_their_steps() {
+fn greeting_wren_without_reading_the_notes_skips_straight_to_the_session() {
     let runtime = runtime();
-    for command in ["go inside", "go hall", "go kitchen", "take snack"] {
-        runtime.run_turn(command).expect(command);
-    }
-    assert_eq!(quest_status(&runtime)[2].1, "completed");
-    for command in ["go hall", "go upstairs", "go upstairs", "go book room"] {
-        runtime.run_turn(command).expect(command);
-    }
-    runtime
-        .run_turn("take bear counts to ten")
-        .expect("take book");
-    assert_eq!(quest_status(&runtime)[1].1, "completed");
+    runtime.run_turn("go inside").expect("go inside");
+    runtime.run_turn("say wren:greet").expect("greet");
+    let mut quests: Vec<_> = runtime
+        .current_objective_summaries()
+        .expect("objectives")
+        .into_iter()
+        .filter_map(|o| o.quest_id)
+        .collect();
+    quests.sort();
+    assert_eq!(quests, vec!["session"]);
+}
+
+#[test]
+fn the_snack_and_the_book_are_not_on_the_list_until_wren_needs_them() {
+    let runtime = runtime();
+    runtime.run_turn("go inside").expect("go inside");
+    runtime.run_turn("say wren:greet").expect("greet");
+    let titles: Vec<_> = quest_status(&runtime).into_iter().map(|q| q.0).collect();
+    assert!(
+        !titles
+            .iter()
+            .any(|t| t == "Choose a book" || t == "Bring a snack")
+    );
 }
 
 fn quest_status(runtime: &CinderRuntime) -> Vec<(String, String)> {
@@ -146,20 +162,6 @@ fn taking_a_second_book_returns_the_first_to_the_shelf() {
 }
 
 #[test]
-fn greeting_wren_clears_the_optional_steps_but_keeps_choosing_a_book() {
-    let runtime = runtime();
-    runtime.run_turn("go inside").expect("go inside");
-    runtime.run_turn("say wren:greet").expect("greet");
-    let objectives = runtime.current_objective_summaries().expect("objectives");
-    let mut quests: Vec<_> = objectives
-        .iter()
-        .filter_map(|o| o.quest_id.as_deref())
-        .collect();
-    quests.sort();
-    assert_eq!(quests, vec!["choose-book", "session"]);
-}
-
-#[test]
 fn topics_are_not_offered_where_nobody_is_listening() {
     let runtime = runtime();
     let options = runtime
@@ -177,28 +179,4 @@ fn the_book_room_and_kitchen_start_stocked_for_taking() {
     let text = runtime.run_turn("take snack").expect("take").text();
     assert!(text.to_lowercase().contains("clementine"), "{text}");
     assert_eq!(runtime.inventory_items().unwrap().get("snack"), Some(&1));
-}
-
-#[test]
-fn choosing_a_book_stays_on_the_list_after_greeting_wren_until_a_book_is_taken() {
-    let runtime = runtime();
-    runtime.run_turn("go inside").expect("go inside");
-    runtime.run_turn("say wren:greet").expect("greet");
-    let status = |runtime: &CinderRuntime| {
-        runtime
-            .quest_summaries()
-            .unwrap()
-            .into_iter()
-            .find(|q| q.title == "Choose a book")
-            .map(|q| q.status)
-    };
-    assert_eq!(status(&runtime).as_deref(), Some("active"));
-
-    // Wren leads the way; Isla fetches a book on the way to the playroom.
-    runtime.run_turn("meet-reflect").expect("answer");
-    for step in ["go hall", "go upstairs", "go upstairs", "go book room"] {
-        runtime.run_turn(step).expect(step);
-    }
-    runtime.run_turn("take bear book").expect("take");
-    assert_eq!(status(&runtime).as_deref(), Some("completed"));
 }

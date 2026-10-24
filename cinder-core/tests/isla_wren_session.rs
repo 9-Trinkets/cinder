@@ -564,13 +564,17 @@ fn the_session_cannot_go_on_until_isla_has_fetched_a_book() {
 }
 
 #[test]
-fn the_opening_says_where_the_books_are() {
+fn the_to_do_for_a_missing_book_says_where_the_books_are() {
     let pack = load_named_pack("isla", Some("en")).expect("isla loads");
+    let stage = pack
+        .beats
+        .stages
+        .iter()
+        .find(|stage| stage.id == "stage-fetch-book")
+        .expect("fetch book stage");
     assert!(
-        pack.opening
-            .intro_text
-            .contains("book room, at the top of the house"),
+        stage.summary.contains("book room, at the top of the house"),
         "{}",
-        pack.opening.intro_text
+        stage.summary
     );
 }
