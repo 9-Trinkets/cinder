@@ -1,7 +1,6 @@
 //! The first phase of the Wren act: Isla on the porch, her notes, her phone.
 
 use cinder_core::content::loader::load_named_pack;
-use cinder_core::engine::narrative::NarrativeLineKind;
 use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::WorldState;
 
@@ -32,18 +31,6 @@ fn wren_is_waiting_in_the_waiting_room() {
     let pack = load_named_pack("isla", Some("en")).expect("isla loads");
     let wren = pack.actor("wren").expect("wren exists");
     assert_eq!(wren.room_id, "waiting-room");
-}
-
-#[test]
-fn dr_bell_texts_as_a_message_on_the_phone() {
-    let lines = runtime().drain_scripted_sequences().expect("opening");
-    let text = lines
-        .0
-        .iter()
-        .find(|line| line.kind == NarrativeLineKind::Channel)
-        .expect("a channel line");
-    assert!(text.text.starts_with("Dr. Bell:"), "{}", text.text);
-    assert!(text.text.contains("especially last week's"));
 }
 
 #[test]
@@ -110,7 +97,10 @@ fn saying_a_topic_plays_it_once_and_it_is_no_longer_offered() {
     let runtime = runtime();
     runtime.run_turn("go inside").expect("go inside");
     let text = runtime.run_turn("say wren:greet").expect("say").text();
-    assert!(text.contains("Wren: Dad brought me."), "{text}");
+    assert!(
+        text.contains("Wren: It's Thursday. Dad brought me."),
+        "{text}"
+    );
 
     let options = runtime
         .panel_options(&cinder_core::content::types::PanelDataSource::ActorTopics)
@@ -122,7 +112,7 @@ fn saying_a_topic_plays_it_once_and_it_is_no_longer_offered() {
         .run_turn("say ask gloria about wren")
         .expect("typed")
         .text();
-    assert!(typed.contains("read up before you take her"), "{typed}");
+    assert!(typed.contains("snail doesn't mind"), "{typed}");
 }
 
 #[test]

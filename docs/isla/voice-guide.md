@@ -184,7 +184,55 @@ Picture-book voice: third person, past tense, short declaratives, repetition, a 
 **Calibration:**
 > Book: Bird had a nest. It was a good nest. She carried it from the first tree to the second tree, and from the second tree back to the first. And she never put it down.
 
-## 15. Check before showing anything
+## 15. Gloria (office manager, nineteen years)
+
+Warm, unhurried, practical. She runs the front desk and knows every child's name, every parent's car and which child likes which sticker. She talks the way someone talks while doing something else: a little small talk, a task, a kind word.
+
+- Complete, casual sentences. "Hon" and "sweetheart" for anyone, and first names for parents.
+- **Reports behavior as chores and small facts.** "She's been counting the stones in the tank." Never as a diagnosis, and never an opinion about a family.
+- Answers the question she was asked and stops. She does not summarize events.
+- Dry and fond. Her jokes are about the building, the snail, the printer.
+- She does not give instructions or hints. If she nudges, it is by offering something: a sticker, a cup of water.
+
+**Calibration (Gloria):**
+- "Go on in, hon. She's fine."
+- "She asked me what day it is. Twice. I said Thursday both times."
+- "That printer has opinions today."
+
+**Not these:** "Her dad dropped her at ten to and was gone before I'd put my pen down. Job across town." (a recap, a writer's flourish, a fragment). "You'll want to read up before you take her." (a hint wearing her name).
+
+## 16. Dr. Bell (director)
+
+Sixty, warm, brief. She sees everything and says very little of it, and never in a hurry. When she writes, it is a sentence or two.
+
+- Whole sentences, no abbreviations or texting style.
+- One question at most, and never a leading one.
+- Treats Isla as a colleague, not a student.
+
+**Calibration (Dr. Bell):**
+- "How did it go? Come and find me tomorrow."
+- "Take your time on the steps."
+
+## 17. Isla with adults
+
+Dry, brief, polite. With adults Isla answers with less than she was asked and does not explain. She asks plain questions, because adults can take them.
+
+**Calibration (Isla):**
+- "How's she doing?"
+- "She's early."
+- "Thanks, Gloria."
+
+## 18. How robotic reads, and how to fix it
+
+Check every line against these:
+- **Is it information or is it speech?** If a line exists so the player learns a fact, rewrite it as what that person would notice or ask for.
+- **Does it summarize?** People answer the question and stop. They do not recap events with a time and a reason.
+- **Is it a fragment for effect?** "Job across town." Real fragments answer something just said.
+- **Is it a flourish?** If the line has a clever image, would the person say it out loud at their desk?
+- **Clock times and British phrasing.** No "ten to four", no "I'd put". American: "about ten minutes early".
+- **Say it aloud.** If you would not say it, neither would they.
+
+## 19. Check before showing anything
 
 Read each path as plain transcript text and ask:
 1. Could a six-year-old plausibly say this line?
