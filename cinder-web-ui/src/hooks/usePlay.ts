@@ -264,7 +264,7 @@ export function usePlay() {
       setLines(res.lines.map(l => ({ text: l.text, kind: l.kind as api.LineKind, key: nextKey.current++ })))
       setUiSnapshot(res.snapshot)
       setActiveMenu(res.snapshot.active_menu ?? null)
-      setGameOver(res.snapshot.game_closure !== null)
+      setGameOver(res.snapshot.game_over ?? res.snapshot.game_closure !== null)
       setShowMenu(false)
       showToast(t('hud.bookmarkReturned'), 'info')
       return true
@@ -440,7 +440,7 @@ export function usePlay() {
       .then(snap => {
         setUiSnapshot(snap)
         setActiveMenu(snap.active_menu ?? null)
-        setGameOver(snap.game_closure !== null)
+        setGameOver(snap.game_over ?? snap.game_closure !== null)
       })
       .catch(() => {})
 

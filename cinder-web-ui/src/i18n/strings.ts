@@ -262,7 +262,6 @@ export const en = {
   'error.sessionExpired': 'Your session has expired. Please sign in again.',
   'error.notFound': 'Not found.',
   'error.retry': 'The story changed too quickly. Please try again.',
-  'error.gameOver': 'You can\'t add a bookmark after the story has ended.',
   'error.unreachable': 'Cannot reach the server.',
 } as const
 
@@ -525,7 +524,6 @@ export const zhTW: Record<MessageKey, string> = {
   'error.sessionExpired': '登入已過期，請重新登入。',
   'error.notFound': '找不到對應的資料。',
   'error.retry': '故事更新得太快了，請再試一次。',
-  'error.gameOver': '故事結束後無法再加上書籤。',
   'error.unreachable': '無法連線到伺服器。',
 }
 

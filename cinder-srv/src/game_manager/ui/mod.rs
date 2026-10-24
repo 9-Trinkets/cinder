@@ -465,6 +465,18 @@ mod tests {
     }
 
     #[test]
+    fn a_finished_story_reports_game_over_so_a_resumed_bookmark_of_it_is_read_only() {
+        use cinder_core::engine::state::GamePhase;
+        let pack = cinder_core::loader::load_named_pack("isla", Some("en")).expect("isla loads");
+        let runtime = CinderRuntime::new(pack.clone(), false).expect("runtime creates");
+        let mut state = runtime.export_state().expect("state");
+        state.phase = GamePhase::GameEnded;
+        let ended = CinderRuntime::from_state(pack, state, false).expect("runtime from state");
+        let snapshot = build_ui_snapshot(&ended, "isla", &[]).expect("snapshot builds");
+        assert!(snapshot.game_over);
+    }
+
+    #[test]
     fn quests_and_levels_stay_hidden_until_player_visits_qualifying_room() {
         let pack = cinder_core::loader::load_named_pack("layla", Some("en")).expect("layla loads");
         let runtime = CinderRuntime::new(pack.clone(), false).expect("runtime creates");

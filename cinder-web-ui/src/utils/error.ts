@@ -14,7 +14,6 @@ const SERVER_MESSAGES: [RegExp, MessageKey][] = [
   ],
   [/^(play|bookmark|player) not found$/i, 'error.notFound'],
   [/^play changed too frequently/i, 'error.retry'],
-  [/^cannot bookmark when game is over$/i, 'error.gameOver'],
   [/^Backend unreachable$/i, 'error.unreachable'],
 ]
 

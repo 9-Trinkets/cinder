@@ -1,6 +1,6 @@
 use cinder_core::content::loader;
 use cinder_core::engine::narrative::NarrativeLine;
-use cinder_core::engine::state::{GamePhase, WorldState};
+use cinder_core::engine::state::WorldState;
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
 use uuid::Uuid;
@@ -50,10 +50,6 @@ pub async fn create_bookmark(
 
     let state = WorldState::from_saved_json(&state_json)
         .map_err(|e| format!("failed to deserialize state: {e}"))?;
-
-    if state.phase != GamePhase::Active {
-        return Err("cannot bookmark when game is over".to_string());
-    }
 
     let content = loader::load_named_pack(&pack_id, Some(&locale))
         .map_err(|e| format!("failed to load pack '{pack_id}' locale '{locale}': {e}"))?;
