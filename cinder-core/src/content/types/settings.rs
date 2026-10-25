@@ -1,3 +1,4 @@
+use super::Condition;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 
@@ -130,8 +131,9 @@ pub struct ContentSettingsDefinition {
     pub act_member_alias: String,
     #[serde(default)]
     pub fallback_stage_id: String,
+    /// Conditions that must hold before the fallback stage may start.
     #[serde(default)]
-    pub fallback_required_story_vars: Vec<String>,
+    pub fallback_when: Vec<Condition>,
     #[serde(default = "default_true")]
     pub show_act_closure: bool,
     /// Declarative sidebar section list. Presence means a section may appear;
@@ -219,7 +221,7 @@ impl Default for ContentSettingsDefinition {
             closure_perspective_actor_id: String::default(),
             act_member_alias: String::default(),
             fallback_stage_id: String::default(),
-            fallback_required_story_vars: Vec::new(),
+            fallback_when: Vec::new(),
             workflow_id: String::default(),
             show_act_closure: true,
             sidebar: SidebarDefinition::default(),

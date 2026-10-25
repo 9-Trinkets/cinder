@@ -81,16 +81,13 @@ impl WorldState {
         let Some(actor) = self.actor(content, actor_id) else {
             return false;
         };
-        if let Some(gate_var) = &actor.unlocked_by_story_var {
-            if !gate_var.is_empty()
-                && !content.story_var_is_truthy(self, gate_var)
-                && (actor.room_id.is_empty()
-                    || self.actor_is_in_room(content, actor_id, &actor.room_id))
-            {
-                return true;
-            }
-        }
-        false
+        !actor.unlocked_when.is_empty()
+            && !crate::engine::conditions::all_hold(
+                &actor.unlocked_when,
+                &crate::engine::conditions::ConditionContext::new(content, self, &actor.room_id),
+            )
+            && (actor.room_id.is_empty()
+                || self.actor_is_in_room(content, actor_id, &actor.room_id))
     }
 
     pub fn actor_has_visited_room(&self, actor_id: &str, room_id: &str) -> bool {

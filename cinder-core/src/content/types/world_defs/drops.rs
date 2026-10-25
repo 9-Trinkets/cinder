@@ -24,10 +24,6 @@ pub enum DropSpec {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct DropConditionSpec {
     pub count: u32,
-    /// When truthy, the item is not dropped and is excluded from the defeat
-    /// drop narration.
-    #[serde(default)]
-    pub skip_when_story_var: String,
 }
 
 /// An item that only scatters on a percentage of defeats. `chance_percent`

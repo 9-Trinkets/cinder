@@ -11,7 +11,7 @@
   "default_language": "en",
   "actor_tick_scope": "current_board",
   "fallback_stage_id": "go-to-bed",
-  "fallback_required_story_vars": ["movie_title", "snack_title"],
+  "fallback_when": ["movie_title", "snack_title"],
   "sidebar": {
     "sections": [
       { "id": "location" },

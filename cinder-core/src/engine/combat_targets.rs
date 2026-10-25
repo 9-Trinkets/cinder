@@ -272,7 +272,9 @@ mod tests {
         let offering_id = content.actors[1].id.clone();
         content.actors[0].tags.push("siege".to_string());
         content.actors[1].tags.push("offering".to_string());
-        content.actors[1].unlocked_by_story_var = Some("courtyard_cages_opened".to_string());
+        content.actors[1].unlocked_when = vec![crate::content::types::Condition::StoryVar(
+            "courtyard_cages_opened".to_string(),
+        )];
         content.actors[1].room_id = room_id.clone();
         crate::engine::test_fixtures::rebuild_test_pack_indexes(&mut content);
 

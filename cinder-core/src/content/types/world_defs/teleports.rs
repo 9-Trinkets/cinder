@@ -1,3 +1,4 @@
+use super::super::Condition;
 use serde::{Deserialize, Serialize};
 
 /// Pack-declared teleport network. The core engine implements the generic
@@ -20,14 +21,15 @@ impl TeleportNetworkDefinition {
     }
 }
 
-/// A permanent teleport platform. It is only available while `armed_by` is a
-/// truthy story variable (set by pack content, e.g. a `player.moved` hook).
+/// A permanent teleport platform. It is only available while its `when`
+/// conditions hold (set by pack content, e.g. a `player.moved` hook).
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct TeleportAnchorDefinition {
     /// Destination room id.
     pub room_id: String,
-    /// Story var that must be truthy for the anchor to be available.
-    pub armed_by: String,
+    /// Conditions that must hold for the anchor to be available.
+    pub when: Vec<Condition>,
     /// Title shown in the teleport panel.
     #[serde(default)]
     pub title: String,

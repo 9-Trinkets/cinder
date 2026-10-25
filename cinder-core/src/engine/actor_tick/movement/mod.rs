@@ -351,10 +351,10 @@ pub(crate) fn decide_movement(
             None
         }
     } else {
-        required_movement_target_room_id(state, rules, current_room_id)
+        required_movement_target_room_id(&content, state, rules, current_room_id)
             .or_else(|| {
                 let content_rules = content.movement_rules(&actor.id);
-                required_movement_target_room_id(state, &content_rules, current_room_id)
+                required_movement_target_room_id(&content, state, &content_rules, current_room_id)
             })
             .or_else(|| preferred_target_room_id.map(str::to_string))
     };
@@ -574,7 +574,9 @@ mod tests {
         let rules = ActorMovementRulesDefinition {
             target_rules: vec![ActorMovementTargetRuleDefinition {
                 target_room_id: "kitchen".to_string(),
-                forbidden_story_var: "lane_stopped".to_string(),
+                when: vec![crate::content::types::Condition::Not(Box::new(
+                    crate::content::types::Condition::StoryVar("lane_stopped".to_string()),
+                ))],
                 target_behavior: Some(MovementTargetBehavior::Move),
                 ..Default::default()
             }],
@@ -582,13 +584,13 @@ mod tests {
         };
 
         assert_eq!(
-            required_movement_target_room_id(&state, &rules, "lounge").as_deref(),
+            required_movement_target_room_id(&content, &state, &rules, "lounge").as_deref(),
             Some("kitchen")
         );
 
         state.story_vars.set_unchecked("lane_stopped", "true");
         assert_eq!(
-            required_movement_target_room_id(&state, &rules, "lounge"),
+            required_movement_target_room_id(&content, &state, &rules, "lounge"),
             None
         );
     }

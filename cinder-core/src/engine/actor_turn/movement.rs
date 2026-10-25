@@ -66,7 +66,7 @@ pub(crate) fn is_actor_movement_locked(
     }
     let current_room_id = state.actor_current_room_id(content, actor_id);
     let rules = content.movement_rules(actor_id);
-    if actor_is_locked_to_target_room(state, &rules, current_room_id) {
+    if actor_is_locked_to_target_room(content, state, &rules, current_room_id) {
         return Ok(true);
     }
     let Some(config) = content.movement.suppress_when.as_ref() else {
@@ -108,11 +108,12 @@ pub(crate) struct RelationshipMoveTarget {
 }
 
 pub(crate) fn required_movement_target_room_id(
+    content: &ContentPack,
     state: &WorldState,
     rules: &ActorMovementRulesDefinition,
     current_room_id: &str,
 ) -> Option<String> {
-    let target = resolved_movement_target(state, rules)?;
+    let target = resolved_movement_target(content, state, rules)?;
     if target.room_id == current_room_id {
         None
     } else {
@@ -135,7 +136,7 @@ pub(crate) fn effective_movement_target_room_id(
         }
     }
     let rules = content.movement_rules(actor_id);
-    required_movement_target_room_id(state, &rules, current_room_id)
+    required_movement_target_room_id(content, state, &rules, current_room_id)
 }
 
 pub(crate) fn planned_move_target_room_id(move_events: &[WorldEvent]) -> Option<&str> {
@@ -218,14 +219,19 @@ pub(crate) fn exploration_move_target(
 }
 
 fn movement_target_rule_matches(
+    content: &ContentPack,
     state: &WorldState,
     rule: &ActorMovementTargetRuleDefinition,
 ) -> bool {
     (rule.when_player_room_id.is_empty() || rule.when_player_room_id == state.current_room_id)
-        && (rule.required_story_var.is_empty()
-            || crate::engine::turn_policies::story_var_is_truthy(state, &rule.required_story_var))
-        && (rule.forbidden_story_var.is_empty()
-            || !crate::engine::turn_policies::story_var_is_truthy(state, &rule.forbidden_story_var))
+        && crate::engine::conditions::all_hold(
+            &rule.when,
+            &crate::engine::conditions::ConditionContext::new(
+                content,
+                state,
+                &state.current_room_id,
+            ),
+        )
         && (rule.any_active_stage_ids.is_empty()
             || rule
                 .any_active_stage_ids
@@ -240,13 +246,14 @@ struct ResolvedMovementTarget {
 }
 
 fn resolved_movement_target(
+    content: &ContentPack,
     state: &WorldState,
     rules: &ActorMovementRulesDefinition,
 ) -> Option<ResolvedMovementTarget> {
     let rule = rules
         .target_rules
         .iter()
-        .find(|rule| movement_target_rule_matches(state, rule))?;
+        .find(|rule| movement_target_rule_matches(content, state, rule))?;
     let room_id = if !rule.target_from_story_var.is_empty() {
         state
             .story_vars
@@ -264,12 +271,13 @@ fn resolved_movement_target(
 }
 
 fn actor_is_locked_to_target_room(
+    content: &ContentPack,
     state: &WorldState,
     rules: &ActorMovementRulesDefinition,
     current_room_id: &str,
 ) -> bool {
     matches!(
-        resolved_movement_target(state, rules),
+        resolved_movement_target(content, state, rules),
         Some(ResolvedMovementTarget {
             room_id,
             behavior: MovementTargetBehavior::Stay,

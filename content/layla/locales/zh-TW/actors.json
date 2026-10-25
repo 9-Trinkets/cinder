@@ -2859,7 +2859,7 @@
         }
       }
     ],
-    "unlocked_by_story_var": "zayd_rescued"
+    "unlocked_when": ["zayd_rescued"]
   },
   {
     "aliases": [
@@ -3761,7 +3761,7 @@
       "ally"
     ],
     "transformations": [],
-    "unlocked_by_story_var": "courtyard_cages_opened"
+    "unlocked_when": ["courtyard_cages_opened"]
   },
   {
     "aliases": [
@@ -3824,7 +3824,7 @@
       "ally"
     ],
     "transformations": [],
-    "unlocked_by_story_var": "courtyard_cages_opened"
+    "unlocked_when": ["courtyard_cages_opened"]
   },
   {
     "aliases": [
@@ -3859,7 +3859,7 @@
       "offering",
       "salt_reach"
     ],
-    "unlocked_by_story_var": "courtyard_cages_opened"
+    "unlocked_when": ["courtyard_cages_opened"]
   },
   {
     "aliases": [
@@ -3896,7 +3896,7 @@
       "offering",
       "glassbank"
     ],
-    "unlocked_by_story_var": "courtyard_cages_opened"
+    "unlocked_when": ["courtyard_cages_opened"]
   },
   {
     "aliases": [
@@ -3931,7 +3931,7 @@
       "offering",
       "woolcross"
     ],
-    "unlocked_by_story_var": "courtyard_cages_opened"
+    "unlocked_when": ["courtyard_cages_opened"]
   },
   {
     "aliases": [
@@ -3966,7 +3966,7 @@
       "offering",
       "greenrest"
     ],
-    "unlocked_by_story_var": "courtyard_cages_opened"
+    "unlocked_when": ["courtyard_cages_opened"]
   },
   {
     "aliases": [
@@ -4004,7 +4004,7 @@
       "offering",
       "brass_yard"
     ],
-    "unlocked_by_story_var": "courtyard_cages_opened"
+    "unlocked_when": ["courtyard_cages_opened"]
   },
   {
     "aliases": [

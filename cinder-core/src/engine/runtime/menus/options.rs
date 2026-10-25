@@ -307,7 +307,7 @@ impl CinderRuntime {
     fn teleport_anchors_panel_options(&self, state: &WorldState) -> Vec<PanelOption> {
         let mut options = Vec::new();
         for anchor in &self.content.teleports.permanent_anchors {
-            if state.story_vars.get(&anchor.armed_by) != Some("true") {
+            if !self.content.teleport_anchor_is_armed(state, anchor) {
                 continue;
             }
             options.push(PanelOption {

@@ -9,7 +9,7 @@
         "floor 4",
         "第四層傳送台"
       ],
-      "armed_by": "anchor_floor4_platform",
+      "when": ["anchor_floor4_platform"],
       "room_id": "teleport_platform",
       "title": "第四層傳送台"
     },
@@ -24,7 +24,7 @@
         "floor 5",
         "霜之城中庭"
       ],
-      "armed_by": "anchor_floor5_gate",
+      "when": ["anchor_floor5_gate"],
       "room_id": "courtyard_center",
       "title": "霜之城中庭"
     },
@@ -35,7 +35,7 @@
         "salt",
         "鹽灘"
       ],
-      "armed_by": "town_salt_reach_unlocked",
+      "when": ["town_salt_reach_unlocked"],
       "room_id": "salt_reach_square",
       "title": "鹽灘"
     },
@@ -46,7 +46,7 @@
         "glass",
         "玻璃鎮"
       ],
-      "armed_by": "town_glassbank_unlocked",
+      "when": ["town_glassbank_unlocked"],
       "room_id": "glassbank_square",
       "title": "玻璃鎮"
     },
@@ -57,7 +57,7 @@
         "wool",
         "羊毛鎮"
       ],
-      "armed_by": "town_woolcross_unlocked",
+      "when": ["town_woolcross_unlocked"],
       "room_id": "woolcross_square",
       "title": "羊毛鎮"
     },
@@ -68,7 +68,7 @@
         "green",
         "綠息鎮"
       ],
-      "armed_by": "town_greenrest_unlocked",
+      "when": ["town_greenrest_unlocked"],
       "room_id": "greenrest_square",
       "title": "綠息鎮"
     },
@@ -79,7 +79,7 @@
         "brass",
         "黃銅鎮"
       ],
-      "armed_by": "town_brass_yard_unlocked",
+      "when": ["town_brass_yard_unlocked"],
       "room_id": "brass_yard_square",
       "title": "黃銅鎮"
     },
@@ -92,7 +92,7 @@
         "floor 6",
         "聖堂傳送台"
       ],
-      "armed_by": "anchor_floor6_platform",
+      "when": ["anchor_floor6_platform"],
       "room_id": "sanctuary_main_platform",
       "title": "聖堂傳送台"
     }

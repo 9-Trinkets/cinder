@@ -4,7 +4,7 @@
 use cinder_core::content::types::{ContentPack, MapRoomDefinition};
 use cinder_core::engine::state::{ActorStance, WorldState};
 
-use super::visibility::{MapVisibility, story_var_is_truthy};
+use super::visibility::MapVisibility;
 use crate::game_manager::ui::MinimapRoom;
 
 /// Annotates map rooms with entity and teleport information. All the context
@@ -91,10 +91,10 @@ impl<'a> RoomDecorator<'a> {
 
 /// Whether a room holds an armed permanent anchor or a chalk-marked anchor.
 fn is_teleport_anchor(content: &ContentPack, state: &WorldState, room_id: &str) -> bool {
-    let permanent = content.teleports.permanent_anchors.iter().any(|anchor| {
-        anchor.room_id == room_id
-            && (anchor.armed_by.is_empty() || story_var_is_truthy(state, &anchor.armed_by))
-    });
+    let permanent =
+        content.teleports.permanent_anchors.iter().any(|anchor| {
+            anchor.room_id == room_id && content.teleport_anchor_is_armed(state, anchor)
+        });
     let chalk = state.chalk_anchors.iter().any(|anchor| anchor == room_id);
     permanent || chalk
 }

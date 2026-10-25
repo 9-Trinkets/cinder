@@ -253,7 +253,7 @@ impl ContentPack {
     /// Resolves a teleport target into its destination room id plus whether
     /// that destination is a permanent platform rather than a temporary chalk
     /// anchor. Permanent platforms are resolved first and only while their
-    /// `armed_by` story var is truthy; otherwise armed chalk anchors win.
+    /// conditions hold; otherwise armed chalk anchors win.
     pub fn resolve_teleport_target(
         &self,
         state: &WorldState,
@@ -261,8 +261,7 @@ impl ContentPack {
     ) -> Option<(String, bool)> {
         let target = target.trim().to_ascii_lowercase();
         for anchor in &self.teleports.permanent_anchors {
-            let armed = state.story_vars.get(&anchor.armed_by) == Some("true");
-            if armed
+            if self.teleport_anchor_is_armed(state, anchor)
                 && (anchor.room_id.eq_ignore_ascii_case(&target)
                     || anchor
                         .aliases
@@ -284,6 +283,18 @@ impl ContentPack {
         })
     }
 
+    /// Whether a permanent teleport platform is armed right now.
+    pub fn teleport_anchor_is_armed(
+        &self,
+        state: &WorldState,
+        anchor: &TeleportAnchorDefinition,
+    ) -> bool {
+        crate::engine::conditions::all_hold(
+            &anchor.when,
+            &crate::engine::conditions::ConditionContext::new(self, state, &anchor.room_id),
+        )
+    }
+
     /// Whether any teleport destination is currently reachable: an armed
     /// permanent platform or at least one chalk anchor.
     pub fn has_any_teleport_destination(&self, state: &WorldState) -> bool {
@@ -292,7 +303,7 @@ impl ContentPack {
                 .teleports
                 .permanent_anchors
                 .iter()
-                .any(|anchor| state.story_vars.get(&anchor.armed_by) == Some("true"))
+                .any(|anchor| self.teleport_anchor_is_armed(state, anchor))
     }
 
     /// Whether `room_id` hosts a permanent teleport platform.

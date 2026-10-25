@@ -255,7 +255,9 @@ mod tests {
             .permanent_anchors
             .push(TeleportAnchorDefinition {
                 room_id: "kitchen".to_string(),
-                armed_by: "anchor_kitchen".to_string(),
+                when: vec![cinder_core::content::types::Condition::StoryVar(
+                    "anchor_kitchen".to_string(),
+                )],
                 title: "Kitchen Anchor".to_string(),
                 aliases: vec!["kitchen".to_string()],
             });

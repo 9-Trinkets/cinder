@@ -1,8 +1,6 @@
 use crate::content::types::{AdvanceEffect, Condition, ContentPack, SurvivorRewardDefinition};
 use crate::engine::narrative::{NarrativeLine, NarrativeLines};
-use crate::engine::state::{
-    GamePhase, SpawnActorConfig, SpawnActorOutcome, VariableStore, WorldState,
-};
+use crate::engine::state::{GamePhase, SpawnActorConfig, SpawnActorOutcome, WorldState};
 use crate::engine::turn_policies::clear_inactive_objective_state;
 use crate::engine::world_mutation::{WorldMutation, WorldMutationApplier};
 
@@ -158,11 +156,12 @@ pub(crate) fn advance_objective_for_signal(
     clear_inactive_objective_state(content, state);
     if let Some(stage_id) = fallback_stage_to_activate(
         &content.settings.fallback_stage_id,
-        &content.settings.fallback_required_story_vars,
+        &content.settings.fallback_when,
         &content.beats.stages,
         &state.active_objective_stage_ids,
         state.phase != GamePhase::Active,
-        &state.story_vars,
+        content,
+        state,
     ) {
         state.active_objective_stage_ids.push(stage_id.clone());
         state
@@ -521,19 +520,17 @@ fn conditions_hold(content: &ContentPack, state: &WorldState, conditions: &[Cond
 
 fn fallback_stage_to_activate(
     fallback_stage_id: &str,
-    fallback_required_story_vars: &[String],
+    fallback_when: &[Condition],
     stages: &[crate::content::types::BeatDefinition],
     active_stage_ids: &[String],
     game_over: bool,
-    story_vars: &VariableStore,
+    content: &ContentPack,
+    state: &WorldState,
 ) -> Option<String> {
     if game_over || !active_stage_ids.is_empty() || fallback_stage_id.is_empty() {
         return None;
     }
-    if !fallback_required_story_vars
-        .iter()
-        .all(|required_key| story_vars.has(required_key))
-    {
+    if !conditions_hold(content, state, fallback_when) {
         return None;
     }
     stages
@@ -561,7 +558,23 @@ pub(super) fn time_reached_signals(
 mod tests {
     use super::{advance_objective_for_signal, fallback_stage_to_activate};
     use crate::content::types::{AdvanceSignal, BeatDefinition, BeatsDefinition};
-    use crate::engine::state::{VariableStore, WorldState};
+    use crate::engine::state::WorldState;
+
+    fn fallback_state(vars: &[(&str, &str)]) -> (crate::content::types::ContentPack, WorldState) {
+        let pack = crate::engine::test_fixtures::minimal_test_pack();
+        let mut state = WorldState::new(&pack);
+        for (key, value) in vars {
+            state.story_vars.set_unchecked(key, value);
+        }
+        (pack, state)
+    }
+
+    fn fallback_requirements() -> Vec<crate::content::types::Condition> {
+        vec![
+            crate::content::types::Condition::StoryVar("movie_title".to_string()),
+            crate::content::types::Condition::StoryVar("snack_title".to_string()),
+        ]
+    }
 
     #[test]
     fn fallback_stage_activates_only_when_requirements_are_met() {
@@ -569,17 +582,16 @@ mod tests {
             id: "wind-down".to_string(),
             ..BeatDefinition::default()
         }];
-        let mut story_vars = VariableStore::default();
-        story_vars.set_unchecked("movie_title", "A Film");
-        story_vars.set_unchecked("snack_title", "Toast");
+        let (pack, state) = fallback_state(&[("movie_title", "A Film"), ("snack_title", "Toast")]);
 
         let stage_id = fallback_stage_to_activate(
             "wind-down",
-            &["movie_title".to_string(), "snack_title".to_string()],
+            &fallback_requirements(),
             &stages,
             &[],
             false,
-            &story_vars,
+            &pack,
+            &state,
         );
 
         assert_eq!(stage_id.as_deref(), Some("wind-down"));
@@ -591,16 +603,16 @@ mod tests {
             id: "wind-down".to_string(),
             ..BeatDefinition::default()
         }];
-        let mut story_vars = VariableStore::default();
-        story_vars.set_unchecked("movie_title", "A Film");
+        let (pack, state) = fallback_state(&[("movie_title", "A Film")]);
 
         let stage_id = fallback_stage_to_activate(
             "wind-down",
-            &["movie_title".to_string(), "snack_title".to_string()],
+            &fallback_requirements(),
             &stages,
             &[],
             false,
-            &story_vars,
+            &pack,
+            &state,
         );
 
         assert!(stage_id.is_none());

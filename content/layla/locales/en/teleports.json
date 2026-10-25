@@ -3,7 +3,7 @@
   "permanent_anchors": [
     {
       "room_id": "teleport_platform",
-      "armed_by": "anchor_floor4_platform",
+      "when": ["anchor_floor4_platform"],
       "title": "Floor 4 Platform",
       "aliases": [
         "teleport_platform",
@@ -14,7 +14,7 @@
     },
     {
       "room_id": "courtyard_center",
-      "armed_by": "anchor_floor5_gate",
+      "when": ["anchor_floor5_gate"],
       "title": "Frost Courtyard",
       "aliases": [
         "courtyard_center",
@@ -28,37 +28,37 @@
     },
     {
       "room_id": "salt_reach_square",
-      "armed_by": "town_salt_reach_unlocked",
+      "when": ["town_salt_reach_unlocked"],
       "title": "Salt Reach",
       "aliases": ["salt reach", "salt_reach", "salt"]
     },
     {
       "room_id": "glassbank_square",
-      "armed_by": "town_glassbank_unlocked",
+      "when": ["town_glassbank_unlocked"],
       "title": "Glassbank",
       "aliases": ["glassbank", "glass bank", "glass"]
     },
     {
       "room_id": "woolcross_square",
-      "armed_by": "town_woolcross_unlocked",
+      "when": ["town_woolcross_unlocked"],
       "title": "Woolcross",
       "aliases": ["woolcross", "wool cross", "wool"]
     },
     {
       "room_id": "greenrest_square",
-      "armed_by": "town_greenrest_unlocked",
+      "when": ["town_greenrest_unlocked"],
       "title": "Greenrest",
       "aliases": ["greenrest", "green rest", "green"]
     },
     {
       "room_id": "brass_yard_square",
-      "armed_by": "town_brass_yard_unlocked",
+      "when": ["town_brass_yard_unlocked"],
       "title": "Brass Yard",
       "aliases": ["brass yard", "brass_yard", "brass"]
     },
     {
       "room_id": "sanctuary_main_platform",
-      "armed_by": "anchor_floor6_platform",
+      "when": ["anchor_floor6_platform"],
       "title": "Sanctuary Platform",
       "aliases": ["sanctuary_main_platform", "floor6_platform", "floor 6 platform", "sanctuary platform", "floor 6"]
     }

@@ -1,5 +1,6 @@
 use super::DropSpec;
 use crate::content::types::ActorSkillAssignment;
+use crate::content::types::Condition;
 use crate::engine::state::ActorRelationship;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -99,13 +100,13 @@ pub struct ActorDefinition {
     pub transformations: Vec<ActorTransformation>,
     #[serde(default)]
     pub game_data: BTreeMap<String, String>,
-    /// Story variable required to free or unlock this actor from imprisonment.
-    /// While this story variable is not truthy and the actor is in their home room,
-    /// the actor is considered imprisoned: they cannot move on their own, cannot
-    /// follow the player, cannot be charmed/converted via encirclement, and are
-    /// not targeted by siege troops.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub unlocked_by_story_var: Option<String>,
+    /// Conditions that free or unlock this actor from imprisonment. While they
+    /// do not hold and the actor is in their home room, the actor is considered
+    /// imprisoned: they cannot move on their own, cannot follow the player,
+    /// cannot be charmed/converted via encirclement, and are not targeted by
+    /// siege troops. An actor with no conditions is never imprisoned.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub unlocked_when: Vec<Condition>,
     /// Authored things the player can say to this actor from the Talk panel.
     #[serde(default)]
     pub topics: Vec<ActorTopicDefinition>,

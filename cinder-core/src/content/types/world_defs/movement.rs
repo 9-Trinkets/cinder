@@ -1,3 +1,4 @@
+use super::super::Condition;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::BTreeMap;
@@ -69,15 +70,15 @@ pub enum MovementTargetBehavior {
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct ActorMovementTargetRuleDefinition {
     #[serde(default)]
     pub target_room_id: String,
     #[serde(default)]
     pub when_player_room_id: String,
+    /// Conditions that must hold for this target rule to apply.
     #[serde(default)]
-    pub required_story_var: String,
-    #[serde(default)]
-    pub forbidden_story_var: String,
+    pub when: Vec<Condition>,
     #[serde(default)]
     pub any_active_stage_ids: Vec<String>,
     #[serde(default)]

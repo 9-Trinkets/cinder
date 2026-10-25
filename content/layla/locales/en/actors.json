@@ -2709,7 +2709,7 @@
     "id": "zayd",
     "name": "Zayd",
     "room_id": "steam_prison_cage",
-    "unlocked_by_story_var": "zayd_rescued",
+    "unlocked_when": ["zayd_rescued"],
     "aliases": [
       "zayd",
       "boy",
@@ -3631,7 +3631,7 @@
     "id": "commander_astrid",
     "name": "Commander Astrid",
     "room_id": "courtyard_center",
-    "unlocked_by_story_var": "courtyard_cages_opened",
+    "unlocked_when": ["courtyard_cages_opened"],
     "aliases": [
       "astrid",
       "commander",
@@ -3686,7 +3686,7 @@
     "id": "einar",
     "name": "Einar",
     "room_id": "courtyard_center",
-    "unlocked_by_story_var": "courtyard_cages_opened",
+    "unlocked_when": ["courtyard_cages_opened"],
     "aliases": [
       "einar",
       "healer",
@@ -3748,7 +3748,7 @@
     "id": "nivi_olsen",
     "name": "Nivi Olsen",
     "room_id": "courtyard_center",
-    "unlocked_by_story_var": "courtyard_cages_opened",
+    "unlocked_when": ["courtyard_cages_opened"],
     "aliases": [
       "nivi",
       "nivi olsen",
@@ -3782,7 +3782,7 @@
     "id": "eliska_novakova",
     "name": "Eliška Nováková",
     "room_id": "courtyard_center",
-    "unlocked_by_story_var": "courtyard_cages_opened",
+    "unlocked_when": ["courtyard_cages_opened"],
     "aliases": [
       "eliska",
       "eliška",
@@ -3818,7 +3818,7 @@
     "id": "amaru_quispe",
     "name": "Amaru Quispe",
     "room_id": "courtyard_center",
-    "unlocked_by_story_var": "courtyard_cages_opened",
+    "unlocked_when": ["courtyard_cages_opened"],
     "aliases": [
       "amaru",
       "amaru quispe",
@@ -3852,7 +3852,7 @@
     "id": "abeni_adeyemi",
     "name": "Abeni Adeyemi",
     "room_id": "courtyard_center",
-    "unlocked_by_story_var": "courtyard_cages_opened",
+    "unlocked_when": ["courtyard_cages_opened"],
     "aliases": [
       "abeni",
       "abeni adeyemi",
@@ -3886,7 +3886,7 @@
     "id": "chen_yu_xin",
     "name": "Chen Yu-xin",
     "room_id": "courtyard_center",
-    "unlocked_by_story_var": "courtyard_cages_opened",
+    "unlocked_when": ["courtyard_cages_opened"],
     "aliases": [
       "yu-xin",
       "yuxin",
