@@ -6,7 +6,7 @@ mod validation;
 
 use crate::content::loader::bundled::{read_messages, read_system_text, read_ui_text};
 use crate::content::loader::fs::{LocalizedPaths, read_json, read_optional_json};
-use crate::content::loader::index::{build_index, collect_act_cast};
+use crate::content::loader::index::build_index;
 use crate::content::loader::overlay::read_with_overlay;
 use crate::content::types::{
     ActionsDefinition, ActorDefinition, BeatObjectivesDefinition, BeatsDefinition,
@@ -154,7 +154,6 @@ pub fn load_pack_from_dir_with_locale(
     }
     let rooms = paths.read_required::<Vec<RoomDefinition>>("rooms.json")?;
     let actors = paths.read_required::<Vec<ActorDefinition>>("actors.json")?;
-    let act_cast = collect_act_cast(&actors);
     let stats = read_optional_json::<StatsDefinition>(path, "stats.json")?.unwrap_or_default();
 
     let mut actions =
@@ -209,7 +208,6 @@ pub fn load_pack_from_dir_with_locale(
         maps,
         rooms,
         actors,
-        act_cast,
         stats,
         actions,
         movement,

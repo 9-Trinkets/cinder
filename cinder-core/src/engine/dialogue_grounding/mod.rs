@@ -3,7 +3,7 @@ use crate::engine::dialogue::DialogueRequest;
 use crate::engine::hooks::{actor_state_notes, pair_state_note};
 use crate::engine::state::{
     ConversationMemoryKind, ConversationMemoryLine, WorldState, display_actor_name,
-    remap_story_actor_id, render_dynamic_story_text, resolved_actor_prompt_context,
+    render_dynamic_story_text, resolved_actor_prompt_context,
 };
 use crate::engine::turn_policies::actor_objective_guidance_notes;
 const ROOM_RECENT_MEMORY_LIMIT: usize = 8;
@@ -35,7 +35,6 @@ pub(crate) fn build_grounded_dialogue_request_for_exchange(
     other_person_name: &str,
     other_person_message: Option<String>,
 ) -> Result<DialogueRequest, String> {
-    let actor_id = remap_story_actor_id(state, actor_id);
     let actor = content
         .actor(actor_id)
         .ok_or_else(|| format!("missing actor '{actor_id}'"))?;
@@ -158,7 +157,6 @@ pub(crate) fn build_grounded_dialogue_request_for_room(
     current_room_id: &str,
     audience_label: &str,
 ) -> Result<DialogueRequest, String> {
-    let actor_id = remap_story_actor_id(state, actor_id);
     let actor = content
         .actor(actor_id)
         .ok_or_else(|| format!("missing actor '{actor_id}'"))?;

@@ -1,22 +1,21 @@
 use super::CinderRuntime;
-use crate::content::types::ContentPack;
 use crate::engine::dialogue::{PerspectiveReview, PerspectiveReviewRequest};
-use crate::engine::dialogue_grounding::viewer_participant_id;
-use crate::engine::state::{
-    WorldState, current_cast_member_actor_id, current_cast_member_name, display_actor_name,
-    remap_story_actor_id,
-};
+use crate::engine::state::display_actor_name;
 use std::collections::BTreeMap;
 use std::error::Error;
 use std::sync::Arc;
 
 impl CinderRuntime {
-    fn select_perspective_actor_id(&self, state: &WorldState) -> Option<String> {
-        pick_perspective_actor_id(
-            self.content.as_ref(),
-            state,
-            &viewer_participant_id(self.content.as_ref()),
-        )
+    /// The actor whose view the closing review is written from.
+    fn select_perspective_actor_id(&self) -> Option<String> {
+        let actor_id = &self.content.settings.closure_perspective_actor_id;
+        (!actor_id.is_empty()
+            && self
+                .content
+                .actors
+                .iter()
+                .any(|actor| &actor.id == actor_id))
+        .then(|| actor_id.clone())
     }
 
     pub(super) fn build_perspective_review(
@@ -35,7 +34,7 @@ impl CinderRuntime {
                 .state
                 .lock()
                 .map_err(|_| "failed to lock runtime state for perspective review")?;
-            let Some(actor_id) = self.select_perspective_actor_id(&state) else {
+            let Some(actor_id) = self.select_perspective_actor_id() else {
                 return Ok(None);
             };
             let actor_name = self
@@ -43,8 +42,7 @@ impl CinderRuntime {
                 .actor(&actor_id)
                 .map(|actor| display_actor_name(&state, actor))
                 .unwrap_or_else(|| "Actor".to_string());
-            let subject_name =
-                current_cast_member_name(&state).unwrap_or_else(|| actor_name.clone());
+            let subject_name = actor_name.clone();
             let current = state.actor_stats_snapshot(&actor_id);
             let deltas = state.actor_stat_deltas(&actor_id).unwrap_or_default();
             let stats_context = [
@@ -151,24 +149,4 @@ impl CinderRuntime {
 pub(super) struct CachedPerspectiveReview {
     pub(super) subject_name: String,
     pub(super) review: PerspectiveReview,
-}
-
-fn pick_perspective_actor_id(
-    content: &ContentPack,
-    state: &WorldState,
-    _viewer_id: &str,
-) -> Option<String> {
-    if let Some(actor_id) = current_cast_member_actor_id(state) {
-        return Some(actor_id.to_string());
-    }
-    if !content.settings.closure_perspective_actor_id.is_empty()
-        && content.actors.iter().any(|actor| {
-            actor.id == remap_story_actor_id(state, &content.settings.closure_perspective_actor_id)
-        })
-    {
-        return Some(
-            remap_story_actor_id(state, &content.settings.closure_perspective_actor_id).to_string(),
-        );
-    }
-    None
 }

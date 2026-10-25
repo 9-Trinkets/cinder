@@ -6,10 +6,7 @@ use crate::engine::dialogue_grounding::{
 };
 use crate::engine::events::WorldEvent;
 use crate::engine::reducer::render_actor_speech_line;
-use crate::engine::state::{
-    WorldState, display_actor_name, remap_story_actor_id, render_dynamic_story_text,
-    story_actor_matches,
-};
+use crate::engine::state::{WorldState, display_actor_name, render_dynamic_story_text};
 use crate::engine::turn_policies::actor_objective_guidance_notes;
 
 pub(crate) struct PendingMenuDialogue<'a> {
@@ -26,11 +23,7 @@ pub fn menu_is_available(
     state: &WorldState,
 ) -> bool {
     !menu.requires_actor_present
-        || state.actor_is_in_room(
-            content,
-            remap_story_actor_id(state, &menu.actor_id),
-            &state.current_room_id,
-        )
+        || state.actor_is_in_room(content, &menu.actor_id, &state.current_room_id)
 }
 
 pub(crate) fn render_menu_prompt(
@@ -42,7 +35,7 @@ pub(crate) fn render_menu_prompt(
         String::new()
     } else {
         let actor_name = content
-            .actor(remap_story_actor_id(state, &menu.actor_id))
+            .actor(&menu.actor_id)
             .map(|actor| display_actor_name(state, actor))
             .unwrap_or_else(|| menu.actor_id.clone());
         render_actor_speech_line(
@@ -76,7 +69,7 @@ where
                 .active_objective_stage_ids
                 .iter()
                 .any(|stage_id| stage_id == &menu.stage_id)
-                && story_actor_matches(state, pending.actor_id, &menu.actor_id)
+                && pending.actor_id == menu.actor_id
         })
         .collect::<Vec<_>>();
     let mut objective_notes = current_objective_beat_notes(content, state, Some(pending.actor_id));
@@ -89,7 +82,7 @@ where
         &content.system_text.prompt_time_note,
         &[("current_time", state.current_time_label().as_str())],
     );
-    let actor_id = remap_story_actor_id(state, pending.actor_id);
+    let actor_id = pending.actor_id;
     let actor = content
         .actor(actor_id)
         .ok_or_else(|| format!("missing actor '{actor_id}'"))?;

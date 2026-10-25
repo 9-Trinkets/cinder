@@ -16,14 +16,19 @@ With Wren the player *answers*: each turn offers things to say, and the fit tabl
 
 ## 2. How the episode plugs into the game **(decision)**
 
-Isla needs a second episode in the same house, with her journal and notes carried over. The engine has two things that look like fits, and neither is quite right.
+**One long game, and a world that is never thrown away.** An episode ends with `end_act`. The world carries on into the next act: what Isla holds, where things are, every feature's state and every story variable. Only variables declared with `"scope": "act"` are cleared. (The old act-series rotation, which rebuilt the whole world for each patient, was removed. Nothing used it, and `engine_act_boundary.rs` pins the new behavior.)
 
-- **The act series** (`act_cast`, `end_act`, `advance_to_next_act`) is what Aera uses to rotate patients. It rebuilds the whole world state for every act, so Isla's journal pages and notes would reset, and it picks the next patient by seed.
-- **One long game with stages** keeps everything, and is what Isla does today. Tam's stages would simply follow Wren's.
+What a new episode changes is therefore **authored, not automatic:**
 
-**Recommendation: one long game.** The journal must persist, and the diner idea is that the house is the same house. Wren's last stage plays its dated card, then a *time-jump* stage plays a second card ("Tuesday, February 4") and sets the room for Tam: Wren's drawings stay on the hall wall, the story variables for Wren are kept as memory, and the stages for Tam open. Choosing who comes next stays a story trigger for now. If we later want a rotating cast of many children, the act series can carry that, and the episodes would live inside it.
+| Thing | How the Tam episode sets it |
+|---|---|
+| **The date** | `elapsed_minutes` on the time-jump stage moves the clock (days are 1,440 minutes). The card shows the date in Isla's hand. |
+| **Where Isla is** | The stage puts her in a different room, such as the staff room or the landing, and not at the front door. *Needs a check:* stages relocate actors with `actor_relocations`, and it is not yet confirmed that this moves the player. If not, a small `move_player` stage effect is needed. |
+| **What persists** | Her journal pages and case notes (items), what she learned (story variables meant to carry, declared `game`), and Wren's drawing on the hall wall. |
+| **What resets** | Anything declared `act` scope: quiet-beat counters, `asked_him`, feature states Tam's session depends on (set explicitly by the stage, for example lamp back to `off`). |
+| **Who is around** | Wren and her family are simply not there. Gloria is. |
 
-Nothing new is needed in the engine for this: a stage can already show a card (`movie_id`) and a following stage can open on a condition.
+Choosing who comes next stays a story trigger for now.
 
 ## 3. The room is the instrument **(decision)**
 
@@ -132,7 +137,8 @@ The practical outcome is small: a quieter corner, headphones at school, a door c
 | **A beat that waits and counts quiet turns** | **Gap.** Waiting exists. Counting quiet beats as a gate needs a small effect (`adjust` a story variable on each wait) or a stage signal. |
 | **Tam acting on room state** | **Gap.** A child who reacts to the lamp or the knock needs stages or hooks that read feature state. Conditional signals can do it. A scripted sequence for the knock. |
 | **A silent child in the transcript** | **Open.** Tam's lines are all behavior. Probably no engine change; the voice guide should say how it reads. |
-| **Time-jump stage that carries state** | **Needs a check** that Wren's variables and journal survive, which they should in one long game. |
+| **Time-jump stage that carries state** | **Built.** `end_act` keeps the world; only `act`-scoped variables clear. |
+| **Moving Isla at the start of an episode** | **Needs a check** (section 2). |
 
 ## 12. Build order
 
@@ -146,7 +152,7 @@ The practical outcome is small: a quieter corner, headphones at school, a door c
 
 ## 13. Open questions
 
-1. **One long game or the act series?** Section 2 recommends one long game.
+1. **Can a stage move the player?** Section 2 depends on it. Check `actor_relocations` with the player, or add `move_player`.
 2. **Is *again* then *Mai* right,** or does the second word make the ending too neat?
 3. **Does Isla need an early chance to set the room,** or should every change wait for a sign? Early changes reward preparation and risk making her feel she has solved him before he arrives.
 4. **How long is a quiet beat?** If a session is a handful of turns and each is mostly waiting, it might feel empty, and might need small things to notice in each.

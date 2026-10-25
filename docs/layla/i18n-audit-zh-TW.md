@@ -35,7 +35,6 @@ Player-visible:
 - `cinder-core/src/engine/turn_runner/planning/teleport.rs` (8 messages).
 - `cinder-core/src/engine/skills.rs` (scalar summary strings).
 - `cinder-core/src/engine/reducer/combat/offscreen_comms.rs` (15 ally radio milestone lines).
-- `cinder-core/src/engine/state/act_cast.rs` (awakening/last-act text).
 - `cinder-srv/src/game_manager/ui/panels/options.rs` (`Erase Sigils`, `Wipe chalk marks from this room`, `Erase Sigil`, `No sigils in this room`, `Max summons active`).
 - `cinder-srv/src/game_manager/ui/sidebar.rs` (`Current room`, `No destinations available`, `Explore the floor to unlock deployment positions`).
 - `cinder-core/src/engine/runtime/menus/active_menu.rs` (`Confirm selection`).
@@ -97,6 +96,6 @@ Visual pass (headless Chromium driven by Playwright, since the browser extension
 
 Still open:
 - Aera and Isla still show English pack metadata in zh-TW (they ship no zh-TW locale; Ella now has a settings overlay).
-- `act_cast.rs` act headers and the book-recommender flow (Isla/Aera) still contain English strings.
+- The book-recommender flow (Isla/Aera) still contains English strings.
 - Layla's Orva is now 奧爾娃 in the game zh-TW, matching the novel.
 - Typed give commands still need the English word `to` (`給予 藥水 to 小宰德`).

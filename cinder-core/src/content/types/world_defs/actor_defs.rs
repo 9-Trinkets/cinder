@@ -95,8 +95,6 @@ pub struct ActorDefinition {
     pub skills: Vec<ActorSkillAssignment>,
     pub prompt_context: ActorPromptContext,
     #[serde(default)]
-    pub act_cast: Option<ActorActCast>,
-    #[serde(default)]
     pub transformations: Vec<ActorTransformation>,
     #[serde(default)]
     pub game_data: BTreeMap<String, String>,
@@ -142,21 +140,6 @@ impl ActorDefinition {
 
 fn default_actor_level() -> u32 {
     1
-}
-
-/// Author-authored blurb/metadata for an actor in another actor's cast,
-/// used by the dialogue layer to surface cast members of the participating
-/// partner (see `collect_act_cast`).
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct ActorActCast {
-    #[serde(default)]
-    pub inspect_blurb: String,
-    #[serde(default)]
-    pub intro_blurb: String,
-    #[serde(default)]
-    pub return_blurb: String,
-    #[serde(default)]
-    pub metadata: BTreeMap<String, String>,
 }
 
 /// A content-declared transformation stage for an actor (job change,

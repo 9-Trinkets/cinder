@@ -93,7 +93,6 @@ pub fn reducer_test_pack() -> ContentPack {
         test_actor(ACTOR_B_ID, ACTOR_B_NAME, LOUNGE_ID),
         test_actor(ACTOR_C_ID, ACTOR_C_NAME, KITCHEN_ID),
     ];
-    pack.act_cast.clear();
     pack.stats = reducer_test_stats();
     pack.actions = vec![
         ActionDefinition {
@@ -264,7 +263,6 @@ pub fn test_actor(id: &str, name: &str, room_id: &str) -> ActorDefinition {
             response_notes: vec![],
             behavior_examples: vec![],
         },
-        act_cast: None,
         transformations: vec![],
         initial_equipment: BTreeMap::new(),
         initial_inventory: BTreeMap::new(),

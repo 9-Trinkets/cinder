@@ -5,18 +5,14 @@ use crate::content::types::{
 use crate::engine::commands::player_command_help_text;
 use crate::engine::dialogue_grounding::render_story_text;
 use crate::engine::neuron::WorkflowDefinition;
-use crate::engine::state::{current_act_intro, current_cast_member_name, display_actor_name};
+use crate::engine::state::display_actor_name;
 use std::collections::HashMap;
 use std::error::Error;
 use std::sync::{Arc, Mutex};
 
 impl CinderRuntime {
     pub fn current_intro_text(&self) -> Result<String, Box<dyn Error>> {
-        let state = self
-            .state
-            .lock()
-            .map_err(|_| "failed to lock runtime state for intro text")?;
-        Ok(current_act_intro(&state).unwrap_or_else(|| self.content.opening.intro_text.clone()))
+        Ok(self.content.opening.intro_text.clone())
     }
 
     pub fn actor_display_name(&self, actor_id: &str) -> Result<Option<String>, Box<dyn Error>> {
@@ -27,14 +23,6 @@ impl CinderRuntime {
         Ok(state
             .actor(&self.content, actor_id)
             .map(|actor| display_actor_name(&state, actor)))
-    }
-
-    pub fn current_cast_member_name(&self) -> Result<Option<String>, Box<dyn Error>> {
-        let state = self
-            .state
-            .lock()
-            .map_err(|_| "failed to lock runtime state for patient name")?;
-        Ok(current_cast_member_name(&state))
     }
 
     pub fn current_time_label(&self) -> Result<String, Box<dyn Error>> {
@@ -340,7 +328,6 @@ impl CinderRuntime {
             .state
             .lock()
             .map_err(|_| "failed to lock runtime state for secret progress")?;
-        let current_actor_id = state.story_vars.get("act_cast_actor_id");
         let secret_stages: Vec<_> = self
             .content
             .beats
@@ -350,22 +337,6 @@ impl CinderRuntime {
                 s.advance_signals
                     .iter()
                     .any(|sig| sig.signal() == "stat_threshold")
-            })
-            .filter(|s| match current_actor_id {
-                None => true,
-                Some(actor_id) => s.advance_signals.iter().any(|sig| {
-                    sig.conditions().iter().any(|c| match c {
-                        crate::content::types::Condition::Path(c) => {
-                            c.path == "story_vars.act_cast_actor_id"
-                                && c.operator == "equal"
-                                && c.value.as_str() == Some(actor_id)
-                        }
-                        crate::content::types::Condition::StoryVarIs { name, value } => {
-                            name == "act_cast_actor_id" && value == actor_id
-                        }
-                        _ => false,
-                    })
-                }),
             })
             .collect();
         let total = secret_stages.len();

@@ -137,7 +137,7 @@ pub(crate) fn advance_objective_for_signal(
                 &next_stage.on_advance_effects,
                 &mut messages,
             );
-            if next_stage.end_act && !content.act_cast.is_empty() {
+            if next_stage.end_act {
                 state.stages_completed += 1;
                 state.phase = GamePhase::ActEnded;
             }

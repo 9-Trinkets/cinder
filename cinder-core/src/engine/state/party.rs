@@ -1,4 +1,4 @@
-use super::{ActorStance, WorldState, remap_story_actor_id};
+use super::{ActorStance, WorldState};
 use crate::content::types::{ContentPack, PartyController, PartyOrderKind};
 use crate::engine::orders::{OrderKind, parse_order};
 use serde::{Deserialize, Serialize};
@@ -80,7 +80,6 @@ impl WorldState {
     /// the player party, the player party wins so reactions and orders treat it
     /// as an ally.
     pub fn party_of_actor(&self, actor_id: &str) -> Option<&Party> {
-        let actor_id = remap_story_actor_id(self, actor_id);
         self.parties
             .values()
             .find(|party| party.is_player_controlled() && party.members.contains(actor_id))
@@ -100,8 +99,8 @@ impl WorldState {
 
     /// Whether two actors belong to the same command group.
     pub fn share_party(&self, left: &str, right: &str) -> bool {
-        let left = remap_story_actor_id(self, left);
-        let right = remap_story_actor_id(self, right);
+        let left = left;
+        let right = right;
         self.parties
             .values()
             .any(|party| party.members.contains(left) && party.members.contains(right))
@@ -122,7 +121,7 @@ impl WorldState {
     /// Sets a content-authored order for any actor, bypassing the allied-only
     /// checks so a pack can drive an AI party (`controller: ai`) reactively.
     pub fn set_authored_party_order(&mut self, actor_id: &str, order: PartyOrderKind) {
-        let actor_id = remap_story_actor_id(self, actor_id).to_string();
+        let actor_id = actor_id.to_string();
         self.relations.party_orders.insert(actor_id, order);
     }
 
@@ -159,7 +158,7 @@ impl WorldState {
     /// party on demand so deserialized states self-heal. `is_member` is the
     /// authoritative allied-or-following signal.
     pub fn sync_player_party_membership(&mut self, actor_id: &str, is_member: bool) {
-        let actor_id = remap_story_actor_id(self, actor_id).to_string();
+        let actor_id = actor_id.to_string();
         if is_member && !self.parties.values().any(Party::is_player_controlled) {
             self.parties.insert(
                 PLAYER_PARTY_ID.to_string(),
@@ -185,7 +184,6 @@ impl WorldState {
     }
 
     pub fn is_party_member(&self, content: &ContentPack, actor_id: &str) -> bool {
-        let actor_id = remap_story_actor_id(self, actor_id);
         if content.is_player_actor(actor_id) {
             return false;
         }
@@ -201,7 +199,6 @@ impl WorldState {
     }
 
     pub fn party_order(&self, content: &ContentPack, actor_id: &str) -> Option<PartyOrderKind> {
-        let actor_id = remap_story_actor_id(self, actor_id);
         if let Some(order) = self.relations.party_orders.get(actor_id) {
             return Some(order.clone());
         }
@@ -221,7 +218,7 @@ impl WorldState {
         actor_id: &str,
         order: PartyOrderKind,
     ) -> Result<(), String> {
-        let actor_id = remap_story_actor_id(self, actor_id).to_string();
+        let actor_id = actor_id.to_string();
         validate_party_member(content, self, &actor_id)?;
         let holds_position = matches!(
             parse_order(&order),
@@ -234,7 +231,7 @@ impl WorldState {
     }
 
     pub fn initialize_party_order(&mut self, content: &ContentPack, actor_id: &str) {
-        let actor_id = remap_story_actor_id(self, actor_id).to_string();
+        let actor_id = actor_id.to_string();
         if self.relations.party_orders.contains_key(&actor_id) {
             return;
         }

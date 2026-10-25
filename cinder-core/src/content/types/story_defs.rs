@@ -1,6 +1,5 @@
 use super::Condition;
 use serde::{Deserialize, Serialize};
-use std::collections::BTreeMap;
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct OpeningDefinition {
@@ -39,23 +38,6 @@ pub struct OpeningPromptContext {
     pub setting_notes: Vec<String>,
     #[serde(default)]
     pub subtext_notes: Vec<String>,
-}
-
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct ActCastMember {
-    pub id: String,
-    pub name: String,
-    pub actor_id: String,
-    #[serde(default)]
-    pub inspect_blurb: String,
-    #[serde(default)]
-    pub intro_blurb: String,
-    #[serde(default)]
-    pub return_blurb: String,
-    #[serde(default)]
-    pub metadata: BTreeMap<String, String>,
-    #[serde(default)]
-    pub actor_stats: BTreeMap<String, i32>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]

@@ -20,7 +20,6 @@ pub struct ContentPack {
     pub maps: Vec<MapDefinition>,
     pub rooms: Vec<RoomDefinition>,
     pub actors: Vec<ActorDefinition>,
-    pub act_cast: Vec<ActCastMember>,
     pub stats: StatsDefinition,
     pub actions: Vec<ActionDefinition>,
     pub movement: MovementConfigDefinition,
@@ -266,7 +265,6 @@ impl ContentPack {
     pub fn is_player_actor(&self, actor_id: &str) -> bool {
         (!self.settings.combat.player_actor_id.is_empty()
             && actor_id == self.settings.combat.player_actor_id)
-            || actor_id == self.opening.id
             || actor_id == "player"
             || actor_id.starts_with("viewer:")
     }

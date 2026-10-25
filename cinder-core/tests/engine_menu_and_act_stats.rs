@@ -3,7 +3,7 @@
 
 use cinder_core::content::loader::load_named_pack;
 use cinder_core::content::types::{
-    ActCastMember, BeatDefinition, OpeningMenuDefinition, OpeningMenuOptionDefinition,
+    BeatDefinition, OpeningMenuDefinition, OpeningMenuOptionDefinition,
 };
 use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::WorldState;
@@ -34,20 +34,13 @@ fn a_menu_attached_to_an_initial_stage_is_open_at_the_start_of_play() {
 }
 
 /// The server rebuilds the runtime from saved state on every turn. Stats that
-/// change during an act must survive that, and not snap back to the snapshot
-/// taken when the act began.
+/// change during an act must survive that, and not snap back to their start.
 #[test]
 fn stats_earned_during_an_act_survive_a_runtime_reload() {
     let mut pack = load_named_pack("isla", Some("en")).expect("isla loads");
     pack.stats.actor =
         serde_json::from_value(json!({ "points": { "default": 0, "min": 0, "max": 16 } }))
             .expect("stat definitions parse");
-    pack.act_cast = vec![ActCastMember {
-        id: "gloria".to_string(),
-        name: "Gloria".to_string(),
-        actor_id: "gloria".to_string(),
-        ..Default::default()
-    }];
     let state = WorldState::new(&pack);
     let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime");
 

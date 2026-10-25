@@ -125,12 +125,6 @@ pub struct SystemTextDefinition {
     #[serde(default)]
     pub chapter_relationship_summarizer_system_prompt: String,
     #[serde(default)]
-    pub act_cast_character_note_template: String,
-    #[serde(default)]
-    pub act_cast_subtext_template: String,
-    #[serde(default)]
-    pub act_cast_response_note_template: String,
-    #[serde(default)]
     pub stage_assignment_system_prompt: String,
     #[serde(default)]
     pub dynamic_menu_system_prompt: String,

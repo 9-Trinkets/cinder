@@ -14,7 +14,7 @@ mod stats;
 mod teleports;
 
 pub use actor_defs::{
-    ActorActCast, ActorDefinition, ActorPromptContext, ActorTransformation, TransformationRename,
+    ActorDefinition, ActorPromptContext, ActorTransformation, TransformationRename,
     TransformationTrigger,
 };
 pub use beat_objectives::{

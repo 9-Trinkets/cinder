@@ -259,8 +259,7 @@ impl CinderRuntime {
 
         let subject_name = perspective
             .as_ref()
-            .map(|review| review.subject_name.clone())
-            .or_else(|| self.current_cast_member_name().ok().flatten());
+            .map(|review| review.subject_name.clone());
 
         let subtitle = if definition.subtitle_template.trim().is_empty() {
             None

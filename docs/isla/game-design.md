@@ -31,7 +31,7 @@ Every episode follows the same three phases, so the player learns the rhythm and
 | **The session** | Bids, answers, a book read in stops, secrets found, a closing. | Almost everything: see section 3. |
 | **After** | The back steps. A message from the child's parent, a note from the director, Isla's own note added to her folder. | The tone of the feedback, picked by what the player held. |
 
-The engine already supports this shape. Acts, act casts and an act series exist, and one session is one act inside a persistent playthrough.
+The engine already supports this shape. An act ends with `end_act` and the world carries on, so one session is one act inside a persistent playthrough. Only variables declared with act scope are cleared.
 
 ## 3. One child per episode, with a different fit table **(decision)**
 

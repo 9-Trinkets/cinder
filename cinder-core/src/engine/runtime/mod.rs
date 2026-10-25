@@ -3,10 +3,7 @@ use crate::engine::dialogue::{DialogueGenerator, SynapseDialogueGenerator};
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::neuron::{WorkflowDefinition, load_workflow};
 use crate::engine::scripted::drain_scripted_sequences;
-use crate::engine::state::{
-    ActFeedbackSummary, GamePhase, TurnOutcome, WorldState, advance_to_next_act,
-    initialize_act_state,
-};
+use crate::engine::state::{GamePhase, TurnOutcome, WorldState};
 use crate::engine::turn_runner;
 use crate::engine::workflows::{cinder_npc_tick_workflow_path, workflow_path_for_id};
 use serde::{Deserialize, Serialize};
@@ -216,7 +213,6 @@ impl CinderRuntime {
                 state.active_objective_stage_ids.push(initial_id.clone());
             }
         }
-        initialize_act_state(&content, &mut state);
         Ok(Self {
             state: Arc::new(Mutex::new(state)),
             content: Arc::new(content),
@@ -273,29 +269,6 @@ impl CinderRuntime {
         }
         self.clear_act_closure_cache()?;
         Ok(())
-    }
-
-    pub fn advance_act(&self) -> Result<Option<String>, Box<dyn Error>> {
-        if self.content.act_cast.is_empty() {
-            return Ok(None);
-        }
-        let feedback = self.build_perspective_review()?;
-        let feedback_summary = feedback.as_ref().map(|review| ActFeedbackSummary {
-            rating: review.review.rating,
-            review_text: review.review.review_text.clone(),
-        });
-        let mut state = self
-            .state
-            .lock()
-            .map_err(|_| "failed to lock runtime state for act rollover")?;
-        if state.phase != GamePhase::ActEnded {
-            return Ok(None);
-        }
-        Ok(advance_to_next_act(
-            self.content.as_ref(),
-            &mut state,
-            feedback_summary.as_ref(),
-        ))
     }
 
     fn clear_act_closure_cache(&self) -> Result<(), Box<dyn Error>> {

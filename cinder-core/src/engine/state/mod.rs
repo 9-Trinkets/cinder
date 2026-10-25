@@ -120,8 +120,6 @@ pub struct WorldState {
     pub last_transcript_line: Option<String>,
     #[serde(flatten)]
     pub inventory: Inventory,
-    #[serde(default)]
-    pub act_series: Option<ActSeriesState>,
     /// Playheads of content-declared scripted conversation sequences, keyed by
     /// sequence id. Every pack sequence is present at session creation; the
     /// opening sequence starts running.
@@ -395,7 +393,6 @@ impl WorldState {
                     .map(|actor| actor.initial_equipment.clone())
                     .unwrap_or_default(),
             },
-            act_series: None,
             scripted_sequences,
             transition_summaries: BTreeMap::new(),
             spawn_counter: 0,
@@ -770,12 +767,9 @@ use seeding::{
     seeded_actor_skill_levels, seeded_actor_skill_sp, seeded_actor_skills, seeded_actor_stats,
     seeded_feature_item_stock, seeded_pair_stats,
 };
-mod act_cast;
-pub use act_cast::{
-    ActFeedbackSummary, ActHistoryEntry, ActSeriesState, CastMemberRecord, advance_to_next_act,
-    current_act_intro, current_cast_member_actor_id, current_cast_member_name, display_actor_name,
-    initialize_act_state, remap_story_actor_id, render_dynamic_story_text,
-    resolved_actor_prompt_context, story_actor_matches,
+mod actor_display;
+pub use actor_display::{
+    display_actor_name, render_dynamic_story_text, resolved_actor_prompt_context,
 };
 
 #[cfg(test)]

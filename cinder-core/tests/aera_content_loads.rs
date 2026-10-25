@@ -14,4 +14,10 @@ fn aera_pack_loads_and_validates() {
             .map(|map| (map.id.as_str(), map.rooms.len())),
         Some(("sharehouse", 8))
     );
+    for actor_id in ["aera", "ren", "mio", "daichi"] {
+        assert!(
+            !pack.is_player_actor(actor_id),
+            "{actor_id} is a housemate NPC, not the player actor"
+        );
+    }
 }

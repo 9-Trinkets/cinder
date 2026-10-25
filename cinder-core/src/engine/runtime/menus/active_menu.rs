@@ -4,8 +4,7 @@ use crate::engine::dialogue::DynamicMenuRequest;
 use crate::engine::dialogue_grounding::{current_objective_beat_notes, viewer_participant_id};
 use crate::engine::menus::render_menu_prompt;
 use crate::engine::state::{
-    display_actor_name, remap_story_actor_id, render_dynamic_story_text,
-    resolved_actor_prompt_context,
+    display_actor_name, render_dynamic_story_text, resolved_actor_prompt_context,
 };
 use crate::engine::turn_policies::actor_objective_guidance_notes;
 use std::error::Error;
@@ -183,7 +182,7 @@ impl CinderRuntime {
                         .map_err(|_| "failed to lock runtime state for dynamic menu")?;
                     let actor = self
                         .content
-                        .actor(remap_story_actor_id(&state, &menu.actor_id))
+                        .actor(&menu.actor_id)
                         .ok_or_else(|| format!("missing actor '{}'", menu.actor_id))?;
                     let prompt_context =
                         resolved_actor_prompt_context(self.content.as_ref(), &state, actor);
@@ -216,7 +215,7 @@ impl CinderRuntime {
                         beat_notes,
                         state
                             .conversation_history(
-                                remap_story_actor_id(&state, &menu.actor_id),
+                                &menu.actor_id,
                                 &viewer_participant_id(self.content.as_ref()),
                             )
                             .iter()

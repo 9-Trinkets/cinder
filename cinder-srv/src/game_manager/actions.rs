@@ -195,15 +195,11 @@ pub async fn run_command(
             };
 
             if outcome.phase == GamePhase::ActEnded {
-                if let Some(intro_text) = runtime
-                    .advance_act()
-                    .map_err(|e| format!("act rollover error: {e}"))?
-                    && !intro_text.is_empty()
-                {
-                    narrative.push(cinder_core::engine::narrative::NarrativeLine::narration(
-                        intro_text,
-                    ));
-                }
+                // The world carries on into the next act; only act-scoped
+                // variables are cleared.
+                runtime
+                    .continue_after_act()
+                    .map_err(|e| format!("act continuation error: {e}"))?;
                 outcome.phase = GamePhase::Active;
             }
 
@@ -292,17 +288,11 @@ where
                 None
             };
             if outcome.phase == GamePhase::ActEnded {
-                if let Some(intro_text) = runtime
-                    .advance_act()
-                    .map_err(|e| format!("act rollover error: {e}"))?
-                    && !intro_text.is_empty()
-                {
-                    outcome
-                        .lines
-                        .push(cinder_core::engine::narrative::NarrativeLine::narration(
-                            intro_text,
-                        ));
-                }
+                // The world carries on into the next act; only act-scoped
+                // variables are cleared.
+                runtime
+                    .continue_after_act()
+                    .map_err(|e| format!("act continuation error: {e}"))?;
                 outcome.phase = GamePhase::Active;
             }
             let movie = consume_projector_sequence(runtime);

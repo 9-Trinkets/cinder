@@ -28,7 +28,6 @@ impl WorldState {
     /// Relationship of an actor toward the player's faction; absent entries
     /// are neutral.
     pub fn relationship(&self, actor_id: &str) -> ActorRelationship {
-        let actor_id = remap_story_actor_id(self, actor_id);
         self.relations
             .relationships
             .get(actor_id)
@@ -47,7 +46,7 @@ impl WorldState {
     /// Writes a full relationship snapshot. Writing the default removes the
     /// entry entirely, keeping state sparse.
     pub fn set_relationship(&mut self, actor_id: &str, relationship: ActorRelationship) {
-        let actor_id = remap_story_actor_id(self, actor_id).to_string();
+        let actor_id = actor_id.to_string();
         if relationship == ActorRelationship::default() {
             self.relations.relationships.remove(actor_id.as_str());
         } else {
@@ -75,7 +74,6 @@ impl WorldState {
     }
 
     pub fn followed_actor(&self, actor_id: &str) -> Option<&str> {
-        let actor_id = remap_story_actor_id(self, actor_id);
         self.relations
             .followed_actors
             .get(actor_id)
@@ -83,7 +81,7 @@ impl WorldState {
     }
 
     pub fn set_followed_actor(&mut self, actor_id: &str, followed_id: Option<&str>) {
-        let actor_id = remap_story_actor_id(self, actor_id).to_string();
+        let actor_id = actor_id.to_string();
         if let Some(target) = followed_id {
             self.relations
                 .followed_actors
@@ -94,7 +92,7 @@ impl WorldState {
     }
 
     pub fn followers_of(&self, content: &ContentPack, leader_id: &str) -> Vec<String> {
-        let leader_id = remap_story_actor_id(self, leader_id);
+        let leader_id = leader_id;
         let mut followers: Vec<String> = self
             .relations
             .followed_actors

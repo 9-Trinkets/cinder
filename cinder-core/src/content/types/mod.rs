@@ -39,11 +39,11 @@ pub use speech::{SpeechIntentEffect, SpeechIntentLabel, SpeechIntentsConfig};
 
 mod story_defs;
 pub use story_defs::{
-    ActCastMember, ActorRelocationDefinition, AdvanceEffect, AdvanceSignal, BeatDefinition,
-    BeatsDefinition, MenuTriggerMode, MovieCardDefinition, MovieStyle, OpeningDefinition,
-    OpeningMenuDefinition, OpeningMenuOptionDefinition, OpeningMovieDefinition,
-    OpeningMovieFrameDefinition, OpeningPromptContext, ProtectionRuleDefinition, SpeechTopicSignal,
-    StageAssignmentDefinition, SurvivorRewardDefinition,
+    ActorRelocationDefinition, AdvanceEffect, AdvanceSignal, BeatDefinition, BeatsDefinition,
+    MenuTriggerMode, MovieCardDefinition, MovieStyle, OpeningDefinition, OpeningMenuDefinition,
+    OpeningMenuOptionDefinition, OpeningMovieDefinition, OpeningMovieFrameDefinition,
+    OpeningPromptContext, ProtectionRuleDefinition, SpeechTopicSignal, StageAssignmentDefinition,
+    SurvivorRewardDefinition,
 };
 
 mod theme;
@@ -55,7 +55,7 @@ pub use actor_tick_defs::*;
 
 mod world_defs;
 pub use world_defs::{
-    ActorActCast, ActorDefinition, ActorMovementRulesDefinition, ActorMovementTargetRuleDefinition,
+    ActorDefinition, ActorMovementRulesDefinition, ActorMovementTargetRuleDefinition,
     ActorPromptContext, ActorTransformation, BeatObjectiveAffordancePriorityDefinition,
     BeatObjectiveAffordanceTarget, BeatObjectiveCompletionDefinition,
     BeatObjectiveCompletionTrigger, BeatObjectiveConditionalGuidanceDefinition,

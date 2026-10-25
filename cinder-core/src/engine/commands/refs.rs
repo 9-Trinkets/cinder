@@ -1,5 +1,5 @@
 use crate::content::types::{ActorDefinition, ContentPack};
-use crate::engine::state::{WorldState, current_cast_member_actor_id, display_actor_name};
+use crate::engine::state::{WorldState, display_actor_name};
 
 #[derive(Debug)]
 pub(crate) struct ResolvedActorReferenceInput {
@@ -23,7 +23,6 @@ pub(crate) fn resolve_actor_reference_input(
                 && state.actor_is_in_room(content, &actor.id, current_room_id)
         }),
         remainder,
-        &content.settings.act_member_alias,
     )
     .map(|(actor, player_message)| ResolvedActorReferenceInput {
         actor_id: actor.id.clone(),
@@ -39,7 +38,6 @@ pub(crate) fn resolve_actor_reference_input(
                     && !state.actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)
             }),
             remainder,
-            &content.settings.act_member_alias,
         )
         .map(|(actor, player_message)| ResolvedActorReferenceInput {
             actor_id: actor.id.clone(),
@@ -63,13 +61,12 @@ fn match_actor_reference<'a>(
     state: &WorldState,
     actors: impl IntoIterator<Item = &'a ActorDefinition>,
     remainder: &str,
-    act_member_alias: &str,
 ) -> Option<(&'a ActorDefinition, Option<String>)> {
     let trimmed = remainder.trim();
     let lower = trimmed.to_ascii_lowercase();
     let mut best: Option<(&'a ActorDefinition, usize, Option<String>)> = None;
     for actor in actors {
-        for reference in actor_references(state, actor, act_member_alias) {
+        for reference in actor_references(state, actor) {
             let reference_lower = reference.to_ascii_lowercase();
             let exact = lower == reference_lower;
             let prefix = lower
@@ -99,21 +96,12 @@ fn match_actor_reference<'a>(
     best.map(|(actor, _, player_message)| (actor, player_message))
 }
 
-fn actor_references(
-    state: &WorldState,
-    actor: &ActorDefinition,
-    act_member_alias: &str,
-) -> Vec<String> {
+fn actor_references(state: &WorldState, actor: &ActorDefinition) -> Vec<String> {
     let mut refs = vec![
         actor.name.clone(),
         actor.id.clone(),
         display_actor_name(state, actor),
     ];
-    if current_cast_member_actor_id(state).is_some_and(|actor_id| actor_id == actor.id)
-        && !act_member_alias.is_empty()
-    {
-        refs.push(act_member_alias.to_string());
-    }
     refs.extend(actor.aliases.iter().cloned());
     refs
 }

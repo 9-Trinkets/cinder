@@ -129,8 +129,6 @@ pub struct ContentSettingsDefinition {
     #[serde(default)]
     pub closure_perspective_actor_id: String,
     #[serde(default)]
-    pub act_member_alias: String,
-    #[serde(default)]
     pub fallback_stage_id: String,
     /// Conditions under which the minimap also shows allies, hostiles and teleport
     /// anchors. Empty means it never does.
@@ -224,7 +222,6 @@ impl Default for ContentSettingsDefinition {
             show_clock: true,
             actor_tick_scope: ActorTickScope::default(),
             closure_perspective_actor_id: String::default(),
-            act_member_alias: String::default(),
             fallback_stage_id: String::default(),
             minimap_entity_tracking_when: Vec::new(),
             fallback_when: Vec::new(),

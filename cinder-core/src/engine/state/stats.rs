@@ -150,7 +150,6 @@ impl WorldState {
     /// combat) are not considered defeated, so packs without combat are
     /// unaffected.
     pub fn actor_is_defeated(&self, actor_id: &str, health_stat_id: &str) -> bool {
-        let actor_id = remap_story_actor_id(self, actor_id);
         self.combat
             .actor_stats
             .get(actor_id)
@@ -182,7 +181,6 @@ impl WorldState {
     }
 
     pub fn actor_stat(&self, actor_id: &str, stat_key: &str) -> i32 {
-        let actor_id = remap_story_actor_id(self, actor_id);
         self.combat
             .actor_stats
             .get(actor_id)
@@ -232,7 +230,6 @@ impl WorldState {
     }
 
     pub fn actor_stats_snapshot(&self, actor_id: &str) -> BTreeMap<String, i32> {
-        let actor_id = remap_story_actor_id(self, actor_id);
         self.combat
             .actor_stat_defs
             .keys()
@@ -430,7 +427,6 @@ impl WorldState {
     }
 
     pub fn actor_stat_deltas(&self, actor_id: &str) -> Option<BTreeMap<String, i32>> {
-        let actor_id = remap_story_actor_id(self, actor_id);
         let initial = self.combat.initial_actor_stats.get(actor_id)?;
         Some(
             initial
@@ -508,7 +504,7 @@ impl WorldState {
         stat_key: &str,
         delta: i32,
     ) -> Result<(), String> {
-        let actor_id = remap_story_actor_id(self, actor_id).to_string();
+        let actor_id = actor_id.to_string();
         let definition = self
             .combat
             .actor_stat_defs
