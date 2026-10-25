@@ -19,29 +19,42 @@ fn test_floor6_halfling_servants_and_orva_clues() {
 
     let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
 
-    // Inspect Flora
-    let look_flora = runtime.run_turn("look at flora").expect("look flora");
+    // Inspect Servant No. 4
+    let look_servant4 = runtime
+        .run_turn("look at servant 4")
+        .expect("look servant 4");
     assert!(
-        look_flora.text().contains("Halfling") && look_flora.text().contains("bronze leaf pin"),
-        "Flora must reflect Halfling apprentice: {}",
-        look_flora.text()
+        look_servant4.text().to_lowercase().contains("halfling")
+            && (look_servant4.text().contains("bread")
+                || look_servant4.text().contains("trembles")),
+        "Servant No. 4 must reflect trembling halfling hiding stolen bread: {}",
+        look_servant4.text()
     );
 
-    // Inspect Silvia
-    let look_silvia = runtime.run_turn("look at silvia").expect("look silvia");
+    // Inspect Servant No. 7
+    let look_servant7 = runtime
+        .run_turn("look at servant 7")
+        .expect("look servant 7");
     assert!(
-        look_silvia.text().contains("Halfling") && look_silvia.text().contains("leather cord"),
-        "Silvia must reflect Halfling gardener: {}",
-        look_silvia.text()
+        look_servant7.text().to_lowercase().contains("halfling")
+            && (look_servant7.text().contains("seeds")
+                || look_servant7.text().contains("moss")
+                || look_servant7.text().contains("mud")),
+        "Servant No. 7 must reflect calm halfling harvesting seeds with cliff moss on shoes: {}",
+        look_servant7.text()
     );
 
-    // Inspect Orva
+    // Slip through vent to cliff balcony and inspect Orva
+    runtime
+        .run_turn("go out")
+        .expect("slip through vent to balcony");
     let look_orva = runtime.run_turn("look at orva").expect("look orva");
     assert!(
-        look_orva.text().contains("Halfling")
-            && look_orva.text().contains("silver arrow hairpin")
-            && look_orva.text().contains("cliff moss"),
-        "Orva must reflect Halfling herbalist with silver arrow and cliff moss: {}",
+        look_orva.text().to_lowercase().contains("halfling")
+            && (look_orva.text().contains("capsule")
+                || look_orva.text().contains("arrow")
+                || look_orva.text().contains("soul grass")),
+        "Orva must reflect halfling herbalist on cliff balcony: {}",
         look_orva.text()
     );
 }
@@ -57,8 +70,8 @@ fn test_floor6_cliff_balcony_navigation_and_soul_grass() {
 
     // 1. Slip through the vent to the secret cliff balcony
     let move_out = runtime
-        .run_turn("go west")
-        .expect("move west to cliff balcony");
+        .run_turn("go out")
+        .expect("move out to cliff balcony");
     let s1 = runtime.export_state().unwrap();
     assert_eq!(
         s1.current_room_id,
@@ -255,11 +268,11 @@ fn test_floor6_platform_activation_canon_dialogue() {
     let move_out = runtime.run_turn("go south").expect("move to platform");
     let text = move_out.text();
     assert!(
-        text.contains("Siraj")
-            && text.contains("Nur")
-            && text.contains("Harun")
-            && text.contains("Orin"),
-        "Platform activation must narrate Siraj/Nur awakening, Golem liberation, and Harun capture: {}",
+        text.contains("Astrid")
+            && text.contains("Einar")
+            && text.contains("Orva")
+            && text.contains("white stair"),
+        "Platform activation must narrate Astrid, Einar, Orva, and the white stair: {}",
         text
     );
 }

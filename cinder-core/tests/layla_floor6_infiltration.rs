@@ -43,7 +43,7 @@ fn test_floor6_handoff_and_stealth_to_witch() {
     assert!(runtime.export_state().unwrap().is_player_invisible());
 
     // 2. Sneak into crossroads with hostile guard
-    runtime.run_turn("go north").expect("move to crossroads");
+    runtime.run_turn("go south").expect("move to crossroads");
     assert_eq!(
         runtime.export_state().unwrap().current_room_id,
         "sanctuary_crossroads"
@@ -58,45 +58,56 @@ fn test_floor6_handoff_and_stealth_to_witch() {
         "guard must not strike invisible player"
     );
 
-    // 3. Move to herbarium portal, then into herb garden
-    runtime.run_turn("go southwest").expect("move to portal");
-    runtime.run_turn("go south").expect("move to garden");
+    // 3. Move west into herbarium garden
+    runtime.run_turn("go west").expect("move to garden");
     assert_eq!(
         runtime.export_state().unwrap().current_room_id,
         "herbarium_garden"
     );
 
-    // 4. In the garden, multiple herbalists are present: Flora, Silvia, and Orva
+    // 4. In the garden, halfling servants are present
     let look_garden = runtime.run_turn("look").expect("look around garden");
     assert!(
-        look_garden.text().contains("Flora")
-            && look_garden.text().contains("Silvia")
-            && look_garden.text().contains("Orva"),
-        "multiple garden workers must be listed in the room: {}",
+        look_garden.text().contains("Servant No. 4")
+            && look_garden.text().contains("Servant No. 7"),
+        "masked halfling servants must be listed in the room: {}",
         look_garden.text()
     );
 
-    // Inspect Flora: red hair with bronze leaf pin (not the arrow)
-    let look_flora = runtime.run_turn("look at flora").expect("look at flora");
+    // Inspect Servant 4: trembles, hiding stolen bread
+    let look_servant4 = runtime
+        .run_turn("look at servant 4")
+        .expect("look at servant 4");
     assert!(
-        look_flora.text().contains("bronze leaf pin"),
-        "Flora must have bronze leaf pin: {}",
-        look_flora.text()
+        look_servant4.text().contains("bread") || look_servant4.text().contains("trembles"),
+        "Servant 4 hides bread: {}",
+        look_servant4.text()
     );
 
-    // Inspect Silvia: blonde braid with plain leather cord (not the arrow)
-    let look_silvia = runtime.run_turn("look at silvia").expect("look at silvia");
+    // Inspect Servant 7: calm, harvesting seeds with cliff moss on straw shoes
+    let look_servant7 = runtime
+        .run_turn("look at servant 7")
+        .expect("look at servant 7");
     assert!(
-        look_silvia.text().contains("leather cord"),
-        "Silvia must have plain leather cord: {}",
-        look_silvia.text()
+        look_servant7.text().contains("seeds") || look_servant7.text().contains("moss"),
+        "Servant 7 has cliff moss: {}",
+        look_servant7.text()
     );
 
-    // Inspect Orva: dark hair with the matching silver arrow hairpin!
+    // Slip through vent flue out to cliff balcony
+    runtime.run_turn("go out").expect("crawl through vent");
+    assert_eq!(
+        runtime.export_state().unwrap().current_room_id,
+        "herbarium_cliff_balcony"
+    );
+
+    // Inspect Orva on the cliff balcony
     let look_orva = runtime.run_turn("look at orva").expect("look at orva");
     assert!(
-        look_orva.text().contains("silver arrow hairpin"),
-        "Orva must have the silver arrow hairpin, got: {}",
+        look_orva.text().contains("capsule")
+            || look_orva.text().contains("arrow")
+            || look_orva.text().contains("soul grass"),
+        "Orva must be on cliff balcony, got: {}",
         look_orva.text()
     );
 
@@ -153,12 +164,13 @@ fn test_floor6_spiritual_sight_and_seer_deduction() {
     // 3. Look again: room description changes to reveal spirits & the living Seer
     let look_spiritual = runtime.run_turn("look").expect("look with spiritual sight");
     assert!(
-        look_spiritual.text().contains("Trapped human spirits"),
+        look_spiritual.text().contains("captive souls")
+            || look_spiritual.text().contains("Spiritual sight"),
         "must trigger spiritual sight override: {}",
         look_spiritual.text()
     );
     assert!(
-        look_spiritual.text().contains("Seer"),
+        look_spiritual.text().contains("Seer") || look_spiritual.text().contains("Valerius"),
         "must deduce the living person as the Seer: {}",
         look_spiritual.text()
     );
@@ -337,102 +349,59 @@ fn test_floor6_reunion_and_ascent_to_floor7() {
 }
 
 #[test]
-fn test_floor6_stealth_patrols_lucius_and_antonius() {
+fn test_floor6_stealth_sentry_marcus() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     let mut state = WorldState::new(&pack);
-    state.current_room_id = "mortuary_portal".to_string();
+    state.current_room_id = "sanctuary_grand_terrace".to_string();
     state.clock.turn_number = 1;
-    state.add_item("invisibility-potion");
     state.add_item("invisibility-potion");
 
     let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
 
-    // 1. Mortuary Patrol: Sentry Lucius in mortuary_descent
-    // Drink potion before descending
+    // Drink potion before moving
     runtime
         .run_turn("drink invisibility potion")
         .expect("drink potion");
     assert!(runtime.export_state().unwrap().is_player_invisible());
 
-    // Enter mortuary_descent with Sentry Lucius
-    runtime.run_turn("go in").expect("enter undercrypt stairs");
+    // Enter Crossroads with Sentry Marcus
+    runtime.run_turn("go south").expect("enter crossroads");
     let s1 = runtime.export_state().unwrap();
-    assert_eq!(s1.current_room_id, "mortuary_descent");
+    assert_eq!(s1.current_room_id, "sanctuary_crossroads");
 
-    // Verify Sentry Lucius is present
-    let look_descent = runtime.run_turn("look").expect("look at descent");
+    // Verify Sentry Marcus is present
+    let look_crossroads = runtime.run_turn("look").expect("look at crossroads");
     assert!(
-        look_descent.text().contains("Lucius"),
-        "Sentry Lucius must be present in mortuary_descent: {}",
-        look_descent.text()
+        look_crossroads.text().contains("Marcus") || look_crossroads.text().contains("Sentry"),
+        "Sentry Marcus must be present in sanctuary_crossroads: {}",
+        look_crossroads.text()
     );
 
-    // Sentry Lucius does NOT damage invisible player during tick
+    // Sentry Marcus does NOT damage invisible player during tick
     let hp_before = s1.actor_stat("player", "hp");
-    runtime.run_tick().expect("tick with Lucius");
+    runtime.run_tick().expect("tick with Marcus");
     let hp_after = runtime.export_state().unwrap().actor_stat("player", "hp");
-    assert_eq!(hp_before, hp_after, "Lucius must ignore invisible player");
-
-    // Move to crossroads, then scriptorium_portal
-    runtime.run_turn("go out").expect("return to portal");
-    runtime
-        .run_turn("go northwest")
-        .expect("return to crossroads");
-    runtime
-        .run_turn("go northeast")
-        .expect("go to scriptorium portal");
-
-    // 2. Scriptorium Patrol: Sentry Antonius in scriptorium_cloister
-    // Drink second potion
-    runtime
-        .run_turn("drink invisibility potion")
-        .expect("drink second potion");
-    assert!(runtime.export_state().unwrap().is_player_invisible());
-
-    // Enter scriptorium_cloister with Sentry Antonius
-    runtime.run_turn("go in").expect("enter scriptorium hall");
-    let s2 = runtime.export_state().unwrap();
-    assert_eq!(s2.current_room_id, "scriptorium_cloister");
-
-    // Verify Sentry Antonius is present
-    let look_cloister = runtime.run_turn("look").expect("look at cloister");
-    assert!(
-        look_cloister.text().contains("Antonius"),
-        "Sentry Antonius must be present in scriptorium_cloister: {}",
-        look_cloister.text()
-    );
-
-    // Sentry Antonius does NOT damage invisible player during tick
-    let hp_before2 = s2.actor_stat("player", "hp");
-    runtime.run_tick().expect("tick with Antonius");
-    let hp_after2 = runtime.export_state().unwrap().actor_stat("player", "hp");
-    assert_eq!(
-        hp_before2, hp_after2,
-        "Antonius must ignore invisible player"
-    );
+    assert_eq!(hp_before, hp_after, "Marcus must ignore invisible player");
 }
 
 #[test]
 fn test_floor6_secret_archive_side_quest() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     let mut state = WorldState::new(&pack);
-    state.current_room_id = "scriptorium_secret_archive".to_string();
+    state.current_room_id = "mortuary_reanimation_sanctum".to_string();
     state.clock.turn_number = 1;
     state.active_objective_stage_ids = vec!["sq_archive_of_the_disappeared".to_string()];
 
     let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
 
-    // Inspect the confidential mortuary ledgers
-    let look_ledgers = runtime
-        .run_turn("look at ledgers")
-        .expect("look at ledgers");
+    // Inspect the confidential mortuary ledger in the sanctum
+    let look_ledger = runtime.run_turn("look at ledger").expect("look at ledger");
     assert!(
-        look_ledgers.text().contains("monster classes")
-            || look_ledgers.text().contains("golems")
-            || look_ledgers.text().contains("elves")
-            || look_ledgers.text().contains("entries"),
+        look_ledger.text().contains("Siraj")
+            || look_ledger.text().contains("Nur")
+            || look_ledger.text().contains("harvested spirits"),
         "ledger inspect text: {}",
-        look_ledgers.text()
+        look_ledger.text()
     );
 
     let s = runtime.export_state().unwrap();

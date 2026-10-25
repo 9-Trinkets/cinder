@@ -1101,173 +1101,53 @@
   },
   {
     "id": "the-high-sanctuary",
-    "label": "高聖所",
-    "reveal_conditions": [
-      {
-        "key": "has_sensory_enhancer",
-        "kind": "story_var_truthy"
-      }
-    ],
+    "label": "忘卻聖堂",
     "rooms": [
       {
         "room_id": "sanctuary_grand_terrace",
         "x": 12.0,
-        "y": 17.0
+        "y": 4.0
+      },
+      {
+        "room_id": "sanctuary_east_promenade",
+        "x": 20.0,
+        "y": 12.0
+      },
+      {
+        "room_id": "sanctuary_main_platform",
+        "x": 12.0,
+        "y": 20.0
+      },
+      {
+        "room_id": "sanctuary_west_colonnade",
+        "x": 4.0,
+        "y": 12.0
+      },
+      {
+        "room_id": "herbarium_cliff_balcony",
+        "x": 0.0,
+        "y": 14.0
       },
       {
         "room_id": "sanctuary_crossroads",
         "x": 12.0,
-        "y": 12.0
-      },
-      {
-        "room_id": "sanctuary_wall_nw_tower",
-        "x": 0.0,
-        "y": 0.0
-      },
-      {
-        "room_id": "sanctuary_wall_north",
-        "x": 12.0,
-        "y": 0.0
-      },
-      {
-        "room_id": "sanctuary_wall_ne_tower",
-        "x": 24.0,
-        "y": 0.0
-      },
-      {
-        "room_id": "sanctuary_wall_east",
-        "x": 24.0,
-        "y": 12.0
-      },
-      {
-        "room_id": "sanctuary_wall_se_tower",
-        "x": 24.0,
-        "y": 24.0
-      },
-      {
-        "room_id": "sanctuary_wall_south",
-        "x": 12.0,
-        "y": 24.0
-      },
-      {
-        "room_id": "sanctuary_wall_sw_tower",
-        "x": 0.0,
-        "y": 24.0
-      },
-      {
-        "room_id": "sanctuary_wall_west",
-        "x": 0.0,
-        "y": 12.0
-      },
-      {
-        "room_id": "basilica_portal",
-        "x": 10.0,
-        "y": 10.0
-      },
-      {
-        "room_id": "basilica_nave",
-        "x": 6.0,
-        "y": 6.0
-      },
-      {
-        "room_id": "basilica_high_altar",
-        "x": 6.0,
-        "y": 3.0
-      },
-      {
-        "room_id": "basilica_vestry",
-        "x": 9.0,
-        "y": 6.0
-      },
-      {
-        "room_id": "basilica_clergy_cells",
-        "x": 9.0,
-        "y": 3.0
-      },
-      {
-        "room_id": "scriptorium_portal",
-        "x": 14.0,
-        "y": 10.0
-      },
-      {
-        "room_id": "scriptorium_cloister",
-        "x": 18.0,
-        "y": 6.0
-      },
-      {
-        "room_id": "scriptorium_library",
-        "x": 18.0,
-        "y": 3.0
-      },
-      {
-        "room_id": "scriptorium_archive_vault",
-        "x": 15.0,
-        "y": 6.0
-      },
-      {
-        "room_id": "scriptorium_secret_archive",
-        "x": 15.0,
-        "y": 3.0
-      },
-      {
-        "room_id": "herbarium_portal",
-        "x": 10.0,
-        "y": 14.0
+        "y": 9.0
       },
       {
         "room_id": "herbarium_garden",
-        "x": 6.0,
-        "y": 18.0
-      },
-      {
-        "room_id": "herbarium_cliff_balcony",
-        "x": 3.0,
-        "y": 18.0
-      },
-      {
-        "room_id": "herbarium_apothecary",
-        "x": 9.0,
-        "y": 18.0
-      },
-      {
-        "room_id": "herbarium_still_room",
-        "x": 6.0,
-        "y": 21.0
-      },
-      {
-        "room_id": "herbarium_water_clock",
-        "x": 9.0,
-        "y": 21.0
-      },
-      {
-        "room_id": "mortuary_portal",
-        "x": 14.0,
+        "x": 8.0,
         "y": 14.0
       },
       {
-        "room_id": "mortuary_descent",
-        "x": 18.0,
-        "y": 18.0
-      },
-      {
-        "room_id": "mortuary_crypt",
-        "x": 18.0,
-        "y": 21.0
-      },
-      {
-        "room_id": "mortuary_embalming_hall",
-        "x": 15.0,
-        "y": 18.0
-      },
-      {
         "room_id": "mortuary_reanimation_sanctum",
-        "x": 15.0,
-        "y": 21.0
-      },
+        "x": 16.0,
+        "y": 14.0
+      }
+    ],
+    "reveal_conditions": [
       {
-        "room_id": "sanctuary_main_platform",
-        "x": 15.0,
-        "y": 24.0
+        "kind": "story_var_truthy",
+        "key": "has_sensory_enhancer"
       }
     ]
   },

@@ -1282,7 +1282,7 @@
             {
               "path": "to_room_id",
               "operator": "equal",
-              "value": "scriptorium_secret_archive"
+              "value": "herbarium_cliff_balcony"
             },
             {
               "path": "first_visit",

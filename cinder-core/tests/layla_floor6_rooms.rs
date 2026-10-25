@@ -1,54 +1,27 @@
-//! Integration tests for Floor 6 (The High Sanctuary: Outer Wall & 4 Quadrants).
+//! Integration tests for Floor 6 (The High Sanctuary: Concentric Square Rings).
 
 use cinder_core::content::loader::load_named_pack;
 use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::WorldState;
 
 const EXPECTED_FLOOR6_ROOMS: &[&str] = &[
-    // Central nexus & entrance
+    // Outer Ring (4 rooms) + Cliff Balcony Annex (1 room)
     "sanctuary_grand_terrace",
-    "sanctuary_crossroads",
-    // Zone 1: Grand Basilica (NW)
-    "basilica_portal",
-    "basilica_nave",
-    "basilica_high_altar",
-    "basilica_vestry",
-    "basilica_clergy_cells",
-    // Zone 2: Scriptorium & Archive (NE)
-    "scriptorium_portal",
-    "scriptorium_cloister",
-    "scriptorium_library",
-    "scriptorium_archive_vault",
-    "scriptorium_secret_archive",
-    // Zone 3: Herbarium & Dispensary (SW)
-    "herbarium_portal",
-    "herbarium_garden",
-    "herbarium_apothecary",
-    "herbarium_still_room",
-    "herbarium_water_clock",
-    // Zone 4: Mortuary Crypts & Platform (SE)
-    "mortuary_portal",
-    "mortuary_descent",
-    "mortuary_crypt",
-    "mortuary_embalming_hall",
-    "mortuary_reanimation_sanctum",
+    "sanctuary_east_promenade",
     "sanctuary_main_platform",
-    // Outer Wall Square (8 rooms)
-    "sanctuary_wall_nw_tower",
-    "sanctuary_wall_north",
-    "sanctuary_wall_ne_tower",
-    "sanctuary_wall_east",
-    "sanctuary_wall_se_tower",
-    "sanctuary_wall_south",
-    "sanctuary_wall_sw_tower",
-    "sanctuary_wall_west",
+    "sanctuary_west_colonnade",
+    "herbarium_cliff_balcony",
+    // Inner Sanctuary Core (3 rooms)
+    "sanctuary_crossroads",
+    "herbarium_garden",
+    "mortuary_reanimation_sanctum",
 ];
 
 #[test]
 fn floor6_rooms_load_and_validate() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
 
-    assert_eq!(EXPECTED_FLOOR6_ROOMS.len(), 31);
+    assert_eq!(EXPECTED_FLOOR6_ROOMS.len(), 8);
     for room_id in EXPECTED_FLOOR6_ROOMS {
         let room = pack
             .room(room_id)
@@ -99,80 +72,74 @@ fn floor6_all_exits_are_bidirectional() {
 }
 
 #[test]
-fn floor6_outer_wall_ring_traversal() {
+fn floor6_outer_ring_traversal() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
 
-    // 8 perimeter rooms in clockwise order
-    let wall_ring = [
-        "sanctuary_wall_nw_tower",
-        "sanctuary_wall_north",
-        "sanctuary_wall_ne_tower",
-        "sanctuary_wall_east",
-        "sanctuary_wall_se_tower",
-        "sanctuary_wall_south",
-        "sanctuary_wall_sw_tower",
-        "sanctuary_wall_west",
+    // 4 outer ring rooms in clockwise order:
+    // North (Grand Terrace) -> East (East Promenade) -> South (Main Platform) -> West (West Colonnade)
+    let outer_ring = [
+        "sanctuary_grand_terrace",
+        "sanctuary_east_promenade",
+        "sanctuary_main_platform",
+        "sanctuary_west_colonnade",
     ];
 
-    for i in 0..wall_ring.len() {
-        let current = wall_ring[i];
-        let next = wall_ring[(i + 1) % wall_ring.len()];
+    for i in 0..outer_ring.len() {
+        let current = outer_ring[i];
+        let next = outer_ring[(i + 1) % outer_ring.len()];
         let room = pack.room(current).unwrap();
         assert!(
             room.exits.iter().any(|e| e.room_id == next),
-            "outer wall room {current} must connect clockwise to {next}"
+            "outer ring room {current} must connect clockwise to {next}"
         );
     }
 
-    // Corner towers connect down to interior zones
-    let corner_connections = [
-        ("sanctuary_wall_nw_tower", "basilica_nave"),
-        ("sanctuary_wall_ne_tower", "scriptorium_cloister"),
-        ("sanctuary_wall_sw_tower", "herbarium_garden"),
-        ("sanctuary_wall_se_tower", "mortuary_descent"),
+    // Outer ring connects inwards to the inner sanctuary core
+    let inner_connections = [
+        ("sanctuary_grand_terrace", "sanctuary_crossroads"),
+        ("sanctuary_west_colonnade", "herbarium_garden"),
+        ("sanctuary_main_platform", "mortuary_reanimation_sanctum"),
     ];
 
-    for (tower, interior) in corner_connections {
-        let t_room = pack.room(tower).unwrap();
-        let i_room = pack.room(interior).unwrap();
+    for (outer, inner) in inner_connections {
+        let o_room = pack.room(outer).unwrap();
+        let i_room = pack.room(inner).unwrap();
         assert!(
-            t_room.exits.iter().any(|e| e.room_id == interior),
-            "{tower} must connect down to {interior}"
+            o_room.exits.iter().any(|e| e.room_id == inner),
+            "{outer} must connect inwards to {inner}"
         );
         assert!(
-            i_room.exits.iter().any(|e| e.room_id == tower),
-            "{interior} must connect up to {tower}"
+            i_room.exits.iter().any(|e| e.room_id == outer),
+            "{inner} must connect outwards to {outer}"
         );
     }
 }
 
 #[test]
-fn floor6_central_crossroads_connects_to_all_four_zones() {
+fn floor6_inner_crossroads_connections() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let crossroads = pack
         .room("sanctuary_crossroads")
         .expect("sanctuary_crossroads exists");
 
-    let expected_portals = [
-        "basilica_portal",
-        "scriptorium_portal",
-        "herbarium_portal",
-        "mortuary_portal",
+    let expected_connections = [
         "sanctuary_grand_terrace",
+        "herbarium_garden",
+        "mortuary_reanimation_sanctum",
     ];
 
-    for portal in expected_portals {
+    for room_id in expected_connections {
         assert!(
-            crossroads.exits.iter().any(|e| e.room_id == portal),
-            "sanctuary_crossroads must connect to {portal}"
+            crossroads.exits.iter().any(|e| e.room_id == room_id),
+            "sanctuary_crossroads must connect to {room_id}"
         );
-        let p_room = pack.room(portal).unwrap();
+        let c_room = pack.room(room_id).unwrap();
         assert!(
-            p_room
+            c_room
                 .exits
                 .iter()
                 .any(|e| e.room_id == "sanctuary_crossroads"),
-            "{portal} must connect back to sanctuary_crossroads"
+            "{room_id} must connect back to sanctuary_crossroads"
         );
     }
 }
@@ -238,12 +205,12 @@ fn floor6_layla_teleports_alone_into_sanctuary_and_explores() {
         order_outcome.text()
     );
 
-    // Walk north across terrace into the Grand Plaza
-    runtime.run_turn("go north").expect("turn runs");
+    // Walk south across terrace into the Crossroads
+    runtime.run_turn("go south").expect("turn runs");
     assert_eq!(
         runtime.current_room_id().unwrap(),
         "sanctuary_crossroads",
-        "walking north enters sanctuary_crossroads"
+        "walking south enters sanctuary_crossroads"
     );
 
     // Companions still remain on Floor 5 after moving within Floor 6
@@ -253,68 +220,52 @@ fn floor6_layla_teleports_alone_into_sanctuary_and_explores() {
         "courtyard_center"
     );
 
-    // Walk northwest to the Basilica Portal
-    runtime.run_turn("go northwest").expect("turn runs");
-    assert_eq!(
-        runtime.current_room_id().unwrap(),
-        "basilica_portal",
-        "walking northwest enters basilica_portal"
-    );
-
-    // Walk north into the Nave
-    runtime.run_turn("go north").expect("turn runs");
-    assert_eq!(
-        runtime.current_room_id().unwrap(),
-        "basilica_nave",
-        "walking north enters basilica_nave"
-    );
-
-    // Climb spiral stairs to the Northwest Bell Tower (Outer Wall)
-    runtime.run_turn("go up").expect("turn runs");
-    assert_eq!(
-        runtime.current_room_id().unwrap(),
-        "sanctuary_wall_nw_tower",
-        "walking up enters sanctuary_wall_nw_tower"
-    );
-
-    // Walk south along the West Rampart
-    runtime.run_turn("go south").expect("turn runs");
-    assert_eq!(
-        runtime.current_room_id().unwrap(),
-        "sanctuary_wall_west",
-        "walking south enters sanctuary_wall_west"
-    );
-
-    // Continue south to the Southwest Garden Bastion
-    runtime.run_turn("go south").expect("turn runs");
-    assert_eq!(
-        runtime.current_room_id().unwrap(),
-        "sanctuary_wall_sw_tower",
-        "walking south enters sanctuary_wall_sw_tower"
-    );
-
-    // Climb down into the Herbarium Solarium Garden
-    runtime.run_turn("go down").expect("turn runs");
+    // Walk west into the Solarium Garden
+    runtime.run_turn("go west").expect("turn runs");
     assert_eq!(
         runtime.current_room_id().unwrap(),
         "herbarium_garden",
-        "walking down enters herbarium_garden"
+        "walking west enters herbarium_garden"
     );
 
-    // Walk north out through the Arch of Remedies
-    runtime.run_turn("go north").expect("turn runs");
+    // Slip through vent out to the Cliff Balcony
+    runtime.run_turn("go out").expect("turn runs");
     assert_eq!(
         runtime.current_room_id().unwrap(),
-        "herbarium_portal",
-        "walking north enters herbarium_portal"
+        "herbarium_cliff_balcony",
+        "crawling through vent enters herbarium_cliff_balcony"
     );
 
-    // Return to the Grand Plaza
+    // Descend secret spiral stair to the Mortuary Reanimation Sanctum
+    runtime.run_turn("go down").expect("turn runs");
+    assert_eq!(
+        runtime.current_room_id().unwrap(),
+        "mortuary_reanimation_sanctum",
+        "taking secret stair enters mortuary_reanimation_sanctum"
+    );
+
+    // Step south out to the Mountain Relay Platform
+    runtime.run_turn("go south").expect("turn runs");
+    assert_eq!(
+        runtime.current_room_id().unwrap(),
+        "sanctuary_main_platform",
+        "walking south enters sanctuary_main_platform"
+    );
+
+    // Walk northwest along the West Colonnade
+    runtime.run_turn("go northwest").expect("turn runs");
+    assert_eq!(
+        runtime.current_room_id().unwrap(),
+        "sanctuary_west_colonnade",
+        "walking northwest enters sanctuary_west_colonnade"
+    );
+
+    // Complete the loop northeast back to Grand Terrace
     runtime.run_turn("go northeast").expect("turn runs");
     assert_eq!(
         runtime.current_room_id().unwrap(),
-        "sanctuary_crossroads",
-        "walking northeast returns to sanctuary_crossroads"
+        "sanctuary_grand_terrace",
+        "walking northeast returns to sanctuary_grand_terrace"
     );
 }
 

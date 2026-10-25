@@ -534,11 +534,11 @@
       "quest_id": "high_sanctuary_infiltration",
       "quest_title": "The High Sanctuary",
       "quest_kind": "main",
-      "summary": "Find Orva in the herb garden and speak the code word.",
-      "beat_note": "Layla has slipped into the High Sanctuary. Find Orva in the herb garden, identified by her silver arrow hairpin. Speak the code word: 'The arrow always finds home'.",
-      "update_message": "Find Orva in the herb garden and give her the code word.",
+      "summary": "Infiltrate the sanctuary, find Sister Orva on the secret cliff balcony, and speak the code word.",
+      "beat_note": "Layla has slipped into the High Sanctuary. Use invisibility to slip past the sentries, deduce the clues among the masked halfling herbalists in the Solarium, follow the vent flue to the Cliff Balcony, and speak the code word: 'The arrow always finds home'.",
+      "update_message": "Find Orva on the cliff balcony and give her the code word.",
       "narrative_lines": [
-        "You stand alone on the High Sanctuary terrace. White-armored guards patrol the grand plaza ahead. Drink your invisibility potion to sneak past them to the herb garden in the southwest quarter."
+        "You stand alone on the High Sanctuary terrace. White-armored guards patrol the crossroads ahead. Drink your invisibility potion to sneak past into the glass solarium, deduce the clues among the masked halfling herbalists, and seek Orva."
       ],
       "on_advance_effects": [],
       "advance_signals": [
@@ -566,11 +566,11 @@
       "quest_id": "high_sanctuary_infiltration",
       "quest_title": "The High Sanctuary",
       "quest_kind": "main",
-      "summary": "Swallow the spirit pill and defeat Seer Valerius in the Reanimation Sanctum.",
-      "beat_note": "Orva gave Layla the spirit pill. Swallow it to gain spiritual sight, revealing Seer Valerius as the lone living human among the captive spirits. Defeat him to break the ritual and claim the Bind Scroll.",
-      "update_message": "Swallow the spirit pill and defeat Seer Valerius.",
+      "summary": "Swallow the spirit capsule, descend the spiral stair into the Reanimation Sanctum, and defeat Seer Valerius.",
+      "beat_note": "Orva gave Layla the spirit capsule and unblocked the secret spiral stair. Swallow the capsule to pierce the veil, read the black ledger to learn your companions' true names, and defeat Seer Valerius and his Soul Chimera Dragon to claim the Bind Scroll.",
+      "update_message": "Swallow the spirit capsule and defeat Seer Valerius.",
       "narrative_lines": [
-        "Orva clutches the silver arrow pin to her chest, her eyes wide with relief. 'Einar... he lives! Take this spirit pill. Swallow it before you face Seer Valerius. Without it, you will only see empty air, but with it, you will see the captive spirits and the Seer directing them. Stop him!'"
+        "Orva clutches the matching silver arrow to her chest with tear-streaked eyes. 'Einar... he lives! Take this spirit capsule—swallow it before you face Valerius to see the trapped souls. Take the spiral stair behind this iron door down into the sanctum!'"
       ],
       "on_advance_effects": [
         {
@@ -605,8 +605,8 @@
       "quest_id": "high_sanctuary_infiltration",
       "quest_title": "The High Sanctuary",
       "quest_kind": "main",
-      "summary": "Activate the master resonance anchor on the Sanctuary Platform to bring Astrid and the party through.",
-      "beat_note": "Seer Valerius has fallen, and the Bind Scroll is recovered. Head south from the sanctum to the mountain terrace platform and activate the master resonance anchor.",
+      "summary": "Step out onto the Mountain Relay Platform and activate the master resonance anchor.",
+      "beat_note": "Seer Valerius is defeated and the Bind Scroll is recovered. Head south from the sanctum to the mountain relay platform, insert the five town tokens, and trace the Bind Sigil on the anchor.",
       "update_message": "Activate the master anchor on the platform to bring your party through.",
       "narrative_lines": [
         "The dark ritual is broken, and Seer Valerius lies defeated. Head to the outer platform and activate the master resonance anchor to bring Commander Astrid and your companions up to Floor 6."
@@ -642,11 +642,11 @@
       "quest_title": "The High Sanctuary",
       "quest_kind": "main",
       "summary": "Reunite with your companions on the platform and ascend the white stair to Floor 7.",
-      "beat_note": "Astrid, Einar, and Orva are reunited on the Sanctuary Platform. Commander Astrid will hold the platform while Layla climbs the white stair to Floor 7.",
+      "beat_note": "Astrid, Einar, and Orva are reunited on the Mountain Relay Platform. Commander Astrid will hold the platform while Layla climbs the white stair to Floor 7.",
       "update_message": "Speak with Commander Astrid and ascend to Floor 7 via the glowing white stair.",
       "narrative_lines": [
-        "A blinding pillar of blue light erupts from the resonance anchor, permanently linking Floor 6 to the Frost Citadel below! Commander Astrid, Elwin, Queen Nur, Sakhra, Einar, and your golem companions materialize on the platform. Channeling the Bind Sigil through Zayd's Amber Lamp, you restore the memories of Zayd's parents—Siraj and Nur weep as they recognize one another and embrace at last. You free Mari, Ferid, and Hana from their servitude, while Orin's golden spirit spark smiles from the lantern and dissolves peacefully into the clouds.",
-        "Suddenly, Priest Harun bolts across the terrace trying to escape! Astrid intercepts him with a crushing shield slam, Elwin pins his robe with an arrow, and fortress guards haul him away in chains. Across the courtyard, Einar and Orva embrace tightly, their matching silver arrows gleaming together in the morning sun.",
+        "A blinding pillar of blue light erupts from the resonance anchor, permanently linking Floor 6 to the Frost Citadel below! The light stabilizes, and Commander Astrid, Einar, and your fortress vanguard step onto the platform, shields raised and weapons ready.",
+        "Across the terrace, Einar and Orva rush toward each other, embracing with joyful tears as their matching silver hairpins gleam in the morning sun.",
         "Astrid: The acropolis perimeter is secure, Layla. We will hold this platform with our shields so nothing can sneak up behind you. The white stair is open. Ascend to Floor 7 and end this game."
       ],
       "on_advance_effects": [],
@@ -691,17 +691,16 @@
       "quest_id": "archive_of_the_disappeared",
       "quest_title": "The Truth of the Disappeared",
       "quest_kind": "side",
-      "summary": "Uncover the secret mortuary ledgers in the Scriptorium archive to learn the truth about the dungeon monsters.",
-      "beat_note": "In the hidden archive of the Scriptorium, confidential mortuary ledgers detail the harvest of citizens from Deepwell and Salt Reach and their conversion into dungeon golems and elves.",
-      "update_message": "Inspect the confidential mortuary ledgers in the hidden archive beneath the Scriptorium.",
+      "summary": "Uncover the secret mortuary ledger in the Reanimation Sanctum to learn the truth about the dungeon monsters.",
+      "beat_note": "In the Reanimation Sanctum, confidential mortuary ledgers detail the harvest of citizens from Deepwell and Salt Reach and their conversion into dungeon golems and guardians.",
+      "update_message": "Inspect the confidential mortuary ledger in the Reanimation Sanctum.",
       "completion_message": "handler.quest.archive_discovered",
       "narrative_lines": [
-        "Behind locked doors in the Scriptorium, iron racks hold confidential registries of the disappeared. If you can slip past the scribes and guards, the truth behind the monster creation pipeline awaits."
+        "On the lectern near the obsidian altar, a black leather ledger catalogs the disappeared. Opening it reveals the truth behind the monster creation pipeline."
       ],
       "on_advance_effects": [],
       "advance_signals": [
-        "feature_observed:scriptorium_secret_archive-ledgers",
-        "feature_observed:mortuary_reanimation_sanctum-spirits"
+        "feature_observed:mortuary_reanimation_sanctum-ledger"
       ],
       "next_stage_ids": [],
       "completion_effects": [

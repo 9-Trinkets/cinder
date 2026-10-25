@@ -12731,1993 +12731,617 @@
     "title": "黃銅鎮機械院"
   },
   {
-    "allow_rest": true,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "north",
-          "n",
-          "plaza",
-          "crossroads",
-          "center",
-          "in",
-          "sanctuary"
-        ],
-        "label": "北",
-        "menu_label": "進入大廣場",
-        "requires_story_var": "",
-        "room_id": "sanctuary_crossroads"
-      },
-      {
-        "aliases": [
-          "up",
-          "u",
-          "south",
-          "s",
-          "wall",
-          "rampart",
-          "stairs"
-        ],
-        "label": "上",
-        "menu_label": "爬至南牆",
-        "requires_story_var": "",
-        "room_id": "sanctuary_wall_south"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "balustrade",
-          "rail",
-          "stone",
-          "view",
-          "雕花欄杆"
-        ],
-        "allow_rest": false,
-        "id": "sanctuary_grand_terrace-balustrade",
-        "inspect_text": "刻著幾何浮雕的白石。它之外，翻捲的霧靄在下方深處的山峽間飄移。",
-        "label": "雕花欄杆"
-      }
-    ],
     "id": "sanctuary_grand_terrace",
-    "inspect_text": "石階向上攀往至高聖所的中央廣場。北邊下方，有頂的通道折回霜堡。",
-    "summary": "寬闊的大理石階在石灰岩欄杆之間向上攀升，通往開闊的山間空氣。白塔在前方遼闊的天空下矗立，涼風送來山草和廟宇薰香的味道。",
-    "title": "聖所門前台地"
-  },
-  {
-    "allow_rest": false,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "south",
-          "s",
-          "terrace",
-          "gate",
-          "out"
-        ],
-        "label": "南",
-        "menu_label": "走到門前台地",
-        "requires_story_var": "",
-        "room_id": "sanctuary_grand_terrace"
-      },
-      {
-        "aliases": [
-          "northwest",
-          "nw",
-          "basilica",
-          "chants",
-          "church"
-        ],
-        "label": "西北",
-        "menu_label": "前往大教堂",
-        "requires_story_var": "",
-        "room_id": "basilica_portal"
-      },
-      {
-        "aliases": [
-          "northeast",
-          "ne",
-          "scriptorium",
-          "library",
-          "letters"
-        ],
-        "label": "東北",
-        "menu_label": "前往抄經院",
-        "requires_story_var": "",
-        "room_id": "scriptorium_portal"
-      },
-      {
-        "aliases": [
-          "southwest",
-          "sw",
-          "herbarium",
-          "garden",
-          "apothecary",
-          "remedies"
-        ],
-        "label": "西南",
-        "menu_label": "前往植物園",
-        "requires_story_var": "",
-        "room_id": "herbarium_portal"
-      },
-      {
-        "aliases": [
-          "southeast",
-          "se",
-          "mortuary",
-          "crypt",
-          "crypts",
-          "passing"
-        ],
-        "label": "東南",
-        "menu_label": "前往殮房地窖",
-        "requires_story_var": "",
-        "room_id": "mortuary_portal"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "fountain",
-          "water",
-          "basin",
-          "中央大理石噴泉"
-        ],
-        "allow_rest": false,
-        "id": "sanctuary_crossroads-fountain",
-        "inspect_text": "清澈的山泉穩定地流過層疊的大理石碗，注入一座寬闊的倒影池。",
-        "label": "中央大理石噴泉"
-      }
-    ],
-    "id": "sanctuary_crossroads",
-    "inspect_text": "陽光灑滿淺色的鋪石。西北的拱門通往大教堂，東北的拱門通往抄經院，西南的拱門通往植物園，東南的拱門通往殮房地窖。",
-    "summary": "一片開闊的白色石板廣場在遼闊的天空下展開。中央，清水從層疊的大理石噴泉湧出。四道宏偉的石拱朝向聖所的四個方向敞開。",
-    "title": "大衛城廣場"
-  },
-  {
-    "allow_rest": false,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "southeast",
-          "se",
-          "plaza",
-          "crossroads",
-          "back"
-        ],
-        "label": "東南",
-        "menu_label": "返回大廣場",
-        "requires_story_var": "",
-        "room_id": "sanctuary_crossroads"
-      },
-      {
-        "aliases": [
-          "north",
-          "n",
-          "nave",
-          "in",
-          "basilica",
-          "church"
-        ],
-        "label": "北",
-        "menu_label": "進入大教堂",
-        "requires_story_var": "",
-        "room_id": "basilica_nave"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "statues",
-          "masks",
-          "arch",
-          "carvings",
-          "戴面具的雕像"
-        ],
-        "allow_rest": false,
-        "id": "basilica_portal-statues",
-        "inspect_text": "光滑的銀面具遮住雕像的面孔，以打磨過的金屬映著天空。",
-        "label": "戴面具的雕像"
-      }
-    ],
-    "id": "basilica_portal",
-    "inspect_text": "沉重的鐵鉸鏈顯示這道拱門在封鎖時可以關上。門外，大教堂中殿的大門敞開著。",
-    "summary": "一道宏偉的石灰岩拱門標誌著大教堂區的入口。罩著兜帽、戴著光滑銀面具的雕像在門楣之上擎著儀典旗幟。",
-    "title": "吟詠之拱"
-  },
-  {
+    "title": "聖所露台",
+    "summary": "開闊的大理石階梯在石灰岩欄杆間向開闊的山風延伸。前方朝南的高聳拱門通往大教堂中庭，長廊則沿著翻湧的雲海向東西兩側延伸。",
+    "inspect_text": "山風掠過拋光的白石，帶來濃烈的乳香與苦澀藥草氣味。往南是衛兵巡邏的十字中庭；西側長廊與東側露台則沿著懸崖邊緣環繞延伸。",
     "allow_rest": true,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "south",
-          "s",
-          "portal",
-          "arch",
-          "out"
-        ],
-        "label": "南",
-        "menu_label": "出口通往吟詠之拱",
-        "requires_story_var": "",
-        "room_id": "basilica_portal"
-      },
-      {
-        "aliases": [
-          "north",
-          "n",
-          "altar",
-          "high altar",
-          "dais"
-        ],
-        "label": "北",
-        "menu_label": "走到高祭壇",
-        "requires_story_var": "",
-        "room_id": "basilica_high_altar"
-      },
-      {
-        "aliases": [
-          "east",
-          "e",
-          "vestry",
-          "robing"
-        ],
-        "label": "東",
-        "menu_label": "進入更衣聖器室",
-        "requires_story_var": "",
-        "room_id": "basilica_vestry"
-      },
-      {
-        "aliases": [
-          "up",
-          "u",
-          "stairs",
-          "tower",
-          "bell tower"
-        ],
-        "label": "上",
-        "menu_label": "爬至西北鐘樓",
-        "requires_story_var": "",
-        "room_id": "sanctuary_wall_nw_tower"
-      }
-    ],
     "features": [
       {
+        "id": "sanctuary_grand_terrace-balustrade",
+        "label": "石灰岩欄杆",
         "aliases": [
-          "window",
-          "glass",
-          "light",
-          "大玫瑰窗"
+          "欄杆",
+          "石欄",
+          "雲海",
+          "邊緣"
         ],
         "allow_rest": false,
-        "id": "basilica_nave-rose_window",
-        "inspect_text": "鮮豔的彩繪玻璃描繪著幾何天輪，把陽光篩成深藍與金黃。",
-        "label": "大玫瑰窗"
-      }
-    ],
-    "id": "basilica_nave",
-    "inspect_text": "一排排擦亮的木長椅朝向北面的高祭壇。一道石製螺旋梯盤旋而上通往西北鐘樓，幾扇門向東通往聖器室。",
-    "summary": "帶肋的石灰岩拱頂高懸頭頂，由成對的大理石柱支撐。彩光從宏偉的玫瑰窗傾灑在長長的橡木長椅上，安靜的空氣裡懸著淡淡的儀典薰香。",
-    "title": "大教堂中殿"
-  },
-  {
-    "allow_rest": false,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "south",
-          "s",
-          "nave",
-          "pews",
-          "back"
-        ],
-        "label": "南",
-        "menu_label": "返回中殿",
-        "requires_story_var": "",
-        "room_id": "basilica_nave"
+        "inspect_text": "雕刻精美的低矮石欄，下方是萬丈雲海。極目遠眺，第五層的雪山在白霧中若隱若現。"
       },
       {
+        "id": "sanctuary_grand_terrace-steps",
+        "label": "大理石階梯",
         "aliases": [
-          "east",
-          "e",
-          "cells",
-          "cloister",
-          "rooms"
-        ],
-        "label": "東",
-        "menu_label": "走到神職居室",
-        "requires_story_var": "",
-        "room_id": "basilica_clergy_cells"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "altar",
-          "table",
-          "stone",
-          "censers",
-          "金色祭壇桌"
-        ],
-        "allow_rest": false,
-        "id": "basilica_high_altar-table",
-        "inspect_text": "一整塊打磨光滑的金色石灰岩。繁複的幾何符文以細銀絲嵌在邊沿一圈。",
-        "label": "金色祭壇桌"
-      }
-    ],
-    "id": "basilica_high_altar",
-    "inspect_text": "金色的燭台未點燃，立在銀製聖餐盤旁。祭壇後方，一道拱形通道向東通往神職人員的居室。",
-    "summary": "高聳的穹頂下，立著一座寬闊的半圓形高台，由打磨光滑的白色大理石砌成。一整塊金色石料雕成的巨大祭壇桌安放其間，頭頂垂掛著銀製香爐。",
-    "title": "日祭壇"
-  },
-  {
-    "allow_rest": true,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "west",
-          "w",
-          "nave",
-          "church",
-          "back"
-        ],
-        "label": "西",
-        "menu_label": "返回中殿",
-        "requires_story_var": "",
-        "room_id": "basilica_nave"
-      },
-      {
-        "aliases": [
-          "north",
-          "n",
-          "cells",
-          "corridor"
-        ],
-        "label": "北",
-        "menu_label": "走到神職居室",
-        "requires_story_var": "",
-        "room_id": "basilica_clergy_cells"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "wardrobes",
-          "cabinets",
-          "robes",
-          "masks",
-          "雪松衣櫃"
-        ],
-        "allow_rest": false,
-        "id": "basilica_vestry-wardrobes",
-        "inspect_text": "一排排一塵不染的白色法衣掛著，旁邊是留著窄窄眼縫的銀面具。",
-        "label": "雪松衣櫃"
-      }
-    ],
-    "id": "basilica_vestry",
-    "inspect_text": "刺繡的聖帶和亞麻長袍散著淡淡的雪松油味。跪禱長凳提供了靜思安歇的安靜去處。",
-    "summary": "高大的雪松衣櫃沿著這座安靜側廳的牆排列。白色法衣和銀色儀典面具齊整地掛成一排排，小小的祈禱桌朝向拱窗。",
-    "title": "更衣聖器室"
-  },
-  {
-    "allow_rest": false,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "west",
-          "w",
-          "altar",
-          "high altar"
-        ],
-        "label": "西",
-        "menu_label": "返回高祭壇",
-        "requires_story_var": "",
-        "room_id": "basilica_high_altar"
-      },
-      {
-        "aliases": [
-          "south",
-          "s",
-          "vestry",
-          "robing"
-        ],
-        "label": "南",
-        "menu_label": "返回更衣聖器室",
-        "requires_story_var": "",
-        "room_id": "basilica_vestry"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "doors",
-          "cells",
-          "locks",
-          "plates",
-          "靜室門"
-        ],
-        "allow_rest": false,
-        "id": "basilica_clergy_cells-doors",
-        "inspect_text": "厚重的橡木門，上有帶柵的小窺孔。黃銅名牌標示著修道院的職務。",
-        "label": "靜室門"
-      }
-    ],
-    "id": "basilica_clergy_cells",
-    "inspect_text": "鐵鎖鎖著每扇門，門上標著副祭司、領唱、聖器保管員之類的修道院職銜。通道向西通往高祭壇，向南通往聖器室。",
-    "summary": "一條拱頂的石灰岩走廊，兩側是通往資深祭司私人居所的厚重橡木門。牆上的小壁龕裡擱著黃銅油燈。",
-    "title": "修道院靜室"
-  },
-  {
-    "allow_rest": false,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "southwest",
-          "sw",
-          "plaza",
-          "crossroads",
-          "back"
-        ],
-        "label": "西南",
-        "menu_label": "返回大廣場",
-        "requires_story_var": "",
-        "room_id": "sanctuary_crossroads"
-      },
-      {
-        "aliases": [
-          "north",
-          "n",
-          "scriptorium",
-          "hall",
-          "in"
-        ],
-        "label": "北",
-        "menu_label": "進入抄經院",
-        "requires_story_var": "",
-        "room_id": "scriptorium_cloister"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "carvings",
-          "reliefs",
-          "statues",
-          "arch",
-          "學者雕像"
-        ],
-        "allow_rest": false,
-        "id": "scriptorium_portal-carvings",
-        "inspect_text": "石浮雕頌揚著數百年來對聖典的記錄與保存。",
-        "label": "學者雕像"
-      }
-    ],
-    "id": "scriptorium_portal",
-    "inspect_text": "寬闊的石階穿過拱門，向北通往抄經院的迴廊。中央廣場在西南方。",
-    "summary": "一道莊嚴的石灰岩門廊，兩旁是雕著執卷握筆的學者的基座。墨、羊皮紙和蜂蠟的氣味從學堂裡飄出。",
-    "title": "文字之拱"
-  },
-  {
-    "allow_rest": true,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "south",
-          "s",
-          "portal",
-          "arch",
-          "out"
-        ],
-        "label": "南",
-        "menu_label": "出口通往文字之拱",
-        "requires_story_var": "",
-        "room_id": "scriptorium_portal"
-      },
-      {
-        "aliases": [
-          "north",
-          "n",
-          "library",
-          "books"
-        ],
-        "label": "北",
-        "menu_label": "進入大圖書館",
-        "requires_story_var": "",
-        "room_id": "scriptorium_library"
-      },
-      {
-        "aliases": [
-          "west",
-          "w",
-          "vault",
-          "archive",
-          "catechism"
-        ],
-        "label": "西",
-        "menu_label": "進入教義問答室",
-        "requires_story_var": "",
-        "room_id": "scriptorium_archive_vault"
-      },
-      {
-        "aliases": [
-          "up",
-          "u",
-          "stairs",
-          "tower",
-          "watchtower"
-        ],
-        "label": "上",
-        "menu_label": "爬至東北塔",
-        "requires_story_var": "",
-        "room_id": "sanctuary_wall_ne_tower"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "desks",
-          "quills",
-          "vellum",
-          "ink",
-          "斜面書桌"
-        ],
-        "allow_rest": false,
-        "id": "scriptorium_cloister-desks",
-        "inspect_text": "齊整的木書桌，配著墨座和黃銅鎮紙。幾張只抄了一半的禮拜經文攤著晾乾。",
-        "label": "斜面書桌"
-      }
-    ],
-    "id": "scriptorium_cloister",
-    "inspect_text": "抄寫員的書桌上擺著嶄新的羊皮紙、羽毛筆和罐裝沒食子墨水。石梯向上通往東北瞭望塔，幾扇門向北通往圖書館，向東通往檔案庫。",
-    "summary": "一座寬闊、灑滿陽光的大廳，沿牆排著斜面的書桌、墨角和一列晾乾架。陽光從高拱窗傾瀉而入，窗外俯瞰著北面的城牆。",
-    "title": "抄經院大廳"
-  },
-  {
-    "allow_rest": true,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "south",
-          "s",
-          "scriptorium",
-          "desks",
-          "back"
-        ],
-        "label": "南",
-        "menu_label": "返回抄經院大廳",
-        "requires_story_var": "",
-        "room_id": "scriptorium_cloister"
-      },
-      {
-        "aliases": [
-          "west",
-          "w",
-          "secret",
-          "archive",
-          "shelf",
-          "hidden"
-        ],
-        "label": "西",
-        "menu_label": "溜到滑動書架之後",
-        "requires_story_var": "",
-        "room_id": "scriptorium_secret_archive"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "shelves",
-          "books",
-          "folios",
-          "ladders",
-          "高聳的書架"
-        ],
-        "allow_rest": false,
-        "id": "scriptorium_library-shelves",
-        "inspect_text": "一排排齊整的犢皮紙和羊皮紙書脊，燙金標著書名。歷史區後方的踢腳板邊有一道窄窄的接縫。",
-        "label": "高聳的書架"
-      }
-    ],
-    "id": "scriptorium_library",
-    "inspect_text": "皮面裝幀的神學律法、天文表和歷史編年塞滿書架。一個不起眼的角落書架掩著一道通往西側的滑動接縫。",
-    "summary": "高聳的雪松書架直上兩層樓高，得靠滾動的黃銅梯取書。數百冊裝訂的對開本與手稿井然有序地排成編目完善的行列。",
-    "title": "大教堂圖書館"
-  },
-  {
-    "allow_rest": false,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "east",
-          "e",
-          "scriptorium",
-          "hall",
-          "back"
-        ],
-        "label": "東",
-        "menu_label": "返回抄經院大廳",
-        "requires_story_var": "",
-        "room_id": "scriptorium_cloister"
-      },
-      {
-        "aliases": [
-          "north",
-          "n",
-          "archive",
-          "inner",
-          "in"
-        ],
-        "label": "北",
-        "menu_label": "進入內檔案庫",
-        "requires_story_var": "",
-        "room_id": "scriptorium_secret_archive"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "drawers",
-          "chests",
-          "grates",
-          "scrolls",
-          "手稿抽屜"
-        ],
-        "allow_rest": false,
-        "id": "scriptorium_archive_vault-drawers",
-        "inspect_text": "按禮拜等級標示的鐵箍抽屜。這些卷軸詳載著聖所檢查站所問的教義問題原文。",
-        "label": "手稿抽屜"
-      }
-    ],
-    "id": "scriptorium_archive_vault",
-    "inspect_text": "沉重的鐵柵鎖著好幾個手稿抽屜。通道向東通往主抄經院，向北通往內檔案庫。",
-    "summary": "一間加固的石室，沿牆是一排排鐵箍的抽屜櫃。這裡鎖著載有官方教義問答、考核章程和禮拜時辰的手稿。",
-    "title": "教義問答室"
-  },
-  {
-    "allow_rest": false,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "east",
-          "e",
-          "library",
-          "books",
-          "back"
-        ],
-        "label": "東",
-        "menu_label": "返回大圖書館",
-        "requires_story_var": "",
-        "room_id": "scriptorium_library"
-      },
-      {
-        "aliases": [
-          "south",
-          "s",
-          "chamber",
-          "vault",
-          "out"
-        ],
-        "label": "南",
-        "menu_label": "出口通往教義問答室",
-        "requires_story_var": "",
-        "room_id": "scriptorium_archive_vault"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "ledgers",
-          "records",
-          "files",
-          "racks",
-          "機密殮房帳冊"
-        ],
-        "allow_rest": false,
-        "id": "scriptorium_secret_archive-ledgers",
-        "inspect_text": "令人不寒而慄的紀錄，將活人的名字與魔物階級一一對應：礦工被變成蒸汽魔像，森林斥候被縛成幽影精靈。你清楚認出了西拉傑、努爾、歐林、瑪莉、法瑞德與哈娜的名字。",
-        "label": "機密殮房帳冊"
-      }
-    ],
-    "id": "scriptorium_secret_archive",
-    "inspect_text": "厚重的帳冊詳載著從深井鎮、鹽灘和其他工人城鎮收成的平民，記錄著他們原本的身分，以及隨後被轉化成地牢魔物的經過。",
-    "summary": "一座隱蔽的石室，由昏暗的水晶壁燈照亮。金屬架上存放著機密的殮房記錄、運輸清單和返魂名冊，都蓋著宗教裁判所的官印。",
-    "title": "失蹤者檔案館"
-  },
-  {
-    "allow_rest": false,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "northeast",
-          "ne",
-          "plaza",
-          "crossroads",
-          "back"
-        ],
-        "label": "東北",
-        "menu_label": "返回大廣場",
-        "requires_story_var": "",
-        "room_id": "sanctuary_crossroads"
-      },
-      {
-        "aliases": [
-          "south",
-          "s",
-          "garden",
-          "solarium",
-          "in"
-        ],
-        "label": "南",
-        "menu_label": "進入日光花園",
-        "requires_story_var": "",
-        "room_id": "herbarium_garden"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "planters",
-          "vines",
-          "flowers",
-          "arch",
-          "雕花苗圃"
-        ],
-        "allow_rest": false,
-        "id": "herbarium_portal-planters",
-        "inspect_text": "大陶盆裡種著開花的迷迭香和野生山百里香。",
-        "label": "雕花苗圃"
-      }
-    ],
-    "id": "herbarium_portal",
-    "inspect_text": "陶土花盆分列門廊兩側。拱門向南通向玻璃頂的日光花園，中央廣場則在東北方。",
-    "summary": "一道雅致的露天拱門，雕著攀爬的藤蔓和藥用花卉。溫暖潮濕的空氣裡飄著鼠尾草、薄荷和揉碎的山間藥草的清香。",
-    "title": "醫藥之拱"
-  },
-  {
-    "allow_rest": true,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "north",
-          "n",
-          "portal",
-          "arch",
-          "out"
-        ],
-        "label": "北",
-        "menu_label": "出口通往醫藥之拱",
-        "requires_story_var": "",
-        "room_id": "herbarium_portal"
-      },
-      {
-        "aliases": [
-          "west",
-          "w",
-          "vent",
-          "balcony",
-          "flue",
-          "cliff",
-          "ledge",
-          "out",
-          "西",
-          "通風口",
-          "陽台",
-          "懸崖"
-        ],
-        "label": "西",
-        "menu_label": "穿過通風口前往懸崖秘密陽台",
-        "requires_story_var": "",
-        "room_id": "herbarium_cliff_balcony"
-      },
-      {
-        "aliases": [
-          "south",
-          "s",
-          "still",
-          "distillation",
-          "lab"
-        ],
-        "label": "南",
-        "menu_label": "進入蒸餾室",
-        "requires_story_var": "",
-        "room_id": "herbarium_still_room"
-      },
-      {
-        "aliases": [
-          "east",
-          "e",
-          "apothecary",
-          "dispensary",
-          "shop"
-        ],
-        "label": "東",
-        "menu_label": "進入藥房大廳",
-        "requires_story_var": "",
-        "room_id": "herbarium_apothecary"
-      },
-      {
-        "aliases": [
-          "up",
-          "u",
-          "stairs",
-          "tower",
-          "bastion"
-        ],
-        "label": "上",
-        "menu_label": "爬至西南稜堡",
-        "requires_story_var": "",
-        "room_id": "sanctuary_wall_sw_tower"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "beds",
-          "herbs",
-          "plants",
-          "moss",
-          "墊高的藥草圃"
-        ],
-        "allow_rest": false,
-        "id": "herbarium_garden-beds",
-        "inspect_text": "修剪齊整的銀苔、藍冬鼠尾草和辛香的薄荷，長在深色肥沃的壤土中。",
-        "label": "墊高的藥草圃"
-      }
-    ],
-    "id": "herbarium_garden",
-    "inspect_text": "來自地面暖管的蒸汽讓空氣潮濕而芬芳。石凳沿著四周排列，石梯向上通往西南花園稜堡，幾扇門向南通往蒸餾靜室、向東通往藥房，水槽下方一塊鬆動的排氣石磚後方隱藏著通往懸崖秘密陽台的通風導管。",
-    "summary": "一座溫暖明亮的植物庭院，頂上是精巧的鍛鐵與玻璃圓頂。墊高的石圃裡種著稀有的高山苔蘚、開花的藥用灌木和層疊的香草。",
-    "title": "玻璃日光室"
-  },
-  {
-    "allow_rest": true,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "west",
-          "w",
-          "garden",
-          "solarium",
-          "back"
-        ],
-        "label": "西",
-        "menu_label": "返回日光花園",
-        "requires_story_var": "",
-        "room_id": "herbarium_garden"
-      },
-      {
-        "aliases": [
-          "south",
-          "s",
-          "clock",
-          "water clock",
-          "cloister"
-        ],
-        "label": "南",
-        "menu_label": "進入水鐘迴廊",
-        "requires_story_var": "",
-        "room_id": "herbarium_water_clock"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "jars",
-          "medicines",
-          "shelves",
-          "pots",
-          "標籤陶罐"
-        ],
-        "allow_rest": false,
-        "id": "herbarium_apothecary-jars",
-        "inspect_text": "一排排密封的釉陶罐，標著草藥萃取液、鎮痛藥膏和礦物粉末。",
-        "label": "標籤陶罐"
-      }
-    ],
-    "id": "herbarium_apothecary",
-    "inspect_text": "這裡是神殿藥師仍在使用的工坊。玻璃小瓶、濾紙和木量勺精確有序地擺放著。",
-    "summary": "長長的橡木工作檯上擺著黃銅天平、瑪瑙研缽和一排排標好的陶罐。一束束乾草藥掛在椽上風乾，讓屋裡充滿清冽的土質香氣。",
-    "title": "藥房大廳"
-  },
-  {
-    "allow_rest": false,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "north",
-          "n",
-          "garden",
-          "solarium",
-          "back"
-        ],
-        "label": "北",
-        "menu_label": "返回日光花園",
-        "requires_story_var": "",
-        "room_id": "herbarium_garden"
-      },
-      {
-        "aliases": [
-          "east",
-          "e",
-          "clock",
-          "water clock"
-        ],
-        "label": "東",
-        "menu_label": "進入水鐘迴廊",
-        "requires_story_var": "",
-        "room_id": "herbarium_water_clock"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "stills",
-          "alembic",
-          "copper",
-          "tubes",
-          "銅蒸餾器"
-        ],
-        "allow_rest": false,
-        "id": "herbarium_still_room-alembic",
-        "inspect_text": "大型擦亮的銅蒸餾甑以蛇形冷凝管相連，裡頭沸著草藥萃取液。",
-        "label": "銅蒸餾器"
-      }
-    ],
-    "id": "herbarium_still_room",
-    "inspect_text": "厚重的陶盆承接冷卻的蒸餾液。管道穿過石牆，連通著鄰近的鐘樓迴廊和花圃。",
-    "summary": "銅製蒸餾器和盤繞的冷凝管在暖光中閃著亮。蒸汽從壓力閥輕輕嘶出，純淨的花露和濃縮的精華滴入玻璃瓶中。",
-    "title": "蒸餾室"
-  },
-  {
-    "allow_rest": false,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "west",
-          "w",
-          "still",
-          "distillation",
-          "lab"
-        ],
-        "label": "西",
-        "menu_label": "返回蒸餾室",
-        "requires_story_var": "",
-        "room_id": "herbarium_still_room"
-      },
-      {
-        "aliases": [
-          "north",
-          "n",
-          "apothecary",
-          "dispensary",
-          "hall"
-        ],
-        "label": "北",
-        "menu_label": "返回藥房大廳",
-        "requires_story_var": "",
-        "room_id": "herbarium_apothecary"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "clock",
-          "water clock",
-          "clepsydra",
-          "gears",
-          "青銅水鐘"
-        ],
-        "allow_rest": false,
-        "id": "herbarium_water_clock-clepsydra",
-        "inspect_text": "一件水力工程的傑作。層層疊疊的青銅碗滴下定量之水，帶動漂浮的齒輪，標記換班的時刻。",
-        "label": "青銅水鐘"
-      }
-    ],
-    "id": "herbarium_water_clock",
-    "inspect_text": "精巧的黃銅齒輪咬合計時，以絆線連向鐘樓的鐘鎚。一只洩水閥和浮球水位計，為小心的動手腳留下了機會。",
-    "summary": "一處遮陰的石壁龕，安置著聖所的主滴漏——一座巨大的青銅水鐘。水從層疊的青銅蓄水器中節奏精準地滴落，計量著規定的值守時刻。",
-    "title": "水鐘迴廊"
-  },
-  {
-    "allow_rest": false,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "east",
-          "e",
-          "garden",
-          "solarium",
-          "vent",
-          "in",
-          "back",
-          "東",
-          "花園",
-          "日光花園",
-          "通風口"
-        ],
-        "label": "東",
-        "menu_label": "鑽過通風導管返回草藥花園",
-        "requires_story_var": "",
-        "room_id": "herbarium_garden"
-      },
-      {
-        "aliases": [
-          "down",
-          "d",
-          "west",
-          "w",
-          "stairs",
-          "door",
-          "sanctum",
-          "undercrypt",
-          "下",
-          "西",
+          "階梯",
           "石階",
-          "石門",
-          "密室",
-          "靈柩殿"
-        ],
-        "label": "下",
-        "menu_label": "順著隱密石階向下前往靈柩殿",
-        "requires_story_var": "",
-        "room_id": "mortuary_reanimation_sanctum"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "soul grass",
-          "grass",
-          "plants",
-          "dew",
-          "herbs",
-          "soil",
-          "野生靈魂草",
-          "靈魂草",
-          "露水"
+          "拱門",
+          "入口"
         ],
         "allow_rest": false,
-        "id": "herbarium_cliff_balcony-soul_grass",
-        "inspect_text": "生長在高山黑土中的低矮野生草葉，葉面上浮動著幽藍的微光光點，隨著蒸汽呼吐緩慢明暗。葉尖正凝結著一滴滴晶瑩露水——正是調配靈視膠囊的關鍵核心。",
-        "label": "野生靈魂草"
-      },
-      {
-        "aliases": [
-          "door",
-          "iron door",
-          "chains",
-          "stairs",
-          "staircase",
-          "steps",
-          "生鐵鎖鏈石門",
-          "石門",
-          "鐵門"
-        ],
-        "allow_rest": false,
-        "id": "herbarium_cliff_balcony-iron_door",
-        "inspect_text": "以粗重生鐵鎖鏈加固的厚重石門，後方是一條避開聖堂巡邏、直達底層靈柩殿的隱密螺旋石階。",
-        "label": "生鐵鎖鏈石門"
+        "inspect_text": "寬闊的白大理石階梯，朝南通往中央十字中庭的高聳拱門。"
       }
     ],
-    "id": "herbarium_cliff_balcony",
-    "inspect_text": "寒夜冷風在崖壁外呼嘯，但這處避風夾層卻寧靜而溫暖。靈魂草葉尖下放置著接取晨露的粗陶石碗。東側的狹窄通風導管可鑽回草藥花園，西側一扇生鐵加固的厚重石門則通向盤旋向下的幽暗石階，直抵底層靈柩殿。",
-    "summary": "懸於至高聖所外側絕壁之上的狹窄石階夾層，隱匿於倒扣的宏偉樑柱下方，俯瞰著翻湧無邊的壯闊雲海。一截廢棄的採暖蒸汽管朝著黑色高山腐殖土吐出細細的恆定暖汽，數十株幽藍閃爍的野生靈魂草正凝結著新鮮純淨的露水。",
-    "title": "懸崖秘密陽台"
-  },
-  {
-    "allow_rest": false,
-    "descriptions": [],
     "exits": [
       {
+        "room_id": "sanctuary_crossroads",
+        "label": "南",
         "aliases": [
-          "northwest",
-          "nw",
-          "plaza",
-          "crossroads",
-          "back"
+          "南",
+          "s",
+          "南面",
+          "中庭",
+          "十字路口",
+          "拱門"
         ],
+        "menu_label": "走進十字中庭",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_west_colonnade",
+        "label": "西南",
+        "aliases": [
+          "西南",
+          "sw",
+          "西",
+          "w",
+          "西側長廊",
+          "長廊"
+        ],
+        "menu_label": "沿著西側長廊前進",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_east_promenade",
+        "label": "東南",
+        "aliases": [
+          "東南",
+          "se",
+          "東",
+          "e",
+          "東側露台",
+          "露台"
+        ],
+        "menu_label": "漫步東側露台",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_west_colonnade",
+    "title": "西側長廊",
+    "summary": "一道高聳的大理石拱廊，沿著無垠雲海之上的西側懸崖邊緣延伸。陽光穿透樑柱傾瀉而下，一道拱形廊道向東通往植物玻璃暖房。",
+    "inspect_text": "極目遠眺，白雲在陡峭絕壁間翻湧。長廊向北通回入口露台，向南通往高山平台，向東則通往芳香四溢的玻璃花園。",
+    "allow_rest": true,
+    "features": [
+      {
+        "id": "sanctuary_west_colonnade-pillars",
+        "label": "高聳石柱",
+        "aliases": [
+          "石柱",
+          "立柱",
+          "長廊",
+          "雲海"
+        ],
+        "allow_rest": false,
+        "inspect_text": "開鑿著凹槽的石灰岩立柱支撐著雕花橫樑，柱外便是無垠青空。"
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_grand_terrace",
+        "label": "東北",
+        "aliases": [
+          "東北",
+          "ne",
+          "北",
+          "n",
+          "露台",
+          "入口"
+        ],
+        "menu_label": "返回入口露台",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_main_platform",
+        "label": "東南",
+        "aliases": [
+          "東南",
+          "se",
+          "南",
+          "s",
+          "平台",
+          "傳送台"
+        ],
+        "menu_label": "往南前往高山平台",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "herbarium_garden",
+        "label": "東",
+        "aliases": [
+          "東",
+          "e",
+          "東面",
+          "花園",
+          "暖房"
+        ],
+        "menu_label": "走進玻璃花園",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_east_promenade",
+    "title": "東側露台",
+    "summary": "一片開闊而迎風的石造露台，依傍著聖域衛城的東側絕壁。高聳的凹槽立柱如遠古巨木般直刺淡藍蒼穹。",
+    "inspect_text": "東側邊緣是令人屏息的萬丈深淵。厚重的石門向西通往地下墓室區域，步道則向北連接入口露台、向南連接高山平台。",
+    "allow_rest": true,
+    "features": [
+      {
+        "id": "sanctuary_east_promenade-terrace",
+        "label": "露台石台",
+        "aliases": [
+          "露台",
+          "石階",
+          "懸崖",
+          "立柱"
+        ],
+        "allow_rest": false,
+        "inspect_text": "以蒼白石板鋪砌的長廊露台，高山冷冽的微風拂面而過。"
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_grand_terrace",
         "label": "西北",
-        "menu_label": "返回大廣場",
-        "requires_story_var": "",
-        "room_id": "sanctuary_crossroads"
-      },
-      {
         "aliases": [
-          "south",
-          "s",
-          "down",
-          "stairs",
-          "undercrypt",
-          "in"
-        ],
-        "label": "南",
-        "menu_label": "下至地窖石階",
-        "requires_story_var": "",
-        "room_id": "mortuary_descent"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "torches",
-          "carvings",
-          "arch",
-          "flames",
-          "銀色石火炬"
-        ],
-        "allow_rest": false,
-        "id": "mortuary_portal-torches",
-        "inspect_text": "由帶紋大理石雕成的風格化火炬，頂端綴著打磨過的銀箔。",
-        "label": "銀色石火炬"
-      }
-    ],
-    "id": "mortuary_portal",
-    "inspect_text": "厚重的青銅面大門在門楣下敞開。通道向南下往地窖，陽光普照的中央廣場則在西北方展開。",
-    "summary": "一道肅穆的深灰大理石拱門，兩旁立著雕出的火炬，燃著冰冷的銀色火焰。階梯那頭升上一股微弱的氣流，帶著瀝青、鹽和儀典沒藥的味道。",
-    "title": "往生之拱"
-  },
-  {
-    "allow_rest": false,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "north",
+          "西北",
+          "nw",
+          "北",
           "n",
-          "up",
-          "stairs",
-          "portal",
-          "out"
+          "露台",
+          "入口"
         ],
-        "label": "北",
-        "menu_label": "爬至往生之拱",
-        "requires_story_var": "",
-        "room_id": "mortuary_portal"
+        "menu_label": "返回入口露台",
+        "requires_story_var": ""
       },
       {
+        "room_id": "sanctuary_main_platform",
+        "label": "西南",
         "aliases": [
-          "south",
+          "西南",
+          "sw",
+          "南",
           "s",
-          "crypt",
-          "catacombs"
+          "平台",
+          "傳送台"
         ],
-        "label": "南",
-        "menu_label": "進入寂靜墓窟",
-        "requires_story_var": "",
-        "room_id": "mortuary_crypt"
+        "menu_label": "往南前往高山平台",
+        "requires_story_var": ""
       },
       {
-        "aliases": [
-          "west",
-          "w",
-          "embalming",
-          "lab",
-          "hall"
-        ],
+        "room_id": "mortuary_reanimation_sanctum",
         "label": "西",
-        "menu_label": "進入防腐工坊",
-        "requires_story_var": "",
-        "room_id": "mortuary_embalming_hall"
-      },
-      {
         "aliases": [
-          "up",
-          "u",
-          "ladder",
-          "flue",
-          "tower",
-          "bastion"
-        ],
-        "label": "上",
-        "menu_label": "爬梯至東南稜堡",
-        "requires_story_var": "",
-        "room_id": "sanctuary_wall_se_tower"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "sconces",
-          "lamps",
-          "stairs",
-          "walls",
-          "黃銅壁燈"
-        ],
-        "allow_rest": false,
-        "id": "mortuary_descent-sconces",
-        "inspect_text": "結實的黃銅油燈，燃著蒼白無煙的火焰。",
-        "label": "黃銅壁燈"
-      }
-    ],
-    "id": "mortuary_descent",
-    "inspect_text": "每走一步，空氣就更涼一分。通道向西分岔通往軀殼工坊，向南進入寂靜的靈魂墓室。",
-    "summary": "一道寬闊的螺旋石梯，由上好的淺色石料砌成，盤繞著通往衛城之下。黃銅壁燈在沁涼的石灰岩階上投下長長的影子。",
-    "title": "地窖石階"
-  },
-  {
-    "allow_rest": false,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "north",
-          "n",
-          "stairs",
-          "descent",
-          "back"
-        ],
-        "label": "北",
-        "menu_label": "返回地窖石階",
-        "requires_story_var": "",
-        "room_id": "mortuary_descent"
-      },
-      {
-        "aliases": [
-          "west",
+          "西",
           "w",
-          "sanctum",
-          "seer",
-          "in"
+          "西面",
+          "靈柩殿",
+          "聖所",
+          "石門"
         ],
-        "label": "西",
-        "menu_label": "進入返魂聖殿",
-        "requires_story_var": "",
-        "room_id": "mortuary_reanimation_sanctum"
+        "menu_label": "走進靈柩殿",
+        "requires_story_var": ""
       }
     ],
-    "features": [
-      {
-        "aliases": [
-          "sarcophagi",
-          "tombs",
-          "niches",
-          "stone",
-          "雕花石棺"
-        ],
-        "allow_rest": false,
-        "id": "mortuary_crypt-sarcophagi",
-        "inspect_text": "沉重的石灰岩石棺，雕著幾何結與封印記號。",
-        "label": "雕花石棺"
-      }
-    ],
-    "id": "mortuary_crypt",
-    "inspect_text": "石匾紀念著被遺忘的監工。通道向北通往地窖石階，向西通往內聖殿。",
-    "summary": "拱頂的石砌走廊，兩側排著壁葬龕和雕花石棺。氣氛莊嚴、寂靜而陰冷，只有角落煙道透來的微弱氣流打破這份靜。",
-    "title": "寂靜墓窟"
+    "descriptions": []
   },
   {
-    "allow_rest": false,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "east",
-          "e",
-          "stairs",
-          "descent",
-          "back"
-        ],
-        "label": "東",
-        "menu_label": "返回地窖石階",
-        "requires_story_var": "",
-        "room_id": "mortuary_descent"
-      },
-      {
-        "aliases": [
-          "south",
-          "s",
-          "sanctum",
-          "seer"
-        ],
-        "label": "南",
-        "menu_label": "進入返魂聖殿",
-        "requires_story_var": "",
-        "room_id": "mortuary_reanimation_sanctum"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "tables",
-          "slabs",
-          "basins",
-          "shells",
-          "板岩雕刻台"
-        ],
-        "allow_rest": false,
-        "id": "mortuary_embalming_hall-tables",
-        "inspect_text": "光滑的黑板岩石板，空白的石殼和機械肢體擱在刻有符文的夾具之下。",
-        "label": "板岩雕刻台"
-      }
-    ],
-    "id": "mortuary_embalming_hall",
-    "inspect_text": "空白的魔像與魔物軀殼在此被雕刻，並裝上符文導管，之後才將靈魂縛入其中。",
-    "summary": "一間寬闊安靜的石室，配著板岩雕刻台、銅盆，還有一排排尚未成形的石與黃銅魔物軀殼，等著被縛入靈魂。",
-    "title": "軀殼工坊"
-  },
-  {
-    "allow_rest": false,
-    "descriptions": [
-      {
-        "actor_defeated": "the_seer",
-        "inspect_text": "黑暗的儀式已經結束。先知瓦勒里烏斯與石骨巨龍崩解為滿地灰燼，縛魂印記已破。南邊，平台在山間天空下敞開。",
-        "requires_story_var": "",
-        "summary": "青銅祭壇冰冷而寂靜地立著。先知瓦勒里烏斯與石骨巨龍既已敗亡，被囚的靈魂也已安然消散。南邊通往平台的門開著。"
-      },
-      {
-        "actor_defeated": "",
-        "inspect_text": "憑藉靈視膠囊的力量，真相顯露。受困的人類靈魂無助地飄盪在銀色光圈中。在滿堂漂浮的幽魂之中，唯有黑曜石祭壇前手握法杖、操縱石骨巨龍的身影擁有溫熱的呼吸與心跳。他是這間屋裡唯一的活人——先知瓦勒里烏斯。",
-        "requires_story_var": "spiritual_sight",
-        "summary": "你的靈視甦醒了！數百個蒼白發光的人類靈魂浮在祭壇上方的光圈裡，等著被變成魔物。在滿室飄盪的幽魂之中，只站著一個仍在呼吸的活人：先知瓦勒里烏斯。"
-      }
-    ],
-    "exits": [
-      {
-        "aliases": [
-          "north",
-          "n",
-          "embalming",
-          "lab",
-          "back"
-        ],
-        "label": "北",
-        "menu_label": "返回軀殼工坊",
-        "requires_story_var": "",
-        "room_id": "mortuary_embalming_hall"
-      },
-      {
-        "aliases": [
-          "east",
-          "e",
-          "crypt",
-          "catacombs"
-        ],
-        "label": "東",
-        "menu_label": "返回寂靜墓窟",
-        "requires_story_var": "",
-        "room_id": "mortuary_crypt"
-      },
-      {
-        "aliases": [
-          "up",
-          "u",
-          "balcony",
-          "stairs",
-          "secret stairs",
-          "cliff",
-          "上",
-          "陽台",
-          "懸崖陽台",
-          "石階"
-        ],
-        "label": "上",
-        "menu_label": "攀登隱密螺旋石階前往懸崖陽台",
-        "requires_story_var": "",
-        "room_id": "herbarium_cliff_balcony"
-      },
-      {
-        "aliases": [
-          "south",
-          "s",
-          "platform",
-          "teleport",
-          "out"
-        ],
-        "label": "南",
-        "menu_label": "走出去至主平台",
-        "requires_story_var": "",
-        "room_id": "sanctuary_main_platform"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "altar",
-          "bronze altar",
-          "runes",
-          "braziers",
-          "返魂祭壇"
-        ],
-        "allow_rest": false,
-        "id": "mortuary_reanimation_sanctum-altar",
-        "inspect_text": "一座青銅祭壇，四周環繞著發光的銀色圓環。微弱的魔法低鳴在金屬中震顫。",
-        "label": "返魂祭壇"
-      },
-      {
-        "aliases": [
-          "spirits",
-          "souls",
-          "ghosts",
-          "offerings",
-          "captives",
-          "被囚的靈魂"
-        ],
-        "allow_rest": false,
-        "id": "mortuary_reanimation_sanctum-spirits",
-        "inspect_text": "數十個蒼白、半透明的人類靈魂靜靜飄浮在祭壇上方。他們的臉孔像深井鎮和鹽灘的礦工與村民，正等著被剝去記憶、縛成地牢魔物。",
-        "label": "被囚的靈魂"
-      },
-      {
-        "aliases": [
-          "ledger",
-          "binding ledger",
-          "book",
-          "registry",
-          "records",
-          "names",
-          "黑色鎖魂名冊",
-          "名冊"
-        ],
-        "allow_rest": false,
-        "id": "mortuary_reanimation_sanctum-ledger",
-        "inspect_text": "一本厚重的黑皮鎖魂名冊，靈視的光芒穿透墨字，清晰映出殘酷的轉化紀錄：西拉傑抽離記憶繫入外圍蒸汽石守、努爾抹除記憶繫入迷霧林地白棋王后、切石匠歐林繫入一號黑石魔像、磨坊匠瑪莉繫入二號黑石魔像、礦工法瑞德繫入一號白石魔像、織布匠哈娜繫入二號白石魔像。",
-        "label": "黑色鎖魂名冊"
-      }
-    ],
-    "id": "mortuary_reanimation_sanctum",
-    "inspect_text": "石地板刻著發光的銀色紋樣。南面一道敞開的拱門通向山間台地平台。",
-    "summary": "一間寬大的圓形石室，由綠色提燈照亮。中央立著一座墊高的青銅祭壇，四周是刻進石地板的銀色圓環。",
-    "title": "先知密室"
-  },
-  {
-    "allow_rest": false,
-    "descriptions": [
-      {
-        "actor_defeated": "",
-        "inspect_text": "山風抽打著石板。共鳴錨已完全啟動，將六樓與下層相連。崖邊之上，一道純白之光的階梯向上通往七樓：白色前廳。",
-        "requires_story_var": "anchor_floor6_platform",
-        "summary": "一座巨大的露天石台，探出雲海之上。青銅共鳴錨透著溫暖的藍光脈動，將聖所與霜堡相連。艾絲翠德在城牆邊守望，一道發光的白色光梯向上通往七樓。"
-      }
-    ],
-    "exits": [
-      {
-        "aliases": [
-          "north",
-          "n",
-          "sanctum",
-          "seer",
-          "back",
-          "inside"
-        ],
-        "label": "北",
-        "menu_label": "返回先知密室",
-        "requires_story_var": "",
-        "room_id": "mortuary_reanimation_sanctum"
-      },
-      {
-        "aliases": [
-          "up",
-          "u",
-          "ascend",
-          "ascent",
-          "stair",
-          "stairs",
-          "floor7",
-          "antechamber",
-          "portal"
-        ],
-        "label": "上",
-        "menu_label": "登上七樓（白色前廳）",
-        "requires_story_var": "anchor_floor6_platform",
-        "room_id": "floor7_antechamber"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "anchor",
-          "platform",
-          "ring",
-          "bronze",
-          "主共鳴錨"
-        ],
-        "allow_rest": false,
-        "id": "sanctuary_main_platform-anchor",
-        "inspect_text": "一個巨大的青銅圓環，蝕刻著四個相扣的環。它正等待一道指令脈衝，與下層的傳送台同步。",
-        "label": "主共鳴錨"
-      },
-      {
-        "aliases": [
-          "stair",
-          "stairs",
-          "portal",
-          "archway",
-          "light",
-          "ascent",
-          "發光的白梯"
-        ],
-        "allow_rest": false,
-        "id": "sanctuary_main_platform-ascent",
-        "inspect_text": "一道由純白之光織成的階梯，漂浮在崖邊，向上沒入平靜的霧中，通往七樓：白色前廳。",
-        "label": "發光的白梯"
-      }
-    ],
     "id": "sanctuary_main_platform",
-    "inspect_text": "從這個令人目眩的制高點，整片雪山向地平線延伸。在此啟動主錨，便能與五樓形成一條永久的跨層連結，讓艾絲翠德和你的同伴得以過來。",
-    "summary": "一座巨大的露天石台，從雲海之上的山崖探出。一座巨大的青銅共鳴錨嵌在石板中央，冰冷地等待著重新啟動。",
-    "title": "大教堂聖所平台"
+    "title": "高山傳送台",
+    "summary": "一座巨大的圓形石造露台，自懸崖延伸進開闊的天空之中。中央地磚上嵌著一座由黃銅與白銀鑄造的巨型共鳴錨點，環繞著五道坐標凹槽。",
+    "inspect_text": "從這個令人目眩的制高點望去，群山向天際無限延伸。嵌入五鎮信物並描繪縛紋，將能把第六層聖所與第五層要塞永久連通，為艾絲翠德與同伴們建立登頂前哨。",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_main_platform-anchor",
+        "label": "共鳴錨點",
+        "aliases": [
+          "錨點",
+          "共鳴錨點",
+          "傳送台",
+          "控制台",
+          "凹槽"
+        ],
+        "allow_rest": false,
+        "inspect_text": "一座巨大的黃銅圓環，刻有五座工匠鎮的坐標槽與中央縛紋印記。在此描繪縛紋可永久校準傳送台。"
+      },
+      {
+        "id": "sanctuary_main_platform-ascent",
+        "label": "白光階梯",
+        "aliases": [
+          "階梯",
+          "白光階梯",
+          "傳送門",
+          "拱門",
+          "光芒"
+        ],
+        "allow_rest": false,
+        "inspect_text": "由純白光芒編織而成的浮空階梯，越過崖壁延伸進上方靜謐的霧氣中，通往第七層：白色前廳。"
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mortuary_reanimation_sanctum",
+        "label": "北",
+        "aliases": [
+          "北",
+          "n",
+          "北面",
+          "靈柩殿",
+          "聖所",
+          "先知"
+        ],
+        "menu_label": "返回靈柩殿",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_west_colonnade",
+        "label": "西北",
+        "aliases": [
+          "西北",
+          "nw",
+          "西",
+          "w",
+          "西側長廊",
+          "長廊"
+        ],
+        "menu_label": "沿著西側長廊前進",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_east_promenade",
+        "label": "東北",
+        "aliases": [
+          "東北",
+          "ne",
+          "東",
+          "e",
+          "東側露台",
+          "露台"
+        ],
+        "menu_label": "沿著東側露台前進",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "floor7_antechamber",
+        "label": "上",
+        "aliases": [
+          "上",
+          "u",
+          "登頂",
+          "階梯",
+          "第七層",
+          "前廳"
+        ],
+        "menu_label": "登上第七層（白色前廳）",
+        "requires_story_var": "anchor_floor6_platform"
+      }
+    ],
+    "descriptions": [
+      {
+        "actor_defeated": "",
+        "requires_story_var": "anchor_floor6_platform",
+        "summary": "一座突出於雲海之上的宏偉露天石台。青銅共鳴錨點脈動著溫暖的藍光，將聖所與霜之要塞緊密相連。艾絲翠德在胸牆邊警戒，純白光芒構成的階梯通向上方第七層。",
+        "inspect_text": "山風呼嘯著掠過石板。共鳴錨點已全面啟動，將第六層與下層徹底連通。懸崖邊緣上方，一道純白光芒編織的階梯通往第七層：白色前廳。"
+      }
+    ]
   },
   {
+    "id": "sanctuary_crossroads",
+    "title": "大教堂中庭",
+    "summary": "一座廣闊的石灰岩拱頂大廳，聖殿外環在此與內殿交會。高聳的石拱門向西通往草藥暖房、向東通往聖所深處，身披白甲的聖堂衛兵在拋光石板上來回巡邏。",
+    "inspect_text": "高處的天花板橫樑與黃銅通風管隱沒在深沉陰影中。下方石板上衛兵嚴密戒備，若沒有隱形藥劑掩護，穿過大廳將立刻引來刀劍相向。",
     "allow_rest": true,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "east",
-          "e",
-          "rampart",
-          "wall",
-          "north wall"
-        ],
-        "label": "東",
-        "menu_label": "沿北城牆向東走",
-        "requires_story_var": "",
-        "room_id": "sanctuary_wall_north"
-      },
-      {
-        "aliases": [
-          "south",
-          "s",
-          "rampart",
-          "wall",
-          "west wall"
-        ],
-        "label": "南",
-        "menu_label": "沿西城牆向南走",
-        "requires_story_var": "",
-        "room_id": "sanctuary_wall_west"
-      },
-      {
-        "aliases": [
-          "down",
-          "d",
-          "stairs",
-          "nave",
-          "basilica"
-        ],
-        "label": "下",
-        "menu_label": "爬下至大教堂中殿",
-        "requires_story_var": "",
-        "room_id": "basilica_nave"
-      }
-    ],
     "features": [
       {
+        "id": "sanctuary_crossroads-pillars",
+        "label": "石灰岩柱",
         "aliases": [
-          "bells",
-          "ropes",
-          "timbers",
-          "bronze",
-          "巨大的青銅值守鐘"
+          "柱子",
+          "立柱",
+          "拱門",
+          "橫樑",
+          "通風管"
         ],
         "allow_rest": false,
-        "id": "sanctuary_wall_nw_tower-bells",
-        "inspect_text": "巨大的青綠銅鏽之鐘，鐘身浮雕著禮拜禱文。敲響時，鐘聲傳遍整片山脈。",
-        "label": "巨大的青銅值守鐘"
+        "inspect_text": "支撐著高聳拱頂的巨大列柱。上方橫樑與黃銅管線在陰影中提供安全通行的盲區。"
       }
     ],
-    "id": "sanctuary_wall_nw_tower",
-    "inspect_text": "涼爽的山風穿過敞開的拱門奔流而入。城垛向東沿北城牆、向南沿西城牆延伸。一道石梯向下通往大教堂中殿。",
-    "summary": "一座高聳的石塔，遠遠高出大教堂之上。巨大的青銅鐘懸在粗壯的木架上，粗索盤在木板地上。拱窗朝向西方的天空敞開。",
-    "title": "西北鐘樓"
-  },
-  {
-    "allow_rest": false,
-    "descriptions": [],
     "exits": [
       {
+        "room_id": "sanctuary_grand_terrace",
+        "label": "北",
         "aliases": [
-          "west",
-          "w",
-          "tower",
-          "bell tower"
+          "北",
+          "n",
+          "北面",
+          "露台",
+          "階梯",
+          "出"
         ],
+        "menu_label": "走出至入口露台",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "herbarium_garden",
         "label": "西",
-        "menu_label": "走到西北鐘樓",
-        "requires_story_var": "",
-        "room_id": "sanctuary_wall_nw_tower"
+        "aliases": [
+          "西",
+          "w",
+          "西面",
+          "花園",
+          "暖房",
+          "草藥"
+        ],
+        "menu_label": "走進玻璃花園",
+        "requires_story_var": ""
       },
       {
-        "aliases": [
-          "east",
-          "e",
-          "tower",
-          "watchtower"
-        ],
+        "room_id": "mortuary_reanimation_sanctum",
         "label": "東",
-        "menu_label": "走到東北瞭望塔",
-        "requires_story_var": "",
-        "room_id": "sanctuary_wall_ne_tower"
-      }
-    ],
-    "features": [
-      {
         "aliases": [
-          "crenels",
-          "battlements",
-          "parapet",
-          "view",
-          "石垛口"
+          "東",
+          "e",
+          "東面",
+          "靈柩殿",
+          "聖所",
+          "墓室"
         ],
-        "allow_rest": false,
-        "id": "sanctuary_wall_north-crenels",
-        "inspect_text": "結實的石灰岩城垛開著供弓手使用的垛口，北面群峰一覽無遺。",
-        "label": "石垛口"
+        "menu_label": "走進靈柩殿",
+        "requires_story_var": ""
       }
     ],
-    "id": "sanctuary_wall_north",
-    "inspect_text": "這條走道連接著西北鐘樓與東北瞭望塔。南邊遠處下方，大教堂與抄經院的屋頂向中央廣場伸展。",
-    "summary": "一道寬闊的石灰岩棧道，沿北側周牆鋪開。石垛之外是令人目眩的落差，以及遠處陡峭的積雪岩峰。",
-    "title": "北城牆"
+    "descriptions": []
   },
   {
+    "id": "herbarium_garden",
+    "title": "草藥花園",
+    "summary": "一座由高聳柱列與白色濾光紗幔環繞的陽光天井花園。中央整齊排列著數十張花崗岩調劑石台與乾燥架，身穿純白麻布長袍、佩戴白瓷半面具的半身人僕役正低頭安靜地處理高山草藥。",
+    "inspect_text": "空氣中瀰漫著濃烈的乳香、硫磺與苦澀藥汁氣味。半身人調劑僕役維持著刻板而沉默的規訓節奏。在靠外牆的石洗水槽後方，近地面處有一塊鬆動的排氣石磚。",
     "allow_rest": true,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "west",
-          "w",
-          "rampart",
-          "wall",
-          "north wall"
-        ],
-        "label": "西",
-        "menu_label": "沿北城牆向西走",
-        "requires_story_var": "",
-        "room_id": "sanctuary_wall_north"
-      },
-      {
-        "aliases": [
-          "south",
-          "s",
-          "rampart",
-          "wall",
-          "east wall"
-        ],
-        "label": "南",
-        "menu_label": "沿東城牆向南走",
-        "requires_story_var": "",
-        "room_id": "sanctuary_wall_east"
-      },
-      {
-        "aliases": [
-          "down",
-          "d",
-          "stairs",
-          "scriptorium",
-          "cloister"
-        ],
-        "label": "下",
-        "menu_label": "爬下至抄經院",
-        "requires_story_var": "",
-        "room_id": "scriptorium_cloister"
-      }
-    ],
     "features": [
       {
+        "id": "herbarium_garden-beds",
+        "label": "花崗岩石台",
         "aliases": [
-          "horns",
-          "signals",
-          "mounts",
-          "racks",
-          "銅信號號角"
+          "石台",
+          "乾燥架",
+          "草藥",
+          "植物",
+          "工作台"
         ],
         "allow_rest": false,
-        "id": "sanctuary_wall_ne_tower-horns",
-        "inspect_text": "擦得發亮的長銅號，裝在旋轉托架上，用來吹響全聖所的警報。",
-        "label": "銅信號號角"
-      }
-    ],
-    "id": "sanctuary_wall_ne_tower",
-    "inspect_text": "棧道向西沿北城牆、向南沿東城牆延伸。一道狹窄的梯井向下通往抄經院的迴廊。",
-    "summary": "一座方正的角稜堡，高高築在東側深淵之上。石牆邊排著號角架和武器架，旁邊是一座帆布頂的哨所。",
-    "title": "東北瞭望塔"
-  },
-  {
-    "allow_rest": false,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "north",
-          "n",
-          "tower",
-          "watchtower"
-        ],
-        "label": "北",
-        "menu_label": "走到東北瞭望塔",
-        "requires_story_var": "",
-        "room_id": "sanctuary_wall_ne_tower"
+        "inspect_text": "擺滿乾燥紫斑烏頭草、雪松根與高山苔蘚的花崗岩台面。"
       },
       {
+        "id": "herbarium_garden-vent",
+        "label": "排氣石磚",
         "aliases": [
-          "south",
-          "s",
-          "tower",
-          "bastion"
-        ],
-        "label": "南",
-        "menu_label": "走到東南稜堡",
-        "requires_story_var": "",
-        "room_id": "sanctuary_wall_se_tower"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "flues",
-          "smoke",
-          "vents",
-          "wall",
-          "煙囪煙道"
+          "通風口",
+          "石磚",
+          "磚塊",
+          "水槽",
+          "通風管道"
         ],
         "allow_rest": false,
-        "id": "sanctuary_wall_east-flues",
-        "inspect_text": "石砌的煙囪罩，把下層軀殼工坊的暖廢氣排進開闊的山間空氣中。",
-        "label": "煙囪煙道"
+        "inspect_text": "洗藥水槽後方一塊鬆動的排氣石磚。搬開後露出一個半公尺寬的狹窄通風管道，通往懸崖邊緣的暗台。"
       }
     ],
-    "id": "sanctuary_wall_east",
-    "inspect_text": "這道城垛橫跨東北瞭望塔與東南骸骨稜堡之間。西邊，抄經院與殮房的尖頂相接。",
-    "summary": "一道暴露的石砌胸牆，沿東側周牆鋪開，溫暖的上升氣流從下層煙道帶來蒸汽與煙的微弱低語。",
-    "title": "東城牆"
-  },
-  {
-    "allow_rest": false,
-    "descriptions": [],
     "exits": [
       {
-        "aliases": [
-          "north",
-          "n",
-          "rampart",
-          "wall",
-          "east wall"
-        ],
-        "label": "北",
-        "menu_label": "沿東城牆向北走",
-        "requires_story_var": "",
-        "room_id": "sanctuary_wall_east"
-      },
-      {
-        "aliases": [
-          "west",
-          "w",
-          "rampart",
-          "wall",
-          "south wall"
-        ],
-        "label": "西",
-        "menu_label": "沿南牆向西走",
-        "requires_story_var": "",
-        "room_id": "sanctuary_wall_south"
-      },
-      {
-        "aliases": [
-          "down",
-          "d",
-          "ladder",
-          "descent",
-          "stairs",
-          "undercrypt"
-        ],
-        "label": "下",
-        "menu_label": "爬梯下至地窖",
-        "requires_story_var": "",
-        "room_id": "mortuary_descent"
-      }
-    ],
-    "features": [
-      {
-        "aliases": [
-          "slits",
-          "windows",
-          "walls",
-          "箭孔"
-        ],
-        "allow_rest": false,
-        "id": "sanctuary_wall_se_tower-slits",
-        "inspect_text": "深邃外擴的箭孔，望向雲海和下方的冰川台地。",
-        "label": "箭孔"
-      }
-    ],
-    "id": "sanctuary_wall_se_tower",
-    "inspect_text": "棧道向北沿東城牆、向西沿南台牆延伸。一道嵌在牆裡的鐵梯向下通往殮房地窖。",
-    "summary": "一座厚重的石砌稜堡，築在山東側的斷崖之上。冰冷的山風呼嘯著掠過狹窄的箭窗，帶來雪和雪松煙的味道。",
-    "title": "東南骸骨稜堡"
-  },
-  {
-    "allow_rest": false,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "east",
-          "e",
-          "tower",
-          "bastion"
-        ],
+        "room_id": "sanctuary_crossroads",
         "label": "東",
-        "menu_label": "走到東南稜堡",
-        "requires_story_var": "",
-        "room_id": "sanctuary_wall_se_tower"
+        "aliases": [
+          "東",
+          "e",
+          "東面",
+          "中庭",
+          "大廳"
+        ],
+        "menu_label": "返回十字中庭",
+        "requires_story_var": ""
       },
       {
-        "aliases": [
-          "west",
-          "w",
-          "tower",
-          "bastion"
-        ],
+        "room_id": "sanctuary_west_colonnade",
         "label": "西",
-        "menu_label": "走到西南稜堡",
-        "requires_story_var": "",
-        "room_id": "sanctuary_wall_sw_tower"
+        "aliases": [
+          "西",
+          "w",
+          "西面",
+          "西側長廊",
+          "長廊"
+        ],
+        "menu_label": "走出至西側長廊",
+        "requires_story_var": ""
       },
       {
+        "room_id": "herbarium_cliff_balcony",
+        "label": "出",
         "aliases": [
-          "down",
-          "d",
-          "steps",
-          "stairs",
-          "terrace"
+          "出",
+          "通風口",
+          "排氣孔",
+          "懸崖",
+          "暗台",
+          "爬出"
         ],
-        "label": "下",
-        "menu_label": "爬下至門前台地",
-        "requires_story_var": "",
-        "room_id": "sanctuary_grand_terrace"
+        "menu_label": "鑽過排氣管道前往懸崖暗台",
+        "requires_story_var": ""
       }
     ],
-    "features": [
-      {
-        "aliases": [
-          "parapet",
-          "wall",
-          "view",
-          "terrace",
-          "南胸牆"
-        ],
-        "allow_rest": false,
-        "id": "sanctuary_wall_south-parapet",
-        "inspect_text": "石灰岩城垛俯瞰著一路層疊攀升、從五樓穿過山隘而上的台階小徑。",
-        "label": "南胸牆"
-      }
-    ],
-    "id": "sanctuary_wall_south",
-    "inspect_text": "石階向北下到入口平台。棧道向東伸展至東南稜堡，向西至西南花園稜堡。",
-    "summary": "一座陽光普照的石砌城垛，向南越過山谷望去。底下，宏偉的入口平台自霜堡大門向上攀升。",
-    "title": "南台牆"
+    "descriptions": []
   },
   {
+    "id": "herbarium_cliff_balcony",
+    "title": "懸崖暗台",
+    "summary": "一處隱藏在倒扣岩壁與懸挑樑柱下方的險峻夾層，腳下是無垠雲海。一截廢棄的採暖蒸汽管吐出微弱暖氣，溫養著紮根在黑色腐殖土裡的幽藍野生靈魂草。",
+    "inspect_text": "外部呼嘯的山風吹不進這處隱密角落。靈魂草葉尖凝結的露珠如碎星般泛著幽藍微光。在岩壁內側，一扇半掩的生鐵石門後方有一座向下的旋轉石階。",
     "allow_rest": true,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "east",
-          "e",
-          "rampart",
-          "wall",
-          "south wall"
-        ],
-        "label": "東",
-        "menu_label": "沿南牆向東走",
-        "requires_story_var": "",
-        "room_id": "sanctuary_wall_south"
-      },
-      {
-        "aliases": [
-          "north",
-          "n",
-          "rampart",
-          "wall",
-          "west wall"
-        ],
-        "label": "北",
-        "menu_label": "沿西城牆向北走",
-        "requires_story_var": "",
-        "room_id": "sanctuary_wall_west"
-      },
-      {
-        "aliases": [
-          "down",
-          "d",
-          "stairs",
-          "garden",
-          "solarium"
-        ],
-        "label": "下",
-        "menu_label": "爬下至日光花園",
-        "requires_story_var": "",
-        "room_id": "herbarium_garden"
-      }
-    ],
     "features": [
       {
+        "id": "herbarium_cliff_balcony-grass",
+        "label": "野生靈魂草",
         "aliases": [
-          "ivy",
-          "mint",
-          "plants",
-          "vines",
-          "攀爬的常春藤與薄荷"
+          "靈魂草",
+          "草藥",
+          "露水",
+          "土壤",
+          "植物"
         ],
         "allow_rest": false,
-        "id": "sanctuary_wall_sw_tower-ivy",
-        "inspect_text": "頑強的高山薄荷和深綠常春藤攀附在曬暖的石砌胸牆上。",
-        "label": "攀爬的常春藤與薄荷"
+        "inspect_text": "生長在溫暖腐殖土裡的低矮高山靈魂草，鋸齒狀的葉片上凝結著散發幽藍光芒的珍貴露水。"
+      },
+      {
+        "id": "herbarium_cliff_balcony-door",
+        "label": "生鐵石門",
+        "aliases": [
+          "石門",
+          "生鐵門",
+          "旋轉石階",
+          "階梯"
+        ],
+        "allow_rest": false,
+        "inspect_text": "一扇從內側開鎖的沉原生鐵石門，後方是一座直通底層靈柩殿的狹窄旋轉石階。"
       }
     ],
-    "id": "sanctuary_wall_sw_tower",
-    "inspect_text": "棧道向東沿南牆、向北沿西城牆延伸。一道石梯盤繞而下，通往植物園的日光室。",
-    "summary": "一座宜人的角樓，俯瞰著山谷。野薄荷和開花的常春藤爬上溫暖的石牆，把芳香的綠意漫過城垛。",
-    "title": "西南花園稜堡"
+    "exits": [
+      {
+        "room_id": "herbarium_garden",
+        "label": "入",
+        "aliases": [
+          "入",
+          "進",
+          "通風口",
+          "花園",
+          "暖房",
+          "爬回"
+        ],
+        "menu_label": "爬回草藥花園",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "mortuary_reanimation_sanctum",
+        "label": "下",
+        "aliases": [
+          "下",
+          "d",
+          "階梯",
+          "靈柩殿",
+          "旋轉石階"
+        ],
+        "menu_label": "沿著旋轉石階下行至靈柩殿",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
   },
   {
+    "id": "mortuary_reanimation_sanctum",
+    "title": "忘卻聖堂靈柩殿",
+    "summary": "一座由粗大黑色大理石柱支撐的龐大地下殿堂。大殿中央矗立著刻滿生紋與縛紋的黑曜石祭壇，四周環繞著石棺與發光的靈魂槽，受困的人類魂魄在此被強行剝離記憶並繫入怪物造物之中。",
+    "inspect_text": "空氣中湧動著令人窒息的暗黑魔力。石台木架上堆疊著記錄被擄平民去向的黑皮名冊。黑曜石祭壇上方，先知瓦勒里烏斯正主持著恐怖的怪物轉化儀式。",
     "allow_rest": false,
-    "descriptions": [],
-    "exits": [
-      {
-        "aliases": [
-          "south",
-          "s",
-          "tower",
-          "bastion"
-        ],
-        "label": "南",
-        "menu_label": "向南走到西南稜堡",
-        "requires_story_var": "",
-        "room_id": "sanctuary_wall_sw_tower"
-      },
-      {
-        "aliases": [
-          "north",
-          "n",
-          "tower",
-          "bell tower"
-        ],
-        "label": "北",
-        "menu_label": "向北走到西北鐘樓",
-        "requires_story_var": "",
-        "room_id": "sanctuary_wall_nw_tower"
-      }
-    ],
     "features": [
       {
+        "id": "mortuary_reanimation_sanctum-ledger",
+        "label": "黑皮名冊",
         "aliases": [
-          "battlements",
-          "parapet",
-          "crenels",
-          "wall",
-          "西面城垛"
+          "名冊",
+          "黑皮名冊",
+          "紀錄",
+          "書",
+          "靈魂名冊"
         ],
         "allow_rest": false,
-        "id": "sanctuary_wall_west-battlements",
-        "inspect_text": "厚實的石灰岩城垛，俯瞰著西面的山峰與日落的地平線。",
-        "label": "西面城垛"
+        "inspect_text": "一本蓋有宗教裁判所官印的沉重黑皮名冊，詳細記錄著被抽離者的真名：西拉傑（繫入石守）、努爾（繫入白棋王后）、切石匠歐林（黑石魔像一號）、磨坊匠瑪莉（黑石魔像二號）、礦工法瑞德（白石魔像一號）與織布匠哈娜（白石魔像二號）。"
+      },
+      {
+        "id": "mortuary_reanimation_sanctum-altar",
+        "label": "黑曜石祭壇",
+        "aliases": [
+          "祭壇",
+          "黑曜石",
+          "石台"
+        ],
+        "allow_rest": false,
+        "inspect_text": "一座由黑色火山玻璃鑄造的巨大祭壇，刻著猩紅的生紋與縛紋陣線。"
       }
     ],
-    "id": "sanctuary_wall_west",
-    "inspect_text": "這道城牆連接著西南花園稜堡與西北鐘樓。東邊下方是植物園的玻璃屋頂和大教堂高聳的中殿。",
-    "summary": "一道沿西側胸牆鋪開的寬闊露天城牆步道。午後的陽光把石灰岩地面鍍上一層金，風掃過西邊敞開的斷崖。",
-    "title": "西城牆"
+    "exits": [
+      {
+        "room_id": "herbarium_cliff_balcony",
+        "label": "上",
+        "aliases": [
+          "上",
+          "u",
+          "階梯",
+          "旋轉石階",
+          "暗台"
+        ],
+        "menu_label": "沿著旋轉石階爬上懸崖暗台",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_crossroads",
+        "label": "西",
+        "aliases": [
+          "西",
+          "w",
+          "中庭",
+          "大廳",
+          "出口"
+        ],
+        "menu_label": "走向十字中庭",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_east_promenade",
+        "label": "東",
+        "aliases": [
+          "東",
+          "e",
+          "東側露台",
+          "露台"
+        ],
+        "menu_label": "走出至東側露台",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_main_platform",
+        "label": "南",
+        "aliases": [
+          "南",
+          "s",
+          "門",
+          "平台",
+          "高山平台"
+        ],
+        "menu_label": "推開大門走出至高山傳送台",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": [
+      {
+        "actor_defeated": "",
+        "requires_story_var": "spiritual_sight",
+        "summary": "整座龐大的地下靈柩殿被數百道漂浮的淡藍色靈魂光點照亮。黑皮名冊靜靜置於祭壇邊緣的木架上。",
+        "inspect_text": "靈視覆蓋了視野，數百道無辜平民的靈魂安詳地懸浮在石台上方，擺脫了黑暗符文的禁錮。"
+      }
+    ]
   },
   {
     "allow_rest": true,

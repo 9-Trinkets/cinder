@@ -29,17 +29,17 @@ fn test_invisibility_potion_consumption_and_duration() {
 
     // Moving between rooms advances time by 1 minute per turn
     // Move 1: terrace -> crossroads (7 mins remaining)
-    runtime.run_turn("go north").expect("move 1");
+    runtime.run_turn("go south").expect("move 1");
     let s2 = runtime.export_state().unwrap();
     assert!(s2.is_player_invisible());
     assert_eq!(s2.player_invisibility_remaining_minutes(), 7);
 
-    // Move 6 more times: alternating between terrace and crossroads (total 7 moves, 1 min remaining)
+    // Move 6 more times: alternating between crossroads and terrace (total 7 moves, 1 min remaining)
     for i in 0..6 {
         if i % 2 == 0 {
-            runtime.run_turn("go south").expect("move south");
-        } else {
             runtime.run_turn("go north").expect("move north");
+        } else {
+            runtime.run_turn("go south").expect("move south");
         }
     }
     let s3 = runtime.export_state().unwrap();
@@ -47,7 +47,7 @@ fn test_invisibility_potion_consumption_and_duration() {
     assert_eq!(s3.player_invisibility_remaining_minutes(), 1);
 
     // 8th move: invisibility expires
-    let expire_turn = runtime.run_turn("go south").expect("move to expire");
+    let expire_turn = runtime.run_turn("go north").expect("move to expire");
     assert!(
         expire_turn.text().contains("invisibility wears off"),
         "expiration must narrate message, got: {}",

@@ -4242,375 +4242,202 @@
     ]
   },
   {
-    "aliases": [
-      "marcus",
-      "sentry marcus",
-      "guard marcus",
-      "guard",
-      "cathedral guard",
-      "sentry",
-      "soldier",
-      "哨兵馬庫斯"
-    ],
-    "attackable": true,
     "id": "cathedral_guard_crossroads",
-    "initial_hostile": true,
-    "initial_stats": {
-      "dexterity": 7,
-      "endurance": 7,
-      "hp": 64,
-      "intelligence": 6,
-      "mp": 42,
-      "strength": 7
-    },
-    "inspect_text": "一名高大的衛兵，從頭到腳披著閃亮的白板甲。他將一柄沉重的戟橫抱胸前，注視著廣場的每一個角落。",
-    "level": 7,
-    "name": "哨兵馬庫斯",
-    "prompt_context": {
-      "behavior_examples": [
-        "他僵硬地立正，白甲在光中發亮。"
-      ],
-      "character_notes": [
-        "你是哨兵馬庫斯，一名在大廣場巡邏的大教堂衛兵。",
-        "你聽從先知瓦勒里烏斯，一見到入侵者就逮捕。"
-      ],
-      "response_notes": [
-        "要求入侵者立即投降。",
-        "你對外人不留情。"
-      ]
-    },
+    "name": "衛兵馬可斯",
     "room_id": "sanctuary_crossroads",
+    "level": 7,
+    "initial_stats": {
+      "strength": 7,
+      "endurance": 7,
+      "dexterity": 7,
+      "intelligence": 6,
+      "hp": 64,
+      "mp": 42
+    },
+    "initial_hostile": true,
+    "attackable": true,
     "skills": [
       "strike",
       "intercept"
     ],
-    "tags": [
-      "guard",
-      "cathedral",
-      "soldier"
-    ]
-  },
-  {
+    "initial_inventory": {},
+    "drops": {},
+    "xp_drop": 60,
     "aliases": [
-      "cassius",
-      "sentry cassius",
-      "guard cassius",
-      "guard",
-      "cathedral guard",
-      "sentry",
-      "soldier",
-      "哨兵卡修斯"
+      "馬可斯",
+      "衛兵",
+      "大教堂衛兵",
+      "守衛",
+      "衛兵馬可斯"
     ],
-    "attackable": true,
-    "id": "cathedral_guard_nave",
-    "initial_hostile": true,
-    "initial_stats": {
-      "dexterity": 7,
-      "endurance": 7,
-      "hp": 64,
-      "intelligence": 6,
-      "mp": 42,
-      "strength": 7
-    },
-    "inspect_text": "一名神情嚴峻的衛兵，穿著拋光的白板甲，握著一柄鋒利的戟，在大殿長長的石砌走道上來回踱步。",
-    "level": 7,
-    "name": "哨兵卡修斯",
+    "tags": [
+      "hostile",
+      "cathedral_guard",
+      "guard"
+    ],
+    "inspect_text": "一名身披銀白全身板甲、外罩純白連帽罩袍的魁梧聖堂衛兵。他手握精鋼長戟，眼神冰冷而戒備地監視著十字中庭的動向。",
     "prompt_context": {
-      "behavior_examples": [
-        "他沉重的甲靴在大理石柱間清脆迴響。"
-      ],
       "character_notes": [
-        "你是哨兵卡修斯，守衛中央大教堂，防範未經許可的訪客。",
-        "你盤問任何未經允許靠近的人。"
+        "你是衛兵馬可斯，在大教堂十字中庭巡邏的聖堂衛兵。",
+        "你服從瓦勒里烏斯先知的命令，遇見任何闖入者一律就地逮捕。"
       ],
       "response_notes": [
-        "命令擅闖者回頭，否則就嚐你的武器。"
-      ]
-    },
-    "room_id": "basilica_nave",
-    "skills": [
-      "strike",
-      "intercept"
-    ],
-    "tags": [
-      "guard",
-      "cathedral",
-      "soldier"
-    ]
-  },
-  {
-    "aliases": [
-      "lucius",
-      "sentry lucius",
-      "guard lucius",
-      "guard",
-      "cathedral guard",
-      "sentry",
-      "soldier",
-      "哨兵盧修斯"
-    ],
-    "attackable": true,
-    "id": "cathedral_guard_mortuary",
-    "initial_hostile": true,
-    "initial_stats": {
-      "dexterity": 7,
-      "endurance": 7,
-      "hp": 64,
-      "intelligence": 6,
-      "mp": 42,
-      "strength": 7
-    },
-    "inspect_text": "一名神情嚴峻的衛兵，披著閃爍的白甲，握著一柄闊劍，在停屍間通往地下的冰冷石階上巡邏。",
-    "level": 7,
-    "name": "哨兵盧修斯",
-    "prompt_context": {
+        "厲聲要求闖入者立即繳械投降。",
+        "你對外來者毫無寬容。"
+      ],
       "behavior_examples": [
-        "他守在石階上，闊劍倚著他的白色胸甲。"
-      ],
-      "character_notes": [
-        "你是哨兵盧修斯，守衛通往墓窟與密室的階梯。",
-        "你逮捕或砍倒任何未授權的入侵者。"
-      ],
-      "response_notes": [
-        "要求入侵者立刻停下。"
+        "他筆直立定，白甲在光芒中反射出冰冷的光澤。"
       ]
-    },
-    "room_id": "mortuary_descent",
-    "skills": [
-      "strike",
-      "intercept"
-    ],
-    "tags": [
-      "guard",
-      "cathedral",
-      "soldier"
-    ]
+    }
   },
   {
-    "aliases": [
-      "antonius",
-      "sentry antonius",
-      "guard antonius",
-      "guard",
-      "cathedral guard",
-      "sentry",
-      "soldier",
-      "哨兵安東尼烏斯"
-    ],
-    "attackable": true,
-    "id": "cathedral_guard_scriptorium",
-    "initial_hostile": true,
+    "id": "halfling_servant_4",
+    "name": "四號僕役",
+    "room_id": "herbarium_garden",
+    "level": 6,
     "initial_stats": {
-      "dexterity": 7,
-      "endurance": 7,
-      "hp": 64,
+      "strength": 4,
+      "endurance": 4,
+      "dexterity": 8,
       "intelligence": 6,
-      "mp": 42,
-      "strength": 7
+      "hp": 40,
+      "mp": 30
     },
-    "inspect_text": "一名警覺的衛兵，穿著鑲銀邊的白板甲，手持一柄沉重的長柄斧，注視著繕寫室大廳。",
-    "level": 7,
-    "name": "哨兵安東尼烏斯",
-    "prompt_context": {
-      "behavior_examples": [
-        "他緊握長柄斧，目光在寫字桌之間掃視。"
-      ],
-      "character_notes": [
-        "你是哨兵安東尼烏斯，守衛抄經院大廳與檔案庫。",
-        "你盤問任何想接近圖書館或密錄的人。"
-      ],
-      "response_notes": [
-        "命令入侵者從檔案室門前退開。"
-      ]
-    },
-    "room_id": "scriptorium_cloister",
-    "skills": [
-      "strike",
-      "intercept"
-    ],
-    "tags": [
-      "guard",
-      "cathedral",
-      "soldier"
-    ]
-  },
-  {
-    "aliases": [
-      "orva",
-      "witch",
-      "herbalist",
-      "arrow witch",
-      "gardener",
-      "halfling",
-      "奧爾娃",
-      "半身人"
-    ],
-    "attackable": false,
-    "id": "orva",
     "initial_hostile": false,
+    "attackable": false,
+    "skills": [
+      "strike"
+    ],
+    "initial_inventory": {},
+    "drops": {},
+    "xp_drop": 0,
+    "aliases": [
+      "四號僕役",
+      "四號",
+      "僕役四號",
+      "女僕四號"
+    ],
+    "tags": [
+      "civilian",
+      "halfling",
+      "servant",
+      "herbalist"
+    ],
+    "inspect_text": "一名身形矮小、套著過長連帽麻布長袍與白瓷半面具的半身人僕役。她在石水槽旁不住地發抖，雙手死死按著沾污的帆布圍裙暗兜，裡面偷偷藏著偷藏的乾黑麥麵包與無花果乾。",
+    "prompt_context": {
+      "character_notes": [
+        "你是四號僕役，忘卻聖堂裡極度恐懼的半身人調劑雜役。",
+        "你因為晚課少念禱詞被修女扣了乾糧，出於飢餓偷藏了黑麥麵包。"
+      ],
+      "response_notes": [
+        "帶著哭腔哀求訪客別向裁決騎士告發你的黑麥麵包。"
+      ],
+      "behavior_examples": [
+        "她渾身發抖，雙手緊按著帆布圍裙的暗兜。",
+        "白瓷面具下傳來帶著哭腔的細微抽噎聲。"
+      ]
+    }
+  },
+  {
+    "id": "halfling_servant_7",
+    "name": "七號僕役",
+    "room_id": "herbarium_garden",
+    "level": 7,
+    "initial_stats": {
+      "strength": 5,
+      "endurance": 6,
+      "dexterity": 9,
+      "intelligence": 8,
+      "hp": 52,
+      "mp": 45
+    },
+    "initial_hostile": false,
+    "attackable": false,
+    "skills": [
+      "strike"
+    ],
+    "initial_inventory": {},
+    "drops": {},
+    "xp_drop": 0,
+    "aliases": [
+      "七號僕役",
+      "七號",
+      "僕役七號",
+      "女僕七號",
+      "藥草師"
+    ],
+    "tags": [
+      "civilian",
+      "halfling",
+      "servant",
+      "herbalist"
+    ],
+    "inspect_text": "一名套著純白麻布長袍與白瓷半面具的安靜半身人僕役，正以近乎外科手術般的俐落手法在乾燥架前切削草藥根莖。她隱蔽地將幾枚泛著銀斑的野生種子滑入衣袖暗袋，腳下草鞋邊緣沾著高山黑土與尚未乾枯的翠綠崖壁苔蘚，暗示著通往建築外部的秘密通道。",
+    "prompt_context": {
+      "character_notes": [
+        "你是七號僕役，暗中偷藏野生靈魂草種子，並在夜裡鑽過排氣管道前往懸崖暗台。",
+        "你低頭專注工作，除非聽到秘密暗號，否則絕不輕易暴露。"
+      ],
+      "response_notes": [
+        "保持沉默與專注。若訪客注意到你鞋上的苔蘚，眼神悄然示意水槽後的鬆動石磚。"
+      ],
+      "behavior_examples": [
+        "她以薄薄的骨刀精準沿著草藥脈絡剝離表皮，刀刀分毫不差。",
+        "她的小指隱蔽地微挑，將切藥板夾層裡的種子滑入長袍暗袋。"
+      ]
+    }
+  },
+  {
+    "id": "orva",
+    "name": "奧爾娃",
+    "room_id": "herbarium_cliff_balcony",
+    "level": 7,
+    "initial_stats": {
+      "strength": 5,
+      "endurance": 6,
+      "dexterity": 7,
+      "intelligence": 9,
+      "hp": 55,
+      "mp": 60
+    },
+    "initial_hostile": false,
+    "attackable": false,
+    "skills": [
+      "strike"
+    ],
     "initial_inventory": {
       "spirit-pill": 1
     },
-    "initial_stats": {
-      "dexterity": 7,
-      "endurance": 6,
-      "hp": 59,
-      "intelligence": 8,
-      "mp": 49,
-      "strength": 5
-    },
-    "inspect_text": "一名身穿拖地純白長罩袍的半身人藥草師。深褐色柔軟短髮下露出一對圓潤覆著細毛的小巧耳廓，面部覆著白瓷半面具。一支精緻的銀箭髮簪嚴密別在她髮間，腳下的粗麻草鞋邊緣沾著來自懸崖陽台的高山黑土與野生苔蘚。",
-    "level": 7,
-    "name": "奧爾娃",
-    "prompt_context": {
-      "behavior_examples": [
-        "她輕輕修剪冬鼠尾草的葉子，手指拂過髮上的銀箭。",
-        "她謹慎地抬眼望向廣場拱門，查看有沒有衛兵。"
-      ],
-      "character_notes": [
-        "你是奧爾娃，日光花園的半身人藥草師。你的名字在古語裡意為箭。神職祭司污衊你為女巫，因為你暗中調配抵抗忘卻藥劑的解藥，而你深愛著艾納。",
-        "你戴著與艾納成對的銀箭髮簪。",
-        "你假裝成馴服的半身人奴隸僕役，好讓大教堂衛兵與哈倫祭司不起疑。",
-        "若有人說出你的暗語（「箭矢永遠會找到歸家的路。」），你就知道是艾納派來的，你信任他們。"
-      ],
-      "response_notes": [
-        "若有人對你說出暗語，就把靈視膠囊交給他們，叮囑他們在進入先知密室前吞下。",
-        "以寬慰與安靜的急切說話。"
-      ]
-    },
-    "room_id": "herbarium_garden",
+    "drops": {},
+    "xp_drop": 0,
+    "aliases": [
+      "奧爾娃",
+      "修女奧爾娃",
+      "女巫",
+      "半身人",
+      "藥草師"
+    ],
     "tags": [
+      "civilian",
       "witch",
-      "herbalist",
-      "ally",
+      "healer",
+      "captive",
       "halfling"
-    ]
-  },
-  {
-    "aliases": [
-      "flora",
-      "apprentice",
-      "sorter",
-      "girl",
-      "芙蘿拉"
     ],
-    "attackable": false,
-    "id": "flora",
-    "initial_hostile": false,
-    "initial_stats": {
-      "dexterity": 8,
-      "endurance": 6,
-      "hp": 60,
-      "intelligence": 7,
-      "mp": 45,
-      "strength": 6
-    },
-    "inspect_text": "一名紅髮鮮亮的年輕半身人學徒，套著寬大白袍與白瓷半面具，將乾燥的花瓣分揀進木籃裡。她的頭髮用一枚小小的青銅葉形髮夾別起。",
-    "level": 7,
-    "name": "芙蘿拉",
+    "inspect_text": "一名留著深褐色柔軟短髮、露出一對覆著細微絨毛小巧耳廓的半身人少女，正跪倒在野生靈魂草旁。白瓷面具已被解下丟在泥土中，她手中緊緊攥著一只裝著幽藍露水的銀色金屬膠囊，褐色的眼眸中閃爍著堅毅的光芒。",
     "prompt_context": {
-      "behavior_examples": [
-        "她把乾燥的金盞花瓣數進一只編織托盤。",
-        "她調整紅捲髮上的青銅葉別針。"
-      ],
       "character_notes": [
-        "你是芙蘿拉，日光花園的見習植物學徒。",
-        "你分揀乾燥的花瓣。你對暗語或箭一無所知。"
+        "你是奧爾娃，忘卻聖堂裡的半身人藥草師。因與艾納相愛並暗中抵抗宗教裁判所，被誣陷為『女巫』。",
+        "你秘密在懸崖暗台培育野生靈魂草，調配出了能看透靈魂維度的靈視膠囊。"
       ],
       "response_notes": [
-        "愉快地聊著風乾花朵與藥草。"
-      ]
-    },
-    "room_id": "herbarium_garden",
-    "tags": [
-      "civilian",
-      "herbalist",
-      "apprentice"
-    ]
-  },
-  {
-    "aliases": [
-      "silvia",
-      "moss gatherer",
-      "gardener",
-      "tender",
-      "希爾維亞"
-    ],
-    "attackable": false,
-    "id": "silvia",
-    "initial_hostile": false,
-    "initial_stats": {
-      "dexterity": 8,
-      "endurance": 6,
-      "hp": 60,
-      "intelligence": 7,
-      "mp": 45,
-      "strength": 6
-    },
-    "inspect_text": "一名結實的半身人員丁，套著白麻布長袍與白瓷半面具，戴著厚重的工作手套，為高山苔蘚苗床澆水。她的金髮用一條樸素的皮繩綁成辮子垂在腦後。",
-    "level": 7,
-    "name": "希爾維亞",
-    "prompt_context": {
+        "以溫和而急切的語氣說話。請蕾拉服下靈視膠囊，並穿過生鐵石門順著旋轉石階阻止瓦勒里烏斯。"
+      ],
       "behavior_examples": [
-        "她把涼水舀上綠色苔盤。",
-        "她把手套上的泥抹到帆布圍裙上。"
-      ],
-      "character_notes": [
-        "你是希爾維亞，照料日光花園裡潮濕的高山苔床。",
-        "你低著頭，做你的雜務。"
-      ],
-      "response_notes": [
-        "提醒訪客小心濕滑的石板。"
+        "她將合攏的銀雙箭髮簪死死貼在胸口，眼中噙著淚水。",
+        "她神色焦急地指向通往底層靈柩殿的生鐵石門。"
       ]
-    },
-    "room_id": "herbarium_garden",
-    "tags": [
-      "civilian",
-      "herbalist",
-      "gardener"
-    ]
-  },
-  {
-    "aliases": [
-      "fabian",
-      "elder fabian",
-      "master fabian",
-      "apothecary",
-      "法比安長老"
-    ],
-    "attackable": false,
-    "id": "elder_fabian",
-    "initial_hostile": false,
-    "initial_stats": {
-      "dexterity": 6,
-      "endurance": 6,
-      "hp": 62,
-      "intelligence": 10,
-      "mp": 60,
-      "strength": 4
-    },
-    "inspect_text": "一名年邁的藥劑師，繫著沾污的亞麻圍裙，用石杵研磨乾燥的山根。他戴著一副圓形的黃銅眼鏡，頭上完全沒有髮簪。",
-    "level": 8,
-    "name": "法比安長老",
-    "prompt_context": {
-      "behavior_examples": [
-        "他把乾燥的當歸根磨成細黃的粉末。",
-        "他用鼻子把圓形黃銅眼鏡往上頂。"
-      ],
-      "character_notes": [
-        "你是法比安長老，大教堂藥房的首席藥師。",
-        "你為大教堂的職員與衛兵調配藥劑。"
-      ],
-      "response_notes": [
-        "警告訪客別碰那些裝著蒸餾粉末的玻璃罐。"
-      ]
-    },
-    "room_id": "herbarium_apothecary",
-    "tags": [
-      "civilian",
-      "apothecary",
-      "elder"
-    ]
+    }
   },
   {
     "aliases": [
