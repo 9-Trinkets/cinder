@@ -2,7 +2,7 @@
 
 A plan, not a script. The second child at Willow House, chosen to be as different from Wren as possible, so we find out what the framework in `game-design.md` really needs. This follows the patient sheet in section 3 of that document. Items marked **(decision)** can change.
 
-**Working name: Arlo.** The name is a placeholder.
+**Working name: Tam.** The full story is in `tam-bible.md`: a Vietnamese American family in South Philadelphia. The names and details there are placeholders until a reader from the community has checked them.
 
 ## 1. Why this child
 
@@ -10,16 +10,17 @@ Wren talks, tells her story through Rabbit, and is read by reflecting her words.
 
 He is also close to Isla. Her brother Danny did not speak until he was four, and the only thing that reached him was one picture book. Isla learned to read him through what he did, which is where her whole method comes from. This episode is where that method is tested without words.
 
-**Danny is not Arlo, and Arlo is not Danny.** Danny's life belongs to Danny. Arlo is a different child, and Isla does not tell him about her brother, in the game or anywhere else. The link is only in how she sits next to him and what she has learned to look for.
+**Danny is not Tam, and Tam is not Danny.** Danny's life belongs to Danny. Tam is a different child, and Isla does not tell him about her brother, in the game or anywhere else. The link is only in how she sits next to him and what she has learned to look for.
 
 ## 2. Who he is **(decision)**
 
 - **Six years old,** first grade, in a public school classroom with an aide for part of the day.
 - **He speaks very little.** He has a handful of words, which he uses at home and almost never elsewhere. He understands far more than he says. He does not mind silence.
 - **Autistic,** diagnosed at four. The game never uses the word, and it never explains him. The notes mention "an evaluation at four", and the text shows what he does.
-- **His family:** his mother, **Lena**, a night-shift nurse, who is tired and fiercely on his side. His grandfather lives with them and walks him to school. There is a baby sister, who is the reason the house has become louder.
+- **His family:** the Trans, in South Philadelphia. His mother, **Linh** (Má), is a night-shift nurse, tired and fiercely on his side. His father, **Dũng** (Ba), is a bus mechanic. His grandfather, **Ông**, lives with them and walks him to school. There is a baby sister, **Mai**, who is the reason the house has become louder. They speak Vietnamese and English at home, and the school's first guess was that his quiet was about language.
 - **Why he is here:** the school asks whether he is "responding", because he has stopped joining the one group activity he used to like. His mother is not sure anything is wrong. She is worried that everyone wants him to be a different child.
 - **What he loves:** trains, and especially the sound they make going over a particular bridge. Lining up objects by length. The same few books.
+- **When it happens:** a Tuesday in late winter, a few weeks before the Lunar New Year, when the house is cleaned, relatives come and go, and the street fills with firecrackers and drums. The season adds real noise and real love.
 - **What he avoids:** sudden noise, bright overhead light, being touched without warning, the word "no" spoken sharply.
 
 **What is really happening (never said aloud):** the baby has made the house louder, and his own room, the one quiet place, is now next to the nursery. He has stopped doing the things in the world that cost him the most, because he has no energy left over from coping with the noise. He is not withdrawing from people. He is saving himself. Everyone has been reading it as the first, and it is the second.
