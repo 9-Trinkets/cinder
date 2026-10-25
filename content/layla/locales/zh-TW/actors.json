@@ -4664,6 +4664,21 @@
       "seer",
       "reanimator"
     ],
+    "transformations": [
+      {
+        "id": "staggered",
+        "rename": {
+          "inspect_text": "先知瓦勒里烏斯癱倒在黑曜石祭壇邊劇烈咳血，緊攥著斷裂的白骨法杖殘骸。石骨巨龍崩解帶來的強烈魔力反噬粉碎了他的防護法陣，讓他防禦盡失、只剩粗重的喘息。",
+          "name": "先知瓦勒里烏斯",
+          "who": "大教堂的大先知，因魔力反噬重創，白骨法杖碎裂"
+        },
+        "trigger": {
+          "kind": "story_var",
+          "key": "dragon_defeated",
+          "value": "true"
+        }
+      }
+    ],
     "xp_drop": 100
   },
   {
@@ -4682,24 +4697,20 @@
       "魔龍"
     ],
     "attackable": true,
-    "drops": {
-      "bind-scroll": 1
-    },
+    "drops": {},
     "id": "sanctuary_dragon",
     "initial_hostile": true,
-    "initial_inventory": {
-      "bind-scroll": 1
-    },
+    "initial_inventory": {},
     "initial_stats": {
-      "dexterity": 8,
-      "endurance": 10,
-      "hp": 80,
-      "intelligence": 8,
-      "mp": 50,
-      "strength": 12
+      "dexterity": 12,
+      "endurance": 18,
+      "hp": 280,
+      "intelligence": 10,
+      "mp": 80,
+      "strength": 24
     },
     "inspect_text": "一尊體長二十公尺的恐怖石骨巨龍，由堅硬遠古龍骸與粗糙黑曜石鱗甲拼合熔鑄而成。胸骨周圍被刺目的金色縛紋死死鎖緊，數十道受困平民的靈魂在體內發出無聲悲鳴，為這具龐大軀殼提供狂暴凶殘的戰意，空洞眼眶中燃燒著兩團冰冷幽藍的鬼火。",
-    "level": 8,
+    "level": 10,
     "name": "石骨巨龍",
     "prompt_context": {
       "behavior_examples": [
@@ -4724,6 +4735,6 @@
       "chimera",
       "construct"
     ],
-    "xp_drop": 150
+    "xp_drop": 300
   }
 ]

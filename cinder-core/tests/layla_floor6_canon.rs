@@ -162,28 +162,68 @@ fn test_floor6_defeat_dragon_chimera_and_learn_bind() {
     // Attack the Dragon construct directly
     let attack_out = runtime.run_turn("attack dragon").expect("attack dragon");
     assert!(
-        attack_out.text().contains("crumbles") || attack_out.text().contains("dust"),
+        attack_out.text().contains("crumbles")
+            || attack_out.text().contains("dust")
+            || attack_out.text().contains("Soul Chimera Dragon"),
         "attack dragon output: {}",
         attack_out.text()
     );
 
-    let state_post = runtime.export_state().unwrap();
+    let state_post_dragon = runtime.export_state().unwrap();
     // Dragon is defeated
     assert!(
-        state_post.actor_is_defeated("sanctuary_dragon", "hp"),
+        state_post_dragon.actor_is_defeated("sanctuary_dragon", "hp"),
         "Dragon construct must be defeated"
     );
-    // Story var seer_defeated is set
+    // Story var dragon_defeated is set
     assert_eq!(
-        state_post.story_vars.get("seer_defeated"),
+        state_post_dragon.story_vars.get("dragon_defeated"),
+        Some("true"),
+        "dragon_defeated must be true"
+    );
+    // Seer is NOT dead yet; he took magical backlash and is staggered at 10 HP
+    assert!(
+        !state_post_dragon.actor_is_defeated("the_seer", "hp"),
+        "Seer must still be alive after dragon destruction"
+    );
+    assert_eq!(
+        state_post_dragon.actor_stat("the_seer", "hp"),
+        10,
+        "Seer HP must be reduced to 10 from 56 recoil damage"
+    );
+    assert_ne!(
+        state_post_dragon
+            .actors
+            .actor_room_overrides
+            .get("the_seer")
+            .map(String::as_str),
+        Some(""),
+        "Seer must not be despawned from the room"
+    );
+    assert_eq!(
+        state_post_dragon.actor_room_id("the_seer", "mortuary_reanimation_sanctum"),
+        "mortuary_reanimation_sanctum",
+        "Seer remains in sanctum reeling from backlash"
+    );
+
+    // Attack Seer Valerius to deliver the finishing blow
+    let attack_seer = runtime.run_turn("attack seer").expect("attack seer");
+    assert!(
+        attack_seer.text().contains("Seer")
+            || attack_seer.text().contains("valerius")
+            || attack_seer.text().contains("Valerius"),
+        "attack seer output: {}",
+        attack_seer.text()
+    );
+    let state_post_seer = runtime.export_state().unwrap();
+    assert!(
+        state_post_seer.actor_is_defeated("the_seer", "hp"),
+        "Seer must be defeated"
+    );
+    assert_eq!(
+        state_post_seer.story_vars.get("seer_defeated"),
         Some("true"),
         "seer_defeated must be true"
-    );
-    // Seer Valerius is cleared off-screen by backlash
-    assert_ne!(
-        state_post.actor_room_id("the_seer", ""),
-        "mortuary_reanimation_sanctum",
-        "Seer must be cleared from room"
     );
 
     // Pick up the dropped Bind Scroll

@@ -4552,6 +4552,21 @@
       "reanimator"
     ],
     "inspect_text": "A tall, gaunt priest in dark robes embroidered with silver eyes, standing atop the obsidian altar with a bone-and-steel staff. Chanting the arcane rites of Spawn and Bind, Valerius channels crimson threads of magic into the towering Soul Chimera Dragon, commanding the horrific machine to tear intruders apart.",
+    "transformations": [
+      {
+        "id": "staggered",
+        "trigger": {
+          "kind": "story_var",
+          "key": "dragon_defeated",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Seer Valerius",
+          "who": "High Seer of the cathedral, reeling from magical backlash with a shattered bone staff",
+          "inspect_text": "Seer Valerius lies coughing dark blood against the obsidian altar, clutching the splintered remnants of his bone staff. The magical backlash from the dragon's destruction has shattered his wards, leaving him defenseless and gasping for breath."
+        }
+      }
+    ],
     "prompt_context": {
       "character_notes": [
         "You are Seer Valerius, High Seer of the cathedral, turning harvested human spirits into monsters with Spawn and Bind Sigils.",
@@ -4570,27 +4585,23 @@
     "id": "sanctuary_dragon",
     "name": "Soul Chimera Dragon",
     "room_id": "mortuary_reanimation_sanctum",
-    "level": 8,
+    "level": 10,
     "initial_stats": {
-      "strength": 12,
-      "endurance": 10,
-      "dexterity": 8,
-      "intelligence": 8,
-      "hp": 80,
-      "mp": 50
+      "strength": 24,
+      "endurance": 18,
+      "dexterity": 12,
+      "intelligence": 10,
+      "hp": 280,
+      "mp": 80
     },
     "initial_hostile": true,
     "attackable": true,
     "skills": [
       "strike"
     ],
-    "initial_inventory": {
-      "bind-scroll": 1
-    },
-    "drops": {
-      "bind-scroll": 1
-    },
-    "xp_drop": 150,
+    "initial_inventory": {},
+    "drops": {},
+    "xp_drop": 300,
     "aliases": [
       "dragon",
       "chimera",

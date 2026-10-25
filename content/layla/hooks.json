@@ -76,7 +76,7 @@
           ],
           "payload_template": {
             "kind": "set_story_var",
-            "key": "seer_defeated",
+            "key": "dragon_defeated",
             "value": "true"
           }
         },
@@ -90,7 +90,7 @@
           ],
           "payload_template": {
             "kind": "narrate_message",
-            "key": "handler.seer_valerius_defeated"
+            "key": "sanctuary.dragon_defeated_backlash"
           }
         },
         {
@@ -102,9 +102,10 @@
             }
           ],
           "payload_template": {
-            "kind": "move_actors",
+            "kind": "adjust_actor_stat",
             "actor_id": "the_seer",
-            "room_id": ""
+            "stat": "hp",
+            "delta": -56
           }
         },
         {
