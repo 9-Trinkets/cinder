@@ -34,7 +34,6 @@
       "id": "handler-comms",
       "kind": "direct",
       "privacy": "private",
-      "availability": "always",
       "participants": [
         "player",
         "handler"
@@ -44,20 +43,23 @@
   ],
   "feedback_channel_id": "handler-comms",
   "show_act_closure": false,
+  "minimap_entity_tracking_when": [
+    { "any": ["has_sensory_enhancer", "map_entity_tracking"] }
+  ],
   "sidebar": {
     "sections": [
       { "id": "location" },
-      { "id": "map", "story_var": "shaman_defeated" },
-      { "id": "vitals", "story_var": "first_mob_defeated" },
-      { "id": "level", "story_var": "levels_revealed" },
-      { "id": "skills", "story_var": "first_skill_used" },
+      { "id": "map", "when": ["shaman_defeated"] },
+      { "id": "vitals", "when": ["first_mob_defeated"] },
+      { "id": "level", "when": ["levels_revealed"] },
+      { "id": "skills", "when": ["first_skill_used"] },
       { "id": "party" },
       { "id": "equipped" },
       { "id": "inventory" },
       { "id": "room_items" },
       { "id": "room_consumables" },
       { "id": "secrets" },
-      { "id": "quests", "story_var": "quests_revealed" }
+      { "id": "quests", "when": ["quests_revealed"] }
     ]
   },
   "theme": {

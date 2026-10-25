@@ -4,16 +4,8 @@
 //! exchange — Layla waking and the handler checking in over comms — but the
 //! mechanism is generic so a beat or hook can queue any sequence.
 
-use super::AdvanceEffect;
+use super::{AdvanceEffect, Condition};
 use serde::{Deserialize, Serialize};
-
-/// An exact story-variable condition that must hold before a queued sequence
-/// can advance. Unmet gates pause playback without consuming a step.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct ScriptedSequenceGate {
-    pub story_var: String,
-    pub expected: String,
-}
 
 /// One scripted line in a sequence.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -36,14 +28,16 @@ pub enum ScriptedLine {
 
 /// A named, ordered scripted conversation sequence.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct ScriptedSequence {
     pub id: String,
     /// Optional human-readable name for presentations.
     #[serde(default, skip_serializing_if = "String::is_empty")]
     pub label: String,
-    /// Exact story-variable conditions that pause the sequence until all hold.
+    /// Conditions that pause the sequence until they all hold. Unmet conditions
+    /// pause playback without consuming a step.
     #[serde(default)]
-    pub gates: Vec<ScriptedSequenceGate>,
+    pub when: Vec<Condition>,
     /// The lines, played in order, one per advancing turn while the sequence
     /// runs.
     pub steps: Vec<ScriptedLine>,

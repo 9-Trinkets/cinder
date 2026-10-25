@@ -28,7 +28,7 @@ use crate::engine::state::{WorldState, display_actor_name};
 use serde::{Deserialize, Serialize};
 
 pub use crate::content::types::{
-    ChannelAvailability, ChannelKind, ChannelPrivacy, LOCAL_CHANNEL_ID, MessagingChannel,
+    ChannelKind, ChannelPrivacy, Condition, LOCAL_CHANNEL_ID, MessagingChannel,
 };
 
 /// Who a channel message is addressed to.
@@ -46,16 +46,16 @@ pub enum ChannelAudience {
 }
 
 impl MessagingChannel {
-    /// Whether the channel can currently be used, honouring its availability
-    /// gate (e.g. a story var).
-    pub fn is_available(&self, state: &WorldState) -> bool {
-        match &self.availability {
-            ChannelAvailability::Always => true,
-            ChannelAvailability::StoryVarGate {
-                story_var,
-                expected,
-            } => state.story_vars.get(story_var) == Some(expected.as_str()),
-        }
+    /// Whether the channel can currently be used, honouring its conditions.
+    pub fn is_available(&self, content: &ContentPack, state: &WorldState) -> bool {
+        crate::engine::conditions::all_hold(
+            &self.when,
+            &crate::engine::conditions::ConditionContext::new(
+                content,
+                state,
+                &state.current_room_id,
+            ),
+        )
     }
 
     /// Actor ids that hear a message spoken by `speaker_id` on this channel
@@ -69,7 +69,7 @@ impl MessagingChannel {
         speaker_id: &str,
         room_id: Option<&str>,
     ) -> Vec<String> {
-        if !self.is_available(state) {
+        if !self.is_available(content, state) {
             return Vec::new();
         }
         match self.kind {
@@ -222,7 +222,7 @@ impl MessagingChannel {
             id: LOCAL_CHANNEL_ID.to_string(),
             kind: ChannelKind::Local,
             privacy: ChannelPrivacy::Public,
-            availability: ChannelAvailability::Always,
+            when: Vec::new(),
             participants: vec![],
             label: None,
         }
@@ -273,7 +273,7 @@ mod tests {
             id: "room".to_string(),
             kind: ChannelKind::Local,
             privacy: ChannelPrivacy::Public,
-            availability: ChannelAvailability::Always,
+            when: Vec::new(),
             participants: vec![],
             label: None,
         }
@@ -284,10 +284,10 @@ mod tests {
             id: "comms".to_string(),
             kind: ChannelKind::Direct,
             privacy: ChannelPrivacy::Private,
-            availability: ChannelAvailability::StoryVarGate {
-                story_var: "comms_open".to_string(),
-                expected: "true".to_string(),
-            },
+            when: vec![Condition::StoryVarIs {
+                name: "comms_open".to_string(),
+                value: "true".to_string(),
+            }],
             participants: vec!["blair".to_string(), "casey".to_string()],
             label: Some("Blair's comms".to_string()),
         }
@@ -320,12 +320,12 @@ mod tests {
         let mut state = WorldState::new(&content);
         let channel = direct_channel();
         // Story var unset → no message can flow (no audience, empty delivery).
-        assert!(!channel.is_available(&state));
+        assert!(!channel.is_available(&content, &state));
         let audience = channel.hearing_audience(&content, &state, "blair", None);
         assert!(audience.is_empty());
         // Story var holds the gate value → roster minus speaker and defeated.
         state.story_vars.set_unchecked("comms_open", "true");
-        assert!(channel.is_available(&state));
+        assert!(channel.is_available(&content, &state));
         let audience = channel.hearing_audience(&content, &state, "blair", None);
         assert_eq!(audience, vec!["casey".to_string()]);
     }

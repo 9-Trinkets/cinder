@@ -63,6 +63,8 @@ pub fn holds(condition: &Condition, ctx: &ConditionContext<'_>) -> bool {
             .state
             .actor_is_defeated(actor, &ctx.content.settings.combat.health_stat_id),
         Condition::Not(inner) => !holds(inner, ctx),
+        Condition::Any(group) => group.iter().any(|condition| holds(condition, ctx)),
+        Condition::All(group) => all_hold(group, ctx),
         Condition::Path(path) => path_holds(path, &world_view(ctx.state)),
     }
 }
@@ -178,6 +180,20 @@ mod tests {
         assert!(check("item:key"));
         assert!(!check("item:coin"));
         assert!(!check("here:key"));
+    }
+
+    #[test]
+    fn any_needs_one_and_all_needs_every_one() {
+        let pack = minimal_test_pack();
+        let mut state = WorldState::new(&pack);
+        state.story_vars.set_unchecked("a", "true");
+        let ctx = ConditionContext::new(&pack, &state, "x");
+        let a = Condition::StoryVar("a".to_string());
+        let b = Condition::StoryVar("b".to_string());
+        assert!(holds(&Condition::Any(vec![a.clone(), b.clone()]), &ctx));
+        assert!(!holds(&Condition::All(vec![a, b]), &ctx));
+        assert!(!holds(&Condition::Any(vec![]), &ctx));
+        assert!(holds(&Condition::All(vec![]), &ctx));
     }
 
     #[test]

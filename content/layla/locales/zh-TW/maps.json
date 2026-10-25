@@ -2,11 +2,8 @@
   {
     "id": "upper-works",
     "label": "洞窟",
-    "reveal_conditions": [
-      {
-        "actor_id": "goblin-shaman",
-        "kind": "actor_defeated"
-      }
+    "reveal_when": [
+      "defeated:goblin-shaman"
     ],
     "rooms": [
       {
@@ -419,11 +416,8 @@
   {
     "id": "deep-forest",
     "label": "地下森林",
-    "reveal_conditions": [
-      {
-        "actor_id": "elf-king-5",
-        "kind": "actor_defeated"
-      }
+    "reveal_when": [
+      "defeated:elf-king-5"
     ],
     "rooms": [
       {
@@ -751,11 +745,8 @@
   {
     "id": "outer-ring",
     "label": "外環",
-    "reveal_conditions": [
-      {
-        "actor_id": "fire-elemental",
-        "kind": "actor_defeated"
-      }
+    "reveal_when": [
+      "defeated:fire-elemental"
     ],
     "rooms": [
       {
@@ -838,7 +829,6 @@
   {
     "id": "the-commoners",
     "label": "工人村",
-    "reveal_conditions": [],
     "rooms": [
       {
         "room_id": "village_north_gate",
@@ -925,11 +915,8 @@
   {
     "id": "the-frost-citadel",
     "label": "霜之城",
-    "reveal_conditions": [
-      {
-        "key": "has_sensory_enhancer",
-        "kind": "story_var_truthy"
-      }
+    "reveal_when": [
+      "has_sensory_enhancer"
     ],
     "rooms": [
       {
@@ -1017,11 +1004,8 @@
   {
     "id": "salt-reach",
     "label": "鹽灘",
-    "reveal_conditions": [
-      {
-        "key": "town_salt_reach_unlocked",
-        "kind": "story_var_truthy"
-      }
+    "reveal_when": [
+      "town_salt_reach_unlocked"
     ],
     "rooms": [
       {
@@ -1034,11 +1018,8 @@
   {
     "id": "glassbank",
     "label": "玻璃鎮",
-    "reveal_conditions": [
-      {
-        "key": "town_glassbank_unlocked",
-        "kind": "story_var_truthy"
-      }
+    "reveal_when": [
+      "town_glassbank_unlocked"
     ],
     "rooms": [
       {
@@ -1051,11 +1032,8 @@
   {
     "id": "woolcross",
     "label": "羊毛鎮",
-    "reveal_conditions": [
-      {
-        "key": "town_woolcross_unlocked",
-        "kind": "story_var_truthy"
-      }
+    "reveal_when": [
+      "town_woolcross_unlocked"
     ],
     "rooms": [
       {
@@ -1068,11 +1046,8 @@
   {
     "id": "greenrest",
     "label": "綠息鎮",
-    "reveal_conditions": [
-      {
-        "key": "town_greenrest_unlocked",
-        "kind": "story_var_truthy"
-      }
+    "reveal_when": [
+      "town_greenrest_unlocked"
     ],
     "rooms": [
       {
@@ -1085,11 +1060,8 @@
   {
     "id": "brass-yard",
     "label": "黃銅鎮",
-    "reveal_conditions": [
-      {
-        "key": "town_brass_yard_unlocked",
-        "kind": "story_var_truthy"
-      }
+    "reveal_when": [
+      "town_brass_yard_unlocked"
     ],
     "rooms": [
       {
@@ -1144,21 +1116,15 @@
         "y": 14.0
       }
     ],
-    "reveal_conditions": [
-      {
-        "kind": "story_var_truthy",
-        "key": "has_sensory_enhancer"
-      }
+    "reveal_when": [
+      "has_sensory_enhancer"
     ]
   },
   {
     "id": "the-architects-seat",
     "label": "設計者之座",
-    "reveal_conditions": [
-      {
-        "key": "entered_floor7",
-        "kind": "story_var_truthy"
-      }
+    "reveal_when": [
+      "entered_floor7"
     ],
     "rooms": [
       {

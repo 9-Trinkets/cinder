@@ -101,7 +101,7 @@ fn resolved_created_item_id(
                 .craftable_items
                 .iter()
                 .find(|craftable_id| {
-                    craftable_unlocked(state, item_creation, craftable_id)
+                    craftable_unlocked(content, state, item_creation, craftable_id, room_id)
                         && craftable_matches_input(content, craftable_id, input_val)
                 })
                 .cloned();

@@ -292,7 +292,8 @@ impl FloorBuilder {
             id: self.map_id,
             label: self.map_label,
             rooms: map_rooms,
-            reveal_conditions: Vec::new(),
+            fog: true,
+            reveal_when: Vec::new(),
         };
 
         (built_rooms, map)

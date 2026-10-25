@@ -123,8 +123,18 @@ fn trace_panel_keeps_already_traced_unlocked_marks_visible() {
                 "spawn-sigil".to_string(),
             ],
             craftable_item_gates: BTreeMap::from([
-                ("drain-sigil".to_string(), "knows_drain".to_string()),
-                ("spawn-sigil".to_string(), "knows_spawn".to_string()),
+                (
+                    "drain-sigil".to_string(),
+                    vec![cinder_core::content::types::Condition::StoryVar(
+                        "knows_drain".to_string(),
+                    )],
+                ),
+                (
+                    "spawn-sigil".to_string(),
+                    vec![cinder_core::content::types::Condition::StoryVar(
+                        "knows_spawn".to_string(),
+                    )],
+                ),
             ]),
             ..ActionItemCreation::default()
         }),

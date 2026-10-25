@@ -33,7 +33,7 @@ pub(crate) fn advance_scripted_sequences(
             events.push(progress_event(sequence_id, playhead.next_step, true));
             continue;
         };
-        if !sequence_gates_hold(sequence, state) {
+        if !sequence_gates_hold(content, sequence, state) {
             continue;
         }
         let Some(next_step) = sequence.steps.get(playhead.next_step) else {
@@ -97,11 +97,15 @@ pub(crate) fn drain_scripted_sequences(
     lines
 }
 
-fn sequence_gates_hold(sequence: &ScriptedSequence, state: &WorldState) -> bool {
-    sequence
-        .gates
-        .iter()
-        .all(|gate| state.story_vars.get(&gate.story_var) == Some(gate.expected.as_str()))
+fn sequence_gates_hold(
+    content: &ContentPack,
+    sequence: &ScriptedSequence,
+    state: &WorldState,
+) -> bool {
+    crate::engine::conditions::all_hold(
+        &sequence.when,
+        &crate::engine::conditions::ConditionContext::new(content, state, &state.current_room_id),
+    )
 }
 
 fn deliver_channel_step(
@@ -122,7 +126,7 @@ fn deliver_channel_step(
         };
         channel.clone()
     };
-    if !channel.is_available(state) {
+    if !channel.is_available(content, state) {
         return false;
     }
     let room_id = if channel_id == LOCAL_CHANNEL_ID {
@@ -225,7 +229,7 @@ fn progress_event(sequence_id: &str, next_step: usize, finished: bool) -> WorldE
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::content::types::{ChannelAvailability, ChannelKind, ChannelPrivacy};
+    use crate::content::types::{ChannelKind, ChannelPrivacy};
     use crate::engine::events::TimestampedWorldEvent;
     use crate::engine::reducer::apply_events;
     use crate::engine::test_fixtures::load_test_pack_with_files;
@@ -236,7 +240,6 @@ mod tests {
         "id": "comms",
         "kind": "direct",
         "privacy": "private",
-        "availability": "always",
         "participants": ["blair", "casey"]
       }]
     }"#;
@@ -254,7 +257,7 @@ mod tests {
     const SEQUENCES: &str = r#"{
       "sequences": [{
         "id": "opening-call",
-        "gates": [{ "story_var": "comms_ready", "expected": "true" }],
+        "when": ["comms_ready=true"],
         "steps": [
           {
             "voice": "channel",
@@ -426,11 +429,11 @@ mod tests {
     #[test]
     fn unavailable_channels_pause_instead_of_losing_lines() {
         let mut content = scripted_pack();
-        content.sequences.sequences[0].gates.clear();
-        content.settings.channels[0].availability = ChannelAvailability::StoryVarGate {
-            story_var: "channel_open".to_string(),
-            expected: "true".to_string(),
-        };
+        content.sequences.sequences[0].when.clear();
+        content.settings.channels[0].when = vec![crate::content::types::Condition::StoryVarIs {
+            name: "channel_open".to_string(),
+            value: "true".to_string(),
+        }];
         let mut state = WorldState::new(&content);
 
         assert!(advance_scripted_sequences(&content, &state).is_empty());
@@ -449,7 +452,7 @@ mod tests {
     #[test]
     fn local_scripted_lines_require_the_recipient_to_share_the_room() {
         let mut content = scripted_pack();
-        content.sequences.sequences[0].gates.clear();
+        content.sequences.sequences[0].when.clear();
         content.sequences.sequences[0].steps = vec![ScriptedLine::Channel {
             channel_id: LOCAL_CHANNEL_ID.to_string(),
             speaker_id: "blair".to_string(),
@@ -460,7 +463,7 @@ mod tests {
             id: "unused".to_string(),
             kind: ChannelKind::Direct,
             privacy: ChannelPrivacy::Private,
-            availability: ChannelAvailability::Always,
+            when: Vec::new(),
             participants: vec!["blair".to_string(), "casey".to_string()],
             label: None,
         }];

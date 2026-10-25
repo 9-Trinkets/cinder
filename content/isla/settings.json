@@ -58,7 +58,6 @@
       "id": "phone-bell",
       "kind": "direct",
       "privacy": "private",
-      "availability": "always",
       "participants": [
         "player",
         "dr-bell"
@@ -69,7 +68,6 @@
       "id": "phone-mom",
       "kind": "direct",
       "privacy": "private",
-      "availability": "always",
       "participants": [
         "player",
         "nadia"

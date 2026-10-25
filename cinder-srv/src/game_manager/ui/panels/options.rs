@@ -140,25 +140,16 @@ pub(crate) fn craftable_item_panel_options(
             let mut options: Vec<PanelOptionData> = craftables
                 .iter()
                 .filter(|item_id| {
-                    let unlocked = || -> bool {
-                        let Some(gate) = gates.and_then(|g| g.get(*item_id)) else {
-                            return true;
-                        };
-                        if gate.is_empty() {
-                            return true;
-                        }
-                        !matches!(
-                            state
-                                .story_vars
-                                .get(gate)
-                                .map(str::trim)
-                                .unwrap_or("")
-                                .to_ascii_lowercase()
-                                .as_str(),
-                            "" | "false" | "0"
+                    gates.and_then(|g| g.get(*item_id)).is_none_or(|when| {
+                        cinder_core::engine::conditions::all_hold(
+                            when,
+                            &cinder_core::engine::conditions::ConditionContext::new(
+                                content,
+                                state,
+                                &state.current_room_id,
+                            ),
                         )
-                    };
-                    unlocked()
+                    })
                 })
                 .map(|item_id| {
                     let item = content.item(item_id);

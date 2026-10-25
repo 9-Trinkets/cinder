@@ -74,19 +74,20 @@ impl<'de> Deserialize<'de> for SurroundRule {
 /// [`SidebarDefinition::sections`] means the section may appear at all;
 /// its position in the list is the display order.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct SidebarSectionDefinition {
     /// Section id the web UI's renderer registry keys on (e.g. `"vitals"`).
     /// Unknown ids are skipped by the client.
     pub id: String,
-    /// Optional story var that gates the section: it is shown only once this
-    /// var is truthy. Absent (or empty) means always visible.
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub story_var: Option<String>,
+    /// Conditions that gate the section: it is shown only while they hold. No
+    /// conditions means always visible.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub when: Vec<Condition>,
 }
 
 /// Ordered declarative list of the sidebar sections a pack shows. The engine
 /// resolves it to the visible ids in [`SidebarDefinition::sections`] order,
-/// honoring each section's `story_var` gate.
+/// honoring each section's `when` conditions.
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
 pub struct SidebarDefinition {
     #[serde(default)]
@@ -131,13 +132,17 @@ pub struct ContentSettingsDefinition {
     pub act_member_alias: String,
     #[serde(default)]
     pub fallback_stage_id: String,
+    /// Conditions under which the minimap also shows allies, hostiles and teleport
+    /// anchors. Empty means it never does.
+    #[serde(default)]
+    pub minimap_entity_tracking_when: Vec<Condition>,
     /// Conditions that must hold before the fallback stage may start.
     #[serde(default)]
     pub fallback_when: Vec<Condition>,
     #[serde(default = "default_true")]
     pub show_act_closure: bool,
     /// Declarative sidebar section list. Presence means a section may appear;
-    /// order is display order; a section's optional `story_var` gates it (see
+    /// order is display order; a section's `when` conditions gate it (see
     /// [`SidebarSectionDefinition`]). Omitting a section hides it entirely.
     #[serde(default)]
     pub sidebar: SidebarDefinition,
@@ -221,6 +226,7 @@ impl Default for ContentSettingsDefinition {
             closure_perspective_actor_id: String::default(),
             act_member_alias: String::default(),
             fallback_stage_id: String::default(),
+            minimap_entity_tracking_when: Vec::new(),
             fallback_when: Vec::new(),
             workflow_id: String::default(),
             show_act_closure: true,

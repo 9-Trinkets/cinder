@@ -187,21 +187,10 @@ fn narration_has_no_colons() {
 /// from the start. Layla keeps its fog of war.
 #[test]
 fn isla_maps_are_never_fogged_and_layla_maps_still_are() {
-    use cinder_core::content::types::MapRevealCondition;
     let isla = load_named_pack("isla", Some("en")).expect("isla loads");
     for map in &isla.maps {
-        assert!(
-            map.reveal_conditions
-                .iter()
-                .any(|c| matches!(c, MapRevealCondition::Always)),
-            "{} is fogged",
-            map.id
-        );
+        assert!(!map.fog, "{} is fogged", map.id);
     }
     let layla = load_named_pack("layla", Some("en")).expect("layla loads");
-    assert!(layla.maps.iter().all(|m| {
-        m.reveal_conditions
-            .iter()
-            .all(|c| !matches!(c, MapRevealCondition::Always))
-    }));
+    assert!(layla.maps.iter().all(|m| m.fog));
 }

@@ -195,12 +195,13 @@ fn resolved_created_item_id(
         {
             let normalized = input.to_ascii_lowercase().replace(' ', "");
             if let Some(item_id) = creation.craftable_items.iter().find(|item_id| {
-                item_id.eq_ignore_ascii_case(input) && craftable_unlocked(state, creation, item_id)
+                item_id.eq_ignore_ascii_case(input)
+                    && craftable_unlocked(content, state, creation, item_id, context.room_id)
             }) {
                 return Some(item_id.clone());
             }
             if let Some(item_id) = creation.craftable_items.iter().find(|item_id| {
-                craftable_unlocked(state, creation, item_id)
+                craftable_unlocked(content, state, creation, item_id, context.room_id)
                     && content.item(item_id).is_some_and(|item| {
                         item.label.to_ascii_lowercase().replace(' ', "") == normalized
                     })

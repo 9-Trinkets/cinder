@@ -182,7 +182,7 @@ pub struct ActionItemCreation {
     /// item id becomes available to the player. Items with no entry are always
     /// available. Used to gate a trace-craftable item behind learning it.
     #[serde(default)]
-    pub craftable_item_gates: BTreeMap<String, String>,
+    pub craftable_item_gates: BTreeMap<String, Vec<Condition>>,
     #[serde(default)]
     pub storage: ActionItemStorageTarget,
 }

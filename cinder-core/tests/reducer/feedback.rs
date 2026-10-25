@@ -1,6 +1,6 @@
 use super::common::*;
 use cinder_core::content::types::{
-    ChannelAvailability, ChannelKind, ChannelPrivacy, ContentPack, MessagingChannel, PackMessage,
+    ChannelKind, ChannelPrivacy, ContentPack, MessagingChannel, PackMessage,
 };
 use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
 use cinder_core::engine::narrative::NarrativeLineKind;
@@ -16,7 +16,7 @@ pub fn handler_feedback_pack() -> ContentPack {
         id: "handler-comms".to_string(),
         kind: ChannelKind::Direct,
         privacy: ChannelPrivacy::Private,
-        availability: ChannelAvailability::Always,
+        when: Vec::new(),
         participants: vec!["player".to_string(), "handler".to_string()],
         label: None,
     });

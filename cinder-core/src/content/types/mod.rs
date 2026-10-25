@@ -16,12 +16,10 @@ pub use settings::{
 pub(super) use settings::{default_actor_targeted_speech, default_stat_default_value};
 
 mod channels;
-pub use channels::{
-    ChannelAvailability, ChannelKind, ChannelPrivacy, LOCAL_CHANNEL_ID, MessagingChannel,
-};
+pub use channels::{ChannelKind, ChannelPrivacy, LOCAL_CHANNEL_ID, MessagingChannel};
 
 mod sequences;
-pub use sequences::{ScriptedLine, ScriptedSequence, ScriptedSequenceGate, SequencesDefinition};
+pub use sequences::{ScriptedLine, ScriptedSequence, SequencesDefinition};
 
 mod party_defs;
 pub use party_defs::{
@@ -34,7 +32,7 @@ mod leveling;
 pub use leveling::{LevelDefinition, LevelTable, LevelingDefinition};
 
 mod map_defs;
-pub use map_defs::{MapDefinition, MapRevealCondition, MapRoomDefinition};
+pub use map_defs::{MapDefinition, MapRoomDefinition};
 
 mod speech;
 pub use speech::{SpeechIntentEffect, SpeechIntentLabel, SpeechIntentsConfig};

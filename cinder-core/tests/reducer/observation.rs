@@ -275,15 +275,17 @@ fn sidebar_sections_follow_declared_order_and_story_var_gates() {
         sections: vec![
             SidebarSectionDefinition {
                 id: "location".to_string(),
-                story_var: None,
+                when: Vec::new(),
             },
             SidebarSectionDefinition {
                 id: "level".to_string(),
-                story_var: Some("levels_revealed".to_string()),
+                when: vec![cinder_core::content::types::Condition::StoryVar(
+                    "levels_revealed".to_string(),
+                )],
             },
             SidebarSectionDefinition {
                 id: "vitals".to_string(),
-                story_var: Some(String::new()),
+                when: Vec::new(),
             },
         ],
     };

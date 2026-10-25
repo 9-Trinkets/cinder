@@ -11,9 +11,7 @@ use cinder_core::engine::state::WorldState;
 use std::collections::BTreeSet;
 
 use self::decorate::RoomDecorator;
-use self::visibility::{
-    MapVisibility, RevealPolicy, VisitedAndConditionRevealPolicy, story_var_is_truthy,
-};
+use self::visibility::{MapVisibility, RevealPolicy, VisitedAndConditionRevealPolicy};
 use super::{MinimapConnection, MinimapData, MinimapRoom};
 
 pub(super) fn build_minimap(
@@ -42,7 +40,7 @@ impl<P: RevealPolicy> MinimapProjector<P> {
         let map = content.map_for_room(current_room_id)?;
         let player_id = &content.settings.combat.player_actor_id;
         let visibility = self.reveal.visibility(map, state, content, current_room_id);
-        let entity_tracking = entity_tracking_enabled(state);
+        let entity_tracking = entity_tracking_enabled(content, state);
         let decorator = RoomDecorator::new(content, state, player_id, entity_tracking);
         let rooms = project_rooms(map, &visibility, current_room_id, &decorator);
         let connections = project_connections(content, state, map, &visibility);
@@ -63,9 +61,17 @@ impl<P: RevealPolicy> MinimapProjector<P> {
 }
 
 /// Whether the entity overlay (allies/hostiles and teleport anchors) is active.
-fn entity_tracking_enabled(state: &WorldState) -> bool {
-    story_var_is_truthy(state, "has_sensory_enhancer")
-        || story_var_is_truthy(state, "map_entity_tracking")
+fn entity_tracking_enabled(content: &ContentPack, state: &WorldState) -> bool {
+    let when = &content.settings.minimap_entity_tracking_when;
+    !when.is_empty()
+        && cinder_core::engine::conditions::all_hold(
+            when,
+            &cinder_core::engine::conditions::ConditionContext::new(
+                content,
+                state,
+                &state.current_room_id,
+            ),
+        )
 }
 
 /// Projects the visible rooms of `map` into decorated [`MinimapRoom`]s.
@@ -133,7 +139,7 @@ fn ordered_room_pair<'a>(a: &'a str, b: &'a str) -> (&'a str, &'a str) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use cinder_core::content::types::{MapDefinition, MapRevealCondition, MapRoomDefinition};
+    use cinder_core::content::types::{Condition, MapDefinition, MapRoomDefinition};
     use cinder_core::engine::state::ActorStance;
     use cinder_core::engine::test_fixtures::minimal_test_pack;
 
@@ -156,10 +162,13 @@ mod tests {
                     y: 0.0,
                 },
             ],
-            reveal_conditions: vec![MapRevealCondition::ActorDefeated {
-                actor_id: "casey".to_string(),
-            }],
+            fog: true,
+            reveal_when: vec![Condition::Defeated("casey".to_string())],
         }];
+        content.settings.minimap_entity_tracking_when = vec![Condition::Any(vec![
+            Condition::StoryVar("has_sensory_enhancer".to_string()),
+            Condition::StoryVar("map_entity_tracking".to_string()),
+        ])];
         content
     }
 
@@ -235,7 +244,7 @@ mod tests {
     #[test]
     fn always_reveal_condition_reveals_map_from_start() {
         let mut content = mapped_pack();
-        content.maps[0].reveal_conditions = vec![MapRevealCondition::Always];
+        content.maps[0].fog = false;
         let state = WorldState::new(&content);
 
         let minimap = build_minimap(&state, &content, "lounge").unwrap();

@@ -409,11 +409,8 @@
         "y": 8.0
       }
     ],
-    "reveal_conditions": [
-      {
-        "kind": "actor_defeated",
-        "actor_id": "goblin-shaman"
-      }
+    "reveal_when": [
+      "defeated:goblin-shaman"
     ]
   },
   {
@@ -741,11 +738,8 @@
         "y": 7.0
       }
     ],
-    "reveal_conditions": [
-      {
-        "kind": "actor_defeated",
-        "actor_id": "elf-king-5"
-      }
+    "reveal_when": [
+      "defeated:elf-king-5"
     ]
   },
   {
@@ -828,11 +822,8 @@
         "y": 6.0
       }
     ],
-    "reveal_conditions": [
-      {
-        "kind": "actor_defeated",
-        "actor_id": "fire-elemental"
-      }
+    "reveal_when": [
+      "defeated:fire-elemental"
     ]
   },
   {
@@ -919,8 +910,7 @@
         "x": 12.0,
         "y": 14.0
       }
-    ],
-    "reveal_conditions": []
+    ]
   },
   {
     "id": "the-frost-citadel",
@@ -1007,11 +997,8 @@
         "y": 21.0
       }
     ],
-    "reveal_conditions": [
-      {
-        "kind": "story_var_truthy",
-        "key": "has_sensory_enhancer"
-      }
+    "reveal_when": [
+      "has_sensory_enhancer"
     ]
   },
   {
@@ -1024,11 +1011,8 @@
         "y": 12.0
       }
     ],
-    "reveal_conditions": [
-      {
-        "kind": "story_var_truthy",
-        "key": "town_salt_reach_unlocked"
-      }
+    "reveal_when": [
+      "town_salt_reach_unlocked"
     ]
   },
   {
@@ -1041,11 +1025,8 @@
         "y": 12.0
       }
     ],
-    "reveal_conditions": [
-      {
-        "kind": "story_var_truthy",
-        "key": "town_glassbank_unlocked"
-      }
+    "reveal_when": [
+      "town_glassbank_unlocked"
     ]
   },
   {
@@ -1058,11 +1039,8 @@
         "y": 12.0
       }
     ],
-    "reveal_conditions": [
-      {
-        "kind": "story_var_truthy",
-        "key": "town_woolcross_unlocked"
-      }
+    "reveal_when": [
+      "town_woolcross_unlocked"
     ]
   },
   {
@@ -1075,11 +1053,8 @@
         "y": 12.0
       }
     ],
-    "reveal_conditions": [
-      {
-        "kind": "story_var_truthy",
-        "key": "town_greenrest_unlocked"
-      }
+    "reveal_when": [
+      "town_greenrest_unlocked"
     ]
   },
   {
@@ -1092,11 +1067,8 @@
         "y": 12.0
       }
     ],
-    "reveal_conditions": [
-      {
-        "kind": "story_var_truthy",
-        "key": "town_brass_yard_unlocked"
-      }
+    "reveal_when": [
+      "town_brass_yard_unlocked"
     ]
   },
   {
@@ -1144,11 +1116,8 @@
         "y": 14.0
       }
     ],
-    "reveal_conditions": [
-      {
-        "kind": "story_var_truthy",
-        "key": "has_sensory_enhancer"
-      }
+    "reveal_when": [
+      "has_sensory_enhancer"
     ]
   },
   {
@@ -1161,11 +1130,8 @@
         "y": 0.0
       }
     ],
-    "reveal_conditions": [
-      {
-        "kind": "story_var_truthy",
-        "key": "entered_floor7"
-      }
+    "reveal_when": [
+      "entered_floor7"
     ]
   }
 ]

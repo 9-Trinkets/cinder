@@ -1,7 +1,8 @@
 //! Visibility layer: decides which rooms a minimap reveals and which the player
 //! has visited.
 
-use cinder_core::content::types::{ContentPack, MapDefinition, MapRevealCondition};
+use cinder_core::content::types::{ContentPack, MapDefinition};
+use cinder_core::engine::conditions::{ConditionContext, all_hold};
 use cinder_core::engine::state::WorldState;
 use std::collections::BTreeSet;
 
@@ -76,10 +77,12 @@ impl RevealPolicy for VisitedAndConditionRevealPolicy {
             .map(|room| room.room_id.clone())
             .collect::<BTreeSet<_>>();
         let fully_revealed = visited.len() == map.rooms.len()
-            || map
-                .reveal_conditions
-                .iter()
-                .any(|condition| reveal_condition_met(state, content, condition));
+            || !map.fog
+            || (!map.reveal_when.is_empty()
+                && all_hold(
+                    &map.reveal_when,
+                    &ConditionContext::new(content, state, current_room_id),
+                ));
         let visible = if fully_revealed {
             map.rooms.iter().map(|room| room.room_id.clone()).collect()
         } else {
@@ -91,20 +94,6 @@ impl RevealPolicy for VisitedAndConditionRevealPolicy {
             visited,
             visible,
         }
-    }
-}
-
-fn reveal_condition_met(
-    state: &WorldState,
-    content: &ContentPack,
-    condition: &MapRevealCondition,
-) -> bool {
-    match condition {
-        MapRevealCondition::Always => true,
-        MapRevealCondition::ActorDefeated { actor_id } => {
-            state.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id)
-        }
-        MapRevealCondition::StoryVarTruthy { key } => story_var_is_truthy(state, key),
     }
 }
 

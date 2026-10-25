@@ -340,8 +340,7 @@ mod tests {
     #[test]
     fn player_moved_hook_renders_handler_voiced_line_on_descent() {
         use crate::content::types::{
-            ChannelAvailability, ChannelKind, ChannelPrivacy, MessagingChannel, PackMessage,
-            PackMessageVoice,
+            ChannelKind, ChannelPrivacy, MessagingChannel, PackMessage, PackMessageVoice,
         };
         use serde_json::json;
 
@@ -353,7 +352,7 @@ mod tests {
             id: "handler-comms".to_string(),
             kind: ChannelKind::Direct,
             privacy: ChannelPrivacy::Private,
-            availability: ChannelAvailability::Always,
+            when: Vec::new(),
             participants: vec!["player".to_string(), "blair".to_string()],
             label: None,
         }];

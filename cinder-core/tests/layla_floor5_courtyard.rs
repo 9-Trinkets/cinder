@@ -511,11 +511,11 @@ fn floor5_citadel_map_definition_and_reveal_condition() {
     );
 
     // Map reveal condition is gated by has_sensory_enhancer
-    assert!(
-        map.reveal_conditions.iter().any(|c| matches!(
-            c,
-            cinder_core::content::types::MapRevealCondition::StoryVarTruthy { key } if key == "has_sensory_enhancer"
-        )),
+    assert_eq!(
+        map.reveal_when,
+        vec![cinder_core::content::types::Condition::StoryVar(
+            "has_sensory_enhancer".to_string()
+        )],
         "map should be revealed by has_sensory_enhancer"
     );
 }

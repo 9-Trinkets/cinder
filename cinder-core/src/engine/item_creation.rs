@@ -8,7 +8,6 @@ use crate::content::types::{
     ActionDefinition, ActionItemCreation, ActionItemStorageTarget, ContentPack, ItemStorageTarget,
 };
 use crate::engine::state::WorldState;
-use crate::engine::turn_policies::story_var_is_truthy;
 
 /// The single reason a resolved item-creation request cannot proceed.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -35,18 +34,24 @@ pub struct ItemCreationPlan {
     pub rejection: Option<ItemCreationRejection>,
 }
 
-/// Whether a craftable item id is unlocked by its story-var gate. Items with no
-/// gate (or an empty gate) are always unlocked.
+/// Whether a craftable item id is unlocked by its conditions. Items with no
+/// conditions are always unlocked.
 pub fn craftable_unlocked(
+    content: &ContentPack,
     state: &WorldState,
     creation: &ActionItemCreation,
     item_id: &str,
+    room_id: &str,
 ) -> bool {
-    match creation.craftable_item_gates.get(item_id) {
-        None => true,
-        Some(gate) if gate.is_empty() => true,
-        Some(gate) => story_var_is_truthy(state, gate),
-    }
+    creation
+        .craftable_item_gates
+        .get(item_id)
+        .is_none_or(|when| {
+            crate::engine::conditions::all_hold(
+                when,
+                &crate::engine::conditions::ConditionContext::new(content, state, room_id),
+            )
+        })
 }
 
 /// Whether a trace-mark item is already present in `room_id`.
@@ -69,7 +74,7 @@ pub fn craftable_available(
     item_id: &str,
     room_id: &str,
 ) -> bool {
-    craftable_unlocked(state, creation, item_id)
+    craftable_unlocked(content, state, creation, item_id, room_id)
         && !(creation.storage == ActionItemStorageTarget::CurrentRoom
             && trace_mark_already_in_room(content, state, item_id, room_id))
 }
@@ -254,7 +259,7 @@ pub fn craftable_option_states(
     creation
         .craftable_items
         .iter()
-        .filter(|item_id| craftable_unlocked(state, creation, item_id))
+        .filter(|item_id| craftable_unlocked(content, state, creation, item_id, room_id))
         .map(|item_id| {
             let item = content.item(item_id);
             let already_traced = trace_mark_already_in_room(content, state, item_id, room_id);

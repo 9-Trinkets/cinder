@@ -972,8 +972,10 @@ fn layla_shipped_pack_invariants_and_wiring() {
         pack.action("trace")
             .and_then(|action| action.item_creation.as_ref())
             .and_then(|creation| creation.craftable_item_gates.get("spawn-sigil"))
-            .map(String::as_str),
-        Some("knows_spawn")
+            .cloned(),
+        Some(vec![cinder_core::content::types::Condition::StoryVar(
+            "knows_spawn".to_string()
+        )])
     );
     let handler = pack.actor("handler").unwrap();
     assert!(handler.room_id.is_empty(), "handler must be offstage");

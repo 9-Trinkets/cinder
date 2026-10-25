@@ -155,7 +155,9 @@ fn trace_craftable_is_gated_by_its_story_variable() {
             craftable_items: vec!["charm-sigil".to_string(), "drain-sigil".to_string()],
             craftable_item_gates: BTreeMap::from([(
                 "drain-sigil".to_string(),
-                "knows_drain".to_string(),
+                vec![cinder_core::content::types::Condition::StoryVar(
+                    "knows_drain".to_string(),
+                )],
             )]),
             storage: ActionItemStorageTarget::CurrentRoom,
             ..ActionItemCreation::default()

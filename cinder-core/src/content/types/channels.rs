@@ -6,6 +6,7 @@
 //! Same-room speech is the implicit `local` channel and does not need to be
 //! declared; a pack may never claim the `local` id.
 
+use super::Condition;
 use serde::{Deserialize, Serialize};
 
 /// The stable channel id of the implicit local (same-room) speech channel.
@@ -32,20 +33,6 @@ pub enum ChannelPrivacy {
     Private,
 }
 
-/// When a channel is usable.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum ChannelAvailability {
-    /// Usable unconditionally. The handler's persistent comms use this so the
-    /// channel is always open for the whole session. Declared as
-    /// `"availability": "always"` in pack settings.
-    Always,
-    /// Usable only while a story var holds an expected value. Declared as
-    /// `"availability": { "story_var_gate": { "story_var": ...,
-    /// "expected": ... } }`.
-    StoryVarGate { story_var: String, expected: String },
-}
-
 /// An actor messaging channel declared by a pack in `settings.json`.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct MessagingChannel {
@@ -55,8 +42,10 @@ pub struct MessagingChannel {
     pub kind: ChannelKind,
     /// Whether membership is open to presence or a fixed roster.
     pub privacy: ChannelPrivacy,
-    /// When the channel is usable.
-    pub availability: ChannelAvailability,
+    /// Conditions that must hold for the channel to be usable. None means it is
+    /// always open, as the handler's persistent comms are.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub when: Vec<Condition>,
     /// Fixed participants (actor ids) for a private channel; ignored for
     /// public channels, whose membership is resolved from presence.
     #[serde(default)]

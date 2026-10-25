@@ -423,16 +423,22 @@ impl ContentPack {
     }
 
     /// Ordered ids of the sidebar sections currently visible for `state`,
-    /// honoring each section's `story_var` gate. Callers render sections in
+    /// honoring each section's `when` conditions. Callers render sections in
     /// this order and skip ids their renderer registry doesn't know.
     pub fn visible_sidebar_sections(&self, state: &WorldState) -> Vec<String> {
         self.settings
             .sidebar
             .sections
             .iter()
-            .filter(|section| match section.story_var.as_deref() {
-                Some(var) if !var.is_empty() => self.story_var_is_truthy(state, var),
-                _ => true,
+            .filter(|section| {
+                crate::engine::conditions::all_hold(
+                    &section.when,
+                    &crate::engine::conditions::ConditionContext::new(
+                        self,
+                        state,
+                        &state.current_room_id,
+                    ),
+                )
             })
             .map(|section| section.id.clone())
             .collect()

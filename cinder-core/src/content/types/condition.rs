@@ -35,6 +35,10 @@ pub enum Condition {
     Defeated(String),
     /// The condition does not hold. Never wraps another `Not` or a `Path`.
     Not(Box<Condition>),
+    /// At least one of the conditions holds. Written `{"any": [...]}`.
+    Any(Vec<Condition>),
+    /// Every one of the conditions holds. Written `{"all": [...]}`.
+    All(Vec<Condition>),
     /// A condition over a path into the world's state.
     Path(PathCondition),
 }
@@ -96,7 +100,7 @@ impl Condition {
             Condition::TraceMarkHere => "here:trace_mark".to_string(),
             Condition::Defeated(actor) => format!("defeated:{actor}"),
             Condition::Not(inner) => format!("!{}", inner.to_text()?),
-            Condition::Path(_) => return None,
+            Condition::Path(_) | Condition::Any(_) | Condition::All(_) => return None,
         })
     }
 }
@@ -106,6 +110,8 @@ impl Condition {
 enum ConditionRepr {
     Text(String),
     Path(PathCondition),
+    Any { any: Vec<Condition> },
+    All { all: Vec<Condition> },
 }
 
 impl<'de> Deserialize<'de> for Condition {
@@ -113,6 +119,8 @@ impl<'de> Deserialize<'de> for Condition {
         match ConditionRepr::deserialize(deserializer)? {
             ConditionRepr::Text(text) => Condition::parse(&text).map_err(D::Error::custom),
             ConditionRepr::Path(path) => Ok(Condition::Path(path)),
+            ConditionRepr::Any { any } => Ok(Condition::Any(any)),
+            ConditionRepr::All { all } => Ok(Condition::All(all)),
         }
     }
 }
@@ -121,6 +129,8 @@ impl Serialize for Condition {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         match self {
             Condition::Path(path) => path.serialize(serializer),
+            Condition::Any(any) => serde_json::json!({ "any": any }).serialize(serializer),
+            Condition::All(all) => serde_json::json!({ "all": all }).serialize(serializer),
             other => other
                 .to_text()
                 .expect("every non-path condition has a text form")
@@ -170,6 +180,22 @@ mod tests {
                 .expect("a mixed list");
         assert_eq!(list.len(), 2);
         assert_eq!(list[0], Condition::StoryVar("door_open".to_string()));
+    }
+
+    #[test]
+    fn any_and_all_group_other_conditions() {
+        let any: Condition = serde_json::from_str(r#"{"any": ["a", "!b"]}"#).expect("any form");
+        assert_eq!(
+            any,
+            Condition::Any(vec![
+                Condition::StoryVar("a".to_string()),
+                Condition::Not(Box::new(Condition::StoryVar("b".to_string()))),
+            ])
+        );
+        let all: Condition = serde_json::from_str(r#"{"all": ["a", "b"]}"#).expect("all form");
+        assert!(matches!(all, Condition::All(_)));
+        let again = serde_json::to_value(&any).expect("serializes");
+        assert_eq!(again["any"][1], "!b");
     }
 
     #[test]

@@ -145,7 +145,9 @@ fn target_pack() -> ContentPack {
             craftable_items: vec!["charm-sigil".to_string(), "drain-sigil".to_string()],
             craftable_item_gates: std::collections::BTreeMap::from([(
                 "drain-sigil".to_string(),
-                "knows_drain".to_string(),
+                vec![cinder_core::content::types::Condition::StoryVar(
+                    "knows_drain".to_string(),
+                )],
             )]),
             ..ActionItemCreation::default()
         }),
@@ -394,8 +396,12 @@ fn trace_hides_when_no_craftable_unlocked() {
     let mut pack = target_pack();
     let trace = pack.actions.iter_mut().find(|a| a.id == "trace").unwrap();
     if let Some(ic) = &mut trace.item_creation {
-        ic.craftable_item_gates
-            .insert("charm-sigil".to_string(), "locked".to_string());
+        ic.craftable_item_gates.insert(
+            "charm-sigil".to_string(),
+            vec![cinder_core::content::types::Condition::StoryVar(
+                "locked".to_string(),
+            )],
+        );
     }
     rebuild_test_pack_indexes(&mut pack);
     let trace = pack.action("trace").unwrap();
