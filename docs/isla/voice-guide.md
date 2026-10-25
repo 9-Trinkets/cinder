@@ -244,6 +244,8 @@ Read each path as plain transcript text and ask:
 
 ## 20. Tam's act: what changes
 
+> **Pending.** Sections 20 to 29 were written for the earlier Tam draft, which is superseded (see `episode-rules.md`). The general rules (a child who barely speaks, no questions to the child, no explaining) may carry over. The cast entries must be redone for the new episode.
+
 Wren answers, so her act is mostly speech. Tam does not, so his act is mostly **things Isla does and things he does.** Three rules follow.
 
 - **Isla speaks less, and never to ask Tam anything.** One short sentence at most, a comment about the room or the thing in front of them, said once. Often she says nothing and the option is an action: lower the blind, turn the machine down, sit on the floor.

@@ -1,5 +1,7 @@
 # Isla: the Tam episode, session design (draft)
 
+> **Superseded (restarting the second episode).** This draft was built from the bible outward and assumed outcomes the game cannot show. Do not build from it. The rules for a new episode are in `episode-rules.md`. Kept only for reference.
+
 How Tam's episode plays. Read with `tam-bible.md` (who he is), `next-patient.md` (why him), `game-design.md` (the diner) and `session-design.md` (how Wren's session was built, which this one reuses). Items marked **(decision)** are proposals that need a yes. Nothing here is written as lines yet.
 
 ## 1. What the player is doing, and how it differs from Wren

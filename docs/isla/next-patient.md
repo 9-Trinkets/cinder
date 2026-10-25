@@ -1,5 +1,7 @@
 # The next patient: a plan (draft)
 
+> **Superseded (restarting the second episode).** This draft was built from the bible outward and assumed outcomes the game cannot show. Do not build from it. The rules for a new episode are in `episode-rules.md`. Kept only for reference.
+
 A plan, not a script. The second child at Willow House, chosen to be as different from Wren as possible, so we find out what the framework in `game-design.md` really needs. This follows the patient sheet in section 3 of that document. Items marked **(decision)** can change.
 
 **Working name: Tam.** The full story is in `tam-bible.md`: a Vietnamese American family in South Philadelphia. The names and details there are placeholders until a reader from the community has checked them.

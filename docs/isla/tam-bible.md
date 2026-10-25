@@ -1,5 +1,7 @@
 # Tam: story bible (draft, no scripted lines yet)
 
+> **Superseded (restarting the second episode).** This draft was built from the bible outward and assumed outcomes the game cannot show. Do not build from it. The rules for a new episode are in `episode-rules.md`. Kept only for reference.
+
 Everything the writing must stay true to for the second patient. Written the way `wren-bible.md` is: facts first, lines later. Read with `next-patient.md` (why this child and how his episode differs), `game-design.md` (the diner structure, fit tables and the transitions between episodes) and `isla-bible.md`. Items marked **(decision)** are choices I made that can change.
 
 **Content stays everyday and non-graphic.** Nobody in this family is a villain, and nothing here is abuse or neglect. Tam is not a problem to solve. The game shows a child whose world is louder than he can carry, and an adult who notices.
