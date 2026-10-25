@@ -470,8 +470,8 @@ pub enum MovieStyle {
     /// Monospace frames on black, as for an ASCII clip.
     #[default]
     Frames,
-    /// A full-screen card in the pack's own look: a page, a title card, a
-    /// passing of time. Each frame fades into the next.
+    /// A card in the pack's own look that covers the transcript: a page, a title
+    /// card, a passing of time. Each frame fades into the next.
     Card,
 }
 

@@ -99,11 +99,13 @@ function Ambient({ kind }: { kind: string }) {
 }
 
 /** A full-screen card for a passing of time, a title or a page. Each frame fades into the next. */
-export default function CardMovie({ movie, frame, onAdvance, onClose }: {
+export default function CardMovie({ movie, frame, onAdvance, onClose, contained = false }: {
   movie: api.MovieData
   frame: number
   onAdvance: () => void
   onClose: () => void
+  /** Cover only the area it is placed in, not the whole screen. */
+  contained?: boolean
 }) {
   const { t } = useI18n()
   const card = movie.card
@@ -150,11 +152,11 @@ export default function CardMovie({ movie, frame, onAdvance, onClose }: {
     <div
       ref={dialogRef}
       role="dialog"
-      aria-modal="true"
+      aria-modal={contained ? undefined : true}
       aria-label={movie.title}
       tabIndex={-1}
       onClick={onClose}
-      className="fixed inset-0 z-50 flex cursor-pointer items-center justify-center outline-none"
+      className={`${contained ? 'absolute inset-0 z-20' : 'fixed inset-0 z-50'} flex cursor-pointer items-center justify-center outline-none`}
       style={{ background, transition: `background-color ${fadeMs}ms ease` }}
     >
       <Ambient kind={card.ambient} />
@@ -171,7 +173,7 @@ export default function CardMovie({ movie, frame, onAdvance, onClose }: {
         {f.text && <div className="whitespace-pre-wrap text-lg leading-relaxed">{text}</div>}
       </div>
       {isLast && (
-        <div className="absolute bottom-8 left-0 right-0 text-center text-sm text-muted animate-pulse">
+        <div className="absolute bottom-6 left-0 right-0 text-center text-sm text-muted animate-pulse">
           {t('hud.clickToContinue')}
         </div>
       )}

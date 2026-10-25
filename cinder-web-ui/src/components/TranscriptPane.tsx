@@ -1,4 +1,4 @@
-import { memo, useMemo, useState, type MutableRefObject, type UIEvent } from 'react'
+import { memo, useMemo, useState, type MutableRefObject, type ReactNode, type UIEvent } from 'react'
 import * as api from '../api'
 import TranscriptLine, { type Line } from './TranscriptLine'
 import RoomCard from './RoomCard'
@@ -70,6 +70,7 @@ const TranscriptPane = memo(function TranscriptPane({
   craftedLabels,
   interactableLabels,
   channelHeaderLabel,
+  overlay,
 }: {
   lines: Line[]
   busyLabel: string | null
@@ -84,6 +85,8 @@ const TranscriptPane = memo(function TranscriptPane({
   craftedLabels: string[]
   interactableLabels?: string[]
   channelHeaderLabel?: string
+  /** Covers the transcript while shown, such as a transition card. */
+  overlay?: ReactNode
 }) {
   const { t } = useI18n()
   const [searchOpen, setSearchOpen] = useState(false)
@@ -96,7 +99,7 @@ const TranscriptPane = memo(function TranscriptPane({
     : 0
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden">
+    <div className="relative flex-1 flex flex-col overflow-hidden">
       {searchOpen && (
         <div className="border-b border-subtle bg-surface/95 px-4 py-2 shrink-0">
           <div className="max-w-2xl mx-auto w-full flex items-center gap-2">
@@ -185,6 +188,7 @@ const TranscriptPane = memo(function TranscriptPane({
           <div ref={bottomRef} />
         </div>
       </div>
+      {overlay}
     </div>
   )
 })

@@ -345,6 +345,23 @@ export default function GamePage() {
               }
             }}
             onDismissGameClosure={() => setGameClosure(null)}
+            overlay={
+              movie?.style === 'card' ? (
+                <MovieModal
+                  contained
+                  movie={movie}
+                  frame={movieFrame}
+                  onAdvance={() => {
+                    if (movieFrame < movie.frames.length - 1) {
+                      setMovieFrame(prev => prev + 1)
+                    } else {
+                      closeMovie()
+                    }
+                  }}
+                  onClose={closeMovie}
+                />
+              ) : null
+            }
           />
 
           <div className="relative border-t border-subtle shrink-0">
@@ -566,7 +583,7 @@ export default function GamePage() {
         </Modal>
       )}
 
-      {movie && (
+      {movie && movie.style !== 'card' && (
         <MovieModal
           movie={movie}
           frame={movieFrame}

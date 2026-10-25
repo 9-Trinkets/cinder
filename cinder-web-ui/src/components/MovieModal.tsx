@@ -61,11 +61,17 @@ function FramesMovie({ movie, frame, onAdvance, onClose }: {
 }
 
 /** A movie is a card in the pack's look, or monospace frames on black. */
-export default function MovieModal(props: {
+export default function MovieModal({ contained, ...props }: {
   movie: api.MovieData
   frame: number
   onAdvance: () => void
   onClose: () => void
+  /** For a card: cover only the area it sits in (the transcript), not the screen. */
+  contained?: boolean
 }) {
-  return props.movie.style === 'card' ? <CardMovie {...props} /> : <FramesMovie {...props} />
+  return props.movie.style === 'card' ? (
+    <CardMovie {...props} contained={contained} />
+  ) : (
+    <FramesMovie {...props} />
+  )
 }
