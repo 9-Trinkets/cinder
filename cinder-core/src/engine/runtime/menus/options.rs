@@ -51,21 +51,27 @@ impl CinderRuntime {
                 .collect(),
             PanelDataSource::InventoryItems => self.inventory_panel_options(&state),
             PanelDataSource::CraftableItems => Vec::new(),
-            PanelDataSource::ActorTopics => {
-                crate::engine::topics::room_topics(&self.content, &state)
-                    .into_iter()
-                    .map(|(actor, topic)| PanelOption {
-                        id: format!("{}:{}", actor.id, topic.id),
-                        title: topic.label.clone(),
-                        command: format!("say {}:{}", actor.id, topic.id),
-                        menu_text: String::new(),
-                    })
-                    .collect()
-            }
+            PanelDataSource::ActorInteractions => self.interaction_panel_options(&state, true),
+            PanelDataSource::FeatureInteractions => self.interaction_panel_options(&state, false),
             PanelDataSource::FollowActors => self.follow_actor_panel_options(&state),
             PanelDataSource::TeleportAnchors => self.teleport_anchors_panel_options(&state),
         };
         Ok(options)
+    }
+
+    /// The interactions on offer from the room's actors (`say`) or features (`do`).
+    fn interaction_panel_options(&self, state: &WorldState, actors: bool) -> Vec<PanelOption> {
+        let verb = if actors { "say" } else { "do" };
+        crate::engine::interactions::room_interactions(&self.content, state)
+            .into_iter()
+            .filter(|offered| offered.is_actor() == actors)
+            .map(|offered| PanelOption {
+                id: format!("{}:{}", offered.owner_id(), offered.interaction.id),
+                title: offered.interaction.label.clone(),
+                command: format!("{verb} {}:{}", offered.owner_id(), offered.interaction.id),
+                menu_text: String::new(),
+            })
+            .collect()
     }
 
     /// Non-player, non-defeated actors currently present in the given room.

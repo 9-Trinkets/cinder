@@ -1,4 +1,6 @@
-# Interactive objects in rooms: design (draft)
+# Interactive objects in rooms: design
+
+**Status:** Phases 0 to 2 are built. Phases 3 to 5 are planned. Sections 2 and 4 describe what exists; the examples use the compact condition forms the loader accepts.
 
 How the engine should model things in a room that the player or an NPC can operate and that keep a state afterwards: a lamp, a valve, a gate, a desk, a projector. Written for every pack, not for one. Isla's second episode (a lamp, a blind and a hall machine that Tam reacts to) is the first user, and the survey below shows Layla, Aera and Ella need the same thing. Decisions made: **interaction** is the name (it avoids confusing it further with *action* and *affordance*, which were used interchangeably before), topics are replaced by interactions now, and a feature's states are declared.
 
@@ -45,12 +47,20 @@ Three pieces, each replacing several legacy ones.
 
 ### 2.1 One condition language
 
-The stage system already has one: `AdvanceCondition { path, operator, value }`, with `equal`, `not_equal`, `gte`, `lte`, `greater_than`, `less_than`, `contains`, `array_contains` and more, evaluated over a JSON view of the world (story variables, actor stats, inventory, active stages).
+`Condition` is the only gate. A condition is written as text or as an object:
 
-Make that the **only** gate. Anything that is gated today gets a `when` list of conditions:
-- action availability, exits, room descriptions, topics, menu options, craftable gates, skill gates, teleport arming.
+| Form | Meaning |
+|---|---|
+| `"flag"`, `"!flag"` | story variable is (not) truthy |
+| `"var=value"` | story variable equals a value |
+| `"item:id"` | the player carries the item |
+| `"here:id"`, `"here:trace_mark"` | the item or a trace mark is in the current room |
+| `"defeated:actor"` | the actor has been defeated |
+| `"feature:id=state"`, `"feature:room/id=state"` | a feature is in a state (the current room when none is named) |
+| `{"path","operator","value"}` | any value in the world view, with `equal`, `gte`, `contains` and the rest |
+| `{"any":[...]}`, `{"all":[...]}` | combinations |
 
-The world view gains `features.<room>.<feature>.state` and a few helpers for "item is in this room" and "item is on this feature". The old fields (`requires_story_var`, `blocked_by_story_var`, `requires_room_item`, `armed_by`, and so on) become sugar that the loader rewrites into conditions, and then are removed from the content.
+A `when` list holds when every entry does. It gates exits, room and feature descriptions, action availability, interactions, teleport anchors, actor unlocks, movement rules, the fallback stage, craftable items, sidebar sections, sequences, channels, the minimap (`reveal_when`, with a `fog` flag) and minimap entity tracking. Old fields such as `requires_story_var` are removed, and structs that held them reject unknown fields so a leftover cannot be silently ignored. A loader check rejects a condition that names a feature or state that does not exist.
 
 ### 2.2 A feature with a state
 
@@ -58,8 +68,8 @@ The world view gains `features.<room>.<feature>.state` and a few helpers for "it
 { "id": "lamp", "label": "reading lamp",
   "states": ["off", "dim", "bright"], "state": "bright",
   "descriptions": [
-    { "when": [{"path": "self.state", "operator": "equal", "value": "off"}],  "inspect_text": "The lamp is off." },
-    { "when": [{"path": "self.state", "operator": "equal", "value": "dim"}],  "inspect_text": "The bulb glows low and amber." }
+    { "when": ["feature:lamp=off"], "inspect_text": "The lamp is off." },
+    { "when": ["feature:lamp=dim"], "inspect_text": "The bulb glows low and amber." }
   ],
   "inspect_text": "A tall lamp with a paper shade." }
 ```
@@ -75,13 +85,13 @@ An **interaction** is an authored choice with a label, optional conditions, line
 
 ```json
 { "id": "dim", "label": "Dim the lamp",
-  "when": [{"path": "self.state", "operator": "equal", "value": "bright"}],
+  "when": ["feature:lamp=bright"],
   "lines": ["You turn the dial until the glow is low and amber."],
   "effects": [{"kind": "set_feature_state", "state": "dim"}],
   "repeatable": true }
 ```
 
-- **Topics are interactions on an actor.** `ActorTopicDefinition` becomes `Interaction`, and the `topic_selected:<actor>:<topic>` signal becomes one signal for both. This replaces what I built two weeks ago, and it is better to do now, before more content is written against it.
+- **Topics are interactions on an actor.** `ActorTopicDefinition` is gone. The stage signal is `interaction_done:<owner>:<id>` for both kinds, and "used" is kept in the story variable `interaction_used:<owner>:<id>`. A `set_feature_state` effect with no feature named acts on the interaction's own feature.
 - **Layla's unlocks become interactions on features:** a cage, a gate and a safe each offer "Unlock", gated by the key item (`when`) and by not already being open. The four copied blocks become four short entries.
 - **The valve becomes an interaction on the valve feature,** and can no longer be repeated by accident.
 - **Aera's kitchen actions** can later become interactions on the kitchen island, which lets NPCs act on a feature too (Phase 4).

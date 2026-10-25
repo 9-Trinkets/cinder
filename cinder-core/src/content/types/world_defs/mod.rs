@@ -14,8 +14,8 @@ mod stats;
 mod teleports;
 
 pub use actor_defs::{
-    ActorActCast, ActorDefinition, ActorPromptContext, ActorTopicDefinition, ActorTransformation,
-    TransformationRename, TransformationTrigger,
+    ActorActCast, ActorDefinition, ActorPromptContext, ActorTransformation, TransformationRename,
+    TransformationTrigger,
 };
 pub use beat_objectives::{
     BeatObjectiveAffordancePriorityDefinition, BeatObjectiveAffordanceTarget,
@@ -32,7 +32,8 @@ pub use movement::{
 };
 pub use presentation::{ErrorTextDefinition, PresentationDefinition, PresentationTextDefinition};
 pub use rooms::{
-    RoomDefinition, RoomDescriptionOverride, RoomExitDefinition, RoomFeatureDefinition,
+    FeatureDescription, RoomDefinition, RoomDescriptionOverride, RoomExitDefinition,
+    RoomFeatureDefinition,
 };
 pub use speech::SpeechConfigDefinition;
 pub use stats::{StatDefinition, StatsDefinition};

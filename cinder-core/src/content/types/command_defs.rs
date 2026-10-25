@@ -39,8 +39,9 @@ pub enum CommandEffect {
     /// Consumes one unit of the action's item from the inventory and fires
     /// the item's `use_hook` content rule (e.g. a potion healing hp).
     UseItem,
-    /// Plays one of an actor's authored topics, chosen from the Talk panel.
-    SelectTopic,
+    /// Plays an interaction, an authored choice about an actor or a feature,
+    /// chosen from the Talk or Do panel.
+    UseInteraction,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]

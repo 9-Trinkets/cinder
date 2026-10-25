@@ -59,6 +59,7 @@ pub fn reducer_test_pack() -> ContentPack {
                 items: Default::default(),
                 items_text: String::new(),
                 inspect_text: "The sofa looks like the room's best place to rest.".to_string(),
+                ..Default::default()
             }],
             exits: vec![RoomExitDefinition {
                 room_id: KITCHEN_ID.to_string(),
@@ -238,7 +239,7 @@ pub fn reducer_test_stats() -> StatsDefinition {
 
 pub fn test_actor(id: &str, name: &str, room_id: &str) -> ActorDefinition {
     ActorDefinition {
-        topics: Vec::new(),
+        interactions: Vec::new(),
         id: id.to_string(),
         name: name.to_string(),
         room_id: room_id.to_string(),

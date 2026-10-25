@@ -15,6 +15,7 @@ pub use variable_store::{
 mod anchors;
 mod clock;
 mod conversation;
+mod features;
 mod inventory;
 mod party;
 mod relationships;
@@ -89,6 +90,9 @@ pub struct WorldState {
     pub stages_completed: usize,
     #[serde(default)]
     pub completed_stage_ids: BTreeSet<String>,
+    /// States of room features that have them, keyed `room::feature`.
+    #[serde(default)]
+    pub feature_states: BTreeMap<String, String>,
     /// Items held by room features, keyed `room::feature::item`.
     #[serde(default, alias = "feature_consumable_stock")]
     pub feature_item_stock: BTreeMap<String, u32>,
@@ -327,6 +331,7 @@ impl WorldState {
             },
             stages_completed: 0,
             completed_stage_ids: BTreeSet::new(),
+            feature_states: BTreeMap::new(),
             feature_item_stock: seeded_feature_item_stock(content),
             relations: RelationshipGraph {
                 relationships: content

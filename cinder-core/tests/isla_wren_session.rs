@@ -156,8 +156,8 @@ fn spoken_lines_name_who_is_talking_to_whom() {
     let pack = load_named_pack("isla", Some("en")).expect("isla loads");
     let mut lines: Vec<String> = Vec::new();
     for actor in &pack.actors {
-        for topic in &actor.topics {
-            lines.extend(topic.narrative_lines.clone());
+        for interaction in &actor.interactions {
+            lines.extend(interaction.lines.clone());
         }
     }
     for menu in &pack.menus {
@@ -520,7 +520,7 @@ fn wren_leaves_the_house_after_the_farewell_and_glorias_waiting_topic_closes() {
     turn(&runtime, "go hall");
     turn(&runtime, "go waiting room");
     let topics = runtime
-        .panel_options(&cinder_core::content::types::PanelDataSource::ActorTopics)
+        .panel_options(&cinder_core::content::types::PanelDataSource::ActorInteractions)
         .expect("topics");
     assert!(topics.is_empty(), "Gloria's pre-session topic is retired");
 }

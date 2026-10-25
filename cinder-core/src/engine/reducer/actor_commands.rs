@@ -267,8 +267,8 @@ pub(super) fn apply_actor_command_realization_effects(
                     target_actor.inspect_text.clone(),
                 );
             }
-            // Topics are chosen by the player from the Talk panel.
-            CommandEffect::SelectTopic => return false,
+            // Interactions are chosen by the player from the Talk and Do panels.
+            CommandEffect::UseInteraction => return false,
             CommandEffect::ConsumeTargetedConsumable => {
                 let (Some(feature_id), Some(consumable_id)) =
                     (context.feature_id, context.consumable_id)

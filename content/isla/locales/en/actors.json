@@ -42,12 +42,11 @@
       "behavior_examples": []
     },
     "room_id": "waiting-room",
-    "topics": [
+    "interactions": [
       {
         "id": "greet",
         "label": "Greet Wren",
-        "repeatable": false,
-        "narrative_lines": [
+        "lines": [
           "You sit down in the low chair beside hers, leaving a little room between you. She doesn't look up right away, just turns her stuffed rabbit so he can see the fish tank.",
           "Isla (to Wren): Hi, Wren. Looks like Rabbit's got the best seat for the fish.",
           "Wren (to Isla): His name's Biscuit. He likes watching the snail.",
@@ -75,11 +74,14 @@
       "response_notes": [],
       "behavior_examples": []
     },
-    "topics": [
+    "interactions": [
       {
         "id": "about-wren",
         "label": "Ask Gloria about Wren",
-        "narrative_lines": [
+        "when": [
+          "!wren_left_waiting_room"
+        ],
+        "lines": [
           "Isla (to Gloria): How's she doing out here?",
           "Gloria (to Isla): She came up to the desk twice to ask me if today was really Thursday. I told her yes both times, sweetheart.",
           "Gloria (to Isla): Since then she's just been sitting there counting the stones in the fish tank. The snail doesn't seem to mind the company."

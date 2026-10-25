@@ -49,7 +49,7 @@ pub(super) use movement::{
 pub(super) use observation::{
     ActorObservationContext, handle_actor_observed, handle_actor_observed_actor,
     handle_actor_observed_feature, handle_actor_observed_room, handle_current_room_observed,
-    handle_feature_observed, handle_topic_selected,
+    handle_feature_observed, handle_interaction_used,
 };
 pub(super) use party::{
     handle_item_transferred, handle_party_order_assigned, handle_player_followed_actor,

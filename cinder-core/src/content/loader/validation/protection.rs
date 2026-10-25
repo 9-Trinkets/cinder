@@ -169,6 +169,7 @@ fn validate_stage_effects(
             | AdvanceEffect::AdjustPairStat { .. }
             | AdvanceEffect::SetStoryVar { .. }
             | AdvanceEffect::SetFollowsPlayer { .. }
+            | AdvanceEffect::SetFeatureState { .. }
             | AdvanceEffect::QueueSequence { .. } => {}
         }
     }

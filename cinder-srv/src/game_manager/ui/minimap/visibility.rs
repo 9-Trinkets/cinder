@@ -96,9 +96,3 @@ impl RevealPolicy for VisitedAndConditionRevealPolicy {
         }
     }
 }
-
-/// Whether a story variable is set to a truthy (non-empty, non-"false", non-"0")
-/// value.
-pub(super) fn story_var_is_truthy(state: &WorldState, key: &str) -> bool {
-    cinder_core::engine::conditions::story_var_is_truthy(state, key)
-}

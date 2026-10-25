@@ -58,7 +58,17 @@ pub struct RoomDescriptionOverride {
     pub inspect_text: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+/// What a feature reads like while its conditions hold, such as a lamp that
+/// is dim. The first description whose conditions hold replaces `inspect_text`.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct FeatureDescription {
+    #[serde(default)]
+    pub when: Vec<Condition>,
+    pub inspect_text: String,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct RoomFeatureDefinition {
     pub id: String,
     pub label: String,
@@ -77,4 +87,28 @@ pub struct RoomFeatureDefinition {
     #[serde(default)]
     pub items_text: String,
     pub inspect_text: String,
+    /// The states this feature can be in, such as `off`, `dim`, `bright`. Empty
+    /// for a feature that is only looked at.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub states: Vec<String>,
+    /// The state it starts in. Defaults to the first declared state.
+    #[serde(default, skip_serializing_if = "String::is_empty")]
+    pub state: String,
+    /// Descriptions that replace `inspect_text` while their conditions hold.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub descriptions: Vec<FeatureDescription>,
+    /// Authored choices about this feature, offered in the Do panel.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub interactions: Vec<super::super::Interaction>,
+}
+
+impl RoomFeatureDefinition {
+    /// The state this feature starts in.
+    pub fn initial_state(&self) -> &str {
+        if self.state.is_empty() {
+            self.states.first().map(String::as_str).unwrap_or("")
+        } else {
+            &self.state
+        }
+    }
 }

@@ -41,7 +41,7 @@
           ]
         },
         {
-          "signal": "topic_selected:wren:greet",
+          "signal": "interaction_done:wren:greet",
           "next_stage_ids": [
             "stage-meet"
           ]
@@ -55,7 +55,7 @@
       "summary": "Say hello to Wren. Use Talk in the waiting room.",
       "narrative_lines": [],
       "advance_signals": [
-        "topic_selected:wren:greet"
+        "interaction_done:wren:greet"
       ],
       "next_stage_ids": [
         "stage-meet"
@@ -150,7 +150,7 @@
         },
         {
           "kind": "set_story_var",
-          "key": "topic_used:gloria:about-wren",
+          "key": "wren_left_waiting_room",
           "value": "true"
         }
       ]

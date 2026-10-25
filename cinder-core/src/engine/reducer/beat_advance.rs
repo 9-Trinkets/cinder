@@ -244,6 +244,22 @@ fn apply_stage_effect(
             }
             return Ok(());
         }
+        AdvanceEffect::SetFeatureState {
+            feature,
+            state: new_state,
+        } => {
+            let (room_id, feature_id) = feature
+                .split_once('/')
+                .map(|(room, feature)| (room.to_string(), feature.to_string()))
+                .unwrap_or_else(|| (state.current_room_id.clone(), feature.clone()));
+            return if state.set_feature_state(content, &room_id, &feature_id, new_state) {
+                Ok(())
+            } else {
+                Err(format!(
+                    "feature '{room_id}/{feature_id}' cannot be put in state '{new_state}'"
+                ))
+            };
+        }
         AdvanceEffect::QueueSequence { sequence_id } => {
             return state.queue_scripted_sequence(sequence_id);
         }

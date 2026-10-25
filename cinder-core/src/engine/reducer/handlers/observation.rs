@@ -1,13 +1,15 @@
+use crate::content::types::AdvanceEffect;
 use crate::content::types::ContentPack;
 use crate::engine::events::ObservationMode;
+use crate::engine::interactions::{find_interaction, interaction_used_var};
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::reducer::beat_advance::advance_objective_for_signal;
+use crate::engine::reducer::beat_advance::apply_stage_effects;
 use crate::engine::reducer::context::ReduceCtx;
 use crate::engine::reducer::observation::{
     render_feature_items_line, render_room_observation, render_story_text,
 };
 use crate::engine::state::WorldState;
-use crate::engine::topics::topic_used_var;
 
 pub(crate) fn handle_current_room_observed(
     state: &mut WorldState,
@@ -36,7 +38,7 @@ pub(crate) fn handle_feature_observed(ctx: &mut ReduceCtx<'_>, room_id: &str, fe
     let content = ctx.content;
     let lines = &mut *ctx.lines;
     if let Some(feature) = content.feature(room_id, feature_id) {
-        lines.narration(feature.inspect_text.clone());
+        lines.narration(content.feature_inspect_text(state, room_id, feature));
         if let Some(consumables_line) =
             render_feature_items_line(content, state, room_id, feature_id)
         {
@@ -177,25 +179,44 @@ pub(crate) fn handle_actor_observed_actor(
     }
 }
 
-pub(crate) fn handle_topic_selected(ctx: &mut ReduceCtx<'_>, actor_id: &str, topic_id: &str) {
+pub(crate) fn handle_interaction_used(ctx: &mut ReduceCtx<'_>, owner: &str, interaction_id: &str) {
     let state = &mut *ctx.state;
     let content = ctx.content;
     let lines = &mut *ctx.lines;
-    let Some(topic) = content
-        .actor(actor_id)
-        .and_then(|actor| actor.topics.iter().find(|topic| topic.id == topic_id))
-    else {
+    let Some(found) = find_interaction(content, owner, interaction_id) else {
         return;
     };
-    for line in &topic.narrative_lines {
+    let interaction = found.interaction;
+    for line in &interaction.lines {
         lines.narration(render_story_text(line, state));
     }
     state
         .story_vars
-        .set_unchecked(&topic_used_var(actor_id, topic_id), "true");
+        .set_unchecked(&interaction_used_var(owner, interaction_id), "true");
+    // An effect that names no feature acts on the one that owns the interaction.
+    let owner_feature = owner.strip_prefix("feature:");
+    let effects: Vec<_> = interaction
+        .effects
+        .iter()
+        .cloned()
+        .map(|effect| match (effect, owner_feature) {
+            (AdvanceEffect::SetFeatureState { feature, state }, Some(owner_feature))
+                if feature.is_empty() =>
+            {
+                AdvanceEffect::SetFeatureState {
+                    feature: owner_feature.to_string(),
+                    state,
+                }
+            }
+            (effect, _) => effect,
+        })
+        .collect();
+    let mut effect_lines = Vec::new();
+    apply_stage_effects(state, content, &effects, &mut effect_lines);
+    lines.extend_lines(effect_lines);
     lines.extend_lines(advance_objective_for_signal(
         state,
         content,
-        &format!("topic_selected:{actor_id}:{topic_id}"),
+        &format!("interaction_done:{}:{interaction_id}", found.owner_id()),
     ));
 }

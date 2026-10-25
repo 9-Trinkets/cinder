@@ -2,7 +2,7 @@ use super::super::context::ReduceCtx;
 use super::super::handlers::{
     ActorObservationContext, handle_actor_observed, handle_actor_observed_actor,
     handle_actor_observed_feature, handle_actor_observed_room, handle_current_room_observed,
-    handle_feature_observed, handle_item_observed, handle_topic_selected,
+    handle_feature_observed, handle_interaction_used, handle_item_observed,
 };
 use crate::engine::events::WorldEvent;
 use crate::engine::state::GamePhase;
@@ -75,8 +75,11 @@ pub(super) fn dispatch(ctx: &mut ReduceCtx<'_>, event: &WorldEvent) -> bool {
             handle_item_observed(ctx, item_id);
             true
         }
-        WorldEvent::TopicSelected { actor_id, topic_id } => {
-            handle_topic_selected(ctx, actor_id, topic_id);
+        WorldEvent::InteractionUsed {
+            owner,
+            interaction_id,
+        } => {
+            handle_interaction_used(ctx, owner, interaction_id);
             true
         }
         _ => false,

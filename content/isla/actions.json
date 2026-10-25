@@ -156,7 +156,7 @@
       "player_enabled": true,
       "target_mode": "none",
       "effects": [
-        "select_topic"
+        "use_interaction"
       ],
       "player_command": {
         "usage": "say <what to say>",
@@ -177,7 +177,45 @@
         "panel_config": {
           "title": "What do you say?",
           "prompt": "",
-          "data_source": "actor_topics",
+          "data_source": "actor_interactions",
+          "on_select": "execute_command"
+        }
+      }
+    },
+    {
+      "id": "do",
+      "command": "DO",
+      "label": "Do",
+      "group": "conversation",
+      "phrases": [
+        "do",
+        "use"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "effects": [
+        "use_interaction"
+      ],
+      "player_command": {
+        "usage": "do <what to do>",
+        "example": "do dim the lamp",
+        "advances_time": false,
+        "input": {
+          "required": true
+        }
+      },
+      "available": {},
+      "ui": {
+        "bar": true,
+        "overflow": false,
+        "group": "conversation",
+        "sort_order": 115,
+        "shortcut": 4,
+        "panel": "do",
+        "panel_config": {
+          "title": "What do you do?",
+          "prompt": "",
+          "data_source": "feature_interactions",
           "on_select": "execute_command"
         }
       }

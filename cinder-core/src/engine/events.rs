@@ -178,9 +178,11 @@ pub enum WorldEvent {
     ItemObserved {
         item_id: String,
     },
-    TopicSelected {
-        actor_id: String,
-        topic_id: String,
+    /// The player chose an interaction. `owner` is `actor:<id>` or
+    /// `feature:<room>/<feature>`.
+    InteractionUsed {
+        owner: String,
+        interaction_id: String,
     },
     CommandObjectiveProgressApplied {
         command_id: String,

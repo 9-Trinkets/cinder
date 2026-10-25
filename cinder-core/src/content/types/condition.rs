@@ -33,6 +33,9 @@ pub enum Condition {
     TraceMarkHere,
     /// The actor has been defeated.
     Defeated(String),
+    /// A feature is in a state. `feature` is a feature id in the room being
+    /// considered, or `room/feature` for one somewhere else.
+    FeatureIs { feature: String, state: String },
     /// The condition does not hold. Never wraps another `Not` or a `Path`.
     Not(Box<Condition>),
     /// At least one of the conditions holds. Written `{"any": [...]}`.
@@ -64,6 +67,24 @@ impl Condition {
             } else {
                 Self::named(item, text).map(|item| Condition::ItemHere(item.to_string()))
             };
+        }
+        if let Some(rest) = text.strip_prefix("feature:") {
+            let (feature, state) = rest
+                .split_once('=')
+                .ok_or_else(|| format!("'{text}' needs a state, as feature:lamp=dim"))?;
+            let feature = feature.trim();
+            let valid_feature = !feature.is_empty()
+                && feature.split('/').count() <= 2
+                && feature
+                    .split('/')
+                    .all(|part| Self::named(part, text).is_ok());
+            if !valid_feature || Self::named(state, text).is_err() {
+                return Err(format!("'{text}' is not a condition"));
+            }
+            return Ok(Condition::FeatureIs {
+                feature: feature.to_string(),
+                state: state.trim().to_string(),
+            });
         }
         if let Some(actor) = text.strip_prefix("defeated:") {
             return Self::named(actor, text).map(|actor| Condition::Defeated(actor.to_string()));
@@ -99,6 +120,7 @@ impl Condition {
             Condition::ItemHere(item) => format!("here:{item}"),
             Condition::TraceMarkHere => "here:trace_mark".to_string(),
             Condition::Defeated(actor) => format!("defeated:{actor}"),
+            Condition::FeatureIs { feature, state } => format!("feature:{feature}={state}"),
             Condition::Not(inner) => format!("!{}", inner.to_text()?),
             Condition::Path(_) | Condition::Any(_) | Condition::All(_) => return None,
         })
@@ -156,6 +178,9 @@ mod tests {
             "here:trace_mark",
             "defeated:warden",
             "!defeated:warden",
+            "feature:lamp=dim",
+            "feature:hall/white-noise=quiet",
+            "!feature:lamp=off",
         ] {
             let condition = Condition::parse(text).expect(text);
             assert_eq!(condition.to_text().as_deref(), Some(text));
@@ -203,6 +228,8 @@ mod tests {
         assert!(Condition::parse("two words").is_err());
         assert!(Condition::parse("!!twice").is_err());
         assert!(Condition::parse("item:").is_err());
+        assert!(Condition::parse("feature:lamp").is_err());
+        assert!(Condition::parse("feature:a/b/c=on").is_err());
         assert!(serde_json::from_str::<Condition>("\"has space\"").is_err());
     }
 }

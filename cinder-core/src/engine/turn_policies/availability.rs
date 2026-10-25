@@ -287,8 +287,15 @@ fn action_has_available_target(
             })
         }
         PanelDataSource::Exits | PanelDataSource::Features | PanelDataSource::FollowActors => true,
-        PanelDataSource::ActorTopics => {
-            !crate::engine::topics::room_topics(content, state).is_empty()
+        PanelDataSource::ActorInteractions => {
+            crate::engine::interactions::room_interactions(content, state)
+                .iter()
+                .any(|offered| offered.is_actor())
+        }
+        PanelDataSource::FeatureInteractions => {
+            crate::engine::interactions::room_interactions(content, state)
+                .iter()
+                .any(|offered| !offered.is_actor())
         }
         PanelDataSource::TeleportAnchors => content.has_any_teleport_destination(state),
         PanelDataSource::LooseRoomItems => {

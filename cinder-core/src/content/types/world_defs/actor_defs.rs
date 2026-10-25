@@ -108,25 +108,8 @@ pub struct ActorDefinition {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub unlocked_when: Vec<Condition>,
     /// Authored things the player can say to this actor from the Talk panel.
-    #[serde(default)]
-    pub topics: Vec<ActorTopicDefinition>,
-}
-
-/// One authored thing to say to an actor. Choosing it plays `narrative_lines`
-/// and fires the `topic_selected:<actor_id>:<id>` signal.
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ActorTopicDefinition {
-    pub id: String,
-    /// The option as listed in the Talk panel, e.g. "Greet Wren".
-    pub label: String,
-    #[serde(default)]
-    pub narrative_lines: Vec<String>,
-    /// Story variable that must be truthy before the topic is offered.
-    #[serde(default)]
-    pub requires_story_var: String,
-    /// Offered again after use. Defaults to once only.
-    #[serde(default)]
-    pub repeatable: bool,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub interactions: Vec<super::super::Interaction>,
 }
 
 impl ActorDefinition {

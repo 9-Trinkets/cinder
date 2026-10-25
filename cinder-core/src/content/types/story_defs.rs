@@ -130,6 +130,13 @@ pub enum AdvanceEffect {
     QueueSequence {
         sequence_id: String,
     },
+    /// Puts a feature in a state. `feature` is a feature id in the player's room,
+    /// or `room/feature`; empty means the feature that owns the interaction.
+    SetFeatureState {
+        #[serde(default)]
+        feature: String,
+        state: String,
+    },
     /// Makes an actor walk with the player, or stay where they are.
     SetFollowsPlayer {
         actor_id: String,

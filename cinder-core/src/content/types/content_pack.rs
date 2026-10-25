@@ -122,6 +122,27 @@ impl ContentPack {
             .find(|feature| feature.id == feature_id)
     }
 
+    /// What inspecting a feature reads right now: the first description whose
+    /// conditions hold, else its plain text.
+    pub fn feature_inspect_text(
+        &self,
+        state: &WorldState,
+        room_id: &str,
+        feature: &RoomFeatureDefinition,
+    ) -> String {
+        feature
+            .descriptions
+            .iter()
+            .find(|description| {
+                crate::engine::conditions::all_hold(
+                    &description.when,
+                    &crate::engine::conditions::ConditionContext::new(self, state, room_id),
+                )
+            })
+            .map(|description| description.inspect_text.clone())
+            .unwrap_or_else(|| feature.inspect_text.clone())
+    }
+
     /// Whether an exit leaving `from_room_id` can be seen and used right now.
     pub fn exit_is_open(
         &self,

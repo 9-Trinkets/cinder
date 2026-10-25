@@ -75,6 +75,7 @@ impl FloorBuilder {
             items: Default::default(),
             items_text: String::new(),
             inspect_text: feature_inspect.into(),
+            ..Default::default()
         };
 
         if x >= 0.0 && y >= 0.0 && x.fract() == 0.0 && y.fract() == 0.0 {
@@ -110,6 +111,7 @@ impl FloorBuilder {
                 items: Default::default(),
                 items_text: String::new(),
                 inspect_text: feature_inspect.into(),
+                ..Default::default()
             });
         }
     }

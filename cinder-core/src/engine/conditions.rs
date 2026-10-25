@@ -62,6 +62,15 @@ pub fn holds(condition: &Condition, ctx: &ConditionContext<'_>) -> bool {
         Condition::Defeated(actor) => ctx
             .state
             .actor_is_defeated(actor, &ctx.content.settings.combat.health_stat_id),
+        Condition::FeatureIs { feature, state } => {
+            let (room, feature) = feature
+                .split_once('/')
+                .unwrap_or((ctx.room_id, feature.as_str()));
+            ctx.state
+                .feature_state(ctx.content, room, feature)
+                .as_deref()
+                == Some(state.as_str())
+        }
         Condition::Not(inner) => !holds(inner, ctx),
         Condition::Any(group) => group.iter().any(|condition| holds(condition, ctx)),
         Condition::All(group) => all_hold(group, ctx),

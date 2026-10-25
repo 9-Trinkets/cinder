@@ -50,6 +50,7 @@ mod tests {
                 items: feature_items.iter().map(|id| (id.to_string(), 1)).collect(),
                 items_text: String::new(),
                 inspect_text: String::new(),
+                ..Default::default()
             }],
             exits: Vec::new(),
             descriptions: Vec::new(),

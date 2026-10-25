@@ -56,20 +56,22 @@ pub use actor_tick_defs::*;
 mod world_defs;
 pub use world_defs::{
     ActorActCast, ActorDefinition, ActorMovementRulesDefinition, ActorMovementTargetRuleDefinition,
-    ActorPromptContext, ActorTopicDefinition, ActorTransformation,
-    BeatObjectiveAffordancePriorityDefinition, BeatObjectiveAffordanceTarget,
-    BeatObjectiveCompletionDefinition, BeatObjectiveCompletionTrigger,
-    BeatObjectiveConditionalGuidanceDefinition, BeatObjectiveDefinition,
-    BeatObjectiveGuidanceDefinition, BeatObjectiveProgressDefinition,
+    ActorPromptContext, ActorTransformation, BeatObjectiveAffordancePriorityDefinition,
+    BeatObjectiveAffordanceTarget, BeatObjectiveCompletionDefinition,
+    BeatObjectiveCompletionTrigger, BeatObjectiveConditionalGuidanceDefinition,
+    BeatObjectiveDefinition, BeatObjectiveGuidanceDefinition, BeatObjectiveProgressDefinition,
     BeatObjectiveProgressKeyDefinition, BeatObjectivesDefinition, BehaviorActorDefinition,
     BehaviorDefinition, DropChanceSpec, DropConditionSpec, DropPoolEntry, DropPoolSpec, DropSpec,
-    ErrorTextDefinition, MovementConfigDefinition, MovementDefaultsDefinition,
+    ErrorTextDefinition, FeatureDescription, MovementConfigDefinition, MovementDefaultsDefinition,
     MovementOrderDefinition, MovementTargetBehavior, PresentationDefinition,
     PresentationTextDefinition, RoomDefinition, RoomDescriptionOverride, RoomExitDefinition,
     RoomFeatureDefinition, SpeechConfigDefinition, StatDefinition, StatsDefinition,
     TeleportAnchorDefinition, TeleportNetworkDefinition, TransformationRename,
     TransformationTrigger,
 };
+
+mod interaction;
+pub use interaction::Interaction;
 
 mod condition;
 pub use condition::{Condition, PathCondition};

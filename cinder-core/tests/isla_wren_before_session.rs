@@ -102,7 +102,7 @@ fn the_talk_panel_offers_what_to_say_to_the_people_in_the_room() {
     let runtime = runtime();
     runtime.run_turn("go inside").expect("go inside");
     let options = runtime
-        .panel_options(&cinder_core::content::types::PanelDataSource::ActorTopics)
+        .panel_options(&cinder_core::content::types::PanelDataSource::ActorInteractions)
         .expect("topics");
     let titles: Vec<_> = options.iter().map(|o| o.title.as_str()).collect();
     assert_eq!(titles, vec!["Greet Wren", "Ask Gloria about Wren"]);
@@ -119,7 +119,7 @@ fn saying_a_topic_plays_it_once_and_it_is_no_longer_offered() {
     );
 
     let options = runtime
-        .panel_options(&cinder_core::content::types::PanelDataSource::ActorTopics)
+        .panel_options(&cinder_core::content::types::PanelDataSource::ActorInteractions)
         .expect("topics");
     assert_eq!(options.len(), 1);
     assert_eq!(options[0].title, "Ask Gloria about Wren");
@@ -165,7 +165,7 @@ fn taking_a_second_book_returns_the_first_to_the_shelf() {
 fn topics_are_not_offered_where_nobody_is_listening() {
     let runtime = runtime();
     let options = runtime
-        .panel_options(&cinder_core::content::types::PanelDataSource::ActorTopics)
+        .panel_options(&cinder_core::content::types::PanelDataSource::ActorInteractions)
         .expect("topics");
     assert!(options.is_empty(), "porch has no one to talk to");
 }
