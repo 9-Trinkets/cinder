@@ -5,7 +5,7 @@
   "stage_assignment_system_prompt": "你負責為舞台分組排序，判斷哪些角色最可能加入選定的一邊。只能回傳合法的 JSON。",
   "dynamic_menu_system_prompt": "你負責為一款以對話驅動的遊戲產生選單選項。只能回傳合法的 JSON。選項文字請使用繁體中文。",
   "hostility_planner_system_prompt": "你是一位確定性的戰鬥節奏導演。只回覆單一一個 JSON 物件，不要有其他內容。",
-  "transition_commentary_empty_transcript": "（目前沒有最近的紀錄。）",
+  "transition_commentary_empty_transcript": "（該區域安靜通過；通訊頻道無額外戰鬥動靜。）",
   "transition_commentary_no_previous": "（沒有——這是第一次區域轉換。）",
   "transition_commentary_system_prompt": "你負責為遊戲撰寫符合角色口吻的場景轉換評述。只能回傳合法的 JSON。評述內容請使用繁體中文。"
 }

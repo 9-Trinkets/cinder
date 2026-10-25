@@ -17,6 +17,12 @@
         "heading": "Thursday, November 21",
         "text_item": "note-three-low",
         "duration_ms": 4000
+      },
+      {
+        "heading": "Tuesday, February 4",
+        "tint": "#e4e9ef",
+        "text": "Seventy-five days.",
+        "duration_ms": 3500
       }
     ]
   },
@@ -38,6 +44,12 @@
         "heading": "Thursday, November 21",
         "text_item": "note-three-mid",
         "duration_ms": 4000
+      },
+      {
+        "heading": "Tuesday, February 4",
+        "tint": "#e4e9ef",
+        "text": "Seventy-five days.",
+        "duration_ms": 3500
       }
     ]
   },
@@ -59,6 +71,12 @@
         "heading": "Thursday, November 21",
         "text_item": "note-three-high",
         "duration_ms": 4000
+      },
+      {
+        "heading": "Tuesday, February 4",
+        "tint": "#e4e9ef",
+        "text": "Seventy-five days.",
+        "duration_ms": 3500
       }
     ]
   }

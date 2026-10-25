@@ -1403,9 +1403,15 @@
       "narrative_lines": [
         "You read your note through once, then close the journal. You sit on the top step a little longer, listening to a city bus sigh at the Calloway stop, before heading round to the front porch for your bike."
       ],
-      "end_game": true,
       "movie_id": "episode-end-low",
-      "lines_before_movie": true
+      "lines_before_movie": true,
+      "end_act": true,
+      "next_stage_ids": [
+        "stage-tam-open"
+      ],
+      "advance_signals": [
+        "act_continued"
+      ]
     },
     {
       "id": "stage-end-mid",
@@ -1416,9 +1422,15 @@
       "narrative_lines": [
         "You read your note through once, then close the journal. You sit on the top step a little longer, listening to a city bus sigh at the Calloway stop, before heading round to the front porch for your bike."
       ],
-      "end_game": true,
       "movie_id": "episode-end-mid",
-      "lines_before_movie": true
+      "lines_before_movie": true,
+      "end_act": true,
+      "next_stage_ids": [
+        "stage-tam-open"
+      ],
+      "advance_signals": [
+        "act_continued"
+      ]
     },
     {
       "id": "stage-end-high",
@@ -1429,9 +1441,197 @@
       "narrative_lines": [
         "You read your note through once, then close the journal. You sit on the top step a little longer, listening to a city bus sigh at the Calloway stop, before heading round to the front porch for your bike."
       ],
-      "end_game": true,
       "movie_id": "episode-end-high",
-      "lines_before_movie": true
+      "lines_before_movie": true,
+      "end_act": true,
+      "next_stage_ids": [
+        "stage-tam-open"
+      ],
+      "advance_signals": [
+        "act_continued"
+      ]
+    },
+    {
+      "id": "stage-tam-open",
+      "summary": "Read your notes on Tam. They are in your journal. Use Look. Then go to the waiting room.",
+      "quest_title": "Read your notes",
+      "quest_id": "tam-notes",
+      "elapsed_minutes": 108000,
+      "actor_relocations": [
+        {
+          "actor_id": "player",
+          "to_room_id": "staff-room"
+        },
+        {
+          "actor_id": "tam",
+          "to_room_id": "waiting-room"
+        },
+        {
+          "actor_id": "ong",
+          "to_room_id": "waiting-room"
+        }
+      ],
+      "narrative_lines": [],
+      "on_advance_effects": [
+        {
+          "kind": "set_story_var",
+          "key": "episode_tam",
+          "value": "true"
+        },
+        {
+          "kind": "grant_item",
+          "item_id": "note-tam-intake",
+          "count": 1
+        },
+        {
+          "kind": "grant_item",
+          "item_id": "note-tam-school",
+          "count": 1
+        },
+        {
+          "kind": "grant_item",
+          "item_id": "note-tam-margin",
+          "count": 1
+        },
+        {
+          "kind": "set_feature_state",
+          "feature": "playroom/lamp",
+          "state": "off"
+        },
+        {
+          "kind": "set_feature_state",
+          "feature": "playroom/overhead-light",
+          "state": "on"
+        },
+        {
+          "kind": "set_feature_state",
+          "feature": "playroom/blind",
+          "state": "up"
+        },
+        {
+          "kind": "set_feature_state",
+          "feature": "hall/white-noise",
+          "state": "on"
+        }
+      ],
+      "advance_signals": [
+        "room_entered:waiting-room"
+      ],
+      "next_stage_ids": [
+        "stage-tam-waiting"
+      ],
+      "quest_kind": "main"
+    },
+    {
+      "id": "stage-tam-waiting",
+      "summary": "Be with Tam. He is in the waiting room.",
+      "quest_id": "tam-session",
+      "quest_title": "The session",
+      "narrative_lines": [
+        "Ông is at the very edge of a chair, with his hat on his knee and a newspaper he is not reading. Tam is not in a chair. He is standing by the fish tank with his backpack on both shoulders, watching the bubbles rise.",
+        "Ông (to Isla): Good afternoon, Cô. He is ready, I think. He is a good boy."
+      ],
+      "advance_signals": [
+        "room_entered:playroom"
+      ],
+      "next_stage_ids": [
+        "stage-tam-room"
+      ],
+      "on_advance_effects": [],
+      "quest_kind": "main"
+    },
+    {
+      "id": "stage-tam-room",
+      "summary": "Make the room right. Use Do. He does not come in until it is.",
+      "quest_id": "tam-session",
+      "quest_title": "The session",
+      "narrative_lines": [
+        "Tam stops at the playroom door. He looks at the ceiling light, then at the window, then at the radiator in the hall behind him. He does not come in."
+      ],
+      "actor_relocations": [
+        {
+          "actor_id": "tam",
+          "to_room_id": "hall"
+        }
+      ],
+      "advance_signals": [
+        {
+          "signal": "interaction_done:lamp:down",
+          "conditions": [
+            "feature:playroom/lamp=dim",
+            "feature:playroom/overhead-light=off"
+          ],
+          "next_stage_ids": [
+            "stage-tam-settled"
+          ]
+        },
+        {
+          "signal": "interaction_done:overhead-light:off",
+          "conditions": [
+            "feature:playroom/lamp=dim",
+            "feature:playroom/overhead-light=off"
+          ],
+          "next_stage_ids": [
+            "stage-tam-settled"
+          ]
+        },
+        {
+          "signal": "interaction_done:lamp:on",
+          "conditions": [
+            "feature:playroom/lamp=dim",
+            "feature:playroom/overhead-light=off"
+          ],
+          "next_stage_ids": [
+            "stage-tam-settled"
+          ]
+        }
+      ],
+      "next_stage_ids": [],
+      "quest_kind": "main"
+    },
+    {
+      "id": "stage-tam-settled",
+      "summary": "Stay with Tam. Say nothing.",
+      "quest_id": "tam-session",
+      "quest_title": "The session",
+      "narrative_lines": [
+        "Tam taps twice on the low table and sits down. He takes a small orange wooden car out of his pocket and sets it beside him, wheels down."
+      ],
+      "actor_relocations": [
+        {
+          "actor_id": "tam",
+          "to_room_id": "playroom"
+        }
+      ],
+      "advance_signals": [
+        "room_entered:back-yard"
+      ],
+      "next_stage_ids": [
+        "stage-tam-end"
+      ],
+      "on_advance_effects": [],
+      "quest_kind": "main"
+    },
+    {
+      "id": "stage-tam-end",
+      "summary": "The session is over.",
+      "quest_id": "tam-session",
+      "quest_title": "The session",
+      "narrative_lines": [
+        "Ông takes Tam's hand at the door. The front door clicks shut behind them, and the house settles into quiet."
+      ],
+      "actor_relocations": [
+        {
+          "actor_id": "tam",
+          "to_room_id": ""
+        },
+        {
+          "actor_id": "ong",
+          "to_room_id": ""
+        }
+      ],
+      "end_game": true,
+      "quest_kind": "main"
     }
   ]
 }

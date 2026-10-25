@@ -69,6 +69,11 @@ pub struct ActorDefinition {
     /// while the actor is hostile; defaults to 4 when omitted.
     #[serde(default)]
     pub attack_interval_minutes: Option<u32>,
+    /// Not at their `room_id` when play starts. They arrive when a stage
+    /// relocates them, for a visitor who comes later in the story. Unlike an
+    /// actor with no `room_id`, they have a place once they are here.
+    #[serde(default)]
+    pub starts_away: bool,
     /// Whether the actor starts hostile to the player's faction (used for mobs
     /// that attack on sight, like the level-2 elf army).
     #[serde(default)]

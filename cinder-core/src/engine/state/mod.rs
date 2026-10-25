@@ -317,7 +317,12 @@ impl WorldState {
             pending_replies: BTreeMap::new(),
             active_objective_stage_ids: content.beats.initial_stage_ids.clone(),
             actors: ActorRegistry {
-                actor_room_overrides: BTreeMap::new(),
+                actor_room_overrides: content
+                    .actors
+                    .iter()
+                    .filter(|actor| actor.starts_away)
+                    .map(|actor| (actor.id.clone(), String::new()))
+                    .collect(),
                 actor_known_room_ids,
                 actor_observed_room_ids: BTreeMap::new(),
                 actor_known_feature_ids: BTreeMap::new(),

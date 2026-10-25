@@ -253,22 +253,32 @@ impl CinderRuntime {
         Ok(outcome)
     }
 
-    pub fn continue_after_act(&self) -> Result<(), Box<dyn Error>> {
-        {
+    /// Carries the game on after an act ends. The world is kept and only
+    /// act-scoped variables are cleared. The `act_continued` signal then lets
+    /// the next act begin, and the lines it produces are returned.
+    pub fn continue_after_act(
+        &self,
+    ) -> Result<Vec<crate::engine::narrative::NarrativeLine>, Box<dyn Error>> {
+        let lines = {
             let mut state = self
                 .state
                 .lock()
                 .map_err(|_| "failed to lock runtime state for act continuation")?;
             if state.phase != GamePhase::ActEnded {
-                return Ok(());
+                return Ok(Vec::new());
             }
             state.phase = GamePhase::Active;
             state
                 .story_vars
                 .clear_scoped(crate::engine::state::VariableScope::Act);
-        }
+            crate::engine::reducer::beat_advance::advance_objective_for_signal(
+                &mut state,
+                self.content.as_ref(),
+                "act_continued",
+            )
+        };
         self.clear_act_closure_cache()?;
-        Ok(())
+        Ok(lines)
     }
 
     fn clear_act_closure_cache(&self) -> Result<(), Box<dyn Error>> {

@@ -197,9 +197,10 @@ pub async fn run_command(
             if outcome.phase == GamePhase::ActEnded {
                 // The world carries on into the next act; only act-scoped
                 // variables are cleared.
-                runtime
+                let lines = runtime
                     .continue_after_act()
                     .map_err(|e| format!("act continuation error: {e}"))?;
+                outcome.lines.extend(lines);
                 outcome.phase = GamePhase::Active;
             }
 
@@ -290,9 +291,10 @@ where
             if outcome.phase == GamePhase::ActEnded {
                 // The world carries on into the next act; only act-scoped
                 // variables are cleared.
-                runtime
+                let lines = runtime
                     .continue_after_act()
                     .map_err(|e| format!("act continuation error: {e}"))?;
+                outcome.lines.extend(lines);
                 outcome.phase = GamePhase::Active;
             }
             let movie = consume_projector_sequence(runtime);
@@ -430,7 +432,7 @@ pub async fn continue_play(
         &play_id,
         &player_id,
         move |runtime, pack_id, lines| {
-            runtime
+            let _ = runtime
                 .continue_after_act()
                 .map_err(|e| format!("play continuation error: {e}"))?;
             let ui_snapshot = build_ui_snapshot(runtime, pack_id, lines)?;

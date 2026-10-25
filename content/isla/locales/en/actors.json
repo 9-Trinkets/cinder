@@ -147,5 +147,47 @@
     "tags": [
       "offstage"
     ]
+  },
+  {
+    "id": "tam",
+    "name": "Tam",
+    "initial_stats": {},
+    "aliases": [
+      "tam",
+      "boy",
+      "child"
+    ],
+    "inspect_text": "Tam is six, small and quick, with a cowlick that will not lie flat. He carries a backpack on both shoulders and does not put it down. He is not looking at you. He is looking at the light.",
+    "prompt_context": {
+      "character_notes": [],
+      "subtext_notes": [],
+      "response_notes": [],
+      "behavior_examples": []
+    },
+    "room_id": "waiting-room",
+    "interactions": [],
+    "starts_away": true
+  },
+  {
+    "id": "ong",
+    "name": "Ông",
+    "initial_stats": {},
+    "aliases": [
+      "ông",
+      "ong",
+      "grandfather",
+      "old man",
+      "tam's grandfather"
+    ],
+    "inspect_text": "Ông is in his late sixties, in a pressed cardigan, with a folded newspaper he is not reading. He sits at the very edge of a chair with his hat on his knee.",
+    "prompt_context": {
+      "character_notes": [],
+      "subtext_notes": [],
+      "response_notes": [],
+      "behavior_examples": []
+    },
+    "room_id": "waiting-room",
+    "interactions": [],
+    "starts_away": true
   }
 ]

@@ -141,6 +141,10 @@ The practical outcome is small: a quieter corner, headphones at school, a door c
 | **Moving Isla at the start of an episode** | **Built.** `actor_relocations` moves the player. |
 | **Playroom and hall as instruments** | **Built.** Lamp (off, dim, bright), overhead light, blind, white-noise machine (on, low, off) and the round table, offered only when `episode_tam` is set. Wren's story hour leaves the lamp on and the overhead light off. |
 
+## 11b. As built: the skeleton
+
+Wren's three endings now end the act (`end_act`) instead of the game. Their card has a second frame, "Tuesday, February 4", and the signal `act_continued` (sent when the act continues) opens `stage-tam-open`: the clock jumps 75 days, Isla is placed in the staff room, Tam and Ông arrive in the waiting room (they are `starts_away` actors, absent until a stage relocates them), her three notes on Tam are granted, `episode_tam` is set and the playroom and hall are reset. Then: waiting room (`stage-tam-waiting`), the door (`stage-tam-room`: he stays in the hall until the overhead light is off and the lamp is on low), settled (`stage-tam-settled`), and an ending (`stage-tam-end`). All of Tam's lines are placeholders. `isla_tam_skeleton.rs` pins the flow.
+
 ## 12. Build order
 
 1. **This design, agreed.**

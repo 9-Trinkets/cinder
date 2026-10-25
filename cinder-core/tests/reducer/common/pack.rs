@@ -254,6 +254,7 @@ pub fn test_actor(id: &str, name: &str, room_id: &str) -> ActorDefinition {
         xp_drop: 0,
         attack_interval_minutes: None,
         initial_hostile: false,
+        starts_away: false,
         initial_relationship: None,
         attack_kind: String::new(),
         resistances: BTreeMap::new(),

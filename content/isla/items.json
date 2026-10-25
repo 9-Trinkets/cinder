@@ -202,5 +202,41 @@
     "kind": "misc",
     "group": "journal",
     "description": "Wren's drawing, in crayon, pressed between two pages. A bird sitting on the ground between two trees, with no nest in her wings. Beside her, very small, a girl holds up a red stop sign."
+  },
+  {
+    "id": "note-tam-intake",
+    "label": "Tam, intake call",
+    "aliases": [
+      "tam intake",
+      "intake call",
+      "tam call"
+    ],
+    "kind": "misc",
+    "description": "A page in your journal, in your own hand. Tam. Six. First grade. His mother took the call on her break, in English, and his father took the rest of it later.\n\nVery few words, but he understands everything, in both languages at home. A new baby in March. Everyone is tired. They did not want him described as less than he is.",
+    "group": "journal"
+  },
+  {
+    "id": "note-tam-school",
+    "label": "Tam, from the school",
+    "aliases": [
+      "school note",
+      "tam school",
+      "tam referral"
+    ],
+    "kind": "misc",
+    "description": "A typed page from the school counselor, taped into your journal. Tam has stopped joining circle time and goes under the table. His plan lets him use the quiet corner, but the corner is next to the reading rug.\n\nA teacher's line at the bottom says he has withdrawn. His parents asked that nobody use that word in the room.",
+    "group": "journal"
+  },
+  {
+    "id": "note-tam-margin",
+    "label": "Tam, Dr. Bell's margin",
+    "aliases": [
+      "bell margin",
+      "margin note",
+      "tam margin"
+    ],
+    "kind": "misc",
+    "description": "In the margin of the intake page, in Dr. Bell's green ink. Go slowly. Fewer words. Let him decide when he comes in.",
+    "group": "journal"
   }
 ]
