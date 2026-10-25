@@ -132,10 +132,20 @@ pub fn item_interactions(
     state: &WorldState,
     item_id: &str,
 ) -> Vec<ItemInteraction> {
+    let carries_interactions = |action: &&crate::content::types::ActionDefinition| {
+        action.player_enabled && action.has_effect(CommandEffect::UseInteraction)
+    };
+    // Items are used on features, so prefer the action whose panel lists them.
     let Some(action) = content
         .actions
         .iter()
-        .find(|action| action.player_enabled && action.has_effect(CommandEffect::UseInteraction))
+        .filter(carries_interactions)
+        .find(|action| {
+            action.ui.panel_config.as_ref().is_some_and(|panel| {
+                panel.data_source == crate::content::types::PanelDataSource::FeatureInteractions
+            })
+        })
+        .or_else(|| content.actions.iter().find(carries_interactions))
     else {
         return Vec::new();
     };
