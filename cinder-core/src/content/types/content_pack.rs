@@ -423,12 +423,7 @@ impl ContentPack {
     }
     /// rules ("truthy" = any non-empty value other than "false"/"0").
     pub fn story_var_is_truthy(&self, state: &WorldState, key: &str) -> bool {
-        state.story_vars.get(key).is_some_and(|value| {
-            !matches!(
-                value.trim().to_ascii_lowercase().as_str(),
-                "" | "false" | "0"
-            )
-        })
+        crate::engine::conditions::story_var_is_truthy(state, key)
     }
 
     pub fn resolve_item_in_scope<'a>(

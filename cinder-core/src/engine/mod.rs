@@ -4,6 +4,7 @@ pub mod behavior;
 mod combat_cooldowns;
 mod combat_targets;
 pub mod commands;
+pub mod conditions;
 pub mod conversation_memory;
 pub mod dialogue;
 pub mod dialogue_grounding;

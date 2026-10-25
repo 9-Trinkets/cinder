@@ -41,9 +41,9 @@ pub use speech::{SpeechIntentEffect, SpeechIntentLabel, SpeechIntentsConfig};
 
 mod story_defs;
 pub use story_defs::{
-    ActCastMember, ActorRelocationDefinition, AdvanceCondition, AdvanceEffect, AdvanceSignal,
-    BeatDefinition, BeatsDefinition, MenuTriggerMode, MovieCardDefinition, MovieStyle,
-    OpeningDefinition, OpeningMenuDefinition, OpeningMenuOptionDefinition, OpeningMovieDefinition,
+    ActCastMember, ActorRelocationDefinition, AdvanceEffect, AdvanceSignal, BeatDefinition,
+    BeatsDefinition, MenuTriggerMode, MovieCardDefinition, MovieStyle, OpeningDefinition,
+    OpeningMenuDefinition, OpeningMenuOptionDefinition, OpeningMovieDefinition,
     OpeningMovieFrameDefinition, OpeningPromptContext, ProtectionRuleDefinition, SpeechTopicSignal,
     StageAssignmentDefinition, SurvivorRewardDefinition,
 };
@@ -72,6 +72,9 @@ pub use world_defs::{
     TeleportAnchorDefinition, TeleportNetworkDefinition, TransformationRename,
     TransformationTrigger,
 };
+
+mod condition;
+pub use condition::{Condition, PathCondition};
 
 mod command_defs;
 pub use command_defs::{

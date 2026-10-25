@@ -1,3 +1,4 @@
+use super::Condition;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
@@ -64,7 +65,7 @@ pub enum AdvanceSignal {
     Conditional {
         signal: String,
         #[serde(default)]
-        conditions: Vec<AdvanceCondition>,
+        conditions: Vec<Condition>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         next_stage_ids: Option<Vec<String>>,
     },
@@ -77,7 +78,7 @@ impl AdvanceSignal {
             Self::Conditional { signal, .. } => signal,
         }
     }
-    pub fn conditions(&self) -> &[AdvanceCondition] {
+    pub fn conditions(&self) -> &[Condition] {
         match self {
             Self::Simple(_) => &[],
             Self::Conditional { conditions, .. } => conditions,
@@ -90,13 +91,6 @@ impl AdvanceSignal {
             Self::Conditional { next_stage_ids, .. } => next_stage_ids.as_deref(),
         }
     }
-}
-
-#[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct AdvanceCondition {
-    pub path: String,
-    pub operator: String,
-    pub value: serde_json::Value,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

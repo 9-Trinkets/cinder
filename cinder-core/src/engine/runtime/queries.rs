@@ -360,10 +360,16 @@ impl CinderRuntime {
             .filter(|s| match current_actor_id {
                 None => true,
                 Some(actor_id) => s.advance_signals.iter().any(|sig| {
-                    sig.conditions().iter().any(|c| {
-                        c.path == "story_vars.act_cast_actor_id"
-                            && c.operator == "equal"
-                            && c.value.as_str() == Some(actor_id)
+                    sig.conditions().iter().any(|c| match c {
+                        crate::content::types::Condition::Path(c) => {
+                            c.path == "story_vars.act_cast_actor_id"
+                                && c.operator == "equal"
+                                && c.value.as_str() == Some(actor_id)
+                        }
+                        crate::content::types::Condition::StoryVarIs { name, value } => {
+                            name == "act_cast_actor_id" && value == actor_id
+                        }
+                        _ => false,
                     })
                 }),
             })

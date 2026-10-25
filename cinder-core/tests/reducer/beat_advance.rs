@@ -1,9 +1,10 @@
 use super::common::*;
 use cinder_core::content::types::{
-    ActionDefinition, AdvanceCondition, AdvanceEffect, AdvanceSignal, BeatDefinition,
+    ActionDefinition, AdvanceEffect, AdvanceSignal, BeatDefinition,
     BeatObjectiveCompletionDefinition, BeatObjectiveDefinition, BeatObjectiveGuidanceDefinition,
     BeatObjectiveProgressDefinition, BeatObjectiveProgressKeyDefinition, BeatObjectiveProgressRef,
-    BeatObjectivesDefinition, BeatsDefinition, CommandEffect, ItemDefinition,
+    BeatObjectivesDefinition, BeatsDefinition, CommandEffect, Condition, ItemDefinition,
+    PathCondition,
 };
 use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
 use cinder_core::engine::reducer::apply_events;
@@ -20,11 +21,11 @@ fn command_used_signal_can_advance_stage_after_objective_completion_and_clears_p
                 id: "dinner-prep".to_string(),
                 advance_signals: vec![AdvanceSignal::Conditional {
                     signal: "command_used".to_string(),
-                    conditions: vec![AdvanceCondition {
+                    conditions: vec![Condition::Path(PathCondition {
                         path: "story_vars.values.beat_objective:progress:dinner-prep-cook-and-check-in:meal_ready".to_string(),
                         operator: "equal".to_string(),
                         value: json!("true"),
-                    }],
+                    })],
                     next_stage_ids: None,
                 }],
                 next_stage_ids: vec!["share-dinner".to_string()],

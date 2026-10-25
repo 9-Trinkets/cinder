@@ -6,8 +6,9 @@ use crate::engine::narrative::NarrativeLine;
 use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine, WorldState};
 use serde_json::json;
 
-use super::beat_advance::{advance_conditions_met, advance_objective_for_signal};
+use super::beat_advance::advance_objective_for_signal;
 use super::observation::actors_in_room;
+use crate::engine::conditions::{ConditionContext, all_hold};
 
 pub(super) fn advance_actor_stats_on_tick(
     state: &mut WorldState,
@@ -193,7 +194,10 @@ pub(super) fn advance_stat_threshold_objectives(
         };
         if stage.advance_signals.iter().any(|signal| {
             signal.signal() == "stat_threshold"
-                && advance_conditions_met(state, signal.conditions())
+                && all_hold(
+                    signal.conditions(),
+                    &ConditionContext::new(content, state, &state.current_room_id),
+                )
         }) {
             return advance_objective_for_signal(state, content, "stat_threshold");
         }
@@ -216,7 +220,10 @@ pub(super) fn advance_story_var_objectives(
         };
         if stage.advance_signals.iter().any(|signal| {
             signal.signal() == "story_vars_changed"
-                && advance_conditions_met(state, signal.conditions())
+                && all_hold(
+                    signal.conditions(),
+                    &ConditionContext::new(content, state, &state.current_room_id),
+                )
         }) {
             return advance_objective_for_signal(state, content, "story_vars_changed");
         }

@@ -111,10 +111,5 @@ fn reveal_condition_met(
 /// Whether a story variable is set to a truthy (non-empty, non-"false", non-"0")
 /// value.
 pub(super) fn story_var_is_truthy(state: &WorldState, key: &str) -> bool {
-    state.story_vars.get(key).is_some_and(|value| {
-        !matches!(
-            value.trim().to_ascii_lowercase().as_str(),
-            "" | "false" | "0"
-        )
-    })
+    cinder_core::engine::conditions::story_var_is_truthy(state, key)
 }

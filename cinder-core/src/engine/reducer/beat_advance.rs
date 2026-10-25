@@ -1,6 +1,4 @@
-use crate::content::types::{
-    AdvanceCondition, AdvanceEffect, ContentPack, SurvivorRewardDefinition,
-};
+use crate::content::types::{AdvanceEffect, Condition, ContentPack, SurvivorRewardDefinition};
 use crate::engine::narrative::{NarrativeLine, NarrativeLines};
 use crate::engine::state::{
     GamePhase, SpawnActorConfig, SpawnActorOutcome, VariableStore, WorldState,
@@ -39,6 +37,7 @@ pub(crate) fn advance_objective_for_signal(
         };
         let Some(matched_signal) = current_stage.advance_signals.iter().find(|candidate| {
             advance_signal_matches(
+                content,
                 state,
                 &current_stage_id,
                 signal,
@@ -486,11 +485,12 @@ fn dispatch_actor_spawns_for_stage(
 }
 
 fn advance_signal_matches(
+    content: &ContentPack,
     state: &WorldState,
     current_stage_id: &str,
     current_signal: &str,
     candidate_signal: &str,
-    conditions: &[AdvanceCondition],
+    conditions: &[Condition],
 ) -> bool {
     if let Some(minutes) = candidate_signal.strip_prefix("stage_elapsed:") {
         let Ok(required_minutes) = minutes.parse::<u32>() else {
@@ -506,10 +506,17 @@ fn advance_signal_matches(
                 .current_time_minutes
                 .saturating_sub(started_minutes)
                 >= required_minutes
-            && advance_conditions_met(state, conditions);
+            && conditions_hold(content, state, conditions);
     }
 
-    candidate_signal == current_signal && advance_conditions_met(state, conditions)
+    candidate_signal == current_signal && conditions_hold(content, state, conditions)
+}
+
+fn conditions_hold(content: &ContentPack, state: &WorldState, conditions: &[Condition]) -> bool {
+    crate::engine::conditions::all_hold(
+        conditions,
+        &crate::engine::conditions::ConditionContext::new(content, state, &state.current_room_id),
+    )
 }
 
 fn fallback_stage_to_activate(
@@ -535,83 +542,6 @@ fn fallback_stage_to_activate(
         .map(|stage| stage.id.clone())
 }
 
-pub(super) fn advance_conditions_met(state: &WorldState, conditions: &[AdvanceCondition]) -> bool {
-    if conditions.is_empty() {
-        return true;
-    }
-    let input = world_state_condition_input(state);
-    conditions
-        .iter()
-        .all(|cond| evaluate_advance_condition(&input, cond))
-}
-
-pub(super) fn world_state_condition_input(state: &WorldState) -> serde_json::Value {
-    serde_json::json!({
-        "current_time_minutes": state.clock.current_time_minutes,
-        "current_room_id": state.current_room_id,
-        "active_stage_ids": state.active_objective_stage_ids,
-        "stages_completed": state.stages_completed,
-        "actor_stats": state.combat.actor_stats,
-        "pair_stats": state.combat.pair_stats,
-        "story_vars": state.story_vars,
-        "inventory": state.inventory.player_inventory,
-    })
-}
-
-pub(super) fn evaluate_advance_condition(
-    input: &serde_json::Value,
-    cond: &AdvanceCondition,
-) -> bool {
-    let actual = resolve_path(input, &cond.path);
-    match cond.operator.as_str() {
-        "equal" => actual == Some(&cond.value),
-        "greater_than" => compare_numbers(&actual, &cond.value, |a, b| a > b),
-        "less_than" => compare_numbers(&actual, &cond.value, |a, b| a < b),
-        "gte" => compare_numbers(&actual, &cond.value, |a, b| a >= b),
-        "lte" => compare_numbers(&actual, &cond.value, |a, b| a <= b),
-        "not_equal" => actual != Some(&cond.value),
-        "array_contains" => actual
-            .and_then(|v| v.as_array())
-            .map(|arr| arr.contains(&cond.value))
-            .unwrap_or(false),
-        "starts_with" => match (actual.and_then(|v| v.as_str()), cond.value.as_str()) {
-            (Some(s), Some(p)) => s.starts_with(p),
-            _ => false,
-        },
-        "ends_with" => match (actual.and_then(|v| v.as_str()), cond.value.as_str()) {
-            (Some(s), Some(p)) => s.ends_with(p),
-            _ => false,
-        },
-        "contains" => match (actual.and_then(|v| v.as_str()), cond.value.as_str()) {
-            (Some(s), Some(p)) => s.contains(p),
-            _ => false,
-        },
-        _ => false,
-    }
-}
-
-pub(super) fn resolve_path<'a>(
-    value: &'a serde_json::Value,
-    path: &str,
-) -> Option<&'a serde_json::Value> {
-    path.split('.')
-        .try_fold(value, |acc, key| acc.as_object()?.get(key))
-}
-
-pub(super) fn compare_numbers(
-    actual: &Option<&serde_json::Value>,
-    expected: &serde_json::Value,
-    cmp: impl Fn(f64, f64) -> bool,
-) -> bool {
-    let Some(a) = actual.and_then(|v| v.as_f64()) else {
-        return false;
-    };
-    let Some(b) = expected.as_f64() else {
-        return false;
-    };
-    cmp(a, b)
-}
-
 pub(super) fn time_reached_signal(current_time_minutes: u32) -> String {
     let hour24 = (current_time_minutes / 60) % 24;
     let minute = current_time_minutes % 60;
@@ -629,11 +559,8 @@ pub(super) fn time_reached_signals(
 
 #[cfg(test)]
 mod tests {
-    use super::{
-        advance_conditions_met, advance_objective_for_signal, evaluate_advance_condition,
-        fallback_stage_to_activate,
-    };
-    use crate::content::types::{AdvanceCondition, AdvanceSignal, BeatDefinition, BeatsDefinition};
+    use super::{advance_objective_for_signal, fallback_stage_to_activate};
+    use crate::content::types::{AdvanceSignal, BeatDefinition, BeatsDefinition};
     use crate::engine::state::{VariableStore, WorldState};
 
     #[test]
@@ -656,74 +583,6 @@ mod tests {
         );
 
         assert_eq!(stage_id.as_deref(), Some("wind-down"));
-    }
-
-    #[test]
-    fn empty_advance_conditions_are_met() {
-        let pack = crate::engine::test_fixtures::minimal_test_pack();
-        let state = WorldState::new(&pack);
-
-        assert!(advance_conditions_met(&state, &[]));
-    }
-
-    #[test]
-    fn advance_condition_passes_when_threshold_is_met() {
-        let input = serde_json::json!({ "score": 5 });
-        let condition = AdvanceCondition {
-            path: "score".to_string(),
-            operator: "gte".to_string(),
-            value: serde_json::json!(4),
-        };
-
-        assert!(evaluate_advance_condition(&input, &condition));
-    }
-
-    #[test]
-    fn advance_condition_fails_when_threshold_is_not_met() {
-        let input = serde_json::json!({ "score": 2 });
-        let condition = AdvanceCondition {
-            path: "score".to_string(),
-            operator: "gte".to_string(),
-            value: serde_json::json!(4),
-        };
-
-        assert!(!evaluate_advance_condition(&input, &condition));
-    }
-
-    #[test]
-    fn advance_condition_string_operators() {
-        let input = serde_json::json!({
-            "current_room_id": "courtyard_center",
-            "tag": "prefix-middle-suffix"
-        });
-
-        let cond_starts = AdvanceCondition {
-            path: "current_room_id".to_string(),
-            operator: "starts_with".to_string(),
-            value: serde_json::json!("courtyard_"),
-        };
-        assert!(evaluate_advance_condition(&input, &cond_starts));
-
-        let cond_ends = AdvanceCondition {
-            path: "tag".to_string(),
-            operator: "ends_with".to_string(),
-            value: serde_json::json!("suffix"),
-        };
-        assert!(evaluate_advance_condition(&input, &cond_ends));
-
-        let cond_contains = AdvanceCondition {
-            path: "tag".to_string(),
-            operator: "contains".to_string(),
-            value: serde_json::json!("middle"),
-        };
-        assert!(evaluate_advance_condition(&input, &cond_contains));
-
-        let cond_fails = AdvanceCondition {
-            path: "current_room_id".to_string(),
-            operator: "starts_with".to_string(),
-            value: serde_json::json!("village_"),
-        };
-        assert!(!evaluate_advance_condition(&input, &cond_fails));
     }
 
     #[test]
