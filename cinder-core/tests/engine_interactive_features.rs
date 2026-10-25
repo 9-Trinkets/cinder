@@ -276,6 +276,11 @@ fn an_interaction_that_needs_an_item_is_offered_for_that_item() {
     });
     let mut state = WorldState::new(&pack);
     state.current_room_id = "playroom".to_string();
+    assert!(
+        cinder_core::engine::interactions::item_interactions(&pack, &state, "test-bulb").is_empty(),
+        "not offered until the item is carried"
+    );
+    state.add_item("test-bulb");
     let offered = cinder_core::engine::interactions::item_interactions(&pack, &state, "test-bulb");
     assert_eq!(offered.len(), 1);
     assert_eq!(offered[0].label, "Mend the lamp");
