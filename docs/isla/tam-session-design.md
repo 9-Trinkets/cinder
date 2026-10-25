@@ -58,7 +58,7 @@ These are the bids. Each is shown as behavior, never as a feeling.
 | Goes under the table and taps twice | I need a place | Sit on the floor nearby, say nothing, wait | Reaching under, coaxing |
 | Lines up the animals, shortest to longest | This is how I settle | Do not touch them. Hand him one that fits, if one is missing | Moving them, praising |
 | Puts a book on the floor in front of Isla | Read this | Read it, from the first page | Offering another book |
-| Turns back to the same page | Again | Read it again, the same way | Skipping, summarizing |
+| Turns back to the same page | Read it again (no word) | Read it again, the same way | Skipping, summarizing |
 | Puts the train car in her hand | A little trust | Hold it. Give it back when he reaches | Putting it away, saying thank you too much |
 
 ## 5. The fit table **(decision)**
@@ -88,7 +88,7 @@ If she asks him a question at any point, `asked_him` is set and he goes back und
 
 ## 7. The word **(decision)**
 
-The bible left open whether the word is *Mai* or *again*. Proposal: **both, in order.** *Again* is the first word, when he turns back the page (it is a request and the player can hear it). *Mai* comes only at the top tier, once, after the second reading, to the book. Most players will hear *again*. A few will hear *Mai*, and for them the ending changes. The crib scene stays in the novel.
+**One word: *Mai*.** Said once, to the book, at the top ending, as `Tam (to Isla): Mai.` Nothing else he does is a word. Turning the page back is a request and needs none, so *again* is never spoken in the game. The crib scene stays in the novel.
 
 ## 8. The book problem
 
@@ -134,7 +134,7 @@ The practical outcome is small: a quieter corner, headphones at school, a door c
 | Dated card between episodes | **Built** (card movies) |
 | Held items on shelves, a book to pick | **Built** |
 | Feedback tiers from stage `completion_effects` | **Built** (Wren) |
-| **A beat that waits and counts quiet turns** | **Gap.** Waiting exists. Counting quiet beats as a gate needs a small effect (`adjust` a story variable on each wait) or a stage signal. |
+| **A beat that waits and counts quiet turns** | **Decided: staged menus with a Wait option** (section 11c). The menu choice adds to a quiet-beat variable through its effects, and later options read it. |
 | **Tam acting on room state** | **Gap.** A child who reacts to the lamp or the knock needs stages or hooks that read feature state. Conditional signals can do it. A scripted sequence for the knock. |
 | **A silent child in the transcript** | **Open.** Tam's lines are all behavior. Probably no engine change; the voice guide should say how it reads. |
 | **Time-jump stage that carries state** | **Built.** `end_act` keeps the world; only `act`-scoped variables clear. |
@@ -144,6 +144,13 @@ The practical outcome is small: a quieter corner, headphones at school, a door c
 ## 11b. As built: the skeleton
 
 Wren's three endings now end the act (`end_act`) instead of the game. Their card has a second frame, "Tuesday, February 4", and the signal `act_continued` (sent when the act continues) opens `stage-tam-open`: the clock jumps 75 days, Isla is placed in the staff room, Tam and Ông arrive in the waiting room (they are `starts_away` actors, absent until a stage relocates them), her three notes on Tam are granted, `episode_tam` is set and the playroom and hall are reset. Then: waiting room (`stage-tam-waiting`), the door (`stage-tam-room`: he stays in the hall until the overhead light is off and the lamp is on low), settled (`stage-tam-settled`), and an ending (`stage-tam-end`). All of Tam's lines are placeholders. `isla_tam_skeleton.rs` pins the flow.
+
+## 11c. Decisions made (answers)
+
+1. **Isla may set the room at any time,** including before Tam arrives. Tam reacts to the room as it is when he gets there. Nothing is offered or withheld by a sign, so early preparation is simply allowed.
+2. **His one word is *Mai*,** at the top ending (section 7).
+3. **Waiting is a choice in staged menus,** like Wren's: each beat of the session is a menu with *Wait* as one option, and the room's state and the count of quiet beats gate what else is offered. (Not a global Wait command, and not every action counting as a beat.)
+4. **About twelve beats** for the session.
 
 ## 12. Build order
 
@@ -158,7 +165,7 @@ Wren's three endings now end the act (`end_act`) instead of the game. Their card
 ## 13. Open questions
 
 1. **What does Isla find when the episode opens?** After Wren's story hour the lamp is on and the overhead light is off. The Tam stage must set them back, or the room is wrong before he arrives.
-2. **Is *again* then *Mai* right,** or does the second word make the ending too neat?
-3. **Does Isla need an early chance to set the room,** or should every change wait for a sign? Early changes reward preparation and risk making her feel she has solved him before he arrives.
+2. **Is *Mai* alone too neat?** It is the one word in the game, so it carries the ending. If it lands too hard, the fallback is no spoken word and a longer silence.
+3. **Early setup is allowed (decided).** The risk is that Isla feels she has solved him before he arrives. The fit table must therefore reward *noticing a sign* even when the room was already right.
 4. **How long is a quiet beat?** If a session is a handful of turns and each is mostly waiting, it might feel empty, and might need small things to notice in each.
 5. **How do we show a session with no spoken answers** so it reads as full and not as nothing? This is the biggest risk, and the first stage skeleton should test it.

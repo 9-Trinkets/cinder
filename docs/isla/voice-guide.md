@@ -254,9 +254,9 @@ Wren answers, so her act is mostly speech. Tam does not, so his act is mostly **
 
 Almost no words. What he does is the speech.
 
-**What he can say:** *again*, *train*, *up*, *no*, *Ông*, and, once, *Mai*. Never a sentence. Never a question. Said low, to an object or to the air more often than to a person.
+**What he says in the game:** one word, *Mai*, once, at the top ending. At home he has a few more (*again*, *train*, *up*, *no*, *Ông*), and the bible may mention them, but in the room he does not speak. Never a sentence. Never a question.
 
-**How his words are written.** `Tam (to Isla): again.` Lowercase, one word, a full stop. Even when he is looking at a book, the label names the person nearest him, so the speech parses like every other line. A narration line before it says where he is looking: "He turns back one page and puts his finger on the bridge."
+**How his word is written.** `Tam (to Isla): Mai.` One word, a full stop. Even when he is looking at a book, the label names the person nearest him, so the speech parses like every other line. A narration line before it says where he is looking: "He turns back one page and puts his finger on the bridge."
 
 **How his behavior is written.** Plain, exact, present tense, at a child's height.
 - Objects and position: "He lines the animals up on the rug, shortest to longest."
@@ -269,7 +269,7 @@ Almost no words. What he does is the speech.
 **Calibration (Tam):**
 - Narration: "He stops at the door. He looks at the ceiling light, then at the window."
 - Narration: "He takes a small orange car out of his pocket and sets it down, wheels on the floor."
-- `Tam (to Isla): again.`
+- `Tam (to Isla): Mai.` (the only one, at the top ending, after a narration line that says he is looking at the book)
 
 **Not these:** "Tam looks overwhelmed." "He seems to relax." "He says nothing, but his eyes say it all."
 
@@ -354,7 +354,7 @@ They are mostly offstage, named in notes and in what Tam carries. If any of them
 In addition to section 19:
 1. **Does any line say what Tam feels, wants or understands?** Replace it with something he does.
 2. **Does Isla ask Tam anything?** Remove it. A question belongs to an adult.
-3. **Does Tam say more than one word?** Cut it. *Mai* is said once, and only at the top ending.
+3. **Does Tam say anything but *Mai*?** Cut it. *Mai* is said once, and only at the top ending.
 4. **Is there Vietnamese beyond *Ông*, *Cô* and *bé Tam*?** Take it out, or give it only in narration, with no words.
 5. **Does the family explain itself or its culture?** Cut it. They are people, and nobody says why they are the way they are.
 6. **Does a family member's English read as a type's?** Rewrite it as a person's.

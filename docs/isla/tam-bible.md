@@ -150,7 +150,7 @@ Each is something the player *finds*, by changing the room or by noticing, befor
 1. **The noise.** The radiator knock and the white-noise hiss hurt. Isla notices him cover his ear at the knock, and goes into the hall to turn the machine down.
 2. **The light.** The overhead light is wrong, and the lamp is right. Lower the light and he comes out from under the table.
 3. **The book.** He has brought his own. Isla must not offer another, and must read his book, again, the same way.
-4. **The word.** After enough of all this, he says one word, once, softly, to the book and not to Isla: *Mai.* It is not what the adults thought. It means he is thinking about his sister, not resenting her.
+4. **The word.** After enough of all this, he says one word, once, softly, to the book and not to Isla: *Mai.* (Decided: this is the only word he says in the game.) It is not what the adults thought. It means he is thinking about his sister, not resenting her.
 
 The adult meaning is never said aloud. The player puts it together.
 
@@ -169,7 +169,7 @@ Rules for every line and every action:
 | "It's too loud." | Covers one ear. Steps back to the door. |
 | "Turn it down." | Looks at the machine in the hall, then at Isla. |
 | "I need to be under here." | Goes under the table and taps twice. |
-| "Read it again." | Turns back the page. Says, once, *again.* |
+| "Read it again." | Turns back the page. No word. |
 | "I trust you a little." | Puts the orange train car in her hand, and takes it back a moment later. |
 | "I love my sister." | Says *Mai,* once, to the book. |
 
