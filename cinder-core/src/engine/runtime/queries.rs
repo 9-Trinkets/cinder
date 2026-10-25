@@ -413,7 +413,18 @@ impl CinderRuntime {
             .movies
             .iter()
             .find(|movie| movie.id == sequence_id)
-            .cloned();
+            .cloned()
+            .map(|mut movie| {
+                for frame in &mut movie.frames {
+                    if frame.text.is_empty()
+                        && !frame.text_item.is_empty()
+                        && let Some(item) = self.content.item(&frame.text_item)
+                    {
+                        frame.text = item.description.clone();
+                    }
+                }
+                movie
+            });
         Ok(found)
     }
 

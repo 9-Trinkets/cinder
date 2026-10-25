@@ -21,6 +21,14 @@ impl ContentValidator for MoviesValidator {
             }
         }
         for movie in &pack.movies {
+            for frame in &movie.frames {
+                if !frame.text_item.is_empty() && pack.item(&frame.text_item).is_none() {
+                    diagnostics.push(format!(
+                        "movie '{}' takes a frame's text from unknown item '{}'",
+                        movie.id, frame.text_item
+                    ));
+                }
+            }
             if movie.style != MovieStyle::Card {
                 continue;
             }
@@ -91,6 +99,18 @@ mod tests {
         let message = diagnostics.finish().expect_err("two errors").to_string();
         assert!(message.contains("unknown ambient 'fireworks'"), "{message}");
         assert!(message.contains("'empty' has no frames"), "{message}");
+    }
+
+    #[test]
+    fn a_frame_cannot_take_its_text_from_an_unknown_item() {
+        let mut pack = minimal_test_pack();
+        let mut movie = card("quote", 1);
+        movie.frames[0].text_item = "missing-page".to_string();
+        pack.movies = vec![movie];
+        let mut diagnostics = Diagnostics::default();
+        MoviesValidator.validate(&pack, &mut diagnostics);
+        let message = diagnostics.finish().expect_err("unknown item").to_string();
+        assert!(message.contains("unknown item 'missing-page'"), "{message}");
     }
 
     #[test]

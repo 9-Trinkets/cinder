@@ -529,6 +529,10 @@ pub struct OpeningMovieFrameDefinition {
     pub tint: String,
     #[serde(default)]
     pub text: String,
+    /// Take the text from an item's description, so a card can show a page the
+    /// player has already read without writing it twice.
+    #[serde(default)]
+    pub text_item: String,
     #[serde(default)]
     pub text_path: String,
     #[serde(default)]

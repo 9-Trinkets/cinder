@@ -295,6 +295,11 @@ fn the_best_session_with_the_right_book_reaches_every_secret_and_the_best_drawin
     assert_eq!(card.style, MovieStyle::Card);
     assert_eq!(card.card.font, "hand");
     assert_eq!(card.frames[0].heading, "Thursday, November 20");
+    assert!(
+        card.frames[0].text.contains("She showed me the handle"),
+        "the card quotes the note Isla wrote: {}",
+        card.frames[0].text
+    );
 }
 
 #[test]
@@ -483,6 +488,15 @@ fn a_quieter_session_gets_a_quieter_message_and_note() {
     let after = finish_after(&runtime);
     assert!(after.contains("pretty quiet in the car"), "{after}");
     assert!(after.contains("no hurry about the book"), "{after}");
+    let card = runtime
+        .consume_pending_projector_sequence()
+        .expect("movie lookup")
+        .expect("a card closes this episode too");
+    assert!(
+        card.frames[0].text.contains("no hurry about the book"),
+        "the quiet card shows the quiet note: {}",
+        card.frames[0].text
+    );
     assert_eq!(
         runtime.export_state().expect("state").phase,
         GamePhase::GameEnded
@@ -643,17 +657,29 @@ fn the_to_do_for_a_missing_book_says_where_the_books_are() {
 }
 
 #[test]
-fn the_closing_lines_come_before_the_journal_card() {
+fn the_closing_lines_come_before_the_journal_card_which_shows_the_note() {
     let pack = load_named_pack("isla", Some("en")).expect("isla loads");
-    let end = pack
-        .beats
-        .stages
-        .iter()
-        .find(|stage| stage.id == "stage-end")
-        .expect("end stage");
-    assert_eq!(end.movie_id, "episode-end");
-    assert!(
-        end.lines_before_movie,
-        "the last lines of the scene are read before the card"
-    );
+    for tier in ["low", "mid", "high"] {
+        let end = pack
+            .beats
+            .stages
+            .iter()
+            .find(|stage| stage.id == format!("stage-end-{tier}"))
+            .expect("end stage");
+        assert_eq!(end.movie_id, format!("episode-end-{tier}"));
+        assert!(
+            end.lines_before_movie,
+            "the last lines of the scene are read before the card"
+        );
+        let card = pack
+            .movies
+            .iter()
+            .find(|movie| movie.id == end.movie_id)
+            .expect("card");
+        assert_eq!(
+            card.frames[0].text_item,
+            format!("note-three-{tier}"),
+            "the card shows the note Isla wrote, not a separate text"
+        );
+    }
 }

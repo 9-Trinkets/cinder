@@ -1269,26 +1269,26 @@
       "summary": "Read your note.",
       "narrative_lines": [],
       "advance_signals": [
-        "item_observed:note-three-low",
-        "item_observed:note-three-mid",
-        "item_observed:note-three-high"
+        {
+          "signal": "item_observed:note-three-low",
+          "next_stage_ids": [
+            "stage-end-low"
+          ]
+        },
+        {
+          "signal": "item_observed:note-three-mid",
+          "next_stage_ids": [
+            "stage-end-mid"
+          ]
+        },
+        {
+          "signal": "item_observed:note-three-high",
+          "next_stage_ids": [
+            "stage-end-high"
+          ]
+        }
       ],
-      "next_stage_ids": [
-        "stage-end"
-      ]
-    },
-    {
-      "id": "stage-end",
-      "quest_id": "session",
-      "quest_title": "The session",
-      "quest_kind": "main",
-      "summary": "The session is over.",
-      "narrative_lines": [
-        "You read your note through once, then close the journal. You sit on the top step a little longer, listening to a city bus sigh at the Calloway stop, before heading round to the front porch for your bike."
-      ],
-      "end_game": true,
-      "movie_id": "episode-end",
-      "lines_before_movie": true
+      "next_stage_ids": []
     },
     {
       "id": "stage-fetch-book",
@@ -1381,6 +1381,45 @@
       "next_stage_ids": [
         "stage-stories-intro"
       ]
+    },
+    {
+      "id": "stage-end-low",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "The session is over.",
+      "narrative_lines": [
+        "You read your note through once, then close the journal. You sit on the top step a little longer, listening to a city bus sigh at the Calloway stop, before heading round to the front porch for your bike."
+      ],
+      "end_game": true,
+      "movie_id": "episode-end-low",
+      "lines_before_movie": true
+    },
+    {
+      "id": "stage-end-mid",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "The session is over.",
+      "narrative_lines": [
+        "You read your note through once, then close the journal. You sit on the top step a little longer, listening to a city bus sigh at the Calloway stop, before heading round to the front porch for your bike."
+      ],
+      "end_game": true,
+      "movie_id": "episode-end-mid",
+      "lines_before_movie": true
+    },
+    {
+      "id": "stage-end-high",
+      "quest_id": "session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "The session is over.",
+      "narrative_lines": [
+        "You read your note through once, then close the journal. You sit on the top step a little longer, listening to a city bus sigh at the Calloway stop, before heading round to the front porch for your bike."
+      ],
+      "end_game": true,
+      "movie_id": "episode-end-high",
+      "lines_before_movie": true
     }
   ]
 }

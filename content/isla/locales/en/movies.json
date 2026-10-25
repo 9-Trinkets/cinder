@@ -1,6 +1,6 @@
 [
   {
-    "id": "episode-end",
+    "id": "episode-end-low",
     "title": "The journal",
     "style": "card",
     "card": {
@@ -15,8 +15,58 @@
     "frames": [
       {
         "heading": "Thursday, November 20",
-        "text": "Wren.",
-        "duration_ms": 2500
+        "text_item": "note-three-low",
+        "duration_ms": 4000
+      },
+      {
+        "text": "Home by bike. Footnote will be waiting.",
+        "duration_ms": 3000
+      }
+    ]
+  },
+  {
+    "id": "episode-end-mid",
+    "title": "The journal",
+    "style": "card",
+    "card": {
+      "background": "#efe6d2",
+      "text_color": "#3b3128",
+      "font": "hand",
+      "align": "left",
+      "ambient": "none",
+      "reveal": "type",
+      "fade_ms": 1200
+    },
+    "frames": [
+      {
+        "heading": "Thursday, November 20",
+        "text_item": "note-three-mid",
+        "duration_ms": 4000
+      },
+      {
+        "text": "Home by bike. Footnote will be waiting.",
+        "duration_ms": 3000
+      }
+    ]
+  },
+  {
+    "id": "episode-end-high",
+    "title": "The journal",
+    "style": "card",
+    "card": {
+      "background": "#efe6d2",
+      "text_color": "#3b3128",
+      "font": "hand",
+      "align": "left",
+      "ambient": "none",
+      "reveal": "type",
+      "fade_ms": 1200
+    },
+    "frames": [
+      {
+        "heading": "Thursday, November 20",
+        "text_item": "note-three-high",
+        "duration_ms": 4000
       },
       {
         "text": "Home by bike. Footnote will be waiting.",
