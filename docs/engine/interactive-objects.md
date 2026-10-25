@@ -2,7 +2,7 @@
 
 **Status:** Phases 0 to 3 are built. Phases 4 and 5 are planned. Sections 2 and 4 describe what exists; the examples use the compact condition forms the loader accepts.
 
-How the engine should model things in a room that the player or an NPC can operate and that keep a state afterwards: a lamp, a valve, a gate, a desk, a projector. Written for every pack, not for one. Isla's second episode (a lamp, a blind and a hall machine that Tam reacts to) is the first user, and the survey below shows Layla, Aera and Ella need the same thing. Decisions made: **interaction** is the name (it avoids confusing it further with *action* and *affordance*, which were used interchangeably before), topics are replaced by interactions now, and a feature's states are declared.
+How the engine should model things in a room that the player or an NPC can operate and that keep a state afterwards: a lamp, a valve, a gate, a desk, a projector. Written for every pack, not for one. The survey below shows Layla, Aera and Ella need the same thing, and Layla's unlocks and valve already use it. Decisions made: **interaction** is the name (it avoids confusing it further with *action* and *affordance*, which were used interchangeably before), topics are replaced by interactions now, and a feature's states are declared.
 
 ## 1. What we found
 
@@ -131,32 +131,20 @@ Each step keeps the pack working: the loader accepts the old field and the new o
 - **Typing works too:** `use lamp`, or the interaction's label.
 - **Look reflects state:** inspecting the lamp reads the description for its current state.
 
-## 5. Tam's playroom, as the first user
-
-| Feature | States | Interactions | Read by |
-|---|---|---|---|
-| Reading lamp | off, dim, bright | Dim it, brighten it, turn it off | Tam's scenes (he comes out when the room is dim), the description |
-| Overhead light | on, off | Turn it off | Same |
-| White-noise machine in the hall | loud, quiet, off | Turn it down, turn it off (Isla must go to the hall) | Tam's reaction to the radiator, and a secret |
-| Window blind | open, shut | Lower it | The description, and the light |
-| Radiator | knocking | None. It is something Tam reacts to. | Tam's covering of an ear |
-
-Everything Tam does reads these states through `when` conditions on stages, menu options and interactions, with no new engine concept beyond the three in section 2.
-
-## 6. Phases
+## 5. Phases
 
 | Phase | Adds | Replaces | Proves it on |
 |---|---|---|---|
 | 0 | One condition evaluator, and one truthiness helper | The two copies of `story_var_is_truthy` | Existing tests |
 | 1 | `when` on exits, descriptions, actions, topics and the rest, with the old fields rewritten as sugar | Eight separate gates | Layla and Aera, with identical behavior |
-| 2 | Feature state, per-state descriptions, interactions on features, the Do panel. Topics become interactions on actors. | Topics, inspect-only features | **Isla's Tam playroom, and Wren's topics** |
+| 2 | Feature state, per-state descriptions, interactions on features, the Do panel. Topics become interactions on actors. | Topics, inspect-only features | **Wren's topics, and the engine tests** |
 | 3 | Layla's unlocks and the valve as interactions, with `aliases` for typed phrases, and `consume_item`, `run_hook` and `emit_signal` effects | Five copied action blocks | Layla gate, cages, safe, valve |
 | 4 | NPCs target features | Aera's `allowed_rooms` stand-in | Aera kitchen |
 | 5 | One effect list | Stage effects and hook effects | Everything |
 
-**For Tam, Phases 0 to 2 are enough.** Phase 3 comes next because it removes the most copy-paste, and Phases 4 and 5 are larger and can wait.
+Phase 3 removed the most copy-paste. Phases 4 and 5 are larger and can wait, and no pack needs them yet.
 
-## 7. Decisions, risks and open questions
+## 6. Decisions, risks and open questions
 
 **Decided**
 1. **The name is *interaction*.** *Action* stays what it is today, a command definition in `actions.json`. We stop using *affordance* for this.

@@ -286,7 +286,7 @@ fn the_best_session_with_the_right_book_reaches_every_secret_and_the_best_drawin
     assert!(after.contains("She showed me the handle."), "{after}");
     assert_eq!(
         runtime.export_state().expect("state").phase,
-        GamePhase::ActEnded
+        GamePhase::GameEnded
     );
     let card = runtime
         .consume_pending_projector_sequence()
@@ -499,7 +499,7 @@ fn a_quieter_session_gets_a_quieter_message_and_note() {
     );
     assert_eq!(
         runtime.export_state().expect("state").phase,
-        GamePhase::ActEnded
+        GamePhase::GameEnded
     );
 }
 
@@ -603,20 +603,6 @@ fn without_a_book_the_next_to_do_is_to_choose_one_and_bring_it_back() {
         turn(&runtime, command);
     }
     assert_eq!(active_menu(&runtime).as_deref(), Some("stories"));
-    let state = runtime.export_state().expect("state");
-    let pack = load_named_pack("isla", Some("en")).expect("isla loads");
-    assert_eq!(
-        state.feature_state(&pack, "playroom", "lamp").as_deref(),
-        Some("bright"),
-        "story hour switches the lamp on"
-    );
-    assert_eq!(
-        state
-            .feature_state(&pack, "playroom", "overhead-light")
-            .as_deref(),
-        Some("off"),
-        "and the overhead light off"
-    );
     answer(&runtime, "stories", fit("stories"));
     assert_eq!(active_menu(&runtime).as_deref(), Some("bear-1"));
 }
@@ -695,11 +681,6 @@ fn the_closing_lines_come_before_the_journal_card_which_shows_the_note() {
             format!("note-three-{tier}"),
             "the card shows the note Isla wrote, not a separate text"
         );
-        assert_eq!(
-            card.frames.len(),
-            2,
-            "the card is the date and the note, then the jump to the next episode"
-        );
-        assert_eq!(card.frames[1].heading, "Tuesday, February 4");
+        assert_eq!(card.frames.len(), 1, "the card is the date and the note");
     }
 }

@@ -114,7 +114,7 @@ Wren's session was built as one act. Several episodes need a little more:
 | **Choosing who comes** | A schedule, a menu, or a story trigger that decides which child is next. |
 | **Memory between episodes** | A child's earlier result changes their next session. Story variables can carry this. |
 | **Different fit tables** | The scoring is already content, and each child brings their own menus and hooks. |
-| **Acts that change the room** | A child who needs the light lowered means Isla's actions change room state, and not only the dialogue. See `next-patient.md`. |
+| **Acts that change the room** | A child who needs the light lowered means Isla's actions change room state, and not only the dialogue. |
 | **A shared notes folder** | Notes for every child in one tote, ordered by episode. |
 
 ## 8. Where the novel comes in
