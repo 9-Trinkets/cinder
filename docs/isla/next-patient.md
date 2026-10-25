@@ -17,9 +17,9 @@ He is also close to Isla. Her brother Danny did not speak until he was four, and
 - **Six years old,** first grade, in a public school classroom with an aide for part of the day.
 - **He speaks very little.** He has a handful of words, which he uses at home and almost never elsewhere. He understands far more than he says. He does not mind silence.
 - **Autistic,** diagnosed at four. The game never uses the word, and it never explains him. The notes mention "an evaluation at four", and the text shows what he does.
-- **His family:** the Trans, in South Philadelphia. His mother, **Linh** (Má), is a night-shift nurse, tired and fiercely on his side. His father, **Dũng** (Ba), is a bus mechanic. His grandfather, **Ông**, lives with them and walks him to school. There is a baby sister, **Mai**, who is the reason the house has become louder. They speak Vietnamese and English at home, and the school's first guess was that his quiet was about language.
+- **His family:** the Trans, in South Philadelphia. His mother, **Linh**, is a night-shift nurse, tired and fiercely on his side. His father, **Dũng**, works long days and is home late. His grandfather, **Ông**, lives with them and walks him to school. There is a baby sister, **Mai**, who is the reason the house has become louder. They speak Vietnamese and English at home, and the school's first guess was that his quiet was about language.
 - **Why he is here:** the school asks whether he is "responding", because he has stopped joining the one group activity he used to like. His mother is not sure anything is wrong. She is worried that everyone wants him to be a different child.
-- **What he loves:** trains, and especially the sound they make going over a particular bridge. Lining up objects by length. The same few books.
+- **What he loves:** trains, and especially the sound they make going over a particular bridge. It is his own interest, not his father's. Lining up objects by length. The same few books.
 - **When it happens:** a Tuesday in late winter, a few weeks before the Lunar New Year, when the house is cleaned, relatives come and go, and the street fills with firecrackers and drums. The season adds real noise and real love.
 - **What he avoids:** sudden noise, bright overhead light, being touched without warning, the word "no" spoken sharply.
 

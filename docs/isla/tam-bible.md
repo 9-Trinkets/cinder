@@ -13,7 +13,7 @@ Everything the writing must stay true to for the second patient. Written the way
 **Tam** (Tâm), six (birthday in September). First grade. Small and quick, with a cowlick that will not lie flat. He is gentle, exact and very sure of what he likes. At home his name is **Tam**, and his grandfather calls him *bé Tam*, "little Tam."
 
 **What he can and cannot do** (the writing depends on this):
-- **He speaks very little.** He has a handful of words, mostly at home and in two languages: *nữa* (more, again), *xe lửa* (train), *lên* (up), *không* (no), *Ông* (his grandfather), and in English *again* and *train* when he says them at school. He understands almost everything said to him, in both languages, and answers with his hands and his body.
+- **He speaks very little.** He has a handful of words, mostly at home: *again*, *train*, *up*, *no*, and *Ông* for his grandfather. He understands almost everything said to him, in both of the languages spoken at home, and answers with his hands and his body.
 - **He reads a room better than most adults.** He notices a change in the light, a new sound, who is tired.
 - **He can do the same thing for a very long time,** and it is not boredom. It is how he settles.
 - **He cannot filter noise.** Everything arrives at once, so a busy room costs him more than it costs anyone else.
@@ -59,10 +59,10 @@ Everything the writing must stay true to for the second patient. Written the way
 **The place.** A block of narrow brick rowhouses in **South Philadelphia**, a short walk from the Washington Avenue corridor with its Vietnamese groceries, bakeries and noodle shops. Neighbors know each other. Freight and passenger trains run on an embankment a few blocks away, and the windows hum when a heavy one passes.
 
 **Money.** **Stretched, in a particular way:** both parents work and the household runs on them taking turns. Nobody is poor and nobody has any slack.
-- **Má (Linh), 33,** is a **night-shift nurse** at a hospital. She sleeps in the daytime, and the house has to be quiet while she does. She was born in Philadelphia, speaks English at work and Vietnamese at home, and is more careful with each language than she lets anyone see.
-- **Ba (Dũng), 35,** is a **bus mechanic** at a transit depot who works days. He came to the United States as a small child, and knows engines and rails from the inside.
-- **Ông Nội (Ông), 68,** Dũng's father, a retired bus operator who came to Philadelphia as a refugee in the 1980s. He lives with them. He walks Tam to school and back, in his careful English and his own Vietnamese, and greets the shopkeepers on the way.
-- A **baby sister, Mai** (named for the apricot blossom of the new year), six months old. She cries in the night.
+- **Mom (Linh), 33,** is a **night-shift nurse** at a hospital. She sleeps in the daytime, and the house has to be quiet while she does. She was born in Philadelphia, speaks English at work and Vietnamese at home, and is more careful with each language than she lets anyone see.
+- **Dad (Dũng), 35,** works long days at a job outside the house, and is home late. He came to the United States as a small child.
+- **Ông (Ông Nội), 68,** Dũng's father, retired, who came to Philadelphia as a refugee in the 1980s. He lives with them. He walks Tam to school and back, in his careful English and his own Vietnamese, and greets the shopkeepers on the way.
+- A **baby sister, Mai** (named for a flower), six months old. She cries in the night.
 
 **The house.** A two-bedroom rowhouse with a narrow stair. A small altar on a shelf in the front room holds photographs and a bowl of fruit. Tam's room used to be at the back, the quietest room. When Mai was born, the nursery was made out of the room next to it, and the wall between them is thin.
 
@@ -78,7 +78,7 @@ Everything the writing must stay true to for the second patient. Written the way
 
 - **Ông** is his best person. He asks nothing, hums back, and takes him to the embankment.
 - **Bà Ngoại** (Linh's mother) lives in Houston and calls on Sundays by video. She wants Tam to say her name, and loves him fiercely. She believes he needs feeding and sleep and fresh air, and that he will "come out of it."
-- **Cô Ba** (Dũng's sister) is a loud, loving, well-meaning aunt who pinches cheeks and tickles children whether they want it or not. She is not a villain, but Tam goes quiet when she visits.
+- **Cô Thu** (Dũng's sister) is a loud, loving, well-meaning aunt who pinches cheeks and tickles children whether they want it or not. She is not a villain, but Tam goes quiet when she visits.
 - **Cousins** come for the new year, and the house fills.
 
 ## 6. What really happened **(decision)**
@@ -89,7 +89,7 @@ Everything the writing must stay true to for the second patient. Written the way
 
 **Now (late winter).** It is the weeks before the **Lunar New Year,** when the house is cleaned, relatives come and go, and the street fills with firecrackers and lion-dance drums. Everything is louder than ever, and everyone is doing it out of love.
 
-**What it looks like from outside.** To his teacher, he has withdrawn: he doesn't join circle time, he doesn't answer, he goes under the table. To Cô Ba, he is "jealous of the baby." To Linh, who is worn out, it looks like she has failed him. To the school, it looks like something to be assessed again.
+**What it looks like from outside.** To his teacher, he has withdrawn: he doesn't join circle time, he doesn't answer, he goes under the table. To Cô Thu, he is "jealous of the baby." To Linh, who is worn out, it looks like she has failed him. To the school, it looks like something to be assessed again.
 
 **What is true.** He is not withdrawing from people, and he is not jealous of Mai. He is **saving himself.** Every ordinary thing now costs more than he has, so he has stopped doing the things that cost the most. Circle time is loud. He has nothing left for it.
 
@@ -107,8 +107,8 @@ Everything the writing must stay true to for the second patient. Written the way
 
 ## 8. What each person knows about him
 
-- **Má (Linh):** he is not himself. She thinks it is her fault, and she is too tired to say so. She is afraid the school is right, and afraid they are wrong in the way they were before.
-- **Ba (Dũng):** Tam is "just quiet." He is sure it will pass, and he is not sure.
+- **Mom (Linh):** he is not himself. She thinks it is her fault, and she is too tired to say so. She is afraid the school is right, and afraid they are wrong in the way they were before.
+- **Dad (Dũng):** Tam is "just quiet." He is sure it will pass, and he is not sure.
 - **Ông:** Tam is fine, and Tam is not fine. Ông has seen him standing by the crib.
 - **His teacher:** he stopped joining circle time and goes under the table.
 - **Isla:** a child evaluated at four, a school referral, and parents who are loving and exhausted. **Isla does not know about the noise or about the crib.**
@@ -117,7 +117,7 @@ Everything the writing must stay true to for the second patient. Written the way
 
 This is Tam's **first session.** Nobody at Willow House has met him except on the intake call, which Linh took in English on her break and Dũng took the second half of in his own way. It is a **Tuesday in late winter,** because Ông can bring him on Tuesdays.
 
-- **Ông brings him** and waits in the waiting room, with a newspaper he is not reading. Ông calls Isla *Cô*, as a child would a teacher, and does not shake her hand until she offers it. Má is asleep after a night shift.
+- **Ông brings him** and waits in the waiting room, with a newspaper he is not reading. Ông calls Isla *Cô*, as a child would a teacher, and does not shake her hand until she offers it. Mom is asleep after a night shift.
 - **The first minutes matter more than the book.** Tam does not come in until the room is right.
 - Nothing is explained to him. Isla does not ask him anything. She makes the room quieter and waits.
 
@@ -169,7 +169,7 @@ Rules for every line and every action:
 | "It's too loud." | Covers one ear. Steps back to the door. |
 | "Turn it down." | Looks at the machine in the hall, then at Isla. |
 | "I need to be under here." | Goes under the table and taps twice. |
-| "Read it again." | Turns back the page. Says, once, *nữa.* |
+| "Read it again." | Turns back the page. Says, once, *again.* |
 | "I trust you a little." | Puts the orange train car in her hand, and takes it back a moment later. |
 | "I love my sister." | Says *Mai,* once, to the book. |
 
@@ -187,7 +187,7 @@ Nothing is announced. The feedback comes from Ông, who walks him out, and later
 
 ## 16. Open questions
 
-1. **Is the word *Mai* right,** or too neat? It says the thing everyone misread, in one word. The alternative is *nữa,* which is true but smaller.
+1. **Is the word *Mai* right,** or too neat? It says the thing everyone misread, in one word. The alternative is *again,* which is true but smaller.
 2. **How much of the crib scene belongs in the game?** It could stay entirely in the novel.
 3. **Does the practical fix feel like an ending?** The feedback is a small change: headphones, a quieter corner, a door left closed at night. It is not a cure.
 4. **Is "first session" the right moment,** or would the third session, like Wren's, give the player more to build on?
