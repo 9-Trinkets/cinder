@@ -1,6 +1,6 @@
 # Interactive objects in rooms: design (draft)
 
-How the engine should model things in a room that the player or an NPC can operate and that keep a state afterwards: a lamp, a valve, a gate, a desk, a projector. Written for every pack, not for one. Isla's second episode (a lamp, a blind and a hall machine that Tam reacts to) is the first user, and the survey below shows Layla, Aera and Ella need the same thing. Items marked **(decision)** need a call.
+How the engine should model things in a room that the player or an NPC can operate and that keep a state afterwards: a lamp, a valve, a gate, a desk, a projector. Written for every pack, not for one. Isla's second episode (a lamp, a blind and a hall machine that Tam reacts to) is the first user, and the survey below shows Layla, Aera and Ella need the same thing. Decisions made: **interaction** is the name (it avoids confusing it further with *action* and *affordance*, which were used interchangeably before), topics are replaced by interactions now, and a feature's states are declared.
 
 ## 1. What we found
 
@@ -144,12 +144,15 @@ Everything Tam does reads these states through `when` conditions on stages, menu
 
 **For Tam, Phases 0 to 2 are enough.** Phase 3 comes next because it removes the most copy-paste, and Phases 4 and 5 are larger and can wait.
 
-## 7. Risks and open questions
+## 7. Decisions, risks and open questions
 
-1. **Naming.** "Interaction" is neutral. Alternatives are "affordance" (precise, awkward) and "action" (taken). **(decision)**
-2. **Replacing topics now** means rewriting Isla's three authored topics and their tests, and one signal name. It is cheap today and gets more expensive with each new episode.
-3. **Layla's behavior must not change.** Phase 1's sugar and Phase 3's migration each need before-and-after tests that replay the existing gate and unlock flows.
-4. **State as a declared enum or free text?** Declared is safer and can be validated. It costs one line per feature. **(decision)**
-5. **Localization.** Interaction labels and per-state descriptions are player text and live in each locale's files, like everything else.
-6. **Saved games.** Feature state is new data with a default, so old saves load. Story variables stay as they are.
-7. **What NPCs can do with features** (Phase 4) is the least settled part, because Aera's NPC turns pick commands from a prompted list.
+**Decided**
+1. **The name is *interaction*.** *Action* stays what it is today, a command definition in `actions.json`. We stop using *affordance* for this.
+2. **Topics are replaced by interactions now,** before more content is written against them.
+3. **A feature's states are declared** in a list, so the loader can catch a typo.
+
+**Still open**
+1. **Layla's behavior must not change.** Phase 1's sugar and Phase 3's migration each need before-and-after tests that replay the existing gate and unlock flows.
+2. **Localization.** Interaction labels and per-state descriptions are player text and live in each locale's files, like everything else.
+3. **Saved games.** Feature state is new data with a default, so old saves load. Story variables stay as they are.
+4. **What NPCs can do with features** (Phase 4) is the least settled part, because Aera's NPC turns pick commands from a prompted list.
