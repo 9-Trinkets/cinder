@@ -1528,8 +1528,8 @@
       "quest_id": "tam-session",
       "quest_title": "The session",
       "narrative_lines": [
-        "Ông is at the very edge of a chair, with his hat on his knee and a newspaper he is not reading. Tam is not in a chair. He is standing by the fish tank with his backpack on both shoulders, watching the bubbles rise.",
-        "Ông (to Isla): Good afternoon, Cô. He is ready, I think. He is a good boy."
+        "Ông sits at the very edge of a chair with his hat on his knee. Tam is standing by the fish tank with his backpack on both shoulders.",
+        "Ông (to Isla): Good afternoon, Cô. He is ready, I think."
       ],
       "advance_signals": [
         "room_entered:playroom"
@@ -1546,7 +1546,7 @@
       "quest_id": "tam-session",
       "quest_title": "The session",
       "narrative_lines": [
-        "Tam stops at the playroom door. He looks at the ceiling light, then at the window, then at the radiator in the hall behind him. He does not come in."
+        "Tam stops at the playroom door. He looks at the ceiling light, then at the window."
       ],
       "actor_relocations": [
         {
