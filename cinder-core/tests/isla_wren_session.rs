@@ -603,6 +603,20 @@ fn without_a_book_the_next_to_do_is_to_choose_one_and_bring_it_back() {
         turn(&runtime, command);
     }
     assert_eq!(active_menu(&runtime).as_deref(), Some("stories"));
+    let state = runtime.export_state().expect("state");
+    let pack = load_named_pack("isla", Some("en")).expect("isla loads");
+    assert_eq!(
+        state.feature_state(&pack, "playroom", "lamp").as_deref(),
+        Some("bright"),
+        "story hour switches the lamp on"
+    );
+    assert_eq!(
+        state
+            .feature_state(&pack, "playroom", "overhead-light")
+            .as_deref(),
+        Some("off"),
+        "and the overhead light off"
+    );
     answer(&runtime, "stories", fit("stories"));
     assert_eq!(active_menu(&runtime).as_deref(), Some("bear-1"));
 }

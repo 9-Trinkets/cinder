@@ -85,6 +85,10 @@ pub(crate) fn advance_objective_for_signal(
                     .actors
                     .actor_room_overrides
                     .insert(relocation.actor_id.clone(), relocation.to_room_id.clone());
+                if content.is_player_actor(&relocation.actor_id) {
+                    state.current_room_id = relocation.to_room_id.clone();
+                    state.mark_actor_room_visited(&relocation.actor_id, &relocation.to_room_id);
+                }
             }
             dispatch_actor_spawns_for_stage(state, content, next_stage, 0);
             // A stage can open with a movie, picked by id or by a story variable. Its

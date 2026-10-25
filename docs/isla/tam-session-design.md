@@ -23,7 +23,7 @@ What a new episode changes is therefore **authored, not automatic:**
 | Thing | How the Tam episode sets it |
 |---|---|
 | **The date** | `elapsed_minutes` on the time-jump stage moves the clock (days are 1,440 minutes). The card shows the date in Isla's hand. |
-| **Where Isla is** | The stage puts her in a different room, such as the staff room or the landing, and not at the front door. *Needs a check:* stages relocate actors with `actor_relocations`, and it is not yet confirmed that this moves the player. If not, a small `move_player` stage effect is needed. |
+| **Where Isla is** | The stage puts her in a different room, such as the staff room or the landing, and not at the front door. A stage's `actor_relocations` now moves the player too (tested in `engine_act_boundary.rs`). |
 | **What persists** | Her journal pages and case notes (items), what she learned (story variables meant to carry, declared `game`), and Wren's drawing on the hall wall. |
 | **What resets** | Anything declared `act` scope: quiet-beat counters, `asked_him`, feature states Tam's session depends on (set explicitly by the stage, for example lamp back to `off`). |
 | **Who is around** | Wren and her family are simply not there. Gloria is. |
@@ -138,7 +138,8 @@ The practical outcome is small: a quieter corner, headphones at school, a door c
 | **Tam acting on room state** | **Gap.** A child who reacts to the lamp or the knock needs stages or hooks that read feature state. Conditional signals can do it. A scripted sequence for the knock. |
 | **A silent child in the transcript** | **Open.** Tam's lines are all behavior. Probably no engine change; the voice guide should say how it reads. |
 | **Time-jump stage that carries state** | **Built.** `end_act` keeps the world; only `act`-scoped variables clear. |
-| **Moving Isla at the start of an episode** | **Needs a check** (section 2). |
+| **Moving Isla at the start of an episode** | **Built.** `actor_relocations` moves the player. |
+| **Playroom and hall as instruments** | **Built.** Lamp (off, dim, bright), overhead light, blind, white-noise machine (on, low, off) and the round table, offered only when `episode_tam` is set. Wren's story hour leaves the lamp on and the overhead light off. |
 
 ## 12. Build order
 
@@ -152,7 +153,7 @@ The practical outcome is small: a quieter corner, headphones at school, a door c
 
 ## 13. Open questions
 
-1. **Can a stage move the player?** Section 2 depends on it. Check `actor_relocations` with the player, or add `move_player`.
+1. **What does Isla find when the episode opens?** After Wren's story hour the lamp is on and the overhead light is off. The Tam stage must set them back, or the room is wrong before he arrives.
 2. **Is *again* then *Mai* right,** or does the second word make the ending too neat?
 3. **Does Isla need an early chance to set the room,** or should every change wait for a sign? Early changes reward preparation and risk making her feel she has solved him before he arrives.
 4. **How long is a quiet beat?** If a session is a handful of turns and each is mostly waiting, it might feel empty, and might need small things to notice in each.

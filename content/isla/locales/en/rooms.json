@@ -245,7 +245,88 @@
           "white noise",
           "noise machine"
         ],
-        "inspect_text": "A small gray machine on the floor by the playroom door hisses softly, like rain on leaves. It covers the voices inside."
+        "inspect_text": "A small gray machine on the floor by the playroom door hisses softly, like rain on leaves. It covers the voices inside.",
+        "states": [
+          "on",
+          "low",
+          "off"
+        ],
+        "state": "on",
+        "descriptions": [
+          {
+            "when": [
+              "feature:white-noise=low"
+            ],
+            "inspect_text": "The small gray machine on the floor by the playroom door is turned low. It makes a thin, faint hush you notice only when you listen."
+          },
+          {
+            "when": [
+              "feature:white-noise=off"
+            ],
+            "inspect_text": "The small gray machine by the playroom door is off. The hall is quiet enough to hear the building: a pipe, a clock somewhere, a voice downstairs."
+          }
+        ],
+        "interactions": [
+          {
+            "id": "down",
+            "label": "Turn the machine down",
+            "when": [
+              "episode_tam",
+              "feature:white-noise=on"
+            ],
+            "lines": [
+              "You crouch and turn the knob until the hiss is thin and faint."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "state": "low"
+              }
+            ],
+            "repeatable": true
+          },
+          {
+            "id": "off",
+            "label": "Turn the machine off",
+            "when": [
+              "episode_tam",
+              {
+                "any": [
+                  "feature:white-noise=on",
+                  "feature:white-noise=low"
+                ]
+              }
+            ],
+            "lines": [
+              "You press the switch. The hiss stops, and the hall fills with the small sounds it was covering."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "state": "off"
+              }
+            ],
+            "repeatable": true
+          },
+          {
+            "id": "on",
+            "label": "Turn the machine on",
+            "when": [
+              "episode_tam",
+              "feature:white-noise=off"
+            ],
+            "lines": [
+              "You press the switch. The soft hiss comes back, like rain on leaves."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "state": "on"
+              }
+            ],
+            "repeatable": true
+          }
+        ]
       },
       {
         "id": "radiator",
@@ -409,7 +490,112 @@
         "aliases": [
           "lamp"
         ],
-        "inspect_text": "A lamp with a warm bulb, by the beanbag. You turn it on before a story and turn the overhead light off."
+        "inspect_text": "A lamp with a warm bulb, by the beanbag. A dial on the cord turns it up and down.",
+        "states": [
+          "off",
+          "dim",
+          "bright"
+        ],
+        "state": "off",
+        "descriptions": [
+          {
+            "when": [
+              "feature:lamp=dim"
+            ],
+            "inspect_text": "The lamp is turned low. The bulb glows amber and the shade throws a small circle on the floor by the beanbag."
+          },
+          {
+            "when": [
+              "feature:lamp=bright"
+            ],
+            "inspect_text": "The lamp is on, a steady warm yellow. It lights the beanbag and the corner around it."
+          },
+          {
+            "when": [
+              "feature:lamp=off"
+            ],
+            "inspect_text": "The lamp is off. Its shade is the color of weak tea."
+          }
+        ],
+        "interactions": [
+          {
+            "id": "on",
+            "label": "Turn the lamp on",
+            "when": [
+              "episode_tam",
+              "feature:lamp=off"
+            ],
+            "lines": [
+              "You switch the lamp on. A warm yellow fills the corner by the beanbag."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "state": "bright"
+              }
+            ],
+            "repeatable": true
+          },
+          {
+            "id": "down",
+            "label": "Turn the lamp down",
+            "when": [
+              "episode_tam",
+              "feature:lamp=bright"
+            ],
+            "lines": [
+              "You turn the dial down until the bulb glows low and amber."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "state": "dim"
+              }
+            ],
+            "repeatable": true
+          },
+          {
+            "id": "up",
+            "label": "Turn the lamp up",
+            "when": [
+              "episode_tam",
+              "feature:lamp=dim"
+            ],
+            "lines": [
+              "You turn the dial up. The glow grows to a steady yellow."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "state": "bright"
+              }
+            ],
+            "repeatable": true
+          },
+          {
+            "id": "off",
+            "label": "Turn the lamp off",
+            "when": [
+              "episode_tam",
+              {
+                "any": [
+                  "feature:lamp=bright",
+                  "feature:lamp=dim"
+                ]
+              }
+            ],
+            "lines": [
+              "You switch the lamp off. The corner goes back to the room's own light."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "state": "off"
+              }
+            ],
+            "repeatable": true
+          }
+        ]
       },
       {
         "id": "blue-cushion",
@@ -419,6 +605,141 @@
           "window seat"
         ],
         "inspect_text": "A dusty blue cushion on the window seat, a little faded where the sun reaches it."
+      },
+      {
+        "id": "overhead-light",
+        "label": "overhead light",
+        "aliases": [
+          "ceiling light",
+          "light",
+          "big light",
+          "light switch",
+          "switch"
+        ],
+        "inspect_text": "A flat white panel in the ceiling, bright and even. The switch is by the door.",
+        "states": [
+          "on",
+          "off"
+        ],
+        "state": "on",
+        "descriptions": [
+          {
+            "when": [
+              "feature:overhead-light=off"
+            ],
+            "inspect_text": "The ceiling panel is dark. The room has only the light from the window and whatever else is on."
+          }
+        ],
+        "interactions": [
+          {
+            "id": "off",
+            "label": "Turn the overhead light off",
+            "when": [
+              "episode_tam",
+              "feature:overhead-light=on"
+            ],
+            "lines": [
+              "You press the switch by the door. The ceiling goes dark, and the room settles into the window's light."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "state": "off"
+              }
+            ],
+            "repeatable": true
+          },
+          {
+            "id": "on",
+            "label": "Turn the overhead light on",
+            "when": [
+              "episode_tam",
+              "feature:overhead-light=off"
+            ],
+            "lines": [
+              "You press the switch. The white panel comes on, even and bright."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "state": "on"
+              }
+            ],
+            "repeatable": true
+          }
+        ]
+      },
+      {
+        "id": "blind",
+        "label": "window blind",
+        "aliases": [
+          "blind",
+          "blinds",
+          "window",
+          "shade"
+        ],
+        "inspect_text": "A pale green roller blind on the bay window. The cord hangs by the frame. The window is open to the street.",
+        "states": [
+          "up",
+          "down"
+        ],
+        "state": "up",
+        "descriptions": [
+          {
+            "when": [
+              "feature:blind=down"
+            ],
+            "inspect_text": "The blind is down. The light through it is green and even, and the street is only a sound."
+          }
+        ],
+        "interactions": [
+          {
+            "id": "lower",
+            "label": "Lower the blind",
+            "when": [
+              "episode_tam",
+              "feature:blind=up"
+            ],
+            "lines": [
+              "You pull the cord and the blind slides down. The light turns soft and green."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "state": "down"
+              }
+            ],
+            "repeatable": true
+          },
+          {
+            "id": "raise",
+            "label": "Raise the blind",
+            "when": [
+              "episode_tam",
+              "feature:blind=down"
+            ],
+            "lines": [
+              "You let the cord go slowly and the blind rolls up. The street comes back into the window."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "state": "up"
+              }
+            ],
+            "repeatable": true
+          }
+        ]
+      },
+      {
+        "id": "low-table",
+        "label": "round table",
+        "aliases": [
+          "table",
+          "low table",
+          "tablecloth"
+        ],
+        "inspect_text": "A round table, low enough for a child to sit at with their feet on the floor. A cloth hangs over the edge, almost to the rug. There is room underneath."
       }
     ],
     "exits": [

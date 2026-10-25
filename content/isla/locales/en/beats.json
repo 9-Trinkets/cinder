@@ -739,6 +739,18 @@
             "stage-fetch-book"
           ]
         }
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "set_feature_state",
+          "feature": "playroom/lamp",
+          "state": "bright"
+        },
+        {
+          "kind": "set_feature_state",
+          "feature": "playroom/overhead-light",
+          "state": "off"
+        }
       ]
     },
     {

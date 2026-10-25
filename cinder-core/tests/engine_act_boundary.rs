@@ -4,7 +4,8 @@
 
 use cinder_core::content::loader::load_named_pack;
 use cinder_core::content::types::{
-    AdvanceEffect, AdvanceSignal, BeatDefinition, Interaction, RoomFeatureDefinition,
+    ActorRelocationDefinition, AdvanceEffect, AdvanceSignal, BeatDefinition, Interaction,
+    RoomFeatureDefinition,
 };
 use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::{GamePhase, VariableDeclaration, WorldState};
@@ -49,6 +50,7 @@ fn runtime() -> CinderRuntime {
             }],
             ..Default::default()
         });
+    let player_id = pack.settings.combat.player_actor_id.clone();
     pack.beats.initial_stage_ids = vec!["first".to_string()];
     pack.beats.stages = vec![
         BeatDefinition {
@@ -60,6 +62,10 @@ fn runtime() -> CinderRuntime {
         BeatDefinition {
             id: "last".to_string(),
             end_act: true,
+            actor_relocations: vec![ActorRelocationDefinition {
+                actor_id: player_id,
+                to_room_id: "staff-room".to_string(),
+            }],
             ..Default::default()
         },
     ];
@@ -81,7 +87,10 @@ fn the_world_carries_across_an_act_and_only_act_variables_clear() {
     runtime.continue_after_act().expect("continues");
     let state = runtime.export_state().expect("state");
     assert_eq!(state.phase, GamePhase::Active);
-    assert_eq!(state.current_room_id, "playroom");
+    assert_eq!(
+        state.current_room_id, "staff-room",
+        "a stage can put the player in another room"
+    );
     assert!(state.has_item("test-keepsake"));
     assert_eq!(state.story_vars.get("whole_game"), Some("yes"));
     assert_eq!(state.story_vars.get("this_act"), None);
