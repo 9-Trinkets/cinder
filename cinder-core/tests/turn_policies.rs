@@ -505,7 +505,7 @@ fn action_requiring_room_trace_mark_hides_when_no_sigils_in_room() {
         id: "erase".to_string(),
         command: "erase".to_string(),
         available: ActionAvailability {
-            requires_room_trace_mark: true,
+            when: vec![cinder_core::content::types::Condition::TraceMarkHere],
             ..ActionAvailability::default()
         },
         ..ActionDefinition::default()

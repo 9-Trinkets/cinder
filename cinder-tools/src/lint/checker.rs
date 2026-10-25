@@ -61,7 +61,7 @@ pub fn lint_pack(pack_dir: &Path, locale: &str) -> LintReport {
                     .exits
                     .iter()
                     .any(|e| e.room_id == room.id && e.label == back_label);
-                if !has_back && exit.requires_story_var.is_empty() {
+                if !has_back && exit.when.is_empty() {
                     // Non-gated cardinal exit should ideally be bidirectional
                     report.warnings.push(format!(
                             "[{pack_name}] one-way cardinal exit: '{}' -> '{}' ({}) lacks reciprocal '{}' in target",

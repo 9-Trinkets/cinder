@@ -681,7 +681,9 @@ mod tests {
             .iter_mut()
             .find(|exit| exit.room_id == "kitchen")
             .expect("kitchen exit exists")
-            .requires_story_var = "gate_open".to_string();
+            .when = vec![crate::content::types::Condition::StoryVar(
+            "gate_open".to_string(),
+        )];
 
         assert_eq!(
             next_room_toward(&content, &state, "lounge", "kitchen"),

@@ -289,12 +289,7 @@ fn nearest_unvisited_room(
     while let Some((room_id, first_step)) = queue.pop_front() {
         let room = content.room(&room_id)?;
         for exit in &room.exits {
-            if !exit.requires_story_var.is_empty()
-                && !crate::engine::turn_policies::story_var_is_truthy(
-                    state,
-                    &exit.requires_story_var,
-                )
-            {
+            if !content.exit_is_open(state, &room_id, exit) {
                 continue;
             }
             if !content.room_is_reachable(&exit.room_id) || !visited.insert(exit.room_id.clone()) {

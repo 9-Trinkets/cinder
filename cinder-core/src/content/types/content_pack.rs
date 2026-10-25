@@ -122,14 +122,27 @@ impl ContentPack {
             .find(|feature| feature.id == feature_id)
     }
 
-    /// Exit resolution for the player, honouring story-var gates: an exit
-    /// whose `requires_story_var` is not yet truthy is invisible and won't be
-    /// resolved (as if it didn't exist).
+    /// Whether an exit leaving `from_room_id` can be seen and used right now.
+    pub fn exit_is_open(
+        &self,
+        state: &WorldState,
+        from_room_id: &str,
+        exit: &RoomExitDefinition,
+    ) -> bool {
+        crate::engine::conditions::all_hold(
+            &exit.when,
+            &crate::engine::conditions::ConditionContext::new(self, state, from_room_id),
+        )
+    }
+
+    /// Exit resolution for the player, honouring exit conditions: an exit whose
+    /// conditions do not hold is invisible and won't be resolved (as if it
+    /// didn't exist).
     pub fn resolve_exit_for<'a>(
         &'a self,
+        state: &WorldState,
         room_id: &str,
         raw_target: &str,
-        truthy: impl Fn(&str) -> bool,
     ) -> Option<&'a RoomExitDefinition> {
         let target = raw_target.trim().to_ascii_lowercase();
         let target_without_the = target.strip_prefix("the ").unwrap_or(&target).trim();
@@ -140,7 +153,7 @@ impl ContentPack {
             .trim();
 
         self.room(room_id)?.exits.iter().find(|exit| {
-            if !exit.requires_story_var.is_empty() && !truthy(&exit.requires_story_var) {
+            if !self.exit_is_open(state, room_id, exit) {
                 return false;
             }
 
@@ -509,7 +522,7 @@ impl ContentPack {
         if let Some(room) = self.room(room_id) {
             for exit in &room.exits {
                 if exit.room_id == room_id
-                    || !exit.requires_story_var.is_empty()
+                    || !exit.when.is_empty()
                     || neighbors.contains(&exit.room_id)
                 {
                     continue;
@@ -524,7 +537,7 @@ impl ContentPack {
             let points_back = other
                 .exits
                 .iter()
-                .any(|exit| exit.room_id == room_id && exit.requires_story_var.is_empty());
+                .any(|exit| exit.room_id == room_id && exit.when.is_empty());
             if points_back && !neighbors.contains(&other.id) {
                 neighbors.push(other.id.clone());
             }

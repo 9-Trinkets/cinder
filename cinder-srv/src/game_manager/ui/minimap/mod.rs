@@ -100,7 +100,7 @@ fn project_connections(
             continue;
         };
         for exit in &room.exits {
-            if !exit_is_revealed(state, exit, visibility) {
+            if !exit_is_revealed(content, state, &room.id, exit, visibility) {
                 continue;
             }
             let pair = ordered_room_pair(&room.id, &exit.room_id);
@@ -116,13 +116,13 @@ fn project_connections(
 }
 
 fn exit_is_revealed(
+    content: &ContentPack,
     state: &WorldState,
+    from_room_id: &str,
     exit: &RoomExitDefinition,
     visibility: &MapVisibility,
 ) -> bool {
-    visibility.is_visible(&exit.room_id)
-        && (exit.requires_story_var.is_empty()
-            || story_var_is_truthy(state, &exit.requires_story_var))
+    visibility.is_visible(&exit.room_id) && content.exit_is_open(state, from_room_id, exit)
 }
 
 /// Orders a connection's two endpoints so each undirected pair is keyed once.
@@ -214,8 +214,12 @@ mod tests {
     #[test]
     fn full_reveal_does_not_expose_a_gated_connection() {
         let mut content = mapped_pack();
-        content.rooms[0].exits[0].requires_story_var = "secret_open".to_string();
-        content.rooms[1].exits[0].requires_story_var = "secret_open".to_string();
+        content.rooms[0].exits[0].when = vec![cinder_core::content::types::Condition::StoryVar(
+            "secret_open".to_string(),
+        )];
+        content.rooms[1].exits[0].when = vec![cinder_core::content::types::Condition::StoryVar(
+            "secret_open".to_string(),
+        )];
         let mut state = WorldState::new(&content);
         state.mark_actor_room_visited("player", "kitchen");
 

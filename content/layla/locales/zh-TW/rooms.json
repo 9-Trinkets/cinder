@@ -10,7 +10,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r2c1"
       },
       {
@@ -20,7 +19,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r1c2"
       }
     ],
@@ -56,7 +54,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r2c2"
       },
       {
@@ -66,7 +63,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r1c1"
       },
       {
@@ -76,7 +72,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r1c3"
       }
     ],
@@ -112,7 +107,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r2c3"
       },
       {
@@ -122,7 +116,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r1c2"
       },
       {
@@ -132,7 +125,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r1c4"
       }
     ],
@@ -168,7 +160,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r2c4"
       },
       {
@@ -178,7 +169,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r1c3"
       },
       {
@@ -188,7 +178,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r1c5"
       }
     ],
@@ -224,7 +213,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r2c5"
       },
       {
@@ -234,7 +222,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r1c4"
       },
       {
@@ -244,7 +231,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r1c6"
       }
     ],
@@ -280,7 +266,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r2c6"
       },
       {
@@ -290,7 +275,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r1c5"
       },
       {
@@ -300,7 +284,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r1c7"
       }
     ],
@@ -336,7 +319,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r2c7"
       },
       {
@@ -346,7 +328,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r1c6"
       },
       {
@@ -356,7 +337,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r1c8"
       }
     ],
@@ -392,7 +372,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r2c8"
       },
       {
@@ -402,7 +381,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r1c7"
       },
       {
@@ -412,7 +390,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r1c9"
       }
     ],
@@ -448,7 +425,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r2c9"
       },
       {
@@ -458,7 +434,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r1c8"
       }
     ],
@@ -494,7 +469,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r1c1"
       },
       {
@@ -504,7 +478,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r3c1"
       },
       {
@@ -514,7 +487,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r2c2"
       }
     ],
@@ -550,7 +522,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r1c2"
       },
       {
@@ -560,7 +531,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r3c2"
       },
       {
@@ -570,7 +540,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r2c1"
       },
       {
@@ -580,7 +549,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r2c3"
       }
     ],
@@ -616,7 +584,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r1c3"
       },
       {
@@ -626,7 +593,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r3c3"
       },
       {
@@ -636,7 +602,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r2c2"
       },
       {
@@ -646,7 +611,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r2c4"
       }
     ],
@@ -682,7 +646,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r1c4"
       },
       {
@@ -692,7 +655,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r3c4"
       },
       {
@@ -702,7 +664,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r2c3"
       },
       {
@@ -712,7 +673,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r2c5"
       }
     ],
@@ -748,7 +708,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r1c5"
       },
       {
@@ -758,7 +717,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r3c5"
       },
       {
@@ -768,7 +726,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r2c4"
       },
       {
@@ -778,7 +735,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r2c6"
       }
     ],
@@ -814,7 +770,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r1c6"
       },
       {
@@ -824,7 +779,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r3c6"
       },
       {
@@ -834,7 +788,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r2c5"
       },
       {
@@ -844,7 +797,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r2c7"
       }
     ],
@@ -880,7 +832,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r1c7"
       },
       {
@@ -890,7 +841,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r3c7"
       },
       {
@@ -900,7 +850,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r2c6"
       },
       {
@@ -910,7 +859,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r2c8"
       }
     ],
@@ -946,7 +894,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r1c8"
       },
       {
@@ -956,7 +903,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r3c8"
       },
       {
@@ -966,7 +912,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r2c7"
       },
       {
@@ -976,7 +921,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r2c9"
       }
     ],
@@ -1012,7 +956,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r1c9"
       },
       {
@@ -1022,7 +965,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r3c9"
       },
       {
@@ -1032,7 +974,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r2c8"
       }
     ],
@@ -1068,7 +1009,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r2c1"
       },
       {
@@ -1078,7 +1018,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r4c1"
       },
       {
@@ -1088,7 +1027,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r3c2"
       }
     ],
@@ -1124,7 +1062,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r2c2"
       },
       {
@@ -1134,7 +1071,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r4c2"
       },
       {
@@ -1144,7 +1080,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r3c1"
       },
       {
@@ -1154,7 +1089,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r3c3"
       }
     ],
@@ -1190,7 +1124,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r2c3"
       },
       {
@@ -1200,7 +1133,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r4c3"
       },
       {
@@ -1210,7 +1142,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r3c2"
       },
       {
@@ -1220,7 +1151,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r3c4"
       }
     ],
@@ -1256,7 +1186,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r2c4"
       },
       {
@@ -1266,7 +1195,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r4c4"
       },
       {
@@ -1276,7 +1204,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r3c3"
       },
       {
@@ -1286,7 +1213,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r3c5"
       }
     ],
@@ -1322,7 +1248,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r2c5"
       },
       {
@@ -1332,7 +1257,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r4c5"
       },
       {
@@ -1342,7 +1266,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r3c4"
       },
       {
@@ -1352,7 +1275,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r3c6"
       }
     ],
@@ -1388,7 +1310,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r2c6"
       },
       {
@@ -1398,7 +1319,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r4c6"
       },
       {
@@ -1408,7 +1328,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r3c5"
       },
       {
@@ -1418,7 +1337,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r3c7"
       }
     ],
@@ -1454,7 +1372,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r2c7"
       },
       {
@@ -1464,7 +1381,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r4c7"
       },
       {
@@ -1474,7 +1390,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r3c6"
       },
       {
@@ -1484,7 +1399,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r3c8"
       }
     ],
@@ -1520,7 +1434,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r2c8"
       },
       {
@@ -1530,7 +1443,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r4c8"
       },
       {
@@ -1540,7 +1452,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r3c7"
       },
       {
@@ -1550,7 +1461,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r3c9"
       }
     ],
@@ -1586,7 +1496,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r2c9"
       },
       {
@@ -1596,7 +1505,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r4c9"
       },
       {
@@ -1606,7 +1514,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r3c8"
       }
     ],
@@ -1642,7 +1549,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r3c1"
       },
       {
@@ -1652,7 +1558,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r5c1"
       },
       {
@@ -1662,7 +1567,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r4c2"
       }
     ],
@@ -1698,7 +1602,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r3c2"
       },
       {
@@ -1708,7 +1611,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r5c2"
       },
       {
@@ -1718,7 +1620,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r4c1"
       },
       {
@@ -1728,7 +1629,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r4c3"
       }
     ],
@@ -1764,7 +1664,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r3c3"
       },
       {
@@ -1774,7 +1673,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r5c3"
       },
       {
@@ -1784,7 +1682,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r4c2"
       },
       {
@@ -1794,7 +1691,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r4c4"
       }
     ],
@@ -1830,7 +1726,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r3c4"
       },
       {
@@ -1840,7 +1735,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r5c4"
       },
       {
@@ -1850,7 +1744,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r4c3"
       },
       {
@@ -1860,7 +1753,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r4c5"
       }
     ],
@@ -1896,7 +1788,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r3c5"
       },
       {
@@ -1906,7 +1797,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r5c5"
       },
       {
@@ -1916,7 +1806,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r4c4"
       },
       {
@@ -1926,7 +1815,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r4c6"
       }
     ],
@@ -1962,7 +1850,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r3c6"
       },
       {
@@ -1972,7 +1859,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r5c6"
       },
       {
@@ -1982,7 +1868,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r4c5"
       },
       {
@@ -1992,7 +1877,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r4c7"
       }
     ],
@@ -2028,7 +1912,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r3c7"
       },
       {
@@ -2038,7 +1921,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r5c7"
       },
       {
@@ -2048,7 +1930,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r4c6"
       },
       {
@@ -2058,7 +1939,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r4c8"
       }
     ],
@@ -2094,7 +1974,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r3c8"
       },
       {
@@ -2104,7 +1983,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r5c8"
       },
       {
@@ -2114,7 +1992,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r4c7"
       },
       {
@@ -2124,7 +2001,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r4c9"
       }
     ],
@@ -2160,7 +2036,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r3c9"
       },
       {
@@ -2170,7 +2045,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r5c9"
       },
       {
@@ -2180,7 +2054,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r4c8"
       }
     ],
@@ -2216,7 +2089,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r4c1"
       },
       {
@@ -2226,7 +2098,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r6c1"
       },
       {
@@ -2236,7 +2107,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r5c2"
       }
     ],
@@ -2272,7 +2142,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r4c2"
       },
       {
@@ -2282,7 +2151,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r6c2"
       },
       {
@@ -2292,7 +2160,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r5c1"
       },
       {
@@ -2302,7 +2169,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r5c3"
       }
     ],
@@ -2338,7 +2204,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r4c3"
       },
       {
@@ -2348,7 +2213,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r6c3"
       },
       {
@@ -2358,7 +2222,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r5c2"
       },
       {
@@ -2368,7 +2231,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r5c4"
       }
     ],
@@ -2404,7 +2266,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r4c4"
       },
       {
@@ -2414,7 +2275,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r6c4"
       },
       {
@@ -2424,7 +2284,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r5c3"
       },
       {
@@ -2434,7 +2293,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r5c5"
       }
     ],
@@ -2463,7 +2321,7 @@
     "allow_rest": false,
     "descriptions": [
       {
-        "actor_defeated": "goblin-shaman",
+        "when": ["defeated:goblin-shaman"],
         "inspect_text": "工作環的粉筆在你腳下已被蹭花、踩斷。被縛的石像維持著被留在石板上的姿态，鐵鏈鬆垂進塵土。近旁，吊索靜靜懸在通往深處的豎井上方，將熄的火在屋子中央扭起最後一縷煙。空氣變得靜止而寒冷。",
         "summary": "腳下的粉筆圈已被蹭花、踩斷。被束縛的石像靜默地立在石板上，如今已沒有看守來為牠們烙印。只剩灰燼，和一爐無人照管的火升起的冷煙。"
       }
@@ -2476,7 +2334,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r4c5"
       },
       {
@@ -2486,7 +2343,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r6c5"
       },
       {
@@ -2496,7 +2352,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r5c4"
       },
       {
@@ -2506,7 +2361,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r5c6"
       },
       {
@@ -2517,7 +2371,7 @@
         ],
         "label": "下",
         "menu_label": "下",
-        "requires_story_var": "shaman_defeated",
+        "when": ["shaman_defeated"],
         "room_id": "d1c1"
       }
     ],
@@ -2553,7 +2407,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r4c6"
       },
       {
@@ -2563,7 +2416,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r6c6"
       },
       {
@@ -2573,7 +2425,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r5c5"
       },
       {
@@ -2583,7 +2434,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r5c7"
       }
     ],
@@ -2619,7 +2469,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r4c7"
       },
       {
@@ -2629,7 +2478,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r6c7"
       },
       {
@@ -2639,7 +2487,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r5c6"
       },
       {
@@ -2649,7 +2496,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r5c8"
       }
     ],
@@ -2685,7 +2531,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r4c8"
       },
       {
@@ -2695,7 +2540,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r6c8"
       },
       {
@@ -2705,7 +2549,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r5c7"
       },
       {
@@ -2715,7 +2558,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r5c9"
       }
     ],
@@ -2751,7 +2593,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r4c9"
       },
       {
@@ -2761,7 +2602,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r6c9"
       },
       {
@@ -2771,7 +2611,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r5c8"
       }
     ],
@@ -2807,7 +2646,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r5c1"
       },
       {
@@ -2817,7 +2655,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r7c1"
       },
       {
@@ -2827,7 +2664,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r6c2"
       }
     ],
@@ -2863,7 +2699,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r5c2"
       },
       {
@@ -2873,7 +2708,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r7c2"
       },
       {
@@ -2883,7 +2717,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r6c1"
       },
       {
@@ -2893,7 +2726,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r6c3"
       }
     ],
@@ -2929,7 +2761,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r5c3"
       },
       {
@@ -2939,7 +2770,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r7c3"
       },
       {
@@ -2949,7 +2779,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r6c2"
       },
       {
@@ -2959,7 +2788,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r6c4"
       }
     ],
@@ -2995,7 +2823,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r5c4"
       },
       {
@@ -3005,7 +2832,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r7c4"
       },
       {
@@ -3015,7 +2841,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r6c3"
       },
       {
@@ -3025,7 +2850,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r6c5"
       }
     ],
@@ -3061,7 +2885,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r5c5"
       },
       {
@@ -3071,7 +2894,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r7c5"
       },
       {
@@ -3081,7 +2903,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r6c4"
       },
       {
@@ -3091,7 +2912,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r6c6"
       }
     ],
@@ -3127,7 +2947,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r5c6"
       },
       {
@@ -3137,7 +2956,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r7c6"
       },
       {
@@ -3147,7 +2965,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r6c5"
       },
       {
@@ -3157,7 +2974,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r6c7"
       }
     ],
@@ -3193,7 +3009,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r5c7"
       },
       {
@@ -3203,7 +3018,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r7c7"
       },
       {
@@ -3213,7 +3027,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r6c6"
       },
       {
@@ -3223,7 +3036,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r6c8"
       }
     ],
@@ -3259,7 +3071,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r5c8"
       },
       {
@@ -3269,7 +3080,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r7c8"
       },
       {
@@ -3279,7 +3089,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r6c7"
       },
       {
@@ -3289,7 +3098,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r6c9"
       }
     ],
@@ -3325,7 +3133,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r5c9"
       },
       {
@@ -3335,7 +3142,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r7c9"
       },
       {
@@ -3345,7 +3151,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r6c8"
       }
     ],
@@ -3381,7 +3186,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r6c1"
       },
       {
@@ -3391,7 +3195,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r8c1"
       },
       {
@@ -3401,7 +3204,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r7c2"
       }
     ],
@@ -3437,7 +3239,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r6c2"
       },
       {
@@ -3447,7 +3248,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r8c2"
       },
       {
@@ -3457,7 +3257,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r7c1"
       },
       {
@@ -3467,7 +3266,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r7c3"
       }
     ],
@@ -3503,7 +3301,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r6c3"
       },
       {
@@ -3513,7 +3310,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r8c3"
       },
       {
@@ -3523,7 +3319,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r7c2"
       },
       {
@@ -3533,7 +3328,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r7c4"
       }
     ],
@@ -3569,7 +3363,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r6c4"
       },
       {
@@ -3579,7 +3372,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r8c4"
       },
       {
@@ -3589,7 +3381,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r7c3"
       },
       {
@@ -3599,7 +3390,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r7c5"
       }
     ],
@@ -3635,7 +3425,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r6c5"
       },
       {
@@ -3645,7 +3434,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r8c5"
       },
       {
@@ -3655,7 +3443,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r7c4"
       },
       {
@@ -3665,7 +3452,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r7c6"
       }
     ],
@@ -3701,7 +3487,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r6c6"
       },
       {
@@ -3711,7 +3496,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r8c6"
       },
       {
@@ -3721,7 +3505,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r7c5"
       },
       {
@@ -3731,7 +3514,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r7c7"
       }
     ],
@@ -3767,7 +3549,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r6c7"
       },
       {
@@ -3777,7 +3558,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r8c7"
       },
       {
@@ -3787,7 +3567,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r7c6"
       },
       {
@@ -3797,7 +3576,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r7c8"
       }
     ],
@@ -3833,7 +3611,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r6c8"
       },
       {
@@ -3843,7 +3620,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r8c8"
       },
       {
@@ -3853,7 +3629,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r7c7"
       },
       {
@@ -3863,7 +3638,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r7c9"
       }
     ],
@@ -3899,7 +3673,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r6c9"
       },
       {
@@ -3909,7 +3682,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r8c9"
       },
       {
@@ -3919,7 +3691,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r7c8"
       }
     ],
@@ -3955,7 +3726,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r7c1"
       },
       {
@@ -3965,7 +3735,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r9c1"
       },
       {
@@ -3975,7 +3744,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r8c2"
       }
     ],
@@ -4011,7 +3779,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r7c2"
       },
       {
@@ -4021,7 +3788,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r9c2"
       },
       {
@@ -4031,7 +3797,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r8c1"
       },
       {
@@ -4041,7 +3806,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r8c3"
       }
     ],
@@ -4077,7 +3841,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r7c3"
       },
       {
@@ -4087,7 +3850,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r9c3"
       },
       {
@@ -4097,7 +3859,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r8c2"
       },
       {
@@ -4107,7 +3868,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r8c4"
       }
     ],
@@ -4143,7 +3903,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r7c4"
       },
       {
@@ -4153,7 +3912,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r9c4"
       },
       {
@@ -4163,7 +3921,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r8c3"
       },
       {
@@ -4173,7 +3930,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r8c5"
       }
     ],
@@ -4209,7 +3965,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r7c5"
       },
       {
@@ -4219,7 +3974,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r9c5"
       },
       {
@@ -4229,7 +3983,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r8c4"
       },
       {
@@ -4239,7 +3992,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r8c6"
       }
     ],
@@ -4275,7 +4027,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r7c6"
       },
       {
@@ -4285,7 +4036,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r9c6"
       },
       {
@@ -4295,7 +4045,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r8c5"
       },
       {
@@ -4305,7 +4054,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r8c7"
       }
     ],
@@ -4341,7 +4089,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r7c7"
       },
       {
@@ -4351,7 +4098,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r9c7"
       },
       {
@@ -4361,7 +4107,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r8c6"
       },
       {
@@ -4371,7 +4116,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r8c8"
       }
     ],
@@ -4407,7 +4151,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r7c8"
       },
       {
@@ -4417,7 +4160,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r9c8"
       },
       {
@@ -4427,7 +4169,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r8c7"
       },
       {
@@ -4437,7 +4178,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r8c9"
       }
     ],
@@ -4473,7 +4213,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r7c9"
       },
       {
@@ -4483,7 +4222,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "r9c9"
       },
       {
@@ -4493,7 +4231,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r8c8"
       }
     ],
@@ -4529,7 +4266,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r8c1"
       },
       {
@@ -4539,7 +4275,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r9c2"
       }
     ],
@@ -4575,7 +4310,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r8c2"
       },
       {
@@ -4585,7 +4319,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r9c1"
       },
       {
@@ -4595,7 +4328,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r9c3"
       }
     ],
@@ -4631,7 +4363,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r8c3"
       },
       {
@@ -4641,7 +4372,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r9c2"
       },
       {
@@ -4651,7 +4381,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r9c4"
       }
     ],
@@ -4687,7 +4416,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r8c4"
       },
       {
@@ -4697,7 +4425,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r9c3"
       },
       {
@@ -4707,7 +4434,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r9c5"
       }
     ],
@@ -4743,7 +4469,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r8c5"
       },
       {
@@ -4753,7 +4478,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r9c4"
       },
       {
@@ -4763,7 +4487,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r9c6"
       }
     ],
@@ -4799,7 +4522,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r8c6"
       },
       {
@@ -4809,7 +4531,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r9c5"
       },
       {
@@ -4819,7 +4540,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r9c7"
       }
     ],
@@ -4855,7 +4575,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r8c7"
       },
       {
@@ -4865,7 +4584,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r9c6"
       },
       {
@@ -4875,7 +4593,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r9c8"
       }
     ],
@@ -4911,7 +4628,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r8c8"
       },
       {
@@ -4921,7 +4637,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r9c7"
       },
       {
@@ -4931,7 +4646,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "r9c9"
       }
     ],
@@ -4967,7 +4681,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "r8c9"
       },
       {
@@ -4977,7 +4690,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "r9c8"
       }
     ],
@@ -5013,7 +4725,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d1c2"
       },
       {
@@ -5023,7 +4734,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d2c1"
       },
       {
@@ -5035,7 +4745,7 @@
         ],
         "label": "上",
         "menu_label": "上",
-        "requires_story_var": "shaman_defeated",
+        "when": ["shaman_defeated"],
         "room_id": "r5c5"
       }
     ],
@@ -5084,7 +4794,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d1c1"
       },
       {
@@ -5094,7 +4803,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d1c3"
       },
       {
@@ -5104,7 +4812,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d2c2"
       }
     ],
@@ -5154,7 +4861,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d1c2"
       },
       {
@@ -5164,7 +4870,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d1c4"
       },
       {
@@ -5174,7 +4879,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d2c3"
       }
     ],
@@ -5224,7 +4928,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d1c3"
       },
       {
@@ -5234,7 +4937,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d1c5"
       },
       {
@@ -5244,7 +4946,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d2c4"
       }
     ],
@@ -5294,7 +4995,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d1c4"
       },
       {
@@ -5304,7 +5004,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d1c6"
       },
       {
@@ -5314,7 +5013,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d2c5"
       }
     ],
@@ -5364,7 +5062,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d1c5"
       },
       {
@@ -5374,7 +5071,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d1c7"
       },
       {
@@ -5384,7 +5080,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d2c6"
       }
     ],
@@ -5434,7 +5129,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d1c6"
       },
       {
@@ -5444,7 +5138,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d1c8"
       },
       {
@@ -5454,7 +5147,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d2c7"
       }
     ],
@@ -5504,7 +5196,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d1c7"
       },
       {
@@ -5514,7 +5205,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d2c8"
       }
     ],
@@ -5564,7 +5254,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d2c2"
       },
       {
@@ -5574,7 +5263,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d1c1"
       },
       {
@@ -5584,7 +5272,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d3c1"
       }
     ],
@@ -5634,7 +5321,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d2c1"
       },
       {
@@ -5644,7 +5330,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d2c3"
       },
       {
@@ -5654,7 +5339,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d1c2"
       },
       {
@@ -5664,7 +5348,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d3c2"
       }
     ],
@@ -5714,7 +5397,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d2c2"
       },
       {
@@ -5724,7 +5406,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d2c4"
       },
       {
@@ -5734,7 +5415,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d1c3"
       },
       {
@@ -5744,7 +5424,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d3c3"
       }
     ],
@@ -5794,7 +5473,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d2c3"
       },
       {
@@ -5804,7 +5482,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d2c5"
       },
       {
@@ -5814,7 +5491,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d1c4"
       },
       {
@@ -5824,7 +5500,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d3c4"
       }
     ],
@@ -5874,7 +5549,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d2c4"
       },
       {
@@ -5884,7 +5558,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d2c6"
       },
       {
@@ -5894,7 +5567,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d1c5"
       },
       {
@@ -5904,7 +5576,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d3c5"
       }
     ],
@@ -5954,7 +5625,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d2c5"
       },
       {
@@ -5964,7 +5634,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d2c7"
       },
       {
@@ -5974,7 +5643,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d1c6"
       },
       {
@@ -5984,7 +5652,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d3c6"
       }
     ],
@@ -6034,7 +5701,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d2c6"
       },
       {
@@ -6044,7 +5710,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d2c8"
       },
       {
@@ -6054,7 +5719,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d1c7"
       },
       {
@@ -6064,7 +5728,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d3c7"
       }
     ],
@@ -6114,7 +5777,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d2c7"
       },
       {
@@ -6124,7 +5786,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d1c8"
       },
       {
@@ -6134,7 +5795,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d3c8"
       }
     ],
@@ -6184,7 +5844,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d3c2"
       },
       {
@@ -6194,7 +5853,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d2c1"
       },
       {
@@ -6204,7 +5862,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d4c1"
       }
     ],
@@ -6252,7 +5909,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d3c1"
       },
       {
@@ -6262,7 +5918,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d3c3"
       },
       {
@@ -6272,7 +5927,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d2c2"
       },
       {
@@ -6282,7 +5936,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d4c2"
       }
     ],
@@ -6330,7 +5983,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d3c2"
       },
       {
@@ -6340,7 +5992,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d3c4"
       },
       {
@@ -6350,7 +6001,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d2c3"
       },
       {
@@ -6360,7 +6010,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d4c3"
       }
     ],
@@ -6408,7 +6057,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d3c3"
       },
       {
@@ -6418,7 +6066,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d3c5"
       },
       {
@@ -6428,7 +6075,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d2c4"
       },
       {
@@ -6438,7 +6084,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d4c4"
       }
     ],
@@ -6486,7 +6131,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d3c4"
       },
       {
@@ -6496,7 +6140,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d3c6"
       },
       {
@@ -6506,7 +6149,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d2c5"
       },
       {
@@ -6516,7 +6158,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d4c5"
       }
     ],
@@ -6564,7 +6205,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d3c5"
       },
       {
@@ -6574,7 +6214,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d3c7"
       },
       {
@@ -6584,7 +6223,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d2c6"
       },
       {
@@ -6594,7 +6232,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d4c6"
       }
     ],
@@ -6642,7 +6279,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d3c6"
       },
       {
@@ -6652,7 +6288,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d3c8"
       },
       {
@@ -6662,7 +6297,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d2c7"
       },
       {
@@ -6672,7 +6306,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d4c7"
       }
     ],
@@ -6720,7 +6353,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d3c7"
       },
       {
@@ -6730,7 +6362,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d2c8"
       },
       {
@@ -6740,7 +6371,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d4c8"
       }
     ],
@@ -6788,7 +6418,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d4c2"
       },
       {
@@ -6798,7 +6427,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d3c1"
       },
       {
@@ -6808,7 +6436,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d5c1"
       }
     ],
@@ -6857,7 +6484,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d4c1"
       },
       {
@@ -6867,7 +6493,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d4c3"
       },
       {
@@ -6877,7 +6502,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d3c2"
       },
       {
@@ -6887,7 +6511,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d5c2"
       }
     ],
@@ -6936,7 +6559,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d4c2"
       },
       {
@@ -6946,7 +6568,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d4c4"
       },
       {
@@ -6956,7 +6577,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d3c3"
       },
       {
@@ -6966,7 +6586,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d5c3"
       }
     ],
@@ -7015,7 +6634,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d4c3"
       },
       {
@@ -7025,7 +6643,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d4c5"
       },
       {
@@ -7035,7 +6652,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d3c4"
       },
       {
@@ -7045,7 +6661,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d5c4"
       }
     ],
@@ -7094,7 +6709,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d4c4"
       },
       {
@@ -7104,7 +6718,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d4c6"
       },
       {
@@ -7114,7 +6727,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d3c5"
       },
       {
@@ -7124,7 +6736,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d5c5"
       }
     ],
@@ -7173,7 +6784,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d4c5"
       },
       {
@@ -7183,7 +6793,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d4c7"
       },
       {
@@ -7193,7 +6802,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d3c6"
       },
       {
@@ -7203,7 +6811,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d5c6"
       }
     ],
@@ -7252,7 +6859,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d4c6"
       },
       {
@@ -7262,7 +6868,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d4c8"
       },
       {
@@ -7272,7 +6877,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d3c7"
       },
       {
@@ -7282,7 +6886,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d5c7"
       }
     ],
@@ -7331,7 +6934,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d4c7"
       },
       {
@@ -7341,7 +6943,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d3c8"
       },
       {
@@ -7351,7 +6952,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d5c8"
       }
     ],
@@ -7400,7 +7000,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d5c2"
       },
       {
@@ -7410,7 +7009,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d4c1"
       },
       {
@@ -7420,7 +7018,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d6c1"
       }
     ],
@@ -7470,7 +7067,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d5c1"
       },
       {
@@ -7480,7 +7076,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d5c3"
       },
       {
@@ -7490,7 +7085,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d4c2"
       },
       {
@@ -7500,7 +7094,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d6c2"
       }
     ],
@@ -7550,7 +7143,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d5c2"
       },
       {
@@ -7560,7 +7152,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d5c4"
       },
       {
@@ -7570,7 +7161,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d4c3"
       },
       {
@@ -7580,7 +7170,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d6c3"
       }
     ],
@@ -7630,7 +7219,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d5c3"
       },
       {
@@ -7640,7 +7228,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d5c5"
       },
       {
@@ -7650,7 +7237,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d4c4"
       },
       {
@@ -7660,7 +7246,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d6c4"
       }
     ],
@@ -7710,7 +7295,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d5c4"
       },
       {
@@ -7720,7 +7304,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d5c6"
       },
       {
@@ -7730,7 +7313,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d4c5"
       },
       {
@@ -7740,7 +7322,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d6c5"
       }
     ],
@@ -7790,7 +7371,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d5c5"
       },
       {
@@ -7800,7 +7380,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d5c7"
       },
       {
@@ -7810,7 +7389,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d4c6"
       },
       {
@@ -7820,7 +7398,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d6c6"
       }
     ],
@@ -7870,7 +7447,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d5c6"
       },
       {
@@ -7880,7 +7456,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d5c8"
       },
       {
@@ -7890,7 +7465,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d4c7"
       },
       {
@@ -7900,7 +7474,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d6c7"
       }
     ],
@@ -7950,7 +7523,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d5c7"
       },
       {
@@ -7960,7 +7532,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d4c8"
       },
       {
@@ -7970,7 +7541,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d6c8"
       }
     ],
@@ -8020,7 +7590,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d6c2"
       },
       {
@@ -8030,7 +7599,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d5c1"
       },
       {
@@ -8040,7 +7608,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d7c1"
       }
     ],
@@ -8089,7 +7656,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d6c1"
       },
       {
@@ -8099,7 +7665,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d6c3"
       },
       {
@@ -8109,7 +7674,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d5c2"
       },
       {
@@ -8119,7 +7683,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d7c2"
       }
     ],
@@ -8168,7 +7731,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d6c2"
       },
       {
@@ -8178,7 +7740,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d6c4"
       },
       {
@@ -8188,7 +7749,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d5c3"
       },
       {
@@ -8198,7 +7758,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d7c3"
       }
     ],
@@ -8247,7 +7806,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d6c3"
       },
       {
@@ -8257,7 +7815,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d6c5"
       },
       {
@@ -8267,7 +7824,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d5c4"
       },
       {
@@ -8277,7 +7833,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d7c4"
       }
     ],
@@ -8326,7 +7881,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d6c4"
       },
       {
@@ -8336,7 +7890,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d6c6"
       },
       {
@@ -8346,7 +7899,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d5c5"
       },
       {
@@ -8356,7 +7908,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d7c5"
       }
     ],
@@ -8405,7 +7956,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d6c5"
       },
       {
@@ -8415,7 +7965,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d6c7"
       },
       {
@@ -8425,7 +7974,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d5c6"
       },
       {
@@ -8435,7 +7983,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d7c6"
       }
     ],
@@ -8484,7 +8031,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d6c6"
       },
       {
@@ -8494,7 +8040,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d6c8"
       },
       {
@@ -8504,7 +8049,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d5c7"
       },
       {
@@ -8514,7 +8058,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d7c7"
       }
     ],
@@ -8563,7 +8106,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d6c7"
       },
       {
@@ -8573,7 +8115,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d5c8"
       },
       {
@@ -8583,7 +8124,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d7c8"
       }
     ],
@@ -8632,7 +8172,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d7c2"
       },
       {
@@ -8642,7 +8181,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d6c1"
       },
       {
@@ -8652,7 +8190,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d8c1"
       }
     ],
@@ -8702,7 +8239,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d7c1"
       },
       {
@@ -8712,7 +8248,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d7c3"
       },
       {
@@ -8722,7 +8257,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d6c2"
       },
       {
@@ -8732,7 +8266,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d8c2"
       }
     ],
@@ -8782,7 +8315,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d7c2"
       },
       {
@@ -8792,7 +8324,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d7c4"
       },
       {
@@ -8802,7 +8333,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d6c3"
       },
       {
@@ -8812,7 +8342,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d8c3"
       }
     ],
@@ -8862,7 +8391,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d7c3"
       },
       {
@@ -8872,7 +8400,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d7c5"
       },
       {
@@ -8882,7 +8409,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d6c4"
       },
       {
@@ -8892,7 +8418,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d8c4"
       }
     ],
@@ -8942,7 +8467,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d7c4"
       },
       {
@@ -8952,7 +8476,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d7c6"
       },
       {
@@ -8962,7 +8485,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d6c5"
       },
       {
@@ -8972,7 +8494,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d8c5"
       }
     ],
@@ -9022,7 +8543,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d7c5"
       },
       {
@@ -9032,7 +8552,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d7c7"
       },
       {
@@ -9042,7 +8561,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d6c6"
       },
       {
@@ -9052,7 +8570,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d8c6"
       }
     ],
@@ -9102,7 +8619,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d7c6"
       },
       {
@@ -9112,7 +8628,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d7c8"
       },
       {
@@ -9122,7 +8637,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d6c7"
       },
       {
@@ -9132,7 +8646,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d8c7"
       }
     ],
@@ -9182,7 +8695,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d7c7"
       },
       {
@@ -9192,7 +8704,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d6c8"
       },
       {
@@ -9202,7 +8713,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "d8c8"
       }
     ],
@@ -9252,7 +8762,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d8c2"
       },
       {
@@ -9262,7 +8771,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d7c1"
       }
     ],
@@ -9311,7 +8819,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d8c1"
       },
       {
@@ -9321,7 +8828,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d8c3"
       },
       {
@@ -9331,7 +8837,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d7c2"
       }
     ],
@@ -9380,7 +8885,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d8c2"
       },
       {
@@ -9390,7 +8894,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d8c4"
       },
       {
@@ -9400,7 +8903,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d7c3"
       }
     ],
@@ -9449,7 +8951,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d8c3"
       },
       {
@@ -9459,7 +8960,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d8c5"
       },
       {
@@ -9469,7 +8969,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d7c4"
       }
     ],
@@ -9511,7 +9010,7 @@
     "allow_rest": false,
     "descriptions": [
       {
-        "actor_defeated": "elf-king-5",
+        "when": ["defeated:elf-king-5"],
         "inspect_text": "樹林豁然開出一間寬闊、靜止的石室。妖精王曾以樹根和淡光加冕而坐之處，如今只剩一張中空的灰樹皮王座。",
         "summary": "樹林豁然開出一間寬闊、靜止的石室。妖精王曾以樹根和淡光加冕而坐之處，如今只剩一張中空的灰樹皮王座。"
       }
@@ -9524,7 +9023,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d8c4"
       },
       {
@@ -9534,7 +9032,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d8c6"
       },
       {
@@ -9544,7 +9041,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d7c5"
       },
       {
@@ -9556,7 +9052,7 @@
         ],
         "label": "下",
         "menu_label": "下",
-        "requires_story_var": "elf_king_defeated",
+        "when": ["elf_king_defeated"],
         "room_id": "oan"
       }
     ],
@@ -9606,7 +9102,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d8c5"
       },
       {
@@ -9616,7 +9111,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d8c7"
       },
       {
@@ -9626,7 +9120,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d7c6"
       }
     ],
@@ -9675,7 +9168,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d8c6"
       },
       {
@@ -9685,7 +9177,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "d8c8"
       },
       {
@@ -9695,7 +9186,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d7c7"
       }
     ],
@@ -9744,7 +9234,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "d8c7"
       },
       {
@@ -9754,7 +9243,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "d7c8"
       }
     ],
@@ -9803,7 +9291,6 @@
         ],
         "label": "順時針",
         "menu_label": "順時針",
-        "requires_story_var": "",
         "room_id": "o1"
       },
       {
@@ -9813,7 +9300,6 @@
         ],
         "label": "逆時針",
         "menu_label": "逆時針",
-        "requires_story_var": "",
         "room_id": "o12"
       },
       {
@@ -9827,7 +9313,6 @@
         ],
         "label": "前往火心",
         "menu_label": "前往火心",
-        "requires_story_var": "",
         "room_id": "oh"
       },
       {
@@ -9839,7 +9324,7 @@
         ],
         "label": "上",
         "menu_label": "上",
-        "requires_story_var": "elf_king_defeated",
+        "when": ["elf_king_defeated"],
         "room_id": "d8c5"
       }
     ],
@@ -9889,7 +9374,6 @@
         ],
         "label": "順時針",
         "menu_label": "順時針",
-        "requires_story_var": "",
         "room_id": "o7"
       },
       {
@@ -9899,7 +9383,6 @@
         ],
         "label": "逆時針",
         "menu_label": "逆時針",
-        "requires_story_var": "",
         "room_id": "o6"
       },
       {
@@ -9913,7 +9396,6 @@
         ],
         "label": "前往火心",
         "menu_label": "前往火心",
-        "requires_story_var": "",
         "room_id": "oh"
       }
     ],
@@ -9965,7 +9447,6 @@
         ],
         "label": "順時針",
         "menu_label": "順時針",
-        "requires_story_var": "",
         "room_id": "o2"
       },
       {
@@ -9978,7 +9459,6 @@
         ],
         "label": "逆時針",
         "menu_label": "逆時針",
-        "requires_story_var": "",
         "room_id": "oan"
       }
     ],
@@ -10029,7 +9509,6 @@
         ],
         "label": "順時針",
         "menu_label": "順時針",
-        "requires_story_var": "",
         "room_id": "o3"
       },
       {
@@ -10042,7 +9521,6 @@
         ],
         "label": "逆時針",
         "menu_label": "逆時針",
-        "requires_story_var": "",
         "room_id": "o1"
       }
     ],
@@ -10093,7 +9571,6 @@
         ],
         "label": "順時針",
         "menu_label": "順時針",
-        "requires_story_var": "",
         "room_id": "o4"
       },
       {
@@ -10106,7 +9583,6 @@
         ],
         "label": "逆時針",
         "menu_label": "逆時針",
-        "requires_story_var": "",
         "room_id": "o2"
       }
     ],
@@ -10157,7 +9633,6 @@
         ],
         "label": "順時針",
         "menu_label": "順時針",
-        "requires_story_var": "",
         "room_id": "o5"
       },
       {
@@ -10170,7 +9645,6 @@
         ],
         "label": "逆時針",
         "menu_label": "逆時針",
-        "requires_story_var": "",
         "room_id": "o3"
       }
     ],
@@ -10221,7 +9695,6 @@
         ],
         "label": "順時針",
         "menu_label": "順時針",
-        "requires_story_var": "",
         "room_id": "o6"
       },
       {
@@ -10234,7 +9707,6 @@
         ],
         "label": "逆時針",
         "menu_label": "逆時針",
-        "requires_story_var": "",
         "room_id": "o4"
       }
     ],
@@ -10285,7 +9757,6 @@
         ],
         "label": "順時針",
         "menu_label": "順時針",
-        "requires_story_var": "",
         "room_id": "oas"
       },
       {
@@ -10298,7 +9769,6 @@
         ],
         "label": "逆時針",
         "menu_label": "逆時針",
-        "requires_story_var": "",
         "room_id": "o5"
       }
     ],
@@ -10349,7 +9819,6 @@
         ],
         "label": "順時針",
         "menu_label": "順時針",
-        "requires_story_var": "",
         "room_id": "o8"
       },
       {
@@ -10362,7 +9831,6 @@
         ],
         "label": "逆時針",
         "menu_label": "逆時針",
-        "requires_story_var": "",
         "room_id": "oas"
       }
     ],
@@ -10413,7 +9881,6 @@
         ],
         "label": "順時針",
         "menu_label": "順時針",
-        "requires_story_var": "",
         "room_id": "o9"
       },
       {
@@ -10426,7 +9893,6 @@
         ],
         "label": "逆時針",
         "menu_label": "逆時針",
-        "requires_story_var": "",
         "room_id": "o7"
       }
     ],
@@ -10477,7 +9943,6 @@
         ],
         "label": "順時針",
         "menu_label": "順時針",
-        "requires_story_var": "",
         "room_id": "o10"
       },
       {
@@ -10490,7 +9955,6 @@
         ],
         "label": "逆時針",
         "menu_label": "逆時針",
-        "requires_story_var": "",
         "room_id": "o8"
       }
     ],
@@ -10541,7 +10005,6 @@
         ],
         "label": "順時針",
         "menu_label": "順時針",
-        "requires_story_var": "",
         "room_id": "o11"
       },
       {
@@ -10554,7 +10017,6 @@
         ],
         "label": "逆時針",
         "menu_label": "逆時針",
-        "requires_story_var": "",
         "room_id": "o9"
       }
     ],
@@ -10605,7 +10067,6 @@
         ],
         "label": "順時針",
         "menu_label": "順時針",
-        "requires_story_var": "",
         "room_id": "o12"
       },
       {
@@ -10618,7 +10079,6 @@
         ],
         "label": "逆時針",
         "menu_label": "逆時針",
-        "requires_story_var": "",
         "room_id": "o10"
       }
     ],
@@ -10669,7 +10129,6 @@
         ],
         "label": "順時針",
         "menu_label": "順時針",
-        "requires_story_var": "",
         "room_id": "oan"
       },
       {
@@ -10682,7 +10141,6 @@
         ],
         "label": "逆時針",
         "menu_label": "逆時針",
-        "requires_story_var": "",
         "room_id": "o11"
       }
     ],
@@ -10725,7 +10183,7 @@
     "allow_rest": false,
     "descriptions": [
       {
-        "actor_defeated": "fire-elemental",
+        "when": ["defeated:fire-elemental"],
         "inspect_text": "棋盤的心是一個黑玻璃的淺坑。火元素曾燃燒之處，只剩一個圓形搖籃，仍舊溫熱，盛著一圈淡淡的灰燼旋紋。",
         "summary": "火心坑空了。火元素曾燃燒之處，只剩一個黑玻璃的圓形搖籃，仍舊溫熱，盛著一圈淡淡的灰燼旋紋。"
       }
@@ -10741,7 +10199,6 @@
         ],
         "label": "向北穿過倉庫",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "oan"
       },
       {
@@ -10754,7 +10211,6 @@
         ],
         "label": "向南穿過倉庫",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "oas"
       },
       {
@@ -10767,7 +10223,7 @@
         ],
         "label": "下",
         "menu_label": "下",
-        "requires_story_var": "elemental_released",
+        "when": ["elemental_released"],
         "room_id": "village_square"
       }
     ],
@@ -10811,7 +10267,7 @@
     "allow_rest": false,
     "descriptions": [
       {
-        "actor_defeated": "garrison_guard",
+        "when": ["defeated:garrison_guard"],
         "inspect_text": "暖空氣從塔架邊的管道上散開，廣場聞起來像熱鐵上的雨。鋪石上的拖痕沒有被沖掉。哨兵站過的地方留著兩塊沒被踩過的石板，還有散落的黃銅弩機螺栓頭，那是弩解體的地方。少了他們，那道艙壁就只是一堵牆，而獨自走到它面前，是一件大得多的事。",
         "summary": "路仍然在那堵牆前到頭，但廣場現在空了。你看得見整片鋪面、通長鋪開的蒸汽管，和遠端那座佔滿視野、以鐵與黃銅構成的軍事堡壘艙壁。它前面什麼也沒站著。"
       }
@@ -10824,7 +10280,6 @@
         ],
         "label": "西南",
         "menu_label": "西南",
-        "requires_story_var": "",
         "room_id": "village_west_2"
       },
       {
@@ -10834,7 +10289,6 @@
         ],
         "label": "東南",
         "menu_label": "東南",
-        "requires_story_var": "",
         "room_id": "village_east_1"
       },
       {
@@ -10847,7 +10301,7 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "fortress_gate_open",
+        "when": ["fortress_gate_open"],
         "room_id": "fortress_gate"
       }
     ],
@@ -10884,7 +10338,6 @@
         ],
         "label": "西南",
         "menu_label": "西南",
-        "requires_story_var": "",
         "room_id": "village_west_1"
       },
       {
@@ -10894,7 +10347,6 @@
         ],
         "label": "東北",
         "menu_label": "東北",
-        "requires_story_var": "",
         "room_id": "village_north_gate"
       }
     ],
@@ -10930,7 +10382,6 @@
         ],
         "label": "西南",
         "menu_label": "西南",
-        "requires_story_var": "",
         "room_id": "village_sw_corner"
       },
       {
@@ -10940,7 +10391,6 @@
         ],
         "label": "東北",
         "menu_label": "東北",
-        "requires_story_var": "",
         "room_id": "village_west_2"
       }
     ],
@@ -10991,7 +10441,6 @@
         ],
         "label": "東北",
         "menu_label": "東北",
-        "requires_story_var": "",
         "room_id": "village_west_1"
       },
       {
@@ -11001,7 +10450,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "village_square"
       }
     ],
@@ -11036,7 +10484,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "village_south_1"
       },
       {
@@ -11046,7 +10493,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "village_sw_corner"
       },
       {
@@ -11059,7 +10505,6 @@
         ],
         "label": "上",
         "menu_label": "上",
-        "requires_story_var": "",
         "room_id": "oh"
       }
     ],
@@ -11094,7 +10539,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "village_se_corner"
       },
       {
@@ -11104,7 +10548,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "village_square"
       }
     ],
@@ -11140,7 +10583,6 @@
         ],
         "label": "西北",
         "menu_label": "西北",
-        "requires_story_var": "",
         "room_id": "village_east_2"
       },
       {
@@ -11150,7 +10592,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "village_south_1"
       }
     ],
@@ -11185,7 +10626,6 @@
         ],
         "label": "西北",
         "menu_label": "西北",
-        "requires_story_var": "",
         "room_id": "village_east_1"
       },
       {
@@ -11195,7 +10635,6 @@
         ],
         "label": "東南",
         "menu_label": "東南",
-        "requires_story_var": "",
         "room_id": "village_se_corner"
       }
     ],
@@ -11230,7 +10669,6 @@
         ],
         "label": "西北",
         "menu_label": "西北",
-        "requires_story_var": "",
         "room_id": "village_north_gate"
       },
       {
@@ -11240,7 +10678,6 @@
         ],
         "label": "東南",
         "menu_label": "東南",
-        "requires_story_var": "",
         "room_id": "village_east_2"
       }
     ],
@@ -11276,7 +10713,6 @@
         ],
         "label": "西南",
         "menu_label": "西南",
-        "requires_story_var": "",
         "room_id": "west_iron_walkway"
       },
       {
@@ -11286,7 +10722,6 @@
         ],
         "label": "東南",
         "menu_label": "東南",
-        "requires_story_var": "",
         "room_id": "east_sentry_walk"
       },
       {
@@ -11299,7 +10734,6 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "",
         "room_id": "village_north_gate"
       }
     ],
@@ -11335,7 +10769,6 @@
         ],
         "label": "東北",
         "menu_label": "東北",
-        "requires_story_var": "",
         "room_id": "fortress_gate"
       },
       {
@@ -11345,7 +10778,6 @@
         ],
         "label": "西南",
         "menu_label": "西南",
-        "requires_story_var": "",
         "room_id": "steam_prison_cage"
       }
     ],
@@ -11374,7 +10806,7 @@
     "allow_rest": false,
     "descriptions": [
       {
-        "actor_defeated": "garrison_warden",
+        "when": ["defeated:garrison_warden"],
         "inspect_text": "通風口一呼一吸，透上來的橘光搖晃不定。看守站過的地方，留著一塊磨凹的石板和一圈沒人收走的空口糧罐。絞盤控制台敞著，鎖桿抬起，就那麼垂著。小宰德雙手按在籠門上，還沒碰那把掛鎖，彷彿他已經決定不再等下去，只是在看有沒有人同意他。",
         "summary": "鐵籠仍由四條鏈子吊在通風口上方，但走道上沒有人站著。絞盤手柄鬆脫在座殼裡，男孩移到了籠子前頭，從鐵條間望得出去。"
       }
@@ -11387,7 +10819,6 @@
         ],
         "label": "東北",
         "menu_label": "東北",
-        "requires_story_var": "",
         "room_id": "west_iron_walkway"
       },
       {
@@ -11397,7 +10828,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "south_steam_gantry"
       }
     ],
@@ -11434,7 +10864,6 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "",
         "room_id": "steam_prison_cage"
       },
       {
@@ -11444,7 +10873,6 @@
         ],
         "label": "東",
         "menu_label": "東",
-        "requires_story_var": "",
         "room_id": "command_bastion"
       }
     ],
@@ -11473,7 +10901,7 @@
     "allow_rest": false,
     "descriptions": [
       {
-        "actor_defeated": "captain_malik",
+        "when": ["defeated:captain_malik"],
         "inspect_text": "戰桌的凹槽裡積著粉筆灰，上頭兩道新添的刻痕停在一隻手停下的地方。一面紅綢旗從通風口上落了下來，橫搭在桌角。柵欄後的液壓撞桿已縮回牆裡，那一聲悶響還留在牆中迴盪。保險箱待在自己那盞燈下，腳下是它自己那塊乾淨的地面，燈還亮著，你和它之間什麼也沒有。",
         "summary": "這間屋子依然是為開會而建，只是會已經開完了。黃銅戰桌仍擺在它的低燈下，四周地面空著。馬利克倒在石板上，一動不動，屋裡其他人也都不動。"
       }
@@ -11486,7 +10914,7 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "requires_story_var": "malik_defeated",
+        "when": ["malik_defeated"],
         "room_id": "south_steam_gantry"
       },
       {
@@ -11498,7 +10926,7 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "requires_story_var": "malik_defeated",
+        "when": ["malik_defeated"],
         "room_id": "east_sentry_walk"
       },
       {
@@ -11512,7 +10940,7 @@
         ],
         "label": "西北",
         "menu_label": "庭院",
-        "requires_story_var": "malik_defeated",
+        "when": ["malik_defeated"],
         "room_id": "teleport_platform"
       }
     ],
@@ -11552,7 +10980,6 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "requires_story_var": "",
         "room_id": "command_bastion"
       },
       {
@@ -11562,7 +10989,6 @@
         ],
         "label": "西北",
         "menu_label": "西北",
-        "requires_story_var": "",
         "room_id": "fortress_gate"
       }
     ],
@@ -11603,7 +11029,6 @@
         ],
         "label": "東南",
         "menu_label": "指揮官稜堡",
-        "requires_story_var": "",
         "room_id": "command_bastion"
       }
     ],
@@ -11642,7 +11067,6 @@
         ],
         "label": "北",
         "menu_label": "向北至霜狼坡道",
-        "requires_story_var": "",
         "room_id": "courtyard_north"
       },
       {
@@ -11653,7 +11077,6 @@
         ],
         "label": "東北",
         "menu_label": "東北至城牆關隘",
-        "requires_story_var": "",
         "room_id": "courtyard_northeast"
       },
       {
@@ -11665,7 +11088,6 @@
         ],
         "label": "東南",
         "menu_label": "東南至鐵羊坡道",
-        "requires_story_var": "",
         "room_id": "courtyard_southeast"
       },
       {
@@ -11676,7 +11098,6 @@
         ],
         "label": "南",
         "menu_label": "向南至堡門關隘",
-        "requires_story_var": "",
         "room_id": "courtyard_south"
       },
       {
@@ -11688,7 +11109,6 @@
         ],
         "label": "西南",
         "menu_label": "西南至霜豹坡道",
-        "requires_story_var": "",
         "room_id": "courtyard_southwest"
       },
       {
@@ -11699,7 +11119,6 @@
         ],
         "label": "西北",
         "menu_label": "西北至胸牆關隘",
-        "requires_story_var": "",
         "room_id": "courtyard_northwest"
       }
     ],
@@ -11753,7 +11172,6 @@
         ],
         "label": "南",
         "menu_label": "向南至庭院中央",
-        "requires_story_var": "",
         "room_id": "courtyard_center"
       },
       {
@@ -11766,7 +11184,6 @@
         ],
         "label": "西",
         "menu_label": "向西至西北胸牆",
-        "requires_story_var": "",
         "room_id": "courtyard_northwest"
       },
       {
@@ -11779,7 +11196,6 @@
         ],
         "label": "東",
         "menu_label": "向東至東北城牆",
-        "requires_story_var": "",
         "room_id": "courtyard_northeast"
       },
       {
@@ -11792,7 +11208,7 @@
         ],
         "label": "北",
         "menu_label": "向北進入霜狼家長廊",
-        "requires_story_var": "frost_wolf_access_open",
+        "when": ["frost_wolf_access_open"],
         "room_id": "frost_wolf_gallery"
       }
     ],
@@ -11844,7 +11260,6 @@
         ],
         "label": "西南",
         "menu_label": "西南至庭院中央",
-        "requires_story_var": "",
         "room_id": "courtyard_center"
       },
       {
@@ -11858,7 +11273,6 @@
         ],
         "label": "西",
         "menu_label": "向西至霜狼坡道",
-        "requires_story_var": "",
         "room_id": "courtyard_north"
       },
       {
@@ -11870,7 +11284,6 @@
         ],
         "label": "南",
         "menu_label": "向南至鐵羊坡道",
-        "requires_story_var": "",
         "room_id": "courtyard_southeast"
       }
     ],
@@ -11908,7 +11321,6 @@
         ],
         "label": "西北",
         "menu_label": "西北至庭院中央",
-        "requires_story_var": "",
         "room_id": "courtyard_center"
       },
       {
@@ -11920,7 +11332,6 @@
         ],
         "label": "北",
         "menu_label": "向北至東北城牆",
-        "requires_story_var": "",
         "room_id": "courtyard_northeast"
       },
       {
@@ -11934,7 +11345,6 @@
         ],
         "label": "西",
         "menu_label": "向西至南堡門",
-        "requires_story_var": "",
         "room_id": "courtyard_south"
       },
       {
@@ -11948,7 +11358,7 @@
         ],
         "label": "東南",
         "menu_label": "東南進入鐵羊家稜堡",
-        "requires_story_var": "iron_ram_access_open",
+        "when": ["iron_ram_access_open"],
         "room_id": "iron_ram_gallery"
       }
     ],
@@ -11999,7 +11409,6 @@
         ],
         "label": "北",
         "menu_label": "向北至庭院中央",
-        "requires_story_var": "",
         "room_id": "courtyard_center"
       },
       {
@@ -12013,7 +11422,6 @@
         ],
         "label": "東",
         "menu_label": "向東至鐵羊坡道",
-        "requires_story_var": "",
         "room_id": "courtyard_southeast"
       },
       {
@@ -12027,7 +11435,6 @@
         ],
         "label": "西",
         "menu_label": "向西至霜豹坡道",
-        "requires_story_var": "",
         "room_id": "courtyard_southwest"
       }
     ],
@@ -12065,7 +11472,6 @@
         ],
         "label": "東北",
         "menu_label": "東北至庭院中央",
-        "requires_story_var": "",
         "room_id": "courtyard_center"
       },
       {
@@ -12079,7 +11485,6 @@
         ],
         "label": "東",
         "menu_label": "向東至南堡門",
-        "requires_story_var": "",
         "room_id": "courtyard_south"
       },
       {
@@ -12092,7 +11497,6 @@
         ],
         "label": "北",
         "menu_label": "向北至西北胸牆",
-        "requires_story_var": "",
         "room_id": "courtyard_northwest"
       },
       {
@@ -12106,7 +11510,7 @@
         ],
         "label": "西南",
         "menu_label": "西南進入霜豹家廳堂",
-        "requires_story_var": "frost_leopard_access_open",
+        "when": ["frost_leopard_access_open"],
         "room_id": "frost_leopard_gallery"
       }
     ],
@@ -12157,7 +11561,6 @@
         ],
         "label": "東南",
         "menu_label": "東南至庭院中央",
-        "requires_story_var": "",
         "room_id": "courtyard_center"
       },
       {
@@ -12169,7 +11572,6 @@
         ],
         "label": "南",
         "menu_label": "向南至霜豹坡道",
-        "requires_story_var": "",
         "room_id": "courtyard_southwest"
       },
       {
@@ -12183,7 +11585,6 @@
         ],
         "label": "東",
         "menu_label": "向東至霜狼坡道",
-        "requires_story_var": "",
         "room_id": "courtyard_north"
       }
     ],
@@ -12221,7 +11622,6 @@
         ],
         "label": "南",
         "menu_label": "向南至霜狼坡道",
-        "requires_story_var": "",
         "room_id": "courtyard_north"
       },
       {
@@ -12233,7 +11633,6 @@
         ],
         "label": "北",
         "menu_label": "向北至狼衛集結場",
-        "requires_story_var": "",
         "room_id": "frost_wolf_muster"
       }
     ],
@@ -12270,7 +11669,6 @@
         ],
         "label": "南",
         "menu_label": "向南至巨狼長廊",
-        "requires_story_var": "",
         "room_id": "frost_wolf_gallery"
       },
       {
@@ -12282,7 +11680,7 @@
         ],
         "label": "北",
         "menu_label": "向北至嚎嘯高台",
-        "requires_story_var": "citadel_final_wave_open",
+        "when": ["citadel_final_wave_open"],
         "room_id": "frost_wolf_throne"
       }
     ],
@@ -12318,7 +11716,6 @@
         ],
         "label": "南",
         "menu_label": "向南至狼衛集結場",
-        "requires_story_var": "",
         "room_id": "frost_wolf_muster"
       }
     ],
@@ -12355,7 +11752,6 @@
         ],
         "label": "西北",
         "menu_label": "西北至鐵羊坡道",
-        "requires_story_var": "",
         "room_id": "courtyard_southeast"
       },
       {
@@ -12367,7 +11763,6 @@
         ],
         "label": "東南",
         "menu_label": "東南至稜堡集結場",
-        "requires_story_var": "",
         "room_id": "iron_ram_muster"
       }
     ],
@@ -12404,7 +11799,6 @@
         ],
         "label": "西北",
         "menu_label": "西北至蒸汽煙道走廊",
-        "requires_story_var": "",
         "room_id": "iron_ram_gallery"
       },
       {
@@ -12416,7 +11810,7 @@
         ],
         "label": "東南",
         "menu_label": "東南至鐵砧王座",
-        "requires_story_var": "citadel_final_wave_open",
+        "when": ["citadel_final_wave_open"],
         "room_id": "iron_ram_throne"
       }
     ],
@@ -12452,7 +11846,6 @@
         ],
         "label": "西北",
         "menu_label": "西北至稜堡集結場",
-        "requires_story_var": "",
         "room_id": "iron_ram_muster"
       }
     ],
@@ -12489,7 +11882,6 @@
         ],
         "label": "東北",
         "menu_label": "東北至霜豹坡道",
-        "requires_story_var": "",
         "room_id": "courtyard_southwest"
       },
       {
@@ -12501,7 +11893,6 @@
         ],
         "label": "西南",
         "menu_label": "西南至暗影步道",
-        "requires_story_var": "",
         "room_id": "frost_leopard_muster"
       }
     ],
@@ -12538,7 +11929,6 @@
         ],
         "label": "東北",
         "menu_label": "東北至結霜柱廊",
-        "requires_story_var": "",
         "room_id": "frost_leopard_gallery"
       },
       {
@@ -12550,7 +11940,7 @@
         ],
         "label": "西南",
         "menu_label": "西南至蛋白石王座",
-        "requires_story_var": "citadel_final_wave_open",
+        "when": ["citadel_final_wave_open"],
         "room_id": "frost_leopard_throne"
       }
     ],
@@ -12586,7 +11976,6 @@
         ],
         "label": "東北",
         "menu_label": "東北至暗影步道",
-        "requires_story_var": "",
         "room_id": "frost_leopard_muster"
       }
     ],
@@ -12774,8 +12163,7 @@
           "十字路口",
           "拱門"
         ],
-        "menu_label": "走進十字中庭",
-        "requires_story_var": ""
+        "menu_label": "走進十字中庭"
       },
       {
         "room_id": "sanctuary_west_colonnade",
@@ -12788,8 +12176,7 @@
           "西側長廊",
           "長廊"
         ],
-        "menu_label": "沿著西側長廊前進",
-        "requires_story_var": ""
+        "menu_label": "沿著西側長廊前進"
       },
       {
         "room_id": "sanctuary_east_promenade",
@@ -12802,8 +12189,7 @@
           "東側露台",
           "露台"
         ],
-        "menu_label": "漫步東側露台",
-        "requires_story_var": ""
+        "menu_label": "漫步東側露台"
       }
     ],
     "descriptions": []
@@ -12840,8 +12226,7 @@
           "露台",
           "入口"
         ],
-        "menu_label": "返回入口露台",
-        "requires_story_var": ""
+        "menu_label": "返回入口露台"
       },
       {
         "room_id": "sanctuary_main_platform",
@@ -12854,8 +12239,7 @@
           "平台",
           "傳送台"
         ],
-        "menu_label": "往南前往高山平台",
-        "requires_story_var": ""
+        "menu_label": "往南前往高山平台"
       },
       {
         "room_id": "herbarium_garden",
@@ -12867,8 +12251,7 @@
           "花園",
           "暖房"
         ],
-        "menu_label": "走進玻璃花園",
-        "requires_story_var": ""
+        "menu_label": "走進玻璃花園"
       }
     ],
     "descriptions": []
@@ -12905,8 +12288,7 @@
           "露台",
           "入口"
         ],
-        "menu_label": "返回入口露台",
-        "requires_story_var": ""
+        "menu_label": "返回入口露台"
       },
       {
         "room_id": "sanctuary_main_platform",
@@ -12919,8 +12301,7 @@
           "平台",
           "傳送台"
         ],
-        "menu_label": "往南前往高山平台",
-        "requires_story_var": ""
+        "menu_label": "往南前往高山平台"
       },
       {
         "room_id": "mortuary_reanimation_sanctum",
@@ -12933,8 +12314,7 @@
           "聖所",
           "石門"
         ],
-        "menu_label": "走進靈柩殿",
-        "requires_story_var": ""
+        "menu_label": "走進靈柩殿"
       }
     ],
     "descriptions": []
@@ -12985,8 +12365,7 @@
           "聖所",
           "先知"
         ],
-        "menu_label": "返回靈柩殿",
-        "requires_story_var": ""
+        "menu_label": "返回靈柩殿"
       },
       {
         "room_id": "sanctuary_west_colonnade",
@@ -12999,8 +12378,7 @@
           "西側長廊",
           "長廊"
         ],
-        "menu_label": "沿著西側長廊前進",
-        "requires_story_var": ""
+        "menu_label": "沿著西側長廊前進"
       },
       {
         "room_id": "sanctuary_east_promenade",
@@ -13013,8 +12391,7 @@
           "東側露台",
           "露台"
         ],
-        "menu_label": "沿著東側露台前進",
-        "requires_story_var": ""
+        "menu_label": "沿著東側露台前進"
       },
       {
         "room_id": "floor7_antechamber",
@@ -13028,13 +12405,12 @@
           "前廳"
         ],
         "menu_label": "登上第七層（白色前廳）",
-        "requires_story_var": "anchor_floor6_platform"
+        "when": ["anchor_floor6_platform"]
       }
     ],
     "descriptions": [
       {
-        "actor_defeated": "",
-        "requires_story_var": "anchor_floor6_platform",
+        "when": ["anchor_floor6_platform"],
         "summary": "一座突出於雲海之上的宏偉露天石台。青銅共鳴錨點脈動著溫暖的藍光，將聖所與霜之要塞緊密相連。艾絲翠德在胸牆邊警戒，純白光芒構成的階梯通向上方第七層。",
         "inspect_text": "山風呼嘯著掠過石板。共鳴錨點已全面啟動，將第六層與下層徹底連通。懸崖邊緣上方，一道純白光芒編織的階梯通往第七層：白色前廳。"
       }
@@ -13073,8 +12449,7 @@
           "階梯",
           "出"
         ],
-        "menu_label": "走出至入口露台",
-        "requires_story_var": ""
+        "menu_label": "走出至入口露台"
       },
       {
         "room_id": "herbarium_garden",
@@ -13087,8 +12462,7 @@
           "暖房",
           "草藥"
         ],
-        "menu_label": "走進玻璃花園",
-        "requires_story_var": ""
+        "menu_label": "走進玻璃花園"
       },
       {
         "room_id": "mortuary_reanimation_sanctum",
@@ -13101,8 +12475,7 @@
           "聖所",
           "墓室"
         ],
-        "menu_label": "走進靈柩殿",
-        "requires_story_var": ""
+        "menu_label": "走進靈柩殿"
       }
     ],
     "descriptions": []
@@ -13152,8 +12525,7 @@
           "中庭",
           "大廳"
         ],
-        "menu_label": "返回十字中庭",
-        "requires_story_var": ""
+        "menu_label": "返回十字中庭"
       },
       {
         "room_id": "sanctuary_west_colonnade",
@@ -13165,8 +12537,7 @@
           "西側長廊",
           "長廊"
         ],
-        "menu_label": "走出至西側長廊",
-        "requires_story_var": ""
+        "menu_label": "走出至西側長廊"
       },
       {
         "room_id": "herbarium_cliff_balcony",
@@ -13179,8 +12550,7 @@
           "暗台",
           "爬出"
         ],
-        "menu_label": "鑽過排氣管道前往懸崖暗台",
-        "requires_story_var": ""
+        "menu_label": "鑽過排氣管道前往懸崖暗台"
       }
     ],
     "descriptions": []
@@ -13230,8 +12600,7 @@
           "暖房",
           "爬回"
         ],
-        "menu_label": "爬回草藥花園",
-        "requires_story_var": ""
+        "menu_label": "爬回草藥花園"
       },
       {
         "room_id": "mortuary_reanimation_sanctum",
@@ -13243,8 +12612,7 @@
           "靈柩殿",
           "旋轉石階"
         ],
-        "menu_label": "沿著旋轉石階下行至靈柩殿",
-        "requires_story_var": ""
+        "menu_label": "沿著旋轉石階下行至靈柩殿"
       }
     ],
     "descriptions": []
@@ -13292,8 +12660,7 @@
           "旋轉石階",
           "暗台"
         ],
-        "menu_label": "沿著旋轉石階爬上懸崖暗台",
-        "requires_story_var": ""
+        "menu_label": "沿著旋轉石階爬上懸崖暗台"
       },
       {
         "room_id": "sanctuary_crossroads",
@@ -13305,8 +12672,7 @@
           "大廳",
           "出口"
         ],
-        "menu_label": "走向十字中庭",
-        "requires_story_var": ""
+        "menu_label": "走向十字中庭"
       },
       {
         "room_id": "sanctuary_east_promenade",
@@ -13317,8 +12683,7 @@
           "東側露台",
           "露台"
         ],
-        "menu_label": "走出至東側露台",
-        "requires_story_var": ""
+        "menu_label": "走出至東側露台"
       },
       {
         "room_id": "sanctuary_main_platform",
@@ -13330,14 +12695,12 @@
           "平台",
           "高山平台"
         ],
-        "menu_label": "推開大門走出至高山傳送台",
-        "requires_story_var": ""
+        "menu_label": "推開大門走出至高山傳送台"
       }
     ],
     "descriptions": [
       {
-        "actor_defeated": "",
-        "requires_story_var": "spiritual_sight",
+        "when": ["spiritual_sight"],
         "summary": "整座龐大的地下靈柩殿被數百道漂浮的淡藍色靈魂光點照亮。黑皮名冊靜靜置於祭壇邊緣的木架上。",
         "inspect_text": "靈視覆蓋了視野，數百道無辜平民的靈魂安詳地懸浮在石台上方，擺脫了黑暗符文的禁錮。"
       }
@@ -13358,7 +12721,6 @@
         ],
         "label": "下",
         "menu_label": "返回聖所平台",
-        "requires_story_var": "",
         "room_id": "sanctuary_main_platform"
       }
     ],

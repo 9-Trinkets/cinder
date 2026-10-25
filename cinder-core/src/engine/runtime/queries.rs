@@ -330,13 +330,7 @@ impl CinderRuntime {
         Ok(room
             .exits
             .iter()
-            .filter(|exit| {
-                exit.requires_story_var.is_empty()
-                    || crate::engine::turn_policies::story_var_is_truthy(
-                        &state,
-                        &exit.requires_story_var,
-                    )
-            })
+            .filter(|exit| self.content.exit_is_open(&state, &room.id, exit))
             .map(|exit| exit.label.clone())
             .collect())
     }

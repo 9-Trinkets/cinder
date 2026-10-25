@@ -67,7 +67,12 @@ fn floor4_navigation_and_gates_resolve() {
         .iter()
         .find(|e| e.room_id == "village_square")
         .expect("oh has exit to village_square");
-    assert_eq!(to_village.requires_story_var.as_str(), "elemental_released");
+    assert_eq!(
+        to_village.when,
+        vec![cinder_core::content::types::Condition::StoryVar(
+            "elemental_released".to_string()
+        )]
+    );
 
     // Village square connects back to oh
     let village_square = pack.room("village_square").expect("village_square exists");
@@ -100,8 +105,10 @@ fn floor4_navigation_and_gates_resolve() {
         .find(|e| e.room_id == "fortress_gate")
         .expect("village_north_gate must connect to fortress_gate");
     assert_eq!(
-        to_fortress.requires_story_var.as_str(),
-        "fortress_gate_open"
+        to_fortress.when,
+        vec![cinder_core::content::types::Condition::StoryVar(
+            "fortress_gate_open".to_string()
+        )]
     );
     assert!(north_gate.summary.contains("bulkhead"));
 }

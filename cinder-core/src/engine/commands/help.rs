@@ -95,7 +95,7 @@ fn collect_primary_examples(content: &ContentPack, examples: &mut Vec<String>) {
         if !action.player_enabled
             || action.phrases.is_empty()
             || !action.ui.bar
-            || !action.available.requires_story_var.is_empty()
+            || !action.available.when.is_empty()
         {
             continue;
         }

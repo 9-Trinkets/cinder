@@ -344,7 +344,7 @@
         ],
         "requires_item": "iron-cage-key",
         "consumes_item": "iron-cage-key",
-        "blocked_by_story_var": "zayd_rescued"
+        "when": ["!zayd_rescued"]
       },
       "ui": {
         "bar": false,
@@ -410,7 +410,7 @@
         ],
         "requires_item": "fortress-gate-key",
         "consumes_item": "fortress-gate-key",
-        "blocked_by_story_var": "fortress_gate_open"
+        "when": ["!fortress_gate_open"]
       },
       "ui": {
         "bar": false,
@@ -480,7 +480,7 @@
         ],
         "requires_item": "courtyard-cage-key",
         "consumes_item": "courtyard-cage-key",
-        "blocked_by_story_var": "courtyard_cages_opened"
+        "when": ["!courtyard_cages_opened"]
       },
       "ui": {
         "bar": false,
@@ -582,7 +582,7 @@
       "target_mode": "none",
       "outcome_mode": "event",
       "available": {
-        "requires_room_trace_mark": true
+        "when": ["here:trace_mark"]
       },
       "ui": {
         "bar": false,

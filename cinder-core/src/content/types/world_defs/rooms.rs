@@ -1,7 +1,9 @@
+use super::super::Condition;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct RoomExitDefinition {
     pub room_id: String,
     pub label: String,
@@ -11,16 +13,16 @@ pub struct RoomExitDefinition {
     /// destination room title. When absent the room title is used.
     #[serde(default)]
     pub menu_label: Option<String>,
-    /// A story var that must be truthy for this exit to be visible to and
-    /// traversable by the player. Until revealed the exit is hidden from the
+    /// Conditions that must hold for this exit to be visible to and
+    /// traversable by the player. Until they do the exit is hidden from the
     /// room's prose, the room-switch menu, and `move` resolution.
     ///
     /// Gated exits are also treated as *non*-connectors by the room graph
     /// (`adjacent_room_ids` / `reachable_room_ids`): revealing them lets the
     /// player cross, but the two sides remain separate boards for NPC activity,
     /// so the destination level only comes alive once the player is on it.
-    #[serde(default)]
-    pub requires_story_var: String,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub when: Vec<Condition>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -46,14 +48,12 @@ pub struct RoomDefinition {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct RoomDescriptionOverride {
-    /// When non-empty, this override applies only once the named actor has
-    /// been defeated.
+    /// This override replaces the room's text once every condition holds. An
+    /// override with no conditions never applies.
     #[serde(default)]
-    pub actor_defeated: String,
-    /// When non-empty, this override applies only once the story variable is truthy.
-    #[serde(default)]
-    pub requires_story_var: String,
+    pub when: Vec<Condition>,
     pub summary: String,
     pub inspect_text: String,
 }

@@ -541,16 +541,15 @@ impl WorldState {
             .iter()
             .filter(|action| {
                 !action.skill_id.is_empty()
-                    && !action.available.requires_story_var.is_empty()
-                    && self
-                        .story_vars
-                        .get(&action.available.requires_story_var)
-                        .is_some_and(|value| {
-                            !matches!(
-                                value.trim().to_ascii_lowercase().as_str(),
-                                "" | "false" | "0"
-                            )
-                        })
+                    && !action.available.when.is_empty()
+                    && crate::engine::conditions::all_hold(
+                        &action.available.when,
+                        &crate::engine::conditions::ConditionContext::new(
+                            content,
+                            self,
+                            &self.current_room_id,
+                        ),
+                    )
             })
             .map(|action| action.skill_id.clone())
             .collect::<Vec<_>>();
@@ -859,7 +858,9 @@ mod tests {
                 id: "teleport".to_string(),
                 skill_id: "teleport".to_string(),
                 available: crate::content::types::ActionAvailability {
-                    requires_story_var: "knows_teleport".to_string(),
+                    when: vec![crate::content::types::Condition::StoryVar(
+                        "knows_teleport".to_string(),
+                    )],
                     ..Default::default()
                 },
                 ..Default::default()

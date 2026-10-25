@@ -463,7 +463,7 @@
         "target_mode": "none",
         "outcome_mode": "event",
         "available": {
-          "requires_story_var": "knows_teleport"
+          "when": ["knows_teleport"]
         },
         "ui": {
           "bar": true,

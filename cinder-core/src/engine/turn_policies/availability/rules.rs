@@ -7,10 +7,7 @@ use crate::engine::turn_policies::objectives::{
     objective_progress_is_met, objective_progress_label,
 };
 
-use super::{
-    AvailabilityContext, AvailabilityRule, CommandAvailabilityIssue, CommandItemState,
-    story_var_is_truthy,
-};
+use super::{AvailabilityContext, AvailabilityRule, CommandAvailabilityIssue, CommandItemState};
 
 struct SkillGate;
 
@@ -73,65 +70,22 @@ impl AvailabilityRule for ObjectiveProgressGate {
     }
 }
 
-struct RoomItemGate;
+struct ConditionGate;
 
-impl AvailabilityRule for RoomItemGate {
+impl AvailabilityRule for ConditionGate {
     fn check(&self, ctx: &AvailabilityContext<'_>) -> Result<(), CommandAvailabilityIssue> {
-        let available = &ctx.action.available;
-        if available.requires_room_trace_mark {
-            let has_trace_mark =
-                ctx.state
-                    .loose_room_items(ctx.room_id)
-                    .into_iter()
-                    .any(|(item_id, count)| {
-                        count > 0 && ctx.content.item(&item_id).is_some_and(|i| i.trace_mark)
-                    });
-            if !has_trace_mark {
-                return Err(CommandAvailabilityIssue::RoomItemCondition(
-                    "trace_mark".to_string(),
-                ));
-            }
-        }
-        if !available.requires_room_item.is_empty()
-            && !ctx.state.has_item_in_storage(
-                &available.requires_room_item,
-                ItemStorageTarget::CurrentRoom,
-                ctx.room_id,
+        let conditions = &ctx.action.available.when;
+        if !conditions.is_empty()
+            && !crate::engine::conditions::all_hold(
+                conditions,
+                &crate::engine::conditions::ConditionContext::new(
+                    ctx.content,
+                    ctx.state,
+                    ctx.room_id,
+                ),
             )
         {
-            return Err(CommandAvailabilityIssue::RoomItemCondition(
-                "required".to_string(),
-            ));
-        }
-        if !available.requires_room_without_item.is_empty()
-            && ctx.state.has_item_in_storage(
-                &available.requires_room_without_item,
-                ItemStorageTarget::CurrentRoom,
-                ctx.room_id,
-            )
-        {
-            return Err(CommandAvailabilityIssue::RoomItemCondition(
-                "forbidden".to_string(),
-            ));
-        }
-        Ok(())
-    }
-}
-
-struct StoryVarGate;
-
-impl AvailabilityRule for StoryVarGate {
-    fn check(&self, ctx: &AvailabilityContext<'_>) -> Result<(), CommandAvailabilityIssue> {
-        let available = &ctx.action.available;
-        if !available.requires_story_var.is_empty()
-            && !story_var_is_truthy(ctx.state, &available.requires_story_var)
-        {
-            return Err(CommandAvailabilityIssue::StageInactive);
-        }
-        if !available.blocked_by_story_var.is_empty()
-            && story_var_is_truthy(ctx.state, &available.blocked_by_story_var)
-        {
-            return Err(CommandAvailabilityIssue::StageInactive);
+            return Err(CommandAvailabilityIssue::ConditionNotMet);
         }
         Ok(())
     }
@@ -279,13 +233,12 @@ impl AvailabilityRule for EffectStateGate {
 /// The ordered rule chain shared by every availability query. Later entries only
 /// run when earlier ones pass, so the first failure is the most fundamental
 /// blocker and its message is the most useful one.
-pub(super) fn availability_rules() -> [&'static dyn AvailabilityRule; 8] {
+pub(super) fn availability_rules() -> [&'static dyn AvailabilityRule; 7] {
     [
         &SkillGate,
         &StageGate,
         &ObjectiveProgressGate,
-        &RoomItemGate,
-        &StoryVarGate,
+        &ConditionGate,
         &RoomRestrictionGate,
         &ItemPossessionGate,
         &EffectStateGate,

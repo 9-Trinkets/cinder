@@ -117,13 +117,7 @@ impl CinderRuntime {
         let exit_ids: Vec<String> = current_room
             .exits
             .iter()
-            .filter(|e| {
-                e.requires_story_var.is_empty()
-                    || crate::engine::turn_policies::story_var_is_truthy(
-                        state,
-                        &e.requires_story_var,
-                    )
-            })
+            .filter(|e| self.content.exit_is_open(state, current_room_id, e))
             .map(|e| e.room_id.clone())
             .collect();
         let rooms_iter = self

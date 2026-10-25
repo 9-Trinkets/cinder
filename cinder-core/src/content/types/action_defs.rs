@@ -1,29 +1,17 @@
 use super::{
     BeatObjectiveProgressRef, CommandEffect, CommandInputMode, CommandOutcomeMode,
-    CommandTargetMode, ConsumableKind, ItemStorageTarget, PlayerCommandTargetMode,
+    CommandTargetMode, Condition, ConsumableKind, ItemStorageTarget, PlayerCommandTargetMode,
 };
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct ActionAvailability {
-    /// Room must contain this item for the action to be available.
+    /// Conditions that must all hold for the action to be available, such as
+    /// `warden_defeated`, `!zayd_rescued` or `here:trace_mark`.
     #[serde(default)]
-    pub requires_room_item: String,
-    /// Room must NOT contain this item for the action to be available.
-    #[serde(default)]
-    pub requires_room_without_item: String,
-    /// Room must contain at least one loose item with `trace_mark == true`.
-    #[serde(default)]
-    pub requires_room_trace_mark: bool,
-    /// A story variable that must be set (to a truthy value) for the action
-    /// to be available, e.g. `warden_defeated`.
-    #[serde(default)]
-    pub requires_story_var: String,
-    /// A story variable that must NOT be set (or must be falsy) for the action
-    /// to be available, e.g. `zayd_rescued`.
-    #[serde(default)]
-    pub blocked_by_story_var: String,
+    pub when: Vec<Condition>,
     #[serde(default)]
     pub allowed_rooms: Vec<String>,
     #[serde(default)]

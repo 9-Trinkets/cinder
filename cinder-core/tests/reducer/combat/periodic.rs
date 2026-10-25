@@ -361,7 +361,7 @@ fn boss_triggers_emit_boss_cues_for_adjacent_and_distant_rooms() {
             label: "Kitchen".to_string(),
             aliases: vec![],
             menu_label: None,
-            requires_story_var: String::new(),
+            when: Vec::new(),
         }],
         descriptions: vec![],
     });
@@ -371,7 +371,7 @@ fn boss_triggers_emit_boss_cues_for_adjacent_and_distant_rooms() {
         label: "Cellar".to_string(),
         aliases: vec![],
         menu_label: None,
-        requires_story_var: String::new(),
+        when: Vec::new(),
     });
     pack.settings.combat = CombatSettingsDefinition {
         player_actor_id: ACTOR_A_ID.to_string(),
@@ -475,7 +475,7 @@ fn distant_minion_is_silent_but_depletion_emits_distant_cue() {
             label: "Kitchen".to_string(),
             aliases: vec![],
             menu_label: None,
-            requires_story_var: String::new(),
+            when: Vec::new(),
         }],
         descriptions: vec![],
     });
@@ -484,7 +484,7 @@ fn distant_minion_is_silent_but_depletion_emits_distant_cue() {
         label: "Cellar".to_string(),
         aliases: vec![],
         menu_label: None,
-        requires_story_var: String::new(),
+        when: Vec::new(),
     });
     pack.settings.combat = CombatSettingsDefinition {
         player_actor_id: ACTOR_A_ID.to_string(),
@@ -580,7 +580,7 @@ fn offscreen_kills_emit_anonymous_kill_cues_and_deduplicate() {
             label: "Kitchen".to_string(),
             aliases: vec![],
             menu_label: None,
-            requires_story_var: String::new(),
+            when: Vec::new(),
         }],
         descriptions: vec![],
     });
@@ -589,7 +589,7 @@ fn offscreen_kills_emit_anonymous_kill_cues_and_deduplicate() {
         label: "Cellar".to_string(),
         aliases: vec![],
         menu_label: None,
-        requires_story_var: String::new(),
+        when: Vec::new(),
     });
     pack.settings.combat = CombatSettingsDefinition {
         player_actor_id: ACTOR_A_ID.to_string(),

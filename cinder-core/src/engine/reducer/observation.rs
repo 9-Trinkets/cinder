@@ -48,15 +48,12 @@ pub(super) fn render_room_observation(
     mode: ObservationMode,
 ) -> Option<NarrativeLines> {
     let room = content.room(room_id)?;
-    let health_stat_id = &content.settings.combat.health_stat_id;
     let active = room.descriptions.iter().find(|override_| {
-        let actor_matches = override_.actor_defeated.is_empty()
-            || state.actor_is_defeated(&override_.actor_defeated, health_stat_id);
-        let story_var_matches = override_.requires_story_var.is_empty()
-            || content.story_var_is_truthy(state, &override_.requires_story_var);
-        let has_condition =
-            !override_.actor_defeated.is_empty() || !override_.requires_story_var.is_empty();
-        has_condition && actor_matches && story_var_matches
+        !override_.when.is_empty()
+            && crate::engine::conditions::all_hold(
+                &override_.when,
+                &crate::engine::conditions::ConditionContext::new(content, state, room_id),
+            )
     });
     let body = match mode {
         ObservationMode::Summary => active
@@ -114,13 +111,7 @@ fn render_exits(content: &ContentPack, state: &WorldState, room: &RoomDefinition
     let visible_exits: Vec<&str> = room
         .exits
         .iter()
-        .filter(|exit| {
-            exit.requires_story_var.is_empty()
-                || crate::engine::turn_policies::story_var_is_truthy(
-                    state,
-                    &exit.requires_story_var,
-                )
-        })
+        .filter(|exit| content.exit_is_open(state, &room.id, exit))
         .map(|exit| exit.label.as_str())
         .collect();
     if visible_exits.is_empty() {

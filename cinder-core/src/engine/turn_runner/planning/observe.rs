@@ -3,7 +3,6 @@ use super::PlanningContext;
 use crate::content::types::ContentPack;
 use crate::engine::events::{ObservationMode, WorldEvent};
 use crate::engine::state::display_actor_name;
-use crate::engine::turn_policies::story_var_is_truthy;
 use crate::engine::turn_runner::planner_handler::menus::format_cannot_go_target;
 
 pub(super) fn plan_observe_room(context: &PlanningContext<'_>, planned: &mut PlannedTurn) -> bool {
@@ -89,9 +88,9 @@ pub(super) fn plan_move_to_room_target(
     context: &PlanningContext<'_>,
     planned: &mut PlannedTurn,
 ) -> bool {
-    if let Some(exit) = content.resolve_exit_for(context.current_room_id, target, |key| {
-        story_var_is_truthy(context.planner_state, key)
-    }) {
+    if let Some(exit) =
+        content.resolve_exit_for(context.planner_state, context.current_room_id, target)
+    {
         planned.events.push(WorldEvent::PlayerMoved {
             from_room_id: context.current_room_id.to_string(),
             to_room_id: exit.room_id.clone(),

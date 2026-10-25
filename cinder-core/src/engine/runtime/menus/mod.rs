@@ -30,9 +30,7 @@ impl CinderRuntime {
             // so a gated (hidden) exit can't be reached by bypassing the menu.
             let ok = self
                 .content
-                .resolve_exit_for(&state.current_room_id, room_id, |key| {
-                    crate::engine::turn_policies::story_var_is_truthy(&state, key)
-                })
+                .resolve_exit_for(&state, &state.current_room_id, room_id)
                 .is_some();
             if !ok {
                 return Err(format!("'{room_id}' is not an open exit of the current room").into());

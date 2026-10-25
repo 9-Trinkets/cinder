@@ -1,7 +1,6 @@
 use super::{MovementStrategy, next_room_toward};
 use crate::content::types::{ActorDefinition, ContentPack};
 use crate::engine::state::WorldState;
-use crate::engine::turn_policies::story_var_is_truthy;
 use rand::Rng;
 
 /// Stationary strategy for guarding orders.
@@ -54,8 +53,7 @@ impl MovementStrategy for RandomAdjacentStrategy {
             .iter()
             .filter(|exit| {
                 content.room_is_reachable(&exit.room_id)
-                    && (exit.requires_story_var.is_empty()
-                        || story_var_is_truthy(state, &exit.requires_story_var))
+                    && content.exit_is_open(state, current_room_id, exit)
             })
             .map(|exit| exit.room_id.clone())
             .collect();
@@ -167,8 +165,7 @@ impl MovementStrategy for ExitLabelStrategy {
                     .aliases
                     .iter()
                     .any(|alias| alias.eq_ignore_ascii_case(&self.exit_label)))
-                && (exit.requires_story_var.is_empty()
-                    || story_var_is_truthy(state, &exit.requires_story_var))
+                && content.exit_is_open(state, current_room_id, exit)
         })?;
         if content.room_is_reachable(&target_exit.room_id) {
             Some(target_exit.room_id.clone())

@@ -128,7 +128,7 @@ impl FloorBuilder {
             label: label.into(),
             aliases,
             menu_label,
-            requires_story_var: requires_story_var.into(),
+            when: gate_conditions(requires_story_var.into()),
         };
         self.exits
             .entry(from_id.to_string())
@@ -340,5 +340,14 @@ impl FloorBuilder {
         )?;
 
         Ok((floor_count, merged_rooms.len()))
+    }
+}
+
+/// An empty gate means no conditions; otherwise it names a story variable.
+fn gate_conditions(story_var: String) -> Vec<cinder_core::content::types::Condition> {
+    if story_var.is_empty() {
+        Vec::new()
+    } else {
+        vec![cinder_core::content::types::Condition::StoryVar(story_var)]
     }
 }

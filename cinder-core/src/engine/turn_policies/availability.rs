@@ -23,8 +23,8 @@ pub(crate) enum CommandAvailabilityIssue {
     StageInactive,
     MissingObjectiveProgress(Vec<String>),
     BlockedByObjectiveProgress(Vec<String>),
-    /// A room-item condition is unmet (`requires_room_item` / `requires_room_without_item`).
-    RoomItemCondition(String),
+    /// One of the action's `when` conditions does not hold.
+    ConditionNotMet,
     /// The current room is not in `allowed_rooms`.
     RoomRestricted,
     /// `requires_item` / `consumes_item` / `requires_any` names an item we lack.
@@ -122,7 +122,7 @@ pub(crate) fn command_unavailable_message(
     match issue {
         CommandAvailabilityIssue::StageInactive
         | CommandAvailabilityIssue::MissingSkill
-        | CommandAvailabilityIssue::RoomItemCondition(_) => content
+        | CommandAvailabilityIssue::ConditionNotMet => content
             .render_message("error.command_not_now", &[("verb", verb.as_str())])
             .unwrap_or_default(),
         CommandAvailabilityIssue::MissingObjectiveProgress(labels) => {
