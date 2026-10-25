@@ -5,12 +5,16 @@
 use super::{AdvanceEffect, Condition};
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Interaction {
     pub id: String,
     /// The option as listed in its panel, e.g. "Greet Wren" or "Dim the lamp".
     pub label: String,
+    /// Other things the player can type to choose it, such as "free zayd". Each
+    /// is matched as the whole input.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub aliases: Vec<String>,
     /// Conditions that must hold before the interaction is offered.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub when: Vec<Condition>,

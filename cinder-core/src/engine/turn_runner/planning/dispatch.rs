@@ -14,33 +14,50 @@ use crate::engine::turn_runner::planner_handler::items::{
 
 fn plan_interaction_command(
     content: &ContentPack,
+    action: &ActionDefinition,
     planner_state: &crate::engine::state::WorldState,
     target: &str,
     planned: &mut PlannedTurn,
 ) -> bool {
-    match crate::engine::interactions::resolve_interaction(content, planner_state, target) {
-        Some(offered) => {
-            planned
-                .events
-                .push(crate::engine::events::WorldEvent::InteractionUsed {
-                    owner: offered.owner_key(),
-                    interaction_id: offered.interaction.id.clone(),
-                });
-            true
-        }
-        None => {
-            planned
-                .events
-                .push(crate::engine::events::WorldEvent::ActionRejected {
-                    message: content
-                        .presentation
-                        .error_text
-                        .unknown_input
-                        .replace("{raw_input}", target),
-                });
-            false
-        }
+    if let Some(offered) =
+        crate::engine::interactions::resolve_interaction(content, planner_state, target)
+    {
+        planned
+            .events
+            .push(crate::engine::events::WorldEvent::InteractionUsed {
+                owner: offered.owner_key(),
+                interaction_id: offered.interaction.id.clone(),
+            });
+        return true;
     }
+    let message = match crate::engine::interactions::declared_elsewhere(
+        content,
+        &planner_state.current_room_id,
+        target,
+    ) {
+        Some(room_title) => content.render_message(
+            "error.cannot_command_here",
+            &[("command", target), ("room", room_title)],
+        ),
+        None => None,
+    }
+    .unwrap_or_else(|| {
+        let usage = action
+            .player_command
+            .as_ref()
+            .map(|metadata| metadata.usage.as_str())
+            .unwrap_or_default();
+        content
+            .presentation
+            .error_text
+            .unknown_input
+            .replace("{raw_input}", target)
+            .replace("{available_commands}", usage)
+    });
+    planned
+        .events
+        .push(crate::engine::events::WorldEvent::ActionRejected { message });
+    false
 }
 
 fn plan_command_effects(
@@ -69,7 +86,7 @@ fn plan_command_effects(
         plan_targeted_state_command(content, action, input, context, planned)
     } else if action.has_effect(CommandEffect::UseInteraction) {
         let target = input.unwrap_or_default().trim();
-        plan_interaction_command(content, context.planner_state, target, planned)
+        plan_interaction_command(content, action, context.planner_state, target, planned)
     } else if action.has_effect(CommandEffect::PickUpItem) && action.item_id.is_empty() {
         let target = input.unwrap_or_default().trim();
         plan_take_command(

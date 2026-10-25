@@ -2,7 +2,8 @@
 //! features in the room they are standing in.
 
 use crate::content::types::{
-    ActorDefinition, ContentPack, Interaction, RoomDefinition, RoomFeatureDefinition,
+    ActorDefinition, CommandEffect, Condition, ContentPack, Interaction, RoomDefinition,
+    RoomFeatureDefinition,
 };
 use crate::engine::conditions::{ConditionContext, all_hold, story_var_is_truthy};
 use crate::engine::state::WorldState;
@@ -108,6 +109,47 @@ pub(crate) fn room_interactions<'a>(
     offered
 }
 
+/// An offered interaction that needs a carried item, as the Use panel lists it.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ItemInteraction {
+    pub label: String,
+    /// The command that carries it out, e.g. `do cage:unlock`.
+    pub command: String,
+}
+
+fn needs_item(conditions: &[Condition], item_id: &str) -> bool {
+    conditions.iter().any(|condition| match condition {
+        Condition::Carries(id) => id == item_id,
+        Condition::All(all) => needs_item(all, item_id),
+        _ => false,
+    })
+}
+
+/// The interactions on offer in the player's room that need `item_id`, such as a
+/// key that opens something here.
+pub fn item_interactions(
+    content: &ContentPack,
+    state: &WorldState,
+    item_id: &str,
+) -> Vec<ItemInteraction> {
+    let Some(action) = content
+        .actions
+        .iter()
+        .find(|action| action.player_enabled && action.has_effect(CommandEffect::UseInteraction))
+    else {
+        return Vec::new();
+    };
+    let verb = action.phrases.first().map(String::as_str).unwrap_or("do");
+    room_interactions(content, state)
+        .into_iter()
+        .filter(|offered| needs_item(&offered.interaction.when, item_id))
+        .map(|offered| ItemInteraction {
+            label: offered.interaction.label.clone(),
+            command: format!("{verb} {}:{}", offered.owner_id(), offered.interaction.id),
+        })
+        .collect()
+}
+
 /// Finds an offered interaction from `owner:interaction`, or from its label as
 /// typed.
 pub(crate) fn resolve_interaction<'a>(
@@ -121,7 +163,40 @@ pub(crate) fn resolve_interaction<'a>(
         .find(|offered| {
             format!("{}:{}", offered.owner_id(), offered.interaction.id).eq_ignore_ascii_case(input)
                 || offered.interaction.label.eq_ignore_ascii_case(input)
+                || offered
+                    .interaction
+                    .aliases
+                    .iter()
+                    .any(|alias| alias.eq_ignore_ascii_case(input))
         })
+}
+
+/// Where a typed interaction is declared, for explaining why it is not on offer
+/// right now: the title of the room whose feature owns it, if it is not the
+/// player's room.
+pub(crate) fn declared_elsewhere<'a>(
+    content: &'a ContentPack,
+    current_room_id: &str,
+    input: &str,
+) -> Option<&'a str> {
+    let input = input.trim();
+    content
+        .rooms
+        .iter()
+        .filter(|room| room.id != current_room_id)
+        .find(|room| {
+            room.features.iter().any(|feature| {
+                feature.interactions.iter().any(|interaction| {
+                    format!("{}:{}", feature.id, interaction.id).eq_ignore_ascii_case(input)
+                        || interaction.label.eq_ignore_ascii_case(input)
+                        || interaction
+                            .aliases
+                            .iter()
+                            .any(|alias| alias.eq_ignore_ascii_case(input))
+                })
+            })
+        })
+        .map(|room| room.title.as_str())
 }
 
 /// The interaction an event refers to, whether or not it is still on offer.

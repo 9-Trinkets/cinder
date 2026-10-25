@@ -165,8 +165,13 @@ fn validate_stage_effects(
                     diagnostics,
                 );
             }
+            AdvanceEffect::ConsumeItem { item_id } => {
+                validate_reward_reference(pack, stage_id, item_id, "", diagnostics);
+            }
             AdvanceEffect::AdjustActorStat { .. }
             | AdvanceEffect::AdjustPairStat { .. }
+            | AdvanceEffect::RunHook { .. }
+            | AdvanceEffect::EmitSignal { .. }
             | AdvanceEffect::SetStoryVar { .. }
             | AdvanceEffect::SetFollowsPlayer { .. }
             | AdvanceEffect::SetFeatureState { .. }

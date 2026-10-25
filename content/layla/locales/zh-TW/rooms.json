@@ -10319,7 +10319,64 @@
         "allow_rest": false,
         "id": "village_north_gate-feature",
         "inspect_text": "那道艙壁是鉚接黃銅外裹鐵箍，三個跨距寬，從對側上了栓。這一面你到處都找不到把手，還是用手沿著接縫摸了一遍。暖空氣在金屬前戛然而止。有人在齊膝高的一顆鉚釘上繫了一條紅布，已經褪色得幾乎透了。",
-        "label": "巨大的黃銅艙壁"
+        "label": "巨大的黃銅艙壁",
+        "interactions": [
+          {
+            "id": "unlock",
+            "label": "打開大門",
+            "aliases": [
+              "unlock gate",
+              "unlock fortress gate",
+              "unlock the gate",
+              "unlock bulkhead",
+              "unlock the bulkhead",
+              "unlock door",
+              "use fortress-gate-key",
+              "use fortress gate key",
+              "use gate key",
+              "use the gate key",
+              "use key",
+              "use the key",
+              "use fortress-gate-key on gate",
+              "use fortress-gate-key on the gate",
+              "use fortress gate key on gate",
+              "use fortress gate key on the gate",
+              "use gate key on gate",
+              "use gate key on the gate",
+              "use key on gate",
+              "use key on the gate",
+              "unlock gate with key",
+              "unlock gate with gate key",
+              "unlock gate with fortress gate key",
+              "unlock the gate with key",
+              "unlock the gate with gate key",
+              "打開大門",
+              "開門",
+              "解鎖大門",
+              "打開要塞門",
+              "解鎖要塞門"
+            ],
+            "when": ["item:fortress-gate-key", "!fortress_gate_open"],
+            "lines": [
+              "你把沉重的黃銅鑰匙插進隔艙門鎖，重重轉動，發出一聲尖銳的金屬悶響。沉重的液壓門閂縮了回去，封死的要塞大門鬆開了。"
+            ],
+            "effects": [
+              {
+                "kind": "run_hook",
+                "hook_id": "gate.unlocked"
+              },
+              {
+                "kind": "emit_signal",
+                "signal": "fortress_gate_opened"
+              },
+              {
+                "kind": "consume_item",
+                "item_id": "fortress-gate-key"
+              }
+            ],
+            "repeatable": false
+          }
+        ]
       }
     ],
     "id": "village_north_gate",
@@ -10422,7 +10479,54 @@
         "allow_rest": false,
         "id": "village_west_1-valve",
         "inspect_text": "四條管道交會處的黃銅接頭上，齊腰高裝著一個鑄鐵閥輪。你把手放上去，它轉了四分之一圈才卡住，說明並沒有鏽死。輪軸上的鏽被磨掉了一圈，是戴手套的手留下的。再把它轉到底，管線壓力就會立刻從煙道排出。那聲響會大到整層樓都聽得見。",
-        "label": "蒸汽減壓閥"
+        "label": "蒸汽減壓閥",
+        "interactions": [
+          {
+            "id": "turn",
+            "label": "轉動閥門",
+            "aliases": [
+              "turn valve",
+              "turn steam valve",
+              "turn the valve",
+              "turn the steam valve",
+              "open valve",
+              "open the valve",
+              "open steam valve",
+              "open the steam valve",
+              "vent steam",
+              "release steam",
+              "turn wheel",
+              "turn the wheel",
+              "turn overpressure valve",
+              "sabotage valve",
+              "轉動閥門",
+              "轉閥門",
+              "開啟閥門",
+              "轉動蒸汽閥",
+              "洩放蒸汽",
+              "破壞閥門"
+            ],
+            "when": ["!fortress_gate_open"],
+            "lines": [
+              "你抓住沉重的鐵輪，用盡全力扳動。閥門尖嘯著打開，噴出一陣蒸汽。白色水氣從洗滌煙道轟然湧出，直衝洞窟頂。通往要塞的管線上，液壓鎖銷一根接一根彈開，沉重的黃銅隔艙門隨之解鎖。"
+            ],
+            "effects": [
+              {
+                "kind": "run_hook",
+                "hook_id": "valve.diverted"
+              },
+              {
+                "kind": "emit_signal",
+                "signal": "fortress_gate_opened"
+              },
+              {
+                "kind": "emit_signal",
+                "signal": "valve_diverted"
+              }
+            ],
+            "repeatable": false
+          }
+        ]
       }
     ],
     "id": "village_west_1",
@@ -10845,7 +10949,65 @@
         "allow_rest": false,
         "id": "steam_prison_cage-feature",
         "inspect_text": "鐵條密得連一隻手都伸不進去，地板也是如此。門上的黃銅掛鎖做工精良，鎖孔小得無法撬開。鏈條上了油，上油就意味著有人刻意為之。地板底下，鐵籠隨著通風口每一次呼氣微微晃動，總是同一個方向，總是同樣的一寸。",
-        "label": "懸吊的鐵籠"
+        "label": "懸吊的鐵籠",
+        "interactions": [
+          {
+            "id": "unlock",
+            "label": "打開籠子",
+            "aliases": [
+              "unlock cage",
+              "unlock the cage",
+              "open cage",
+              "open the cage",
+              "use iron-cage-key",
+              "use iron cage key",
+              "use cage key",
+              "use key",
+              "use the key",
+              "use iron-cage-key on cage",
+              "use iron-cage-key on the cage",
+              "use iron cage key on cage",
+              "use iron cage key on the cage",
+              "use cage key on cage",
+              "use cage key on the cage",
+              "use key on cage",
+              "use key on the cage",
+              "unlock cage with key",
+              "unlock cage with iron cage key",
+              "unlock cage with iron-cage-key",
+              "unlock the cage with key",
+              "unlock the cage with iron cage key",
+              "free zayd",
+              "free the boy",
+              "free boy",
+              "unlock zayd",
+              "打開籠子",
+              "開籠",
+              "解鎖籠子",
+              "解救宰德",
+              "放出宰德"
+            ],
+            "when": ["item:iron-cage-key", "!zayd_rescued"],
+            "lines": [
+              "你把沉重的鐵鑰匙插進懸吊鐵籠上那把巨大的掛鎖。喀的一聲脆響，鎖簧轉開，柵欄門蕩了開來。小宰德跌跌撞撞地爬上鐵架橋，淚水在他沾滿煤灰的臉頰上沖出兩道痕，抬頭用倔強的眼睛望著你。"
+            ],
+            "effects": [
+              {
+                "kind": "run_hook",
+                "hook_id": "zayd.freed"
+              },
+              {
+                "kind": "emit_signal",
+                "signal": "zayd_freed"
+              },
+              {
+                "kind": "consume_item",
+                "item_id": "iron-cage-key"
+              }
+            ],
+            "repeatable": false
+          }
+        ]
       }
     ],
     "id": "steam_prison_cage",
@@ -10958,7 +11120,61 @@
         "allow_rest": false,
         "id": "command_bastion-feature",
         "inspect_text": "一個帶黃銅錶盤和加固鉸鏈的鐵箱，用螺栓穿透石頭固定，而非嵌進石裡。它前方的灰塵上留著一個乾淨的長方形，大小恰好是一個人跪著。鎖裡的轉輪用得很舊，周圍的黃銅被手摸得發亮。你想像著密碼會是什麼，錯的可能實在太多了。",
-        "label": "指揮官的鐵保險箱"
+        "label": "指揮官的鐵保險箱",
+        "interactions": [
+          {
+            "id": "unlock",
+            "label": "打開保險箱",
+            "aliases": [
+              "unlock safe",
+              "unlock the safe",
+              "open safe",
+              "open the safe",
+              "open iron safe",
+              "use commander-safe-key",
+              "use commander safe key",
+              "use safe key",
+              "use the safe key",
+              "use key",
+              "use the key",
+              "use commander-safe-key on safe",
+              "use commander-safe-key on the safe",
+              "use commander safe key on safe",
+              "use commander safe key on the safe",
+              "use safe key on safe",
+              "use safe key on the safe",
+              "use key on safe",
+              "use key on the safe",
+              "unlock safe with key",
+              "unlock safe with safe key",
+              "unlock safe with commander safe key",
+              "unlock the safe with key",
+              "unlock the safe with safe key",
+              "打開保險箱",
+              "開保險箱",
+              "解鎖保險箱"
+            ],
+            "when": ["item:commander-safe-key"],
+            "lines": [
+              "你把馬利克指揮官那把沉重的黃銅鑰匙插進保險箱的雙重鎖簧。沉重的鎖栓喀啦一聲退開，乾脆俐落。鋼製隔間裡，躺著那卷古老的傳送卷軸！"
+            ],
+            "effects": [
+              {
+                "kind": "run_hook",
+                "hook_id": "safe.unlocked"
+              },
+              {
+                "kind": "emit_signal",
+                "signal": "safe_unlocked"
+              },
+              {
+                "kind": "consume_item",
+                "item_id": "commander-safe-key"
+              }
+            ],
+            "repeatable": false
+          }
+        ]
       }
     ],
     "id": "command_bastion",
@@ -11151,7 +11367,68 @@
         "allow_rest": false,
         "id": "courtyard_center-cages",
         "inspect_text": "四只沉重的鐵籠，標著 01 區、04 區、07 區和 12 區。瑟瑟發抖的年邁平民和驚恐的孩子透過結霜的鐵條向外張望。一道巨大的掛鎖閘門把他們封在裡面。",
-        "label": "祭品籠"
+        "label": "祭品籠",
+        "interactions": [
+          {
+            "id": "unlock",
+            "label": "打開籠子",
+            "aliases": [
+              "unlock cage",
+              "unlock cages",
+              "unlock the cage",
+              "unlock the cages",
+              "open cage",
+              "open cages",
+              "free prisoners",
+              "free offerings",
+              "use courtyard-cage-key",
+              "use courtyard cage key",
+              "use cage key",
+              "use the cage key",
+              "use key",
+              "use the key",
+              "use courtyard-cage-key on cage",
+              "use courtyard-cage-key on cages",
+              "use courtyard cage key on cage",
+              "use courtyard cage key on cages",
+              "use cage key on cage",
+              "use cage key on cages",
+              "use key on cage",
+              "use key on cages",
+              "use key on the cages",
+              "unlock cages with key",
+              "unlock cage with key",
+              "unlock cages with courtyard cage key",
+              "unlock cage with courtyard cage key",
+              "unlock the cages with key",
+              "unlock the cage with key",
+              "打開籠子",
+              "開籠",
+              "解鎖籠子",
+              "解救囚犯",
+              "放出祭品"
+            ],
+            "when": ["item:courtyard-cage-key", "!courtyard_cages_opened"],
+            "lines": [
+              "你轉動那把結霜的沉重鑰匙，掛鎖應聲彈開。鐵門嘩啦一聲晃開。幾十個受驚的孩子與年邁的平民湧到積雪的石板上，哭著鬆了一口氣。最大的那間牢房裡，艾絲翠德指揮官舉著闊劍走了出來，艾納也快步衝向發抖的平民，要照料他們。"
+            ],
+            "effects": [
+              {
+                "kind": "run_hook",
+                "hook_id": "courtyard.cages_unlocked"
+              },
+              {
+                "kind": "emit_signal",
+                "signal": "courtyard_cages_unlocked"
+              },
+              {
+                "kind": "consume_item",
+                "item_id": "courtyard-cage-key"
+              }
+            ],
+            "repeatable": false
+          }
+        ]
       }
     ],
     "id": "courtyard_center",

@@ -210,6 +210,9 @@ fn completion_effect_events(sequence: &ScriptedSequence) -> Vec<WorldEvent> {
             | AdvanceEffect::SetFollowsPlayer { .. }
             | AdvanceEffect::QueueSequence { .. }
             | AdvanceEffect::SetFeatureState { .. }
+            | AdvanceEffect::ConsumeItem { .. }
+            | AdvanceEffect::RunHook { .. }
+            | AdvanceEffect::EmitSignal { .. }
             | AdvanceEffect::ResolveSurvivorRewards { .. } => {
                 vec![WorldEvent::StageEffectApplied {
                     effect: effect.clone(),

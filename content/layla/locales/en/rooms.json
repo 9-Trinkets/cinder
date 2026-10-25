@@ -9513,7 +9513,59 @@
           "brass"
         ],
         "allow_rest": false,
-        "inspect_text": "The bulkhead is banded iron over riveted brass, three spans wide, and it is bolted from the far side. You cannot find a handle anywhere on this face, and you run your hand along the seam anyway. The warm air stops dead at the metal. Somebody has tied a strip of red cloth to a rivet at knee height, and it has faded almost through."
+        "inspect_text": "The bulkhead is banded iron over riveted brass, three spans wide, and it is bolted from the far side. You cannot find a handle anywhere on this face, and you run your hand along the seam anyway. The warm air stops dead at the metal. Somebody has tied a strip of red cloth to a rivet at knee height, and it has faded almost through.",
+        "interactions": [
+          {
+            "id": "unlock",
+            "label": "Unlock the gate",
+            "aliases": [
+              "unlock gate",
+              "unlock fortress gate",
+              "unlock the gate",
+              "unlock bulkhead",
+              "unlock the bulkhead",
+              "unlock door",
+              "use fortress-gate-key",
+              "use fortress gate key",
+              "use gate key",
+              "use the gate key",
+              "use key",
+              "use the key",
+              "use fortress-gate-key on gate",
+              "use fortress-gate-key on the gate",
+              "use fortress gate key on gate",
+              "use fortress gate key on the gate",
+              "use gate key on gate",
+              "use gate key on the gate",
+              "use key on gate",
+              "use key on the gate",
+              "unlock gate with key",
+              "unlock gate with gate key",
+              "unlock gate with fortress gate key",
+              "unlock the gate with key",
+              "unlock the gate with gate key"
+            ],
+            "when": ["item:fortress-gate-key", "!fortress_gate_open"],
+            "lines": [
+              "You insert the heavy brass key into the bulkhead lock and turn it with a sharp metallic clunk. The heavy hydraulic deadbolts slide back, releasing the sealed fortress gate."
+            ],
+            "effects": [
+              {
+                "kind": "run_hook",
+                "hook_id": "gate.unlocked"
+              },
+              {
+                "kind": "emit_signal",
+                "signal": "fortress_gate_opened"
+              },
+              {
+                "kind": "consume_item",
+                "item_id": "fortress-gate-key"
+              }
+            ],
+            "repeatable": false
+          }
+        ]
       }
     ],
     "exits": [
@@ -9632,7 +9684,48 @@
           "overpressure valve"
         ],
         "allow_rest": false,
-        "inspect_text": "A cast-iron wheel at waist height on a brass junction where four pipes meet. You put a hand on the wheel and it turns a quarter turn before it binds, which tells you it is not seized. The rust on the hub is broken away in a band where a gloved hand has been. Turn it the rest of the way and the line pressure vents into the flue at once. It will be loud enough to be heard everywhere on this floor."
+        "inspect_text": "A cast-iron wheel at waist height on a brass junction where four pipes meet. You put a hand on the wheel and it turns a quarter turn before it binds, which tells you it is not seized. The rust on the hub is broken away in a band where a gloved hand has been. Turn it the rest of the way and the line pressure vents into the flue at once. It will be loud enough to be heard everywhere on this floor.",
+        "interactions": [
+          {
+            "id": "turn",
+            "label": "Turn the valve",
+            "aliases": [
+              "turn valve",
+              "turn steam valve",
+              "turn the valve",
+              "turn the steam valve",
+              "open valve",
+              "open the valve",
+              "open steam valve",
+              "open the steam valve",
+              "vent steam",
+              "release steam",
+              "turn wheel",
+              "turn the wheel",
+              "turn overpressure valve",
+              "sabotage valve"
+            ],
+            "when": ["!fortress_gate_open"],
+            "lines": [
+              "You grab the heavy iron wheel and pull with all your strength. The valve screeches open with a blast of steam. White vapor roars out of the wash flue and climbs to the cavern roof. Down the line toward the fortress, hydraulic lock-pins clunk free and the heavy brass bulkhead unlocks."
+            ],
+            "effects": [
+              {
+                "kind": "run_hook",
+                "hook_id": "valve.diverted"
+              },
+              {
+                "kind": "emit_signal",
+                "signal": "fortress_gate_opened"
+              },
+              {
+                "kind": "emit_signal",
+                "signal": "valve_diverted"
+              }
+            ],
+            "repeatable": false
+          }
+        ]
       }
     ],
     "exits": [
@@ -10040,7 +10133,60 @@
           "padlock"
         ],
         "allow_rest": false,
-        "inspect_text": "Iron bars, close enough together that you could not get a hand through, and a floor of the same. The brass padlock on the gate is good work and has no keyhole big enough to pick. The chains are greased, and grease means somebody does this on purpose. Under the floor the cage swings a little with every breath out of the vent, always the same direction, always the same inch."
+        "inspect_text": "Iron bars, close enough together that you could not get a hand through, and a floor of the same. The brass padlock on the gate is good work and has no keyhole big enough to pick. The chains are greased, and grease means somebody does this on purpose. Under the floor the cage swings a little with every breath out of the vent, always the same direction, always the same inch.",
+        "interactions": [
+          {
+            "id": "unlock",
+            "label": "Unlock the cage",
+            "aliases": [
+              "unlock cage",
+              "unlock the cage",
+              "open cage",
+              "open the cage",
+              "use iron-cage-key",
+              "use iron cage key",
+              "use cage key",
+              "use key",
+              "use the key",
+              "use iron-cage-key on cage",
+              "use iron-cage-key on the cage",
+              "use iron cage key on cage",
+              "use iron cage key on the cage",
+              "use cage key on cage",
+              "use cage key on the cage",
+              "use key on cage",
+              "use key on the cage",
+              "unlock cage with key",
+              "unlock cage with iron cage key",
+              "unlock cage with iron-cage-key",
+              "unlock the cage with key",
+              "unlock the cage with iron cage key",
+              "free zayd",
+              "free the boy",
+              "free boy",
+              "unlock zayd"
+            ],
+            "when": ["item:iron-cage-key", "!zayd_rescued"],
+            "lines": [
+              "You slide the heavy iron key into the massive padlock on the suspended cage. With a sharp click, the tumblers turn and the barred gate swings open. Zayd scrambles out onto the iron gantry, tears cutting through the soot on his cheeks, and looks up at you with fierce eyes."
+            ],
+            "effects": [
+              {
+                "kind": "run_hook",
+                "hook_id": "zayd.freed"
+              },
+              {
+                "kind": "emit_signal",
+                "signal": "zayd_freed"
+              },
+              {
+                "kind": "consume_item",
+                "item_id": "iron-cage-key"
+              }
+            ],
+            "repeatable": false
+          }
+        ]
       }
     ],
     "exits": [
@@ -10133,7 +10279,58 @@
           "combination"
         ],
         "allow_rest": false,
-        "inspect_text": "An iron body with brass dials and reinforced hinges, bolted through the stone rather than into it. There is a clean rectangle in the dust on the floor in front of it, the size of somebody kneeling. The tumblers are well used and the brass around them is bright where hands have gone. You try to imagine the combination and there are too many ways to be wrong."
+        "inspect_text": "An iron body with brass dials and reinforced hinges, bolted through the stone rather than into it. There is a clean rectangle in the dust on the floor in front of it, the size of somebody kneeling. The tumblers are well used and the brass around them is bright where hands have gone. You try to imagine the combination and there are too many ways to be wrong.",
+        "interactions": [
+          {
+            "id": "unlock",
+            "label": "Unlock the safe",
+            "aliases": [
+              "unlock safe",
+              "unlock the safe",
+              "open safe",
+              "open the safe",
+              "open iron safe",
+              "use commander-safe-key",
+              "use commander safe key",
+              "use safe key",
+              "use the safe key",
+              "use key",
+              "use the key",
+              "use commander-safe-key on safe",
+              "use commander-safe-key on the safe",
+              "use commander safe key on safe",
+              "use commander safe key on the safe",
+              "use safe key on safe",
+              "use safe key on the safe",
+              "use key on safe",
+              "use key on the safe",
+              "unlock safe with key",
+              "unlock safe with safe key",
+              "unlock safe with commander safe key",
+              "unlock the safe with key",
+              "unlock the safe with safe key"
+            ],
+            "when": ["item:commander-safe-key"],
+            "lines": [
+              "You insert Commander Malik's heavy brass key into the safe's dual tumblers. The heavy lock bolts grind back with a satisfying mechanical clunk. Inside the steel compartment lies the ancient Teleportation Scroll!"
+            ],
+            "effects": [
+              {
+                "kind": "run_hook",
+                "hook_id": "safe.unlocked"
+              },
+              {
+                "kind": "emit_signal",
+                "signal": "safe_unlocked"
+              },
+              {
+                "kind": "consume_item",
+                "item_id": "commander-safe-key"
+              }
+            ],
+            "repeatable": false
+          }
+        ]
       }
     ],
     "exits": [
@@ -10301,7 +10498,63 @@
           "offerings"
         ],
         "allow_rest": false,
-        "inspect_text": "Four heavy iron cages labeled BLOCK 01, BLOCK 04, BLOCK 07, and BLOCK 12. Shivering elderly commoners and frightened children peer through the frosted bars. A massive padlocked gate keeps them sealed inside."
+        "inspect_text": "Four heavy iron cages labeled BLOCK 01, BLOCK 04, BLOCK 07, and BLOCK 12. Shivering elderly commoners and frightened children peer through the frosted bars. A massive padlocked gate keeps them sealed inside.",
+        "interactions": [
+          {
+            "id": "unlock",
+            "label": "Unlock the cages",
+            "aliases": [
+              "unlock cage",
+              "unlock cages",
+              "unlock the cage",
+              "unlock the cages",
+              "open cage",
+              "open cages",
+              "free prisoners",
+              "free offerings",
+              "use courtyard-cage-key",
+              "use courtyard cage key",
+              "use cage key",
+              "use the cage key",
+              "use key",
+              "use the key",
+              "use courtyard-cage-key on cage",
+              "use courtyard-cage-key on cages",
+              "use courtyard cage key on cage",
+              "use courtyard cage key on cages",
+              "use cage key on cage",
+              "use cage key on cages",
+              "use key on cage",
+              "use key on cages",
+              "use key on the cages",
+              "unlock cages with key",
+              "unlock cage with key",
+              "unlock cages with courtyard cage key",
+              "unlock cage with courtyard cage key",
+              "unlock the cages with key",
+              "unlock the cage with key"
+            ],
+            "when": ["item:courtyard-cage-key", "!courtyard_cages_opened"],
+            "lines": [
+              "You turn the heavy frost-bitten key in the padlock. The iron gates swing open with a sharp clatter. Dozens of frightened children and elderly commoners spill out onto the snowy flags, weeping in relief. From the largest cell step Commander Astrid, lifting her broadsword, and Einar, rushing forward to tend to the shivering civilians."
+            ],
+            "effects": [
+              {
+                "kind": "run_hook",
+                "hook_id": "courtyard.cages_unlocked"
+              },
+              {
+                "kind": "emit_signal",
+                "signal": "courtyard_cages_unlocked"
+              },
+              {
+                "kind": "consume_item",
+                "item_id": "courtyard-cage-key"
+              }
+            ],
+            "repeatable": false
+          }
+        ]
       }
     ],
     "exits": [

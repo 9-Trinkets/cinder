@@ -401,6 +401,32 @@ impl ContentPack {
         self.action_index.get(action_id).map(|&i| &self.actions[i])
     }
 
+    /// The command that carries out an interaction, and whether `input` is one
+    /// of the aliases an interaction declares for itself.
+    pub fn interaction_alias_command(&self, input: &str) -> Option<&ActionDefinition> {
+        let is_alias = |interaction: &super::Interaction| {
+            interaction
+                .aliases
+                .iter()
+                .any(|alias| alias.eq_ignore_ascii_case(input))
+        };
+        let declared = self
+            .actors
+            .iter()
+            .any(|actor| actor.interactions.iter().any(is_alias))
+            || self.rooms.iter().any(|room| {
+                room.features
+                    .iter()
+                    .any(|feature| feature.interactions.iter().any(is_alias))
+            });
+        if !declared {
+            return None;
+        }
+        self.actions.iter().find(|action| {
+            action.player_enabled && action.has_effect(CommandEffect::UseInteraction)
+        })
+    }
+
     pub fn menu(&self, menu_id: &str) -> Option<&OpeningMenuDefinition> {
         self.menus.iter().find(|menu| menu.id == menu_id)
     }

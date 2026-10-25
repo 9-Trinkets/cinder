@@ -1,4 +1,5 @@
 use crate::content::types::{AdvanceEffect, Condition, ContentPack, SurvivorRewardDefinition};
+use crate::engine::hooks::apply_narrating_world_hook_effects;
 use crate::engine::narrative::{NarrativeLine, NarrativeLines};
 use crate::engine::state::{GamePhase, SpawnActorConfig, SpawnActorOutcome, WorldState};
 use crate::engine::turn_policies::clear_inactive_objective_state;
@@ -259,6 +260,36 @@ fn apply_stage_effect(
                     "feature '{room_id}/{feature_id}' cannot be put in state '{new_state}'"
                 ))
             };
+        }
+        AdvanceEffect::ConsumeItem { item_id } => {
+            let room_id = state.current_room_id.clone();
+            if state.remove_item_from_storage(
+                item_id,
+                crate::content::types::ItemStorageTarget::PlayerInventory,
+                &room_id,
+            ) && let Some(line) = rendered_message_line(
+                content,
+                "item.consumed_use",
+                &[("label", content.item_label(item_id))],
+            ) {
+                messages.push(line);
+            }
+            return Ok(());
+        }
+        AdvanceEffect::RunHook { hook_id } => {
+            let input = serde_json::json!({
+                "event_id": hook_id,
+                "actor_stats": state.combat.actor_stats,
+            });
+            let mut lines = NarrativeLines(std::mem::take(messages));
+            let result =
+                apply_narrating_world_hook_effects(state, content, hook_id, input, &mut lines);
+            *messages = lines.0;
+            return result;
+        }
+        AdvanceEffect::EmitSignal { signal } => {
+            messages.extend(advance_objective_for_signal(state, content, signal));
+            return Ok(());
         }
         AdvanceEffect::QueueSequence { sequence_id } => {
             return state.queue_scripted_sequence(sequence_id);

@@ -1,7 +1,7 @@
 //! Layla's gates read the one condition language. These tests pin the behavior
 //! the packs had before the gates were rewritten, so nothing about the story
 //! changes: exits stay hidden until their story variable is set, a room reads
-//! differently once its boss has fallen, and a one-time unlock cannot be repeated.
+//! differently once its boss has fallen, and keys open their gates once.
 
 use cinder_core::content::loader::load_named_pack;
 use cinder_core::content::types::Condition;
@@ -102,37 +102,6 @@ fn look_in(
 }
 
 #[test]
-fn a_one_time_unlock_cannot_be_repeated() {
-    let pack = pack();
-    let action = pack
-        .actions
-        .iter()
-        .find(|action| action.id == "unlock_fortress_gate")
-        .expect("the gate unlock");
-    assert_eq!(
-        action.available.when,
-        vec![Condition::Not(Box::new(Condition::StoryVar(
-            "fortress_gate_open".to_string()
-        )))]
-    );
-    let mut state = WorldState::new(&pack);
-    state.current_room_id = "village_north_gate".to_string();
-    state.add_item("fortress-gate-key");
-    assert!(action_is_available(
-        &pack,
-        &state,
-        action,
-        "village_north_gate"
-    ));
-
-    state.story_vars.set_unchecked("fortress_gate_open", "true");
-    assert!(
-        !action_is_available(&pack, &state, action, "village_north_gate"),
-        "the gate is already open"
-    );
-}
-
-#[test]
 fn erasing_needs_a_trace_mark_in_the_room() {
     let pack = pack();
     let erase = pack
@@ -169,4 +138,86 @@ fn the_teleport_skill_waits_for_the_knowledge_that_unlocks_it() {
         teleport.available.when,
         vec![Condition::StoryVar("knows_teleport".to_string())]
     );
+}
+
+fn runtime_at(room: &str, items: &[&str], locale: &str) -> CinderRuntime {
+    let pack = load_named_pack("layla", Some(locale)).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = room.to_string();
+    for item in items {
+        state.add_item(item);
+    }
+    CinderRuntime::from_state(pack, state, false).expect("runtime")
+}
+
+#[test]
+fn a_key_opens_its_gate_once_and_is_used_up() {
+    let runtime = runtime_at("village_north_gate", &["fortress-gate-key"], "en");
+    let first = runtime.run_turn("unlock gate").expect("unlock").text();
+    assert!(first.contains("hydraulic deadbolts slide back"), "{first}");
+    assert!(first.contains("You use"), "{first}");
+    let state = runtime.export_state().expect("state");
+    assert_eq!(state.story_vars.get("fortress_gate_open"), Some("true"));
+    assert!(!state.has_item("fortress-gate-key"));
+    let again = runtime.run_turn("unlock gate").expect("unlock").text();
+    assert!(!again.contains("deadbolts"), "{again}");
+}
+
+#[test]
+fn the_typed_phrases_of_the_old_actions_still_work() {
+    for phrase in ["use key", "use the gate key", "unlock the bulkhead"] {
+        let runtime = runtime_at("village_north_gate", &["fortress-gate-key"], "en");
+        let text = runtime.run_turn(phrase).expect("turn").text();
+        assert!(text.contains("deadbolts"), "{phrase}: {text}");
+    }
+    let runtime = runtime_at("steam_prison_cage", &["iron-cage-key"], "en");
+    let text = runtime.run_turn("free zayd").expect("turn").text();
+    assert!(text.contains("Zayd scrambles out"), "{text}");
+}
+
+#[test]
+fn the_same_phrase_picks_the_unlock_in_the_room_you_are_in() {
+    let runtime = runtime_at("command_bastion", &["commander-safe-key"], "en");
+    let text = runtime.run_turn("use key").expect("turn").text();
+    assert!(text.contains("dual tumblers"), "{text}");
+}
+
+#[test]
+fn an_unlock_without_its_key_does_nothing() {
+    let runtime = runtime_at("village_north_gate", &[], "en");
+    let text = runtime.run_turn("unlock gate").expect("turn").text();
+    assert!(!text.contains("deadbolts"), "{text}");
+    assert_ne!(
+        runtime
+            .export_state()
+            .expect("state")
+            .story_vars
+            .get("fortress_gate_open"),
+        Some("true")
+    );
+}
+
+#[test]
+fn an_unlock_in_the_wrong_room_names_the_right_one() {
+    let runtime = runtime_at("village_north_gate", &["iron-cage-key"], "en");
+    let text = runtime.run_turn("unlock cage").expect("turn").text();
+    assert!(text.contains("You must be in"), "{text}");
+}
+
+#[test]
+fn the_valve_and_the_gate_key_open_the_same_way_once() {
+    let runtime = runtime_at("village_west_1", &[], "en");
+    let first = runtime.run_turn("turn valve").expect("turn").text();
+    assert!(first.contains("valve screeches open"), "{first}");
+    let again = runtime.run_turn("turn valve").expect("turn").text();
+    assert!(!again.contains("screeches"), "{again}");
+}
+
+#[test]
+fn the_traditional_chinese_phrases_work() {
+    let runtime = runtime_at("steam_prison_cage", &["iron-cage-key"], "zh-TW");
+    let text = runtime.run_turn("打開籠子").expect("turn").text();
+    assert!(text.contains("宰德"), "{text}");
+    let state = runtime.export_state().expect("state");
+    assert_eq!(state.story_vars.get("zayd_rescued"), Some("true"));
 }

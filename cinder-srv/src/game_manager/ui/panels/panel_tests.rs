@@ -656,14 +656,14 @@ fn use_panel_surfaces_keys_only_when_in_lock_room() {
     let use_opts_inside = build_use_panel_options(&pack, &state);
     assert_eq!(use_opts_inside.len(), 1);
     assert_eq!(use_opts_inside[0].id, "courtyard-cage-key");
-    assert_eq!(use_opts_inside[0].title, "Unlock Cages");
+    assert_eq!(use_opts_inside[0].title, "Unlock the cages");
     assert_eq!(
         use_opts_inside[0].subtitle.as_deref(),
         Some("Courtyard Cage Key")
     );
     assert_eq!(
         use_opts_inside[0].command.as_deref(),
-        Some("use courtyard-cage-key")
+        Some("do courtyard_center-cages:unlock")
     );
 
     // Once already opened: key is no longer usable

@@ -269,9 +269,8 @@ fn droppable_inventory_items(state: &WorldState) -> Vec<String> {
 
 /// Ids of inventory items the player can currently use:
 /// - Held items with a `use_hook` (consumables, potions, scrolls)
-/// - Held keys that have an active, available lock action in the current room
+/// - Held keys that an interaction on offer in the current room needs
 fn usable_inventory_items(content: &ContentPack, state: &WorldState) -> Vec<String> {
-    let current_room_id = &state.current_room_id;
     let mut ids: Vec<String> = state
         .inventory
         .player_inventory
@@ -287,16 +286,10 @@ fn usable_inventory_items(content: &ContentPack, state: &WorldState) -> Vec<Stri
                 return true;
             }
             if item.kind == cinder_core::content::types::ItemKind::Key {
-                return content.actions.iter().any(|action| {
-                    (action.available.requires_item.as_deref() == Some(item_id.as_str())
-                        || action.available.consumes_item.as_deref() == Some(item_id.as_str()))
-                        && cinder_core::engine::turn_policies::action_is_available(
-                            content,
-                            state,
-                            action,
-                            current_room_id,
-                        )
-                });
+                return !cinder_core::engine::interactions::item_interactions(
+                    content, state, item_id,
+                )
+                .is_empty();
             }
             false
         })

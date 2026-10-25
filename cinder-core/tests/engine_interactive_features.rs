@@ -44,10 +44,12 @@ fn lamp() -> RoomFeatureDefinition {
             Interaction {
                 id: "dim".to_string(),
                 label: "Dim the lamp".to_string(),
+                aliases: vec!["lights down".to_string()],
                 when: vec![feature_is("test-lamp", "bright")],
                 lines: vec!["You turn the dial down.".to_string()],
                 effects: vec![set_state("dim")],
                 repeatable: true,
+                ..Default::default()
             },
             Interaction {
                 id: "brighten".to_string(),
@@ -56,6 +58,7 @@ fn lamp() -> RoomFeatureDefinition {
                 lines: vec!["You turn the dial up.".to_string()],
                 effects: vec![set_state("bright")],
                 repeatable: true,
+                ..Default::default()
             },
             Interaction {
                 id: "switch-off".to_string(),
@@ -64,6 +67,7 @@ fn lamp() -> RoomFeatureDefinition {
                 lines: vec!["Click.".to_string()],
                 effects: vec![set_state("off")],
                 repeatable: false,
+                ..Default::default()
             },
         ],
         ..Default::default()
@@ -234,4 +238,46 @@ fn the_do_action_is_hidden_where_nothing_can_be_done() {
             .is_empty(),
         "the porch has no operable features"
     );
+}
+
+#[test]
+fn an_interaction_can_be_typed_as_one_of_its_aliases() {
+    let runtime = runtime_in_the_playroom();
+    let text = runtime.run_turn("lights down").expect("alias").text();
+    assert!(text.contains("You turn the dial down."), "{text}");
+    assert_eq!(lamp_state(&runtime).as_deref(), Some("dim"));
+}
+
+#[test]
+fn an_interaction_that_needs_an_item_is_offered_for_that_item() {
+    let mut pack = pack();
+    let lamp = pack
+        .rooms
+        .iter_mut()
+        .find(|room| room.id == "playroom")
+        .expect("playroom")
+        .features
+        .iter_mut()
+        .find(|feature| feature.id == "test-lamp")
+        .expect("lamp");
+    lamp.interactions.push(Interaction {
+        id: "repair".to_string(),
+        label: "Mend the lamp".to_string(),
+        when: vec![Condition::Carries("test-bulb".to_string())],
+        effects: vec![
+            AdvanceEffect::EmitSignal {
+                signal: "lamp_mended".to_string(),
+            },
+            AdvanceEffect::ConsumeItem {
+                item_id: "test-bulb".to_string(),
+            },
+        ],
+        ..Default::default()
+    });
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "playroom".to_string();
+    let offered = cinder_core::engine::interactions::item_interactions(&pack, &state, "test-bulb");
+    assert_eq!(offered.len(), 1);
+    assert_eq!(offered[0].label, "Mend the lamp");
+    assert_eq!(offered[0].command, "do test-lamp:repair");
 }

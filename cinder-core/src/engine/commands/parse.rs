@@ -22,6 +22,13 @@ pub(crate) fn parse_command(content: &ContentPack, raw_input: &str) -> PlayerCom
         return cmd;
     }
 
+    if let Some(action) = content.interaction_alias_command(trimmed) {
+        return PlayerCommand::Authored {
+            command_id: action.id.clone(),
+            input: Some(trimmed.to_string()),
+        };
+    }
+
     if let Some(cmd) = parse_action_command(content, trimmed, &lower) {
         return cmd;
     }

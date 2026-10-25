@@ -336,6 +336,7 @@ mod tests {
                 state: "bright".to_string(),
             }],
             repeatable: true,
+            ..Default::default()
         };
         pack.rooms.push(room(vec![lamp(vec![bad])], Vec::new()));
         let message = problems(&pack);

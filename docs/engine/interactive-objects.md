@@ -1,6 +1,6 @@
 # Interactive objects in rooms: design
 
-**Status:** Phases 0 to 2 are built. Phases 3 to 5 are planned. Sections 2 and 4 describe what exists; the examples use the compact condition forms the loader accepts.
+**Status:** Phases 0 to 3 are built. Phases 4 and 5 are planned. Sections 2 and 4 describe what exists; the examples use the compact condition forms the loader accepts.
 
 How the engine should model things in a room that the player or an NPC can operate and that keep a state afterwards: a lamp, a valve, a gate, a desk, a projector. Written for every pack, not for one. Isla's second episode (a lamp, a blind and a hall machine that Tam reacts to) is the first user, and the survey below shows Layla, Aera and Ella need the same thing. Decisions made: **interaction** is the name (it avoids confusing it further with *action* and *affordance*, which were used interchangeably before), topics are replaced by interactions now, and a feature's states are declared.
 
@@ -93,7 +93,9 @@ An **interaction** is an authored choice with a label, optional conditions, line
 
 - **Topics are interactions on an actor.** `ActorTopicDefinition` is gone. The stage signal is `interaction_done:<owner>:<id>` for both kinds, and "used" is kept in the story variable `interaction_used:<owner>:<id>`. A `set_feature_state` effect with no feature named acts on the interaction's own feature.
 - **Layla's unlocks become interactions on features:** a cage, a gate and a safe each offer "Unlock", gated by the key item (`when`) and by not already being open. The four copied blocks become four short entries.
-- **The valve becomes an interaction on the valve feature,** and can no longer be repeated by accident.
+- **The valve becomes an interaction on the valve feature,** and can no longer be repeated by accident. It is also closed once the fortress gate is open, however that happened.
+- **Typed phrases are `aliases`** on the interaction, matched as the whole input before action phrases. The Use panel lists a key through the offered interaction that needs it.
+- **Why not in the right room:** an interaction typed in another room gets the same "must be in <room>" message the old actions gave.
 - **Aera's kitchen actions** can later become interactions on the kitchen island, which lets NPCs act on a feature too (Phase 4).
 
 Interactions apply **effects.** Instead of a second effect type, they use the same effect list as hooks (`set_story_var`, `acquire_item`, `adjust_actor_stat`, `narrate_message`, `move_actors`, ...), plus a few new ones that remove today's workaround through a story variable:
@@ -113,7 +115,7 @@ Stage effects (`AdvanceEffect`) and hook effects (`WorldHookEffect`) become **on
 | Topic `requires_story_var` | interaction `when` | 2 |
 | `armed_by` on teleport anchors, `craftable_item_gates`, skill `requires_story_var` | `when` | 1 |
 | Topics | interactions on an actor | 2 |
-| Layla `unlock_*`, `turn_steam_valve` | interactions on features | 3 |
+| Layla `unlock_*`, `turn_steam_valve` | interactions on features (done) | 3 |
 | Per-feature inspect text | `descriptions` by state | 2 |
 | `requires_room_item`, `requires_room_without_item` | a `when` over the room's items | 1 |
 | Story variable as the only state | feature state, with story variables kept for global flags | 2 |
@@ -148,7 +150,7 @@ Everything Tam does reads these states through `when` conditions on stages, menu
 | 0 | One condition evaluator, and one truthiness helper | The two copies of `story_var_is_truthy` | Existing tests |
 | 1 | `when` on exits, descriptions, actions, topics and the rest, with the old fields rewritten as sugar | Eight separate gates | Layla and Aera, with identical behavior |
 | 2 | Feature state, per-state descriptions, interactions on features, the Do panel. Topics become interactions on actors. | Topics, inspect-only features | **Isla's Tam playroom, and Wren's topics** |
-| 3 | Layla's unlocks and the valve as interactions | Four copied unlock blocks | Layla gate, cages, safe, valve |
+| 3 | Layla's unlocks and the valve as interactions, with `aliases` for typed phrases, and `consume_item`, `run_hook` and `emit_signal` effects | Five copied action blocks | Layla gate, cages, safe, valve |
 | 4 | NPCs target features | Aera's `allowed_rooms` stand-in | Aera kitchen |
 | 5 | One effect list | Stage effects and hook effects | Everything |
 

@@ -137,6 +137,18 @@ pub enum AdvanceEffect {
         feature: String,
         state: String,
     },
+    /// Uses up an item the player carries, saying so ("You use the key.").
+    ConsumeItem {
+        item_id: String,
+    },
+    /// Runs a world hook, for outcomes too involved to list as effects.
+    RunHook {
+        hook_id: String,
+    },
+    /// Sends a signal that stages can advance on.
+    EmitSignal {
+        signal: String,
+    },
     /// Makes an actor walk with the player, or stay where they are.
     SetFollowsPlayer {
         actor_id: String,

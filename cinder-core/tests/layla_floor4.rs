@@ -913,15 +913,11 @@ fn floor4_zayd_rescue_and_village_escort() {
     );
 
     // Verify unlock cage is no longer available after unlocking
-    let unlock_action = pack.actions.iter().find(|a| a.id == "unlock_cage").unwrap();
+    let again = runtime.run_turn("unlock cage").expect("turn runs");
     assert!(
-        !cinder_core::engine::turn_policies::action_is_available(
-            &pack,
-            &state_after_unlock,
-            unlock_action,
-            "steam_prison_cage"
-        ),
-        "unlock cage must not be available once zayd is rescued"
+        !again.text().contains("Zayd scrambles out"),
+        "unlock cage must not be available once zayd is rescued: {}",
+        again.text()
     );
 
     // Verify quest advanced to escort stage sq_return_zayd

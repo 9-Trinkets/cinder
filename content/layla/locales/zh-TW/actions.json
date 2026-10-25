@@ -125,92 +125,15 @@
       }
     },
     {
-      "id": "turn_steam_valve",
-      "label": "轉動閥門",
+      "id": "do",
+      "label": "行動",
       "phrases": [
-        "轉動閥門",
-        "轉閥門",
-        "開啟閥門",
-        "轉動蒸汽閥",
-        "洩放蒸汽",
-        "破壞閥門"
+        "做",
+        "行動"
       ],
       "player_command": {
-        "usage": "turn valve（轉動閥門）",
-        "example": "轉動閥門"
-      },
-      "content_event": {
-        "event_text": "你抓住沉重的鐵輪，用盡全力扳動。閥門尖嘯著打開，噴出一陣蒸汽。白色水氣從洗滌煙道轟然湧出，直衝洞窟頂。通往要塞的管線上，液壓鎖銷一根接一根彈開，沉重的黃銅隔艙門隨之解鎖。"
-      }
-    },
-    {
-      "id": "unlock_cage",
-      "label": "打開籠子",
-      "phrases": [
-        "打開籠子",
-        "開籠",
-        "解鎖籠子",
-        "解救宰德",
-        "放出宰德"
-      ],
-      "player_command": {
-        "usage": "unlock cage（打開籠子）",
-        "example": "打開籠子"
-      },
-      "content_event": {
-        "event_text": "你把沉重的鐵鑰匙插進懸吊鐵籠上那把巨大的掛鎖。喀的一聲脆響，鎖簧轉開，柵欄門蕩了開來。小宰德跌跌撞撞地爬上鐵架橋，淚水在他沾滿煤灰的臉頰上沖出兩道痕，抬頭用倔強的眼睛望著你。"
-      }
-    },
-    {
-      "id": "unlock_fortress_gate",
-      "label": "打開大門",
-      "phrases": [
-        "打開大門",
-        "開門",
-        "解鎖大門",
-        "打開要塞門",
-        "解鎖要塞門"
-      ],
-      "player_command": {
-        "usage": "unlock gate（打開大門）",
-        "example": "打開大門"
-      },
-      "content_event": {
-        "event_text": "你把沉重的黃銅鑰匙插進隔艙門鎖，重重轉動，發出一聲尖銳的金屬悶響。沉重的液壓門閂縮了回去，封死的要塞大門鬆開了。"
-      }
-    },
-    {
-      "id": "unlock_courtyard_cages",
-      "label": "打開籠子",
-      "phrases": [
-        "打開籠子",
-        "開籠",
-        "解鎖籠子",
-        "解救囚犯",
-        "放出祭品"
-      ],
-      "player_command": {
-        "usage": "unlock cage（打開籠子）",
-        "example": "打開籠子"
-      },
-      "content_event": {
-        "event_text": "你轉動那把結霜的沉重鑰匙，掛鎖應聲彈開。鐵門嘩啦一聲晃開。幾十個受驚的孩子與年邁的平民湧到積雪的石板上，哭著鬆了一口氣。最大的那間牢房裡，艾絲翠德指揮官舉著闊劍走了出來，艾納也快步衝向發抖的平民，要照料他們。"
-      }
-    },
-    {
-      "id": "unlock_safe",
-      "label": "打開保險箱",
-      "phrases": [
-        "打開保險箱",
-        "開保險箱",
-        "解鎖保險箱"
-      ],
-      "player_command": {
-        "usage": "unlock safe（打開保險箱）",
-        "example": "打開保險箱"
-      },
-      "content_event": {
-        "event_text": "你把馬利克指揮官那把沉重的黃銅鑰匙插進保險箱的雙重鎖簧。沉重的鎖栓喀啦一聲退開，乾脆俐落。鋼製隔間裡，躺著那卷古老的傳送卷軸！"
+        "usage": "do <what to do>（行動 <做什麼>）",
+        "example": "行動 打開籠子"
       }
     },
     {
