@@ -681,5 +681,6 @@ fn the_closing_lines_come_before_the_journal_card_which_shows_the_note() {
             format!("note-three-{tier}"),
             "the card shows the note Isla wrote, not a separate text"
         );
+        assert_eq!(card.frames.len(), 1, "the card is the date and the note");
     }
 }

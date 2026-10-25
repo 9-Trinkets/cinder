@@ -17,10 +17,6 @@
         "heading": "Thursday, November 20",
         "text_item": "note-three-low",
         "duration_ms": 4000
-      },
-      {
-        "text": "Home by bike. Footnote will be waiting.",
-        "duration_ms": 3000
       }
     ]
   },
@@ -42,10 +38,6 @@
         "heading": "Thursday, November 20",
         "text_item": "note-three-mid",
         "duration_ms": 4000
-      },
-      {
-        "text": "Home by bike. Footnote will be waiting.",
-        "duration_ms": 3000
       }
     ]
   },
@@ -67,10 +59,6 @@
         "heading": "Thursday, November 20",
         "text_item": "note-three-high",
         "duration_ms": 4000
-      },
-      {
-        "text": "Home by bike. Footnote will be waiting.",
-        "duration_ms": 3000
       }
     ]
   }
