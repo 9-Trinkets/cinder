@@ -60,7 +60,7 @@ Everything the writing must stay true to for the second patient. Written the way
 
 **Money.** **Stretched, in a particular way:** both parents work and the household runs on them taking turns. Nobody is poor and nobody has any slack.
 - **Mom (Linh), 33,** is a **night-shift nurse** at a hospital. She sleeps in the daytime, and the house has to be quiet while she does. She was born in Philadelphia, speaks English at work and Vietnamese at home, and is more careful with each language than she lets anyone see.
-- **Dad (Dũng), 35,** works long days at a job outside the house, and is home late. He came to the United States as a small child.
+- **Dad (Dũng), 35,** is a **pharmacist** at a neighborhood pharmacy. His days are long and on his feet, talking to people all day, and some Saturdays too, so he is home late with little left over. He came to the United States as a small child. He and Linh both work in healthcare, so they know how clinicians talk and are quick to notice when they are being managed. He is the one comfortable with forms, letters and phone calls to institutions.
 - **Ông (Ông Nội), 68,** Dũng's father, retired, who came to Philadelphia as a refugee in the 1980s. He lives with them. He walks Tam to school and back, in his careful English and his own Vietnamese, and greets the shopkeepers on the way.
 - A **baby sister, Mai** (named for a flower), six months old. She cries in the night.
 
@@ -108,7 +108,7 @@ Everything the writing must stay true to for the second patient. Written the way
 ## 8. What each person knows about him
 
 - **Mom (Linh):** he is not himself. She thinks it is her fault, and she is too tired to say so. She is afraid the school is right, and afraid they are wrong in the way they were before.
-- **Dad (Dũng):** Tam is "just quiet." He is sure it will pass, and he is not sure.
+- **Dad (Dũng):** Tam is "just quiet." He is sure it will pass, and he is not sure. He is also the one who will take Isla's note to the school.
 - **Ông:** Tam is fine, and Tam is not fine. Ông has seen him standing by the crib.
 - **His teacher:** he stopped joining circle time and goes under the table.
 - **Isla:** a child evaluated at four, a school referral, and parents who are loving and exhausted. **Isla does not know about the noise or about the crib.**
