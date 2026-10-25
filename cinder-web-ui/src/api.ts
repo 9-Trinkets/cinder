@@ -99,10 +99,28 @@ export function listPlays(token: string, locale?: string | null) {
 export interface MovieFrameData {
   text: string
   duration_ms: number
+  /** A line set apart above the text, such as a date. */
+  heading?: string
+  /** Background tint for this frame: a theme color name or a CSS color. */
+  tint?: string
+}
+
+/** Look of a card movie. Empty settings use the pack theme. */
+export interface MovieCardData {
+  background: string
+  text_color: string
+  font: string
+  align: string
+  ambient: string
+  reveal: string
+  fade_ms: number
 }
 
 export interface MovieData {
   title: string
+  /** `frames` (monospace frames on black) or `card` (full-screen cards in the pack's look). */
+  style: 'frames' | 'card'
+  card: MovieCardData
   frames: MovieFrameData[]
   narrative_lines: string[]
 }
@@ -376,6 +394,7 @@ export interface ThemeDefinition {
   crt_bez: string
   font_prose?: string
   font_mono?: string
+  font_hand?: string
 }
 
 export interface UiSnapshot {

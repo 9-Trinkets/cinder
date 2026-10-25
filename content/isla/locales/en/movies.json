@@ -1,0 +1,27 @@
+[
+  {
+    "id": "episode-end",
+    "title": "The journal",
+    "style": "card",
+    "card": {
+      "background": "#efe6d2",
+      "text_color": "#3b3128",
+      "font": "hand",
+      "align": "left",
+      "ambient": "none",
+      "reveal": "type",
+      "fade_ms": 1200
+    },
+    "frames": [
+      {
+        "heading": "Thursday, November 20",
+        "text": "Wren.",
+        "duration_ms": 2500
+      },
+      {
+        "text": "Home by bike. Footnote will be waiting.",
+        "duration_ms": 3000
+      }
+    ]
+  }
+]

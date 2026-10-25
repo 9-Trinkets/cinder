@@ -18,6 +18,7 @@ export function themeVars(theme: ThemeDefinition): React.CSSProperties {
     '--color-crafted-highlight': theme.crafted_highlight,
     '--color-crt-glow': theme.crt_glow,
     '--font-prose': theme.font_prose || "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    '--font-hand': theme.font_hand || "'Bradley Hand', 'Segoe Print', 'Comic Sans MS', cursive",
     '--font-mono': theme.font_mono || "ui-monospace, 'SFMono-Regular', 'SF Mono', Menlo, Consolas, monospace",
   } as React.CSSProperties
 }

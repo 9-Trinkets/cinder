@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react'
 import * as api from '../api'
 import { useI18n } from '../i18n'
+import CardMovie from './CardMovie'
 
-export default function MovieModal({ movie, frame, onAdvance, onClose }: {
+function FramesMovie({ movie, frame, onAdvance, onClose }: {
   movie: api.MovieData
   frame: number
   onAdvance: () => void
@@ -57,4 +58,14 @@ export default function MovieModal({ movie, frame, onAdvance, onClose }: {
       </div>
     </div>
   )
+}
+
+/** A movie is a card in the pack's look, or monospace frames on black. */
+export default function MovieModal(props: {
+  movie: api.MovieData
+  frame: number
+  onAdvance: () => void
+  onClose: () => void
+}) {
+  return props.movie.style === 'card' ? <CardMovie {...props} /> : <FramesMovie {...props} />
 }

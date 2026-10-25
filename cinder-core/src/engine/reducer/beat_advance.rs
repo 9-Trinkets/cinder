@@ -89,35 +89,46 @@ pub(crate) fn advance_objective_for_signal(
                     .insert(relocation.actor_id.clone(), relocation.to_room_id.clone());
             }
             dispatch_actor_spawns_for_stage(state, content, next_stage, 0);
-            if !next_stage.projector_sequence_var_key.is_empty() {
-                let selected_value = state.story_vars.get(&next_stage.projector_sequence_var_key);
-                if let Some(selected_value) = selected_value
-                    && let Some(movie) = content
-                        .movies
-                        .iter()
-                        .find(|movie| movie.match_value == *selected_value)
-                {
-                    state.pending_projector_sequence_id = Some(movie.id.clone());
-                    state.clock.current_time_minutes += next_stage.elapsed_minutes;
-                    next_stage_started_minutes
-                        .entry(next_stage_id.clone())
-                        .or_insert(state.clock.current_time_minutes);
-                    state.pending_projector_narrative_lines = next_stage
-                        .narrative_lines
-                        .iter()
-                        .map(|line| super::observation::render_story_text(line, state))
-                        .collect();
-                    continue;
-                }
-            }
+            // A stage can open with a movie, picked by id or by a story variable. Its
+            // own narrative lines wait until the movie is closed.
+            let movie_id = if !next_stage.movie_id.is_empty() {
+                Some(next_stage.movie_id.clone())
+            } else if next_stage.projector_sequence_var_key.is_empty() {
+                None
+            } else {
+                state
+                    .story_vars
+                    .get(&next_stage.projector_sequence_var_key)
+                    .and_then(|selected_value| {
+                        content
+                            .movies
+                            .iter()
+                            .find(|movie| movie.match_value == selected_value)
+                    })
+                    .map(|movie| movie.id.clone())
+            };
             state.clock.current_time_minutes += next_stage.elapsed_minutes;
             next_stage_started_minutes
                 .entry(next_stage_id.clone())
                 .or_insert(state.clock.current_time_minutes);
-            for line in &next_stage.narrative_lines {
-                messages.push(NarrativeLine::narration(
-                    super::observation::render_story_text(line, state),
-                ));
+            let rendered_lines = next_stage
+                .narrative_lines
+                .iter()
+                .map(|line| super::observation::render_story_text(line, state))
+                .collect::<Vec<_>>();
+            if let Some(movie_id) = movie_id {
+                state.pending_projector_sequence_id = Some(movie_id);
+                if next_stage.lines_before_movie {
+                    for line in rendered_lines {
+                        messages.push(NarrativeLine::narration(line));
+                    }
+                } else {
+                    state.pending_projector_narrative_lines = rendered_lines;
+                }
+            } else {
+                for line in rendered_lines {
+                    messages.push(NarrativeLine::narration(line));
+                }
             }
             if !next_stage.open_menu.is_empty() {
                 state.active_menu_id = Some(next_stage.open_menu.clone());

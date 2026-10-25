@@ -1284,9 +1284,11 @@
       "quest_kind": "main",
       "summary": "The session is over.",
       "narrative_lines": [
-        "You read your note through once, then close the folder. You sit on the top step a little longer, listening to a city bus sigh at the Calloway stop, before heading round to the front porch for your bike."
+        "You read your note through once, then close the journal. You sit on the top step a little longer, listening to a city bus sigh at the Calloway stop, before heading round to the front porch for your bike."
       ],
-      "end_game": true
+      "end_game": true,
+      "movie_id": "episode-end",
+      "lines_before_movie": true
     },
     {
       "id": "stage-fetch-book",

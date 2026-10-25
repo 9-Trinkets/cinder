@@ -316,6 +316,13 @@ pub struct BeatDefinition {
     pub elapsed_minutes: u32,
     #[serde(default)]
     pub projector_sequence_var_key: String,
+    /// A movie to play when this stage begins, by id.
+    #[serde(default)]
+    pub movie_id: String,
+    /// Show the stage's narrative lines before its movie plays. By default they
+    /// wait until the movie is closed.
+    #[serde(default)]
+    pub lines_before_movie: bool,
     #[serde(default)]
     pub end_act: bool,
     #[serde(default)]
@@ -456,6 +463,46 @@ pub struct OpeningMenuOptionDefinition {
     pub host_actor_id: String,
 }
 
+/// How a movie is presented.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum MovieStyle {
+    /// Monospace frames on black, as for an ASCII clip.
+    #[default]
+    Frames,
+    /// A full-screen card in the pack's own look: a page, a title card, a
+    /// passing of time. Each frame fades into the next.
+    Card,
+}
+
+/// Look of a `card` movie. Every setting is optional and falls back to the pack
+/// theme, so a pack with no settings gets a plain dark card in its prose font.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct MovieCardDefinition {
+    /// Card background: a theme color name (`base`, `surface`, `overlay`, ...)
+    /// or a CSS color. Empty uses the theme's base color.
+    #[serde(default)]
+    pub background: String,
+    /// Text color, as for `background`. Empty uses the theme's text color.
+    #[serde(default)]
+    pub text_color: String,
+    /// `prose`, `mono` or `hand`. `hand` uses the theme's handwriting font.
+    #[serde(default)]
+    pub font: String,
+    /// `center` or `left`.
+    #[serde(default)]
+    pub align: String,
+    /// A slow layer behind the text: `none`, `drift`, `snow`, `rain` or `leaves`.
+    #[serde(default)]
+    pub ambient: String,
+    /// How text appears: `fade` or `type` (one letter at a time).
+    #[serde(default)]
+    pub reveal: String,
+    /// How long a frame takes to fade into the next, in milliseconds.
+    #[serde(default)]
+    pub fade_ms: u64,
+}
+
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct OpeningMovieDefinition {
     pub id: String,
@@ -464,11 +511,22 @@ pub struct OpeningMovieDefinition {
     #[serde(default)]
     pub match_value: String,
     #[serde(default)]
+    pub style: MovieStyle,
+    #[serde(default)]
+    pub card: MovieCardDefinition,
+    #[serde(default)]
     pub frames: Vec<OpeningMovieFrameDefinition>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct OpeningMovieFrameDefinition {
+    /// A short line set apart above the text, such as a date or a place.
+    #[serde(default)]
+    pub heading: String,
+    /// Background tint for this frame (a theme color name or CSS color). Changing
+    /// it from frame to frame shows a change of season or time of day.
+    #[serde(default)]
+    pub tint: String,
     #[serde(default)]
     pub text: String,
     #[serde(default)]

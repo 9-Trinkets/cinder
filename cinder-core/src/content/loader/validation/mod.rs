@@ -5,6 +5,7 @@
 //! validator and aggregates the results, so a malformed pack surfaces its whole
 //! error list in a single load instead of one failure at a time.
 
+mod movies;
 mod protection;
 mod rooms;
 mod skills;
@@ -95,6 +96,7 @@ fn validators() -> &'static [&'static dyn ContentValidator] {
         &skills::CombatActorSkillsValidator,
         &protection::ProtectionRulesValidator,
         &rooms::RoomItemsValidator,
+        &movies::MoviesValidator,
     ]
 }
 

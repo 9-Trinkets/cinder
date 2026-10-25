@@ -48,7 +48,8 @@
     "crt_dim": "#4a7a64",
     "crt_bez": "#121418",
     "font_prose": "Georgia, 'Times New Roman', serif",
-    "font_mono": "ui-monospace, 'SFMono-Regular', Menlo, monospace"
+    "font_mono": "ui-monospace, 'SFMono-Regular', Menlo, monospace",
+    "font_hand": "'Bradley Hand', 'Segoe Print', 'Noteworthy', cursive"
   },
   "show_clock": false,
   "show_player_input": false,

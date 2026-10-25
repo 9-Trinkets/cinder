@@ -42,10 +42,10 @@ pub use speech::{SpeechIntentEffect, SpeechIntentLabel, SpeechIntentsConfig};
 mod story_defs;
 pub use story_defs::{
     ActCastMember, ActorRelocationDefinition, AdvanceCondition, AdvanceEffect, AdvanceSignal,
-    BeatDefinition, BeatsDefinition, MenuTriggerMode, OpeningDefinition, OpeningMenuDefinition,
-    OpeningMenuOptionDefinition, OpeningMovieDefinition, OpeningMovieFrameDefinition,
-    OpeningPromptContext, ProtectionRuleDefinition, SpeechTopicSignal, StageAssignmentDefinition,
-    SurvivorRewardDefinition,
+    BeatDefinition, BeatsDefinition, MenuTriggerMode, MovieCardDefinition, MovieStyle,
+    OpeningDefinition, OpeningMenuDefinition, OpeningMenuOptionDefinition, OpeningMovieDefinition,
+    OpeningMovieFrameDefinition, OpeningPromptContext, ProtectionRuleDefinition, SpeechTopicSignal,
+    StageAssignmentDefinition, SurvivorRewardDefinition,
 };
 
 mod theme;

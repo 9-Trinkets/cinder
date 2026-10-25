@@ -38,6 +38,10 @@ pub struct ThemeDefinition {
     pub font_prose: String,
     #[serde(default = "default_font_mono")]
     pub font_mono: String,
+    /// Handwriting font for cards that ask for it. Empty falls back to an italic
+    /// prose font.
+    #[serde(default)]
+    pub font_hand: String,
 }
 
 impl Default for ThemeDefinition {
@@ -61,6 +65,7 @@ impl Default for ThemeDefinition {
             crt_bez: default_crt_bez(),
             font_prose: default_font_prose(),
             font_mono: default_font_mono(),
+            font_hand: String::new(),
         }
     }
 }

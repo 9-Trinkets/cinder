@@ -7,11 +7,30 @@ use super::ui::UiSnapshot;
 pub struct MovieFrameData {
     pub text: String,
     pub duration_ms: u64,
+    #[serde(skip_serializing_if = "String::is_empty")]
+    pub heading: String,
+    #[serde(skip_serializing_if = "String::is_empty")]
+    pub tint: String,
+}
+
+/// Look of a card movie, as the pack set it. Empty settings use the theme.
+#[derive(Clone, Serialize)]
+pub struct MovieCardData {
+    pub background: String,
+    pub text_color: String,
+    pub font: String,
+    pub align: String,
+    pub ambient: String,
+    pub reveal: String,
+    pub fade_ms: u64,
 }
 
 #[derive(Clone, Serialize)]
 pub struct MovieData {
     pub title: String,
+    /// `frames` or `card`.
+    pub style: String,
+    pub card: MovieCardData,
     pub frames: Vec<MovieFrameData>,
     pub narrative_lines: Vec<String>,
 }
@@ -69,10 +88,26 @@ pub fn consume_projector_sequence(runtime: &CinderRuntime) -> Option<MovieData> 
         .map(|frame| MovieFrameData {
             text: frame.text,
             duration_ms: frame.duration_ms,
+            heading: frame.heading,
+            tint: frame.tint,
         })
         .collect();
+    let style = match sequence.style {
+        cinder_core::content::types::MovieStyle::Frames => "frames",
+        cinder_core::content::types::MovieStyle::Card => "card",
+    };
     Some(MovieData {
         title: sequence.title,
+        style: style.to_string(),
+        card: MovieCardData {
+            background: sequence.card.background,
+            text_color: sequence.card.text_color,
+            font: sequence.card.font,
+            align: sequence.card.align,
+            ambient: sequence.card.ambient,
+            reveal: sequence.card.reveal,
+            fade_ms: sequence.card.fade_ms,
+        },
         frames,
         narrative_lines,
     })

@@ -1,6 +1,7 @@
 //! The opening of the session: greeting Wren, following her, the bins.
 
 use cinder_core::content::loader::load_named_pack;
+use cinder_core::content::types::MovieStyle;
 use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::{GamePhase, WorldState};
 
@@ -287,6 +288,13 @@ fn the_best_session_with_the_right_book_reaches_every_secret_and_the_best_drawin
         runtime.export_state().expect("state").phase,
         GamePhase::GameEnded
     );
+    let card = runtime
+        .consume_pending_projector_sequence()
+        .expect("movie lookup")
+        .expect("the episode ends with a journal card");
+    assert_eq!(card.style, MovieStyle::Card);
+    assert_eq!(card.card.font, "hand");
+    assert_eq!(card.frames[0].heading, "Thursday, November 20");
 }
 
 #[test]
@@ -631,5 +639,21 @@ fn the_to_do_for_a_missing_book_says_where_the_books_are() {
         stage.summary.contains("book room, at the top of the house"),
         "{}",
         stage.summary
+    );
+}
+
+#[test]
+fn the_closing_lines_come_before_the_journal_card() {
+    let pack = load_named_pack("isla", Some("en")).expect("isla loads");
+    let end = pack
+        .beats
+        .stages
+        .iter()
+        .find(|stage| stage.id == "stage-end")
+        .expect("end stage");
+    assert_eq!(end.movie_id, "episode-end");
+    assert!(
+        end.lines_before_movie,
+        "the last lines of the scene are read before the card"
     );
 }

@@ -76,6 +76,17 @@ The player should learn what attunement feels like, and should not come away bel
 - **Children return.** A child can come back in a later episode and be different because of what happened. This rewards memory without needing a plot.
 - **The order is not fixed.** A day at Willow House could bring one child, chosen by the player or by the schedule. Which child comes next is a framework question (section 7).
 
+## 4b. Between episodes: time passes, but not by the day **(decision)**
+
+As in *Midnight Diner*, the game does not step from one day to the next. An episode ends, and the next one begins whenever it begins: three weeks later, two months later, the following spring.
+
+- **A card marks the jump.** When an episode ends and when the next one opens, a full-screen card in Isla's journal look appears. A date is written in, letter by letter, in her hand. A short line follows. Behind it the paper tints with the season and a slow layer drifts: bare branches, snow, rain, leaves. It lasts ten to fifteen seconds and can be skipped.
+- **The gaps are uneven on purpose,** so it feels like a life and not a calendar.
+- **The house shows the time.** The willow, the snack shelf, the drawings on the hall wall and Gloria's stickers change between episodes, and nothing says so.
+- **It is a reusable engine feature, not an Isla one.** Any pack can play a *card movie* when a stage begins, by naming it in `movie_id`, and set how it looks in `movies.json`: the font (prose, mono or the theme's handwriting), the colors, the alignment, an ambient layer (none, drift, snow, rain or leaves), how text appears (fade or typed) and how fast frames dissolve. Each frame can carry a heading and its own tint, which is how a season or a time of day changes from frame to frame. A stage's lines can be shown before the card or after it.
+
+Isla uses it now to end the first episode with a journal page: "Thursday, November 20. Wren." The next episode will open on a dated page of its own.
+
 ## 5. Isla's own thread **(decision, to be developed)**
 
 The pull across episodes is Isla's life. She does not share it with a child, but the player learns it a little at a time, in small places:
