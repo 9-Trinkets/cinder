@@ -294,7 +294,7 @@ fn the_best_session_with_the_right_book_reaches_every_secret_and_the_best_drawin
         .expect("the episode ends with a journal card");
     assert_eq!(card.style, MovieStyle::Card);
     assert_eq!(card.card.font, "hand");
-    assert_eq!(card.frames[0].heading, "Thursday, November 20");
+    assert_eq!(card.frames[0].heading, "Thursday, November 21");
     assert!(
         card.frames[0].text.contains("She showed me the handle"),
         "the card quotes the note Isla wrote: {}",

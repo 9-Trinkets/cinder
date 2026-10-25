@@ -85,7 +85,7 @@ As in *Midnight Diner*, the game does not step from one day to the next. An epis
 - **The house shows the time.** The willow, the snack shelf, the drawings on the hall wall and Gloria's stickers change between episodes, and nothing says so.
 - **It is a reusable engine feature, not an Isla one.** Any pack can play a *card movie*, which covers the transcript panel and leaves the rest of the screen in view, when a stage begins, by naming it in `movie_id`, and set how it looks in `movies.json`: the font (prose, mono or the theme's handwriting), the colors, the alignment, an ambient layer (none, drift, snow, rain or leaves), how text appears (fade or typed) and how fast frames dissolve. Each frame can carry a heading and its own tint, which is how a season or a time of day changes from frame to frame. A stage's lines can be shown before the card or after it.
 
-Isla uses it now to end the first episode with a journal page: "Thursday, November 20. Wren." The next episode will open on a dated page of its own.
+Isla uses it now to end the first episode with a journal page: "Thursday, November 21. Wren." The next episode will open on a dated page of its own.
 
 ## 5. Isla's own thread **(decision, to be developed)**
 
