@@ -257,7 +257,14 @@
       "available": {},
       "ui": {
         "bar": false,
-        "overflow": false,
+        "overflow": true,
+        "panel": "do",
+        "panel_config": {
+          "title": "What do you do?",
+          "prompt": "",
+          "data_source": "feature_interactions",
+          "on_select": "execute_command"
+        },
         "group": "interact",
         "sort_order": 50
       },

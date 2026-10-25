@@ -758,3 +758,24 @@ fn erase_action_is_consolidated_into_trace_panel_and_never_surfaces_in_overflow(
         "erase option must be enabled in the trace panel when sigils exist"
     );
 }
+
+#[test]
+fn layla_do_is_offered_only_where_something_can_be_done() {
+    let pack = cinder_core::loader::load_named_pack("layla", Some("en")).expect("layla loads");
+    let action = pack.action("do").expect("do action");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "village_west_1".to_string();
+    assert!(cinder_core::engine::turn_policies::action_is_available(
+        &pack,
+        &state,
+        action,
+        "village_west_1"
+    ));
+    state.current_room_id = "citadel_corridor_south".to_string();
+    assert!(!cinder_core::engine::turn_policies::action_is_available(
+        &pack,
+        &state,
+        action,
+        "citadel_corridor_south"
+    ));
+}

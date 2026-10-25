@@ -131,6 +131,11 @@
         "做",
         "行動"
       ],
+      "ui": {
+        "panel_config": {
+          "title": "你要做什麼？"
+        }
+      },
       "player_command": {
         "usage": "do <what to do>（行動 <做什麼>）",
         "example": "行動 打開籠子"
