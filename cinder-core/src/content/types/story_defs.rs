@@ -109,9 +109,12 @@ pub enum AdvanceEffect {
         message: String,
     },
     /// Starts a scripted sequence from its first line. Its lines then play
-    /// one per advancing turn.
+    /// one per advancing turn, or all at once in this turn when `immediate` is
+    /// set, for a message the player has just asked to see.
     QueueSequence {
         sequence_id: String,
+        #[serde(default)]
+        immediate: bool,
     },
     /// Puts a feature in a state. `feature` is a feature id in the player's room,
     /// or `room/feature`; empty means the feature that owns the interaction.

@@ -1675,5 +1675,26 @@
         ]
       }
     ]
+  },
+  {
+    "id": "leo-phone",
+    "actor_id": "leo",
+    "stage_id": "stage-leo-open",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "requires_actor_present": false,
+    "selection_prompt": "",
+    "invalid_choice_text": "Your phone is in your tote.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "leo-phone-open",
+        "title": "Take out your phone.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You dry your hands and take the phone out of your tote."
+        ]
+      }
+    ]
   }
 ]

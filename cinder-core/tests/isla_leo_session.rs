@@ -64,6 +64,7 @@ fn fit(menu: &str) -> &'static str {
         "leo-rabbit-2" => "leo-rabbit-2-play",
         "leo-clouds-1" => "leo-clouds-1-close",
         "leo-closing" => "leo-closing-plain",
+        "leo-phone" => "leo-phone-open",
         "phone-1" => "phone-1-open",
         "note" => "note-write",
         other => panic!("no fitting option known for {other}"),
@@ -144,15 +145,21 @@ fn episode_two() -> (CinderRuntime, String) {
     (runtime, text)
 }
 
+/// Reads Gloria's message in the kitchen and walks through to the waiting room.
+fn to_the_waiting_room(runtime: &CinderRuntime) {
+    answer(runtime, "leo-phone", fit("leo-phone"));
+    turn(runtime, "go hall");
+    turn(runtime, "go waiting room");
+}
+
 /// Prepares as the player may, then greets Leo and walks him to the playroom.
 fn start_session(runtime: &CinderRuntime, basket: bool, snack: bool, book: Option<&str>) {
-    turn(runtime, "go inside");
-    turn(runtime, "go hall");
+    // Isla begins in the kitchen, with Gloria's message waiting.
+    answer(runtime, "leo-phone", fit("leo-phone"));
     if snack {
-        turn(runtime, "go kitchen");
         turn(runtime, "take pretzels");
-        turn(runtime, "go hall");
     }
+    turn(runtime, "go hall");
     if basket || book.is_some() {
         turn(runtime, "go upstairs");
     }
@@ -215,19 +222,23 @@ fn play_owl_to_the_end(runtime: &CinderRuntime) {
 // -------------------------------------------------------------- the opening
 
 #[test]
-fn episode_two_opens_on_the_porch_with_leos_notes() {
+fn episode_two_opens_in_the_kitchen_with_a_message_that_leo_has_arrived() {
     let (runtime, text) = episode_two();
-    let heading = text.find("== Front Porch ==").expect("the porch is shown");
+    let heading = text.find("== Kitchen ==").expect("the kitchen is shown");
     let opening = text.find("early February").expect("the opening is shown");
     assert!(
         heading < opening,
         "Isla is shown where she is before the scene is set: {text}"
     );
-    assert!(text.contains("puffy red coat"), "{text}");
+    let message = answer(&runtime, "leo-phone", fit("leo-phone"));
+    assert!(
+        message.contains("Gloria (to Isla): Leo is here"),
+        "{message}"
+    );
 
     let state = runtime.export_state().expect("state");
     assert_eq!(state.phase, GamePhase::Active);
-    assert_eq!(state.current_room_id, "porch");
+    assert_eq!(state.current_room_id, "kitchen");
     assert_eq!(state.actor_room_id("leo", ""), "waiting-room");
     assert_eq!(state.actor_room_id("wren", "waiting-room"), "");
 
@@ -270,9 +281,7 @@ fn the_notes_hold_the_clue_about_sleep_and_the_one_about_keeping_watch() {
 #[test]
 fn the_house_is_restocked_for_leo() {
     let (runtime, _) = episode_two();
-    for step in ["go inside", "go hall", "go kitchen"] {
-        turn(&runtime, step);
-    }
+    answer(&runtime, "leo-phone", fit("leo-phone"));
     let shelf = turn(&runtime, "look at snack shelf");
     assert!(shelf.contains("pretzel sticks and oat cookies"), "{shelf}");
     for step in ["go hall", "go upstairs", "go quiet room"] {
@@ -309,10 +318,13 @@ fn the_list_starts_with_reading_the_notes_and_greeting_skips_ahead() {
             .map(|q| q.title)
             .collect::<Vec<_>>()
     };
+    assert_eq!(quests(&runtime), vec!["Leo has arrived"]);
+    answer(&runtime, "leo-phone", fit("leo-phone"));
     assert_eq!(quests(&runtime), vec!["Read your notes"]);
     turn(&runtime, "look at leo schedule");
     assert_eq!(quests(&runtime), vec!["Greet Leo"]);
-    turn(&runtime, "go inside");
+    turn(&runtime, "go hall");
+    turn(&runtime, "go waiting room");
     turn(&runtime, "say leo:greet");
     assert_eq!(quests(&runtime), vec!["The session"]);
 }
@@ -320,7 +332,7 @@ fn the_list_starts_with_reading_the_notes_and_greeting_skips_ahead() {
 #[test]
 fn glorias_topic_about_leo_closes_once_he_leaves_the_waiting_room() {
     let (runtime, _) = episode_two();
-    turn(&runtime, "go inside");
+    to_the_waiting_room(&runtime);
     let topics = |runtime: &CinderRuntime| {
         runtime
             .panel_options(&PanelDataSource::ActorInteractions)
@@ -346,7 +358,7 @@ fn glorias_topic_about_leo_closes_once_he_leaves_the_waiting_room() {
 #[test]
 fn greeting_leo_opens_the_first_bid() {
     let (runtime, _) = episode_two();
-    turn(&runtime, "go inside");
+    to_the_waiting_room(&runtime);
     let text = turn(&runtime, "say leo:greet");
     assert!(
         text.contains(
@@ -360,14 +372,14 @@ fn greeting_leo_opens_the_first_bid() {
 #[test]
 fn a_fitting_answer_earns_a_point_and_a_miss_does_not() {
     let (fit_runtime, _) = episode_two();
-    turn(&fit_runtime, "go inside");
+    to_the_waiting_room(&fit_runtime);
     turn(&fit_runtime, "say leo:greet");
     let text = turn(&fit_runtime, fit("leo-meet"));
     assert!(text.contains("You're the nurse. Follow me."), "{text}");
     assert_eq!(points(&fit_runtime), 1);
 
     let (miss_runtime, _) = episode_two();
-    turn(&miss_runtime, "go inside");
+    to_the_waiting_room(&miss_runtime);
     turn(&miss_runtime, "say leo:greet");
     let text = turn(&miss_runtime, miss("leo-meet"));
     assert!(
@@ -380,7 +392,7 @@ fn a_fitting_answer_earns_a_point_and_a_miss_does_not() {
 #[test]
 fn leo_follows_isla_to_the_playroom_and_the_clinic_opens() {
     let (runtime, _) = episode_two();
-    turn(&runtime, "go inside");
+    to_the_waiting_room(&runtime);
     turn(&runtime, "say leo:greet");
     turn(&runtime, fit("leo-meet"));
     let text = turn(&runtime, "go hall");
@@ -973,4 +985,22 @@ fn a_game_saved_before_leos_messages_existed_still_gets_them() {
     turn(&runtime, "go back yard");
     let text = answer(&runtime, "phone-1", fit("phone-1"));
     assert!(text.contains("Claire (to Isla):"), "{text}");
+}
+
+#[test]
+fn glorias_message_comes_when_the_phone_is_read_not_before() {
+    let (runtime, _) = episode_two();
+    let walked = turn(&runtime, "go hall");
+    assert!(!walked.contains("Gloria (to Isla)"), "{walked}");
+    let read = answer(&runtime, "leo-phone", fit("leo-phone"));
+    let phone = read
+        .find("take the phone out of your tote")
+        .expect("the phone comes out of the tote");
+    let message = read
+        .find("Gloria (to Isla): Leo is here")
+        .expect("the message");
+    let notes = read
+        .find("Your notes from his first week")
+        .expect("the notes");
+    assert!(phone < message && message < notes, "{read}");
 }

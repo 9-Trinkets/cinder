@@ -73,6 +73,16 @@
         "claire"
       ],
       "label": "Phone"
+    },
+    {
+      "id": "phone-gloria",
+      "kind": "direct",
+      "privacy": "private",
+      "participants": [
+        "player",
+        "gloria"
+      ],
+      "label": "Phone"
     }
   ]
 }

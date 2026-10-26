@@ -125,6 +125,23 @@
           "message": "note.written"
         }
       ]
+    },
+    {
+      "id": "leo-arrival",
+      "label": "Gloria, Leo has arrived",
+      "steps": [
+        {
+          "voice": "channel",
+          "channel_id": "phone-gloria",
+          "speaker_id": "gloria",
+          "recipient_id": "player",
+          "line": "Leo is here, hon. His mother just kissed the top of his hat and went back out to the car. He's at the fish tank asking if the snail is stuck or asleep. Come on through when you're ready."
+        },
+        {
+          "voice": "narrate",
+          "line": "Your notes from his first week are in your tote, if you want a look before you go through to the waiting room."
+        }
+      ]
     }
   ]
 }

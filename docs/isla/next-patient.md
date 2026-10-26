@@ -10,7 +10,7 @@ When Wren's session ends on the back steps, her closing card writes:
 Episode 2 opens on a new journal card with the snow ambient layer:
 > *Tuesday, February 4. Leo.*
 
-Isla is on the front porch of Willow House in early February. Through the glass of the sage-green door, a seven-year-old boy in a puffy red coat is standing by the fish tank in the waiting room, tapping the glass once to see if the snail is awake.
+Isla is already inside Willow House in early February, rinsing a mug in the kitchen. Gloria texts her that Leo has arrived. He is waiting by the fish tank in the waiting room, wondering whether the snail is stuck or asleep.
 
 ## 2. Before the session: Isla's journal & preparation
 
@@ -92,7 +92,7 @@ Before greeting Leo (or fetched mid-session if she hasn't grabbed them yet):
 
 Implemented in `content/isla` (stages `stage-leo-*`, menus `leo-*`) and tested in `cinder-core/tests/isla_leo_session.rs`. Everything from Wren's closing card to Leo's is playable.
 
-**The jump.** Wren's three end stages now end the act instead of the game. Their card has a second frame, `Tuesday, February 4` and `Leo.`, on a dark winter tint with the snow layer. When the act continues, `stage-leo-open` puts Isla on the porch and Leo in the waiting room (he `starts_away`), swaps the journal index for a second one, adds Leo's four pages, takes Wren's books and snack out of the tote, and restocks the book room, the snack shelf and the quiet room (`set_feature_items`). Gloria gets a waiting-room topic about Leo.
+**The jump.** Wren's three end stages now end the act instead of the game. Their card has a second frame, `Early February`, on a dark winter tint with the snow layer. When the act continues, `stage-leo-open` puts Isla in the kitchen with a text from Gloria (`leo-arrival`, channel `phone-gloria`) and Leo in the waiting room (he `starts_away`), swaps the journal index for a second one, adds Leo's four pages, takes Wren's books and snack out of the tote, and restocks the book room, the snack shelf and the quiet room (`set_feature_items`). Gloria gets a waiting-room topic about Leo.
 
 **Bids and points.** Every bid has four answers, as for Wren. The most any run can earn is 15.
 

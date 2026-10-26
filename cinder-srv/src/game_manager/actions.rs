@@ -566,7 +566,7 @@ mod act_tests {
         let shown: Vec<&str> = narrative.iter().map(|line| line.text.as_str()).collect();
         let heading = shown
             .iter()
-            .position(|text| text.contains("== Front Porch =="))
+            .position(|text| text.contains("== Kitchen =="))
             .expect("the new act says where Isla is");
         let opening = shown
             .iter()

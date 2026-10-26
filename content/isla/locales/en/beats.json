@@ -1437,51 +1437,20 @@
     },
     {
       "id": "stage-leo-open",
-      "quest_id": "leo-notes",
-      "quest_title": "Read your notes",
+      "quest_id": "leo-arrival",
+      "quest_title": "Leo has arrived",
       "quest_kind": "main",
-      "summary": "Read your notes on Leo. They are in your journal. Use Look.",
+      "summary": "Check your phone.",
       "narrative_lines": [
-        "It is early February, and the front steps are slushy. You chain your bike to the porch rail and unclip your tote.",
-        "Through the glass in the green door, a boy in a puffy red coat is standing at the fish tank. He taps the glass once, near the snail, and waits.",
-        "Your notes from his first week are in your tote, if you want a look before you go inside."
+        "It is early February, and the radiator in the kitchen ticks as it warms. You are rinsing a mug at the sink, your tote on the counter, when the phone inside it buzzes."
       ],
       "advance_signals": [
-        {
-          "signal": "item_observed:leo-intake",
-          "next_stage_ids": [
-            "stage-leo-waiting"
-          ]
-        },
-        {
-          "signal": "item_observed:leo-referral",
-          "next_stage_ids": [
-            "stage-leo-waiting"
-          ]
-        },
-        {
-          "signal": "item_observed:leo-session-one",
-          "next_stage_ids": [
-            "stage-leo-waiting"
-          ]
-        },
-        {
-          "signal": "item_observed:leo-schedule",
-          "next_stage_ids": [
-            "stage-leo-waiting"
-          ]
-        },
-        {
-          "signal": "interaction_done:leo:greet",
-          "next_stage_ids": [
-            "stage-leo-meet"
-          ]
-        }
+        "menu_selected:leo-phone"
       ],
       "actor_relocations": [
         {
           "actor_id": "player",
-          "to_room_id": "porch"
+          "to_room_id": "kitchen"
         },
         {
           "actor_id": "leo",
@@ -1563,7 +1532,58 @@
           }
         }
       ],
-      "next_stage_ids": []
+      "next_stage_ids": [
+        "stage-leo-read-notes"
+      ],
+      "open_menu": "leo-phone"
+    },
+    {
+      "id": "stage-leo-read-notes",
+      "quest_id": "leo-notes",
+      "quest_title": "Read your notes",
+      "quest_kind": "main",
+      "summary": "Read your notes on Leo. They are in your journal. Use Look.",
+      "narrative_lines": [],
+      "advance_signals": [
+        {
+          "signal": "item_observed:leo-intake",
+          "next_stage_ids": [
+            "stage-leo-waiting"
+          ]
+        },
+        {
+          "signal": "item_observed:leo-referral",
+          "next_stage_ids": [
+            "stage-leo-waiting"
+          ]
+        },
+        {
+          "signal": "item_observed:leo-session-one",
+          "next_stage_ids": [
+            "stage-leo-waiting"
+          ]
+        },
+        {
+          "signal": "item_observed:leo-schedule",
+          "next_stage_ids": [
+            "stage-leo-waiting"
+          ]
+        },
+        {
+          "signal": "interaction_done:leo:greet",
+          "next_stage_ids": [
+            "stage-leo-meet"
+          ]
+        }
+      ],
+      "next_stage_ids": [],
+      "on_advance_effects": [
+        {
+          "kind": "queue_sequence",
+          "sequence_id": "leo-arrival",
+          "immediate": true
+        }
+      ]
     },
     {
       "id": "stage-leo-waiting",

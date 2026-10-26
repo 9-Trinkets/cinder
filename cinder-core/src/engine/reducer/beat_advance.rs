@@ -321,11 +321,18 @@ fn apply_stage_effect(
             messages.extend(advance_objective_for_signal(state, content, signal));
             return Ok(());
         }
-        AdvanceEffect::QueueSequence { sequence_id } => {
+        AdvanceEffect::QueueSequence {
+            sequence_id,
+            immediate,
+        } => {
             if content.sequence(sequence_id).is_none() {
                 return Err(format!("unknown scripted sequence '{sequence_id}'"));
             }
             state.queue_scripted_sequence(sequence_id);
+            if *immediate {
+                messages
+                    .extend(crate::engine::scripted::drain_scripted_sequences(content, state).0);
+            }
             return Ok(());
         }
         AdvanceEffect::SetFollowsPlayer { actor_id, follows } => {
