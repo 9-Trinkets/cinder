@@ -1,6 +1,6 @@
 use crate::content::types::{
-    ActionDefinition, ActionItemStorageTarget, CommandEffect, CommandInputMode, CommandTargetMode,
-    ContentPack, ItemStorageTarget,
+    ActionDefinition, CommandEffect, CommandInputMode, CommandTargetMode, ContentPack,
+    ItemStorageTarget,
 };
 use crate::engine::events::WorldEvent;
 use crate::engine::hooks::apply_world_hook_effects;
@@ -9,12 +9,11 @@ use crate::engine::item_creation::{
     plan_item_creation, render_item_creation_rejection,
 };
 use crate::engine::narrative::NarrativeLines;
-use crate::engine::state::{
-    ActorStance, ConversationMemoryKind, ConversationMemoryLine, WorldState,
-};
+use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine, WorldState};
 use crate::engine::turn_policies::apply_command_objective_progress_effects;
 use serde_json::json;
 
+use super::actor_command_realization::apply_actor_command_realization_effects;
 use super::beat_advance::advance_objective_for_signal;
 use super::command_effects::apply_new_command_effects;
 use super::movement::{ActorMoveTransitionContext, apply_actor_move_transition};
@@ -225,135 +224,6 @@ fn resolved_created_item_id(
             .map(str::to_string)
             .unwrap_or_else(|| default_item_id.clone()),
     )
-}
-
-pub(super) fn apply_actor_command_realization_effects(
-    state: &mut WorldState,
-    content: &ContentPack,
-    command: &ActionDefinition,
-    context: &ActorCommandContext<'_>,
-) -> bool {
-    if let Some(item_id) = &command.available.requires_item {
-        let storage = match command.available.requires_item_storage {
-            ActionItemStorageTarget::PlayerInventory => ItemStorageTarget::PlayerInventory,
-            ActionItemStorageTarget::CurrentRoom => ItemStorageTarget::CurrentRoom,
-        };
-        if !state.has_item_in_storage(item_id, storage, context.room_id) {
-            return false;
-        }
-    }
-    for effect in &command.effects {
-        match effect {
-            CommandEffect::ObserveFeature => {
-                let Some(feature_id) = context.feature_id else {
-                    return false;
-                };
-                let Some(feature) = content.feature(context.room_id, feature_id) else {
-                    return false;
-                };
-                state.mark_actor_feature_seen(context.actor_id, context.room_id, feature_id);
-                state.push_actor_observation_note(context.actor_id, feature.inspect_text.clone());
-            }
-            CommandEffect::ObserveActor => {
-                let Some(target_actor_id) = context.target_actor_id else {
-                    return false;
-                };
-                let Some(target_actor) = content.actor(target_actor_id) else {
-                    return false;
-                };
-                state.mark_actor_studied_actor(context.actor_id, target_actor_id);
-                state.push_actor_observation_note(
-                    context.actor_id,
-                    target_actor.inspect_text.clone(),
-                );
-            }
-            // Interactions are chosen by the player from the Talk and Do panels.
-            CommandEffect::UseInteraction => return false,
-            CommandEffect::ConsumeTargetedConsumable => {
-                let (Some(feature_id), Some(consumable_id)) =
-                    (context.feature_id, context.consumable_id)
-                else {
-                    return false;
-                };
-                if !state.remove_feature_item(context.room_id, feature_id, consumable_id)
-                    && !state.remove_item_from_storage(
-                        consumable_id,
-                        ItemStorageTarget::CurrentRoom,
-                        context.room_id,
-                    )
-                {
-                    return false;
-                }
-            }
-            CommandEffect::DropItem => {
-                if command.item_id.is_empty() || !state.has_item(&command.item_id) {
-                    return false;
-                }
-            }
-            CommandEffect::PickUpItem => {
-                if command.item_id.is_empty()
-                    || !state.has_item_in_storage(
-                        &command.item_id,
-                        ItemStorageTarget::CurrentRoom,
-                        context.room_id,
-                    )
-                {
-                    return false;
-                }
-            }
-            CommandEffect::EquipItem => {
-                let Some(item) = content.item(&command.item_id) else {
-                    return false;
-                };
-                if !item.is_equippable()
-                    || !state.has_item(&command.item_id)
-                    || !item
-                        .occupied_slots()
-                        .iter()
-                        .all(|slot| content.settings.equipment_slots.contains(slot))
-                    || state.item_is_equipped(item)
-                {
-                    return false;
-                }
-            }
-            CommandEffect::UnequipItem => {
-                let Some(item) = content.item(&command.item_id) else {
-                    return false;
-                };
-                if !state.item_is_equipped(item) {
-                    return false;
-                }
-            }
-            CommandEffect::UseItem => {
-                let Some(item) = content.item(&command.item_id) else {
-                    return false;
-                };
-                if item.use_hook.is_empty() || !state.has_item(&command.item_id) {
-                    return false;
-                }
-            }
-            CommandEffect::AttackTarget => {
-                let Some(target_actor_id) = context.target_actor_id else {
-                    return false;
-                };
-                if !content
-                    .actor(target_actor_id)
-                    .is_some_and(|actor| actor.attackable)
-                    || state.actor_stat(target_actor_id, &content.settings.combat.health_stat_id)
-                        <= 0
-                    || state.stance(target_actor_id) == ActorStance::Allied
-                {
-                    return false;
-                }
-            }
-            CommandEffect::MoveActor
-            | CommandEffect::ObserveRoom
-            | CommandEffect::RememberInRoom
-            | CommandEffect::RememberWithTargetActor
-            | CommandEffect::FollowActor => {}
-        }
-    }
-    true
 }
 
 pub(super) fn apply_actor_command_effects(

@@ -7,10 +7,11 @@ use super::combat::apply_attack_target;
 use super::equipment::{apply_equip, apply_unequip, apply_use_item};
 
 #[allow(unused_imports)]
+pub(super) use super::actor_command_realization::apply_actor_command_realization_effects;
+#[allow(unused_imports)]
 pub(super) use super::actor_commands::{
-    ActorCommandContext, apply_actor_command_effects, apply_actor_command_realization_effects,
-    handle_actor_command_used, record_actor_command_memory, render_actor_command_text,
-    resolve_actor_command_labels,
+    ActorCommandContext, apply_actor_command_effects, handle_actor_command_used,
+    record_actor_command_memory, render_actor_command_text, resolve_actor_command_labels,
 };
 #[allow(unused_imports)]
 pub(super) use super::combat::{
