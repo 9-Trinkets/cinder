@@ -29,3 +29,11 @@ pub(super) fn dispatch(ctx: &mut ReduceCtx<'_>, event: &WorldEvent) -> bool {
         _ => false,
     }
 }
+
+pub(super) struct MenuDispatcher;
+
+impl super::handler::DomainDispatcher for MenuDispatcher {
+    fn dispatch(&self, ctx: &mut ReduceCtx<'_>, event: &WorldEvent) -> bool {
+        dispatch(ctx, event)
+    }
+}

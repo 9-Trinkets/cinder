@@ -4,10 +4,6 @@ use cinder_core::content::types::ContentPack;
 pub struct ItemsRule;
 
 impl LintRule for ItemsRule {
-    fn name(&self) -> &'static str {
-        "items"
-    }
-
     fn check(
         &self,
         pack: &ContentPack,

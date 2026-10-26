@@ -4,10 +4,6 @@ use cinder_core::content::types::ContentPack;
 pub struct DropsRule;
 
 impl LintRule for DropsRule {
-    fn name(&self) -> &'static str {
-        "drops"
-    }
-
     fn check(
         &self,
         _pack: &ContentPack,

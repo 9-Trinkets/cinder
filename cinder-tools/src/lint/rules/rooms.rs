@@ -4,10 +4,6 @@ use cinder_core::content::types::ContentPack;
 pub struct RoomsRule;
 
 impl LintRule for RoomsRule {
-    fn name(&self) -> &'static str {
-        "rooms"
-    }
-
     fn check(
         &self,
         pack: &ContentPack,

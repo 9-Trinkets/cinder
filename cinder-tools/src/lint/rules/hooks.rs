@@ -4,10 +4,6 @@ use cinder_core::content::types::ContentPack;
 pub struct HooksRule;
 
 impl LintRule for HooksRule {
-    fn name(&self) -> &'static str {
-        "hooks"
-    }
-
     fn check(
         &self,
         pack: &ContentPack,

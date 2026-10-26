@@ -81,3 +81,11 @@ fn handle_chalk_anchor_consumed(state: &mut WorldState, room_id: &str) {
     state.remove_chalk_anchor(room_id);
     state.remove_item_from_storage("teleport-sigil", ItemStorageTarget::CurrentRoom, room_id);
 }
+
+pub(super) struct ItemsDispatcher;
+
+impl super::handler::DomainDispatcher for ItemsDispatcher {
+    fn dispatch(&self, ctx: &mut ReduceCtx<'_>, event: &WorldEvent) -> bool {
+        dispatch(ctx, event)
+    }
+}

@@ -4,10 +4,6 @@ use cinder_core::content::types::ContentPack;
 pub struct MapsRule;
 
 impl LintRule for MapsRule {
-    fn name(&self) -> &'static str {
-        "maps"
-    }
-
     fn check(
         &self,
         pack: &ContentPack,

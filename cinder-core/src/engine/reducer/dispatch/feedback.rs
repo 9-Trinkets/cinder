@@ -25,3 +25,11 @@ pub(super) fn dispatch(ctx: &mut ReduceCtx<'_>, event: &WorldEvent) -> bool {
         _ => false,
     }
 }
+
+pub(super) struct FeedbackDispatcher;
+
+impl super::handler::DomainDispatcher for FeedbackDispatcher {
+    fn dispatch(&self, ctx: &mut ReduceCtx<'_>, event: &WorldEvent) -> bool {
+        dispatch(ctx, event)
+    }
+}

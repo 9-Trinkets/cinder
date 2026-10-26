@@ -4,10 +4,6 @@ use cinder_core::content::types::{ContentPack, DropSpec};
 pub struct ActorsRule;
 
 impl LintRule for ActorsRule {
-    fn name(&self) -> &'static str {
-        "actors"
-    }
-
     fn check(
         &self,
         pack: &ContentPack,

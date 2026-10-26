@@ -85,3 +85,11 @@ pub(super) fn dispatch(ctx: &mut ReduceCtx<'_>, event: &WorldEvent) -> bool {
         _ => false,
     }
 }
+
+pub(super) struct ObservationDispatcher;
+
+impl super::handler::DomainDispatcher for ObservationDispatcher {
+    fn dispatch(&self, ctx: &mut ReduceCtx<'_>, event: &WorldEvent) -> bool {
+        dispatch(ctx, event)
+    }
+}

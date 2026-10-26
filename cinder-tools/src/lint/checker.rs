@@ -1,19 +1,12 @@
 use crate::lint::rule::{LintRule, RuleContext};
 use crate::lint::rules::{ActorsRule, DropsRule, HooksRule, ItemsRule, MapsRule, RoomsRule};
 use cinder_core::content::loader::load_pack_from_dir_with_locale;
-use std::collections::BTreeSet;
 use std::path::Path;
 
 #[derive(Debug, Default)]
 pub struct LintReport {
     pub warnings: Vec<String>,
     pub errors: Vec<String>,
-}
-
-impl LintReport {
-    pub fn is_clean(&self) -> bool {
-        self.warnings.is_empty() && self.errors.is_empty()
-    }
 }
 
 pub fn lint_pack(pack_dir: &Path, locale: &str) -> LintReport {

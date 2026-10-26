@@ -9,7 +9,6 @@ pub struct RuleContext<'a> {
 }
 
 pub trait LintRule {
-    fn name(&self) -> &'static str;
     fn check(
         &self,
         pack: &ContentPack,
