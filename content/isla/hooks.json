@@ -1396,6 +1396,21 @@
             {
               "path": "option_id",
               "operator": "equal",
+              "value": "leo-owl-3-plain"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "owl3_held",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
               "value": "leo-owl-3-chest"
             }
           ],
@@ -1403,6 +1418,21 @@
             "kind": "adjust_actor_stat",
             "actor_id": "leo",
             "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-owl-3-chest"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "owl3_held",
             "delta": 1
           }
         }

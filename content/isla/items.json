@@ -231,7 +231,7 @@
     ],
     "kind": "misc",
     "group": "journal",
-    "description": "The intake form, clipped inside the front cover of your journal, filled in by two hands in two pens. Under what brought you here, Claire has written that her father died in his sleep in December. They told Leo that Pop's body got very old and very tired, so he went to sleep. Since then Leo has come down the hall to their room two or three times a night, and he will not let her close her eyes on the couch after work.\n\nMarcus has written underneath that Leo is full of energy, and has been playing hospital nonstop.\n\nUnder changes in the family, both of them have ticked the box for a death."
+    "description": "A crumpled intake sheet, stapled inside your journal. Claire filled out the top half in blue ballpoint on the bus. Her father died in his sleep in December, and they told Leo that Pop's body had gotten very old and very tired, so he went to sleep. Since then Leo has been coming into their room two or three times a night, and will not let her close her eyes on the couch after work.\n\nAt the bottom, in thick pencil, Marcus added that Leo has been running the house like a hospital shift and checks how loud everyone's knees crack."
   },
   {
     "id": "leo-referral",
@@ -243,7 +243,7 @@
     ],
     "kind": "misc",
     "group": "journal",
-    "description": "A letter on school letterhead, from Ms. Chen, folded into the back pocket of your journal. She writes that Leo asked for a pass to the nurse four times in two weeks, with no fever and nothing hurt. Each time he only wanted the nurse to listen to his chest with the stethoscope and tell him the number.\n\nShe adds that whenever she picks up her coffee mug at her desk, he asks if she is getting too tired."
+    "description": "A half-sheet from the second-grade teacher, Ms. Chen, paper-clipped to the intake form. Leo has asked for a nurse's pass four times in two weeks, with no fever and nothing hurt. Each time he only wanted the school nurse to listen to his chest with the stethoscope and tell him the number.\n\nAt the bottom she notes that whenever she reaches for her coffee mug, Leo asks if she is getting too tired."
   },
   {
     "id": "leo-session-one",
@@ -256,7 +256,7 @@
     ],
     "kind": "misc",
     "group": "journal",
-    "description": "Your own notes, in your small square writing. Leo opened every bin and drawer in the playroom to see what was inside. In the last five minutes he found the doctor's kit, and he told you that next Tuesday the playroom would be a clinic, and that you would need patients from the basket upstairs.\n\nHe said he is going to be an emergency room doctor, or the night watchman at the zoo, because somebody has to make sure the hippos don't roll over on each other."
+    "description": "Last Tuesday's page, written fast after he left. Leo spent twenty-five minutes opening every bin and drawer in the playroom to see what was inside. With five minutes left he found the toy doctor's kit and announced that next week the playroom would be a clinic, and that you would need the basket of stuffed animals from upstairs.\n\nHe told you he is going to be either an emergency room doctor or the night watchman at the zoo, so the hippos don't roll over on each other."
   },
   {
     "id": "leo-schedule",
@@ -268,7 +268,7 @@
     ],
     "kind": "misc",
     "group": "journal",
-    "description": "A typed page, taped into your journal. Tuesdays at four. Claire drops him off and picks him up.\n\nIn the margin, in Dr. Bell's green ink. Seven is a literal age. Be careful with \"sleep\" and \"tired.\""
+    "description": "The Tuesday calendar slip, tucked into the spine. Four o'clock. Claire brings him on her way home from the dental office.\n\nAcross the bottom, in Dr. Bell's green fountain pen. Seven is a literal age. Be careful with \"sleep\" and \"tired.\""
   },
   {
     "id": "book-owl",

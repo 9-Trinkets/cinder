@@ -47,8 +47,8 @@ Before greeting Leo (or fetched mid-session if she hasn't grabbed them yet):
 4. **Snack break (`leo-snack`)**:
    Leo asks for supplies for the staff. With the pretzel sticks and oat cookies on the low table, he uses a pretzel stick as a thermometer in the frog's mouth (`"Ninety-eight, he's still warm"`) before eating it.
 5. **Secret 2 — Wrinkles and White Hair (`leo-secret-signs`)** *(gated on 60% points so far)*:
-   Leo tells Nurse Isla to write down the "Warning Signs" on the back of the chart: *"Write down that Owl has lines by his eyes when he comes home from work, like my dad. And Frog has three white hairs right above her ear. I counted them on my mom when she was tying my shoes. Pop had a whole head of white hairs."*
-   - *Held (+2):* Isla writes it on the chart and reflects plainly (*"You've been keeping track of every white hair and every line"*) or waits quietly.
+   Leo tells Nurse Isla to write down the "Warning Signs" on the back of the chart: *"Write that Owl has lines by his eyes when he comes home from work. And Frog has three white hairs right here. I counted them when she tied my shoes. Pop had a whole head of white hairs. That's how you get doctor tired, not regular tired."*
+   - *Held (+2):* Isla writes the signs on the back of the chart and answers plainly (*"Regular tired goes away after you sleep"*) or waits while Leo prints `REGULAR TIRED` in green crayon underneath. (When Claire kneels to tie his boot lace at pickup, Isla sees the three white strands above her ear.)
 6. **Storytime transition (`leo-stories-intro`)**:
    Isla drapes the oatmeal cloth over the toy shelf (*"Even doctors take a reading break between rounds"*) and switches on the warm lamp. Leo sits on the window cushion—keeping the one-eyed frog propped upright against his knee—and tells Nurse Isla she can read one book while he monitors the frog.
 7. **Book Stop 1 (`leo-book-1`)**:
@@ -103,17 +103,16 @@ Implemented in `content/isla` (stages `stage-leo-*`, menus `leo-*`) and tested i
 | Owl book stop 3 | a plain, literal answer | 1 |
 | Secrets (upright, signs, resting, light) | reflect, wait | 2 each |
 
-**Gates.** The first secret always comes. Signs needs 3 points, resting needs 6 and is offered after Book Stop 2, and the light needs 8 points and the resting secret held. These are 60% of the points on offer so far, as in Wren's act. A miss at the snack skips the trip to the kitchen, and the rabbit book and the clouds book never reach the last two secrets.
+**Gates.** The first secret always comes. Signs needs 3 points, resting needs 6 and the signs secret held (offered after Book Stop 2), and the light needs 8 points, the resting secret held, and a plain answer on Book Stop 3 (`owl3_held`). These are 60% of the points on offer so far, as in Wren's act. A miss at the snack skips the trip to the kitchen, and the rabbit book and the clouds book never reach the last two secrets.
 
 **Endings.** By the deepest secret held, as for Wren. Light gives the high ending, resting or signs gives the middle one, anything less gives the low one. The upright rule is not counted, so "fewer than two secrets" in section 4 is read as "neither signs nor resting nor light".
 
 **Where the build differs from the draft.**
 - The middle note says only the signs, because that ending is also reached with the signs held and resting missed. The draft's lines about "resting my eyes" would then cite something Isla did not hear.
-- Frog has no pronoun in the signs scene. The draft had "her ear" for Frog and "he" elsewhere.
+- In the signs scene, Leo does not explicitly name his mom or dad; he gives the stuffed owl and frog adult details ("when he comes home from work", "when she tied my shoes"), and Isla sees the three white strands above Claire's ear when Claire kneels to tie his boot lace at pickup.
 - Leo says Pop said it "the day before the ambulance came", with no couch. `leo-bible.md` has an armchair in one place and a sofa in another.
 - Chart text uses commas, `OWL, WRINKLES`, because a colon in narration is read as a speaker label.
 - Claire's phone channel is `phone-claire`, and her name shows as Claire.
 
 **Open.**
-1. "Regular tired" and "doctor tired" appear in the middle ending without being set up in the room. Leo's table has the plain answer for it ("regular tired goes away when you sleep") but no bid carries it yet.
-2. The snow frame has been checked for types and loading only, not seen in a browser.
+1. The snow frame has been checked for types and loading only, not seen in a browser.

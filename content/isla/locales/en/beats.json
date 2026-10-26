@@ -153,7 +153,8 @@
           "key": "wren_left_waiting_room",
           "value": "true"
         }
-      ]
+      ],
+      "next_stage_ids": []
     },
     {
       "id": "stage-snack-have",
@@ -232,7 +233,8 @@
             "stage-pick-book"
           ]
         }
-      ]
+      ],
+      "next_stage_ids": []
     },
     {
       "id": "stage-snack-none",
@@ -514,7 +516,8 @@
             "stage-fetch-snack"
           ]
         }
-      ]
+      ],
+      "next_stage_ids": []
     },
     {
       "id": "stage-fetch-snack",
@@ -616,7 +619,8 @@
             "stage-pick-book"
           ]
         }
-      ]
+      ],
+      "next_stage_ids": []
     },
     {
       "id": "stage-bag",
@@ -739,7 +743,8 @@
             "stage-fetch-book"
           ]
         }
-      ]
+      ],
+      "next_stage_ids": []
     },
     {
       "id": "stage-bird-1",
@@ -774,7 +779,8 @@
             "stage-bird-2"
           ]
         }
-      ]
+      ],
+      "next_stage_ids": []
     },
     {
       "id": "stage-notebook-bird",
@@ -827,7 +833,8 @@
             "stage-bird-3"
           ]
         }
-      ]
+      ],
+      "next_stage_ids": []
     },
     {
       "id": "stage-quiet",
@@ -885,7 +892,8 @@
             "stage-closing"
           ]
         }
-      ]
+      ],
+      "next_stage_ids": []
     },
     {
       "id": "stage-cup",
@@ -938,7 +946,8 @@
             "stage-bear-2"
           ]
         }
-      ]
+      ],
+      "next_stage_ids": []
     },
     {
       "id": "stage-notebook-bear",
@@ -1052,7 +1061,8 @@
             "stage-farewell-low"
           ]
         }
-      ]
+      ],
+      "next_stage_ids": []
     },
     {
       "id": "stage-farewell-low",
@@ -1104,7 +1114,7 @@
         "menu_selected:phone-1"
       ],
       "next_stage_ids": [
-        "stage-phone-2"
+        "stage-note"
       ],
       "on_advance_effects": [
         {
@@ -1163,7 +1173,7 @@
         "menu_selected:phone-1"
       ],
       "next_stage_ids": [
-        "stage-phone-2"
+        "stage-note"
       ],
       "on_advance_effects": [
         {
@@ -1222,28 +1232,13 @@
         "menu_selected:phone-1"
       ],
       "next_stage_ids": [
-        "stage-phone-2"
+        "stage-note"
       ],
       "on_advance_effects": [
         {
           "kind": "queue_sequence",
           "sequence_id": "after-high"
         }
-      ]
-    },
-    {
-      "id": "stage-phone-2",
-      "quest_id": "session",
-      "quest_title": "The session",
-      "quest_kind": "main",
-      "summary": "Check your phone.",
-      "narrative_lines": [],
-      "open_menu": "phone-2",
-      "advance_signals": [
-        "menu_selected:phone-2"
-      ],
-      "next_stage_ids": [
-        "stage-note"
       ]
     },
     {
@@ -1347,7 +1342,8 @@
             "stage-fetch-book"
           ]
         }
-      ]
+      ],
+      "next_stage_ids": []
     },
     {
       "quest_id": "session",
@@ -1448,7 +1444,7 @@
       "narrative_lines": [
         "It is early February, and the front steps are slushy. You chain your bike to the porch rail and unclip your tote.",
         "Through the glass in the green door, a boy in a puffy red coat is standing at the fish tank. He taps the glass once, near the snail, and waits.",
-        "Your journal is in your tote, with your notes on him. When you are ready, you can go in and say hello."
+        "Your notes from his first week are in your tote, if you want a look before you go inside."
       ],
       "advance_signals": [
         {
@@ -1566,7 +1562,8 @@
             "patient-basket": 1
           }
         }
-      ]
+      ],
+      "next_stage_ids": []
     },
     {
       "id": "stage-leo-waiting",
@@ -1633,7 +1630,8 @@
           "actor_id": "leo",
           "follows": true
         }
-      ]
+      ],
+      "next_stage_ids": []
     },
     {
       "id": "stage-leo-clinic",
@@ -1642,7 +1640,7 @@
       "quest_kind": "main",
       "summary": "Answer Leo.",
       "narrative_lines": [
-        "Late light comes through the bay window onto the road rug. Leo goes straight to the toy shelf, still in his red coat, and pulls out the doctor's kit.",
+        "Pale winter light falls across the road rug from the bay window. Leo marches straight to the toy shelf, still in his red coat, and pulls out the doctor's kit.",
         "He hangs the plastic stethoscope around his neck and pushes a sheet of paper and a red crayon into your hands.",
         "Leo (to Isla): You're the chart nurse. Write down everything I say.",
         "You set the basket of stuffed animals on the low table. A one-eyed frog, an owl and a lamb look out over the rim.",
@@ -1687,7 +1685,7 @@
       "quest_kind": "main",
       "summary": "Fetch the basket of stuffed animals from the quiet room, on the second floor.",
       "narrative_lines": [
-        "Late light comes through the bay window onto the road rug. Leo goes straight to the toy shelf, still in his red coat, and pulls out the doctor's kit.",
+        "Pale winter light falls across the road rug from the bay window. Leo marches straight to the toy shelf, still in his red coat, and pulls out the doctor's kit.",
         "He hangs the plastic stethoscope around his neck and pushes a sheet of paper and a red crayon into your hands.",
         "Leo (to Isla): You're the chart nurse. Write down everything I say.",
         "Leo looks into your empty hands, then at the door.",
@@ -1790,7 +1788,8 @@
             "stage-leo-snack-none"
           ]
         }
-      ]
+      ],
+      "next_stage_ids": []
     },
     {
       "id": "stage-leo-snack-have",
@@ -1844,7 +1843,8 @@
           "kind": "remove_item",
           "item_id": "leo-snack"
         }
-      ]
+      ],
+      "next_stage_ids": []
     },
     {
       "id": "stage-leo-snack-none",
@@ -1966,7 +1966,8 @@
             "stage-leo-fetch-snack"
           ]
         }
-      ]
+      ],
+      "next_stage_ids": []
     },
     {
       "id": "stage-leo-fetch-snack",
@@ -2034,7 +2035,8 @@
           "kind": "remove_item",
           "item_id": "leo-snack"
         }
-      ]
+      ],
+      "next_stage_ids": []
     },
     {
       "id": "stage-leo-signs",
@@ -2045,9 +2047,9 @@
       "narrative_lines": [
         "Leo flips the chart over and smooths it flat on the rug. He pushes the red crayon back into your hand.",
         "Leo (to Isla): Now the Warning Signs. On the back. Write that Owl has lines by his eyes when he comes home from work.",
-        "He holds up the frog and parts the fuzz beside its ear with one finger.",
-        "Leo (to Isla): And Frog has three white hairs right here. I counted them.",
-        "Leo (to Isla): Pop had a whole head of white hairs."
+        "He holds up the frog and parts the green fuzz beside its ear with one finger.",
+        "Leo (to Isla): And Frog has three white hairs right here. I counted them when she tied my shoes.",
+        "Leo (to Isla): Pop had a whole head of white hairs. That's how you get doctor tired, not regular tired."
       ],
       "open_menu": "leo-signs",
       "advance_signals": [
@@ -2072,7 +2074,8 @@
             "stage-leo-pick-book"
           ]
         }
-      ]
+      ],
+      "next_stage_ids": []
     },
     {
       "id": "stage-leo-pick-book",
@@ -2081,7 +2084,8 @@
       "quest_kind": "main",
       "summary": "Choose a picture book from the book room, at the top of the house.",
       "narrative_lines": [
-        "Isla (to Leo): Doctor, the patients are getting restless. I think they need a story to settle them. I'll go and find one.",
+        "You check your tote for a picture book, and find only your journal.",
+        "Isla (to Leo): I'll go and find a story for the patients, Doctor.",
         "Leo (to Isla): Hm. Fine. Be fast."
       ],
       "advance_signals": [
@@ -2114,7 +2118,7 @@
       "quest_kind": "main",
       "summary": "Read to Leo.",
       "narrative_lines": [
-        "You take the folded oatmeal cloth from your tote and drape it over the toy shelf. You switch on the warm lamp by the beanbag and turn off the overhead light.",
+        "You spread the oatmeal cloth over the open toy shelf, click on the floor lamp by the beanbag, and flip the wall switch off.",
         "Leo climbs onto the window cushion and props the frog upright against his knee.",
         "Leo (to Isla): One book. I'll monitor the frog."
       ],
@@ -2165,7 +2169,8 @@
             "stage-leo-pick-book"
           ]
         }
-      ]
+      ],
+      "next_stage_ids": []
     },
     {
       "id": "stage-leo-owl-1",
@@ -2208,6 +2213,11 @@
               "path": "actor_stats.leo.points",
               "operator": "gte",
               "value": 6
+            },
+            {
+              "path": "actor_stats.leo.s2_held",
+              "operator": "gte",
+              "value": 1
             }
           ],
           "next_stage_ids": [
@@ -2220,7 +2230,8 @@
             "stage-leo-owl-3"
           ]
         }
-      ]
+      ],
+      "next_stage_ids": []
     },
     {
       "id": "stage-leo-resting",
@@ -2269,6 +2280,11 @@
               "path": "actor_stats.leo.s3_held",
               "operator": "gte",
               "value": 1
+            },
+            {
+              "path": "actor_stats.leo.owl3_held",
+              "operator": "gte",
+              "value": 1
             }
           ],
           "next_stage_ids": [
@@ -2281,7 +2297,8 @@
             "stage-leo-closing"
           ]
         }
-      ]
+      ],
+      "next_stage_ids": []
     },
     {
       "id": "stage-leo-light",
@@ -2371,7 +2388,7 @@
       "quest_kind": "main",
       "summary": "Stay with Leo.",
       "narrative_lines": [
-        "On the shelf, the little pear timer gives its soft five-minute click. Leo takes the plastic stethoscope off his neck and hangs it back on the toy shelf.",
+        "From the book table, the little pear timer gives its five-minute tick. Leo takes the plastic stethoscope off his neck and hooks it back on the shelf.",
         "Leo (to Isla): Is that the five-minute? Rounds are almost over."
       ],
       "open_menu": "leo-closing",
@@ -2421,7 +2438,8 @@
             "stage-leo-farewell-low"
           ]
         }
-      ]
+      ],
+      "next_stage_ids": []
     },
     {
       "id": "stage-leo-farewell-low",
@@ -2430,12 +2448,12 @@
       "quest_kind": "main",
       "summary": "Sit on the back steps. Go through the kitchen and out the back.",
       "narrative_lines": [
-        "The timer on the shelf gives its single soft chime. Leo zips his red coat up to his chin and pulls a hat out of one sleeve.",
-        "Out in the waiting room, Gloria is already on her feet. Claire is standing just inside the front door, with her scrubs showing under her coat.",
-        "Claire (to Leo): Hey, bud. Mittens in your sleeves. Ready?",
+        "The timer dings once. Leo zips his red coat up to his chin and yanks a knit hat out of his sleeve.",
+        "In the front hall, Claire is waiting by Gloria's desk with her teal scrubs showing under her winter coat. She kneels to tie his loose boot lace and tucks her hair behind her ear, where three white strands show against the dark.",
+        "Claire (to Leo): Hey, bud. Mittens in your sleeves. Did you keep Isla busy?",
         "Leo (to Isla): Bye, Nurse. Same time next Tuesday. Bring the patients.",
         "Back in the playroom, the chart is on the low table, with 24 BEATS across the top in red crayon. The frog, the owl and the lamb are still propped upright against the baseboard.",
-        "The front door clicks shut behind them, and the house settles into quiet."
+        "Their boots crunch down the slushy front steps, and the door latches behind them."
       ],
       "advance_signals": [
         "room_entered:back-yard"
@@ -2465,15 +2483,15 @@
       "quest_kind": "main",
       "summary": "Check your phone.",
       "narrative_lines": [
-        "The back steps are cold, and there is old snow along the fence. You set your tote beside you on the top step and sit down for five minutes before heading round to unchain your bike.",
-        "Inside your tote, your phone has buzzed."
+        "Out back, crusts of old snow sit along the porch rail. You brush off the top step, set your tote down beside your boots, and breathe the cold air for a minute.",
+        "Your phone gives a single buzz inside your bag."
       ],
       "open_menu": "phone-1",
       "advance_signals": [
         "menu_selected:phone-1"
       ],
       "next_stage_ids": [
-        "stage-leo-phone-2"
+        "stage-leo-note"
       ],
       "on_advance_effects": [
         {
@@ -2489,12 +2507,12 @@
       "quest_kind": "main",
       "summary": "Sit on the back steps. Go through the kitchen and out the back.",
       "narrative_lines": [
-        "The timer on the shelf gives its single soft chime. Leo zips his red coat up to his chin and pulls a hat out of one sleeve.",
-        "Out in the waiting room, Gloria is already on her feet. Claire is standing just inside the front door, with her scrubs showing under her coat.",
-        "Claire (to Leo): Hey, bud. Mittens in your sleeves. Ready?",
+        "The timer dings once. Leo zips his red coat up to his chin and yanks a knit hat out of his sleeve.",
+        "In the front hall, Claire is waiting by Gloria's desk with her teal scrubs showing under her winter coat. She kneels to tie his loose boot lace and tucks her hair behind her ear, where three white strands show against the dark.",
+        "Claire (to Leo): Hey, bud. Mittens in your sleeves. Did you keep Isla busy?",
         "Leo (to Isla): Bye, Nurse. Same time next Tuesday. Bring the patients.",
         "Back in the playroom, he has left the chart on the low table. On the back, in your handwriting, it says OWL, WRINKLES, and FROG, 3 WHITE HAIRS, and under them, in green crayon, REGULAR TIRED.",
-        "The front door clicks shut behind them, and the house settles into quiet."
+        "Their boots crunch down the slushy front steps, and the door latches behind them."
       ],
       "advance_signals": [
         "room_entered:back-yard"
@@ -2524,15 +2542,15 @@
       "quest_kind": "main",
       "summary": "Check your phone.",
       "narrative_lines": [
-        "The back steps are cold, and there is old snow along the fence. You set your tote beside you on the top step and sit down for five minutes before heading round to unchain your bike.",
-        "Inside your tote, your phone has buzzed."
+        "Out back, crusts of old snow sit along the porch rail. You brush off the top step, set your tote down beside your boots, and breathe the cold air for a minute.",
+        "Your phone gives a single buzz inside your bag."
       ],
       "open_menu": "phone-1",
       "advance_signals": [
         "menu_selected:phone-1"
       ],
       "next_stage_ids": [
-        "stage-leo-phone-2"
+        "stage-leo-note"
       ],
       "on_advance_effects": [
         {
@@ -2548,12 +2566,12 @@
       "quest_kind": "main",
       "summary": "Sit on the back steps. Go through the kitchen and out the back.",
       "narrative_lines": [
-        "The timer on the shelf gives its single soft chime. Leo zips his red coat up to his chin and pulls a hat out of one sleeve.",
-        "Out in the waiting room, Gloria is already on her feet. Claire is standing just inside the front door, with her scrubs showing under her coat.",
-        "Claire (to Leo): Hey, bud. Mittens in your sleeves. Ready?",
+        "The timer dings once. Leo zips his red coat up to his chin and yanks a knit hat out of his sleeve.",
+        "In the front hall, Claire is waiting by Gloria's desk with her teal scrubs showing under her winter coat. She kneels to tie his loose boot lace and tucks her hair behind her ear, where three white strands show against the dark.",
+        "Claire (to Leo): Hey, bud. Mittens in your sleeves. Did you keep Isla busy?",
         "Leo (to Isla): Bye, Isla. Same time next Tuesday.",
         "On the low table, Leo has folded the oatmeal cloth into a pillow and laid the one-eyed frog flat on its back. Taped beside it, the chart says SLEEPING. CHEST GOES AUTOMATIC. WILL WAKE UP.",
-        "The front door clicks shut behind them, and the house settles into quiet."
+        "Their boots crunch down the slushy front steps, and the door latches behind them."
       ],
       "advance_signals": [
         "room_entered:back-yard"
@@ -2583,36 +2601,21 @@
       "quest_kind": "main",
       "summary": "Check your phone.",
       "narrative_lines": [
-        "The back steps are cold, and there is old snow along the fence. You set your tote beside you on the top step and sit down for five minutes before heading round to unchain your bike.",
-        "Inside your tote, your phone has buzzed."
+        "Out back, crusts of old snow sit along the porch rail. You brush off the top step, set your tote down beside your boots, and breathe the cold air for a minute.",
+        "Your phone gives a single buzz inside your bag."
       ],
       "open_menu": "phone-1",
       "advance_signals": [
         "menu_selected:phone-1"
       ],
       "next_stage_ids": [
-        "stage-leo-phone-2"
+        "stage-leo-note"
       ],
       "on_advance_effects": [
         {
           "kind": "queue_sequence",
           "sequence_id": "after-leo-high"
         }
-      ]
-    },
-    {
-      "id": "stage-leo-phone-2",
-      "quest_id": "leo-session",
-      "quest_title": "The session",
-      "quest_kind": "main",
-      "summary": "Check your phone.",
-      "narrative_lines": [],
-      "open_menu": "phone-2",
-      "advance_signals": [
-        "menu_selected:phone-2"
-      ],
-      "next_stage_ids": [
-        "stage-leo-note"
       ]
     },
     {
@@ -2666,11 +2669,12 @@
       "quest_kind": "main",
       "summary": "The session is over.",
       "narrative_lines": [
-        "You read your note through once, then close the journal. The snow starts again over the back yard, and you sit a little longer before heading round to the front porch for your bike."
+        "You blot the last line with your thumb and snap the elastic band around your journal. Fine snow is starting to fall through the willow branches as you stand up to go unchain your bike."
       ],
       "end_game": true,
       "movie_id": "leo-end-low",
-      "lines_before_movie": true
+      "lines_before_movie": true,
+      "next_stage_ids": []
     },
     {
       "id": "stage-leo-end-mid",
@@ -2679,11 +2683,12 @@
       "quest_kind": "main",
       "summary": "The session is over.",
       "narrative_lines": [
-        "You read your note through once, then close the journal. The snow starts again over the back yard, and you sit a little longer before heading round to the front porch for your bike."
+        "You blot the last line with your thumb and snap the elastic band around your journal. Fine snow is starting to fall through the willow branches as you stand up to go unchain your bike."
       ],
       "end_game": true,
       "movie_id": "leo-end-mid",
-      "lines_before_movie": true
+      "lines_before_movie": true,
+      "next_stage_ids": []
     },
     {
       "id": "stage-leo-end-high",
@@ -2692,11 +2697,12 @@
       "quest_kind": "main",
       "summary": "The session is over.",
       "narrative_lines": [
-        "You read your note through once, then close the journal. The snow starts again over the back yard, and you sit a little longer before heading round to the front porch for your bike."
+        "You blot the last line with your thumb and snap the elastic band around your journal. Fine snow is starting to fall through the willow branches as you stand up to go unchain your bike."
       ],
       "end_game": true,
       "movie_id": "leo-end-high",
-      "lines_before_movie": true
+      "lines_before_movie": true,
+      "next_stage_ids": []
     }
   ]
 }

@@ -55,16 +55,6 @@
   "show_player_input": false,
   "channels": [
     {
-      "id": "phone-bell",
-      "kind": "direct",
-      "privacy": "private",
-      "participants": [
-        "player",
-        "dr-bell"
-      ],
-      "label": "Phone"
-    },
-    {
       "id": "phone-mom",
       "kind": "direct",
       "privacy": "private",

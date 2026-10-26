@@ -843,27 +843,8 @@
         "title": "Take out your phone.",
         "menu_text": "",
         "narrative_lines": [
-          "You take the phone out of your tote. It has buzzed twice."
+          "You take the phone out of your tote. There is one message waiting."
         ]
-      }
-    ]
-  },
-  {
-    "id": "phone-2",
-    "actor_id": "wren",
-    "stage_id": "stage-phone-2",
-    "trigger_mode": "any_speak",
-    "dynamic": false,
-    "requires_actor_present": false,
-    "selection_prompt": "",
-    "invalid_choice_text": "There is another message waiting.",
-    "selection_confirmation": "",
-    "options": [
-      {
-        "id": "phone-2-next",
-        "title": "Read the other message.",
-        "menu_text": "",
-        "narrative_lines": []
       }
     ]
   },
@@ -952,10 +933,10 @@
       },
       {
         "id": "leo-meet-ready",
-        "title": "The clinic is ready, Doctor. Lead the way.",
+        "title": "The clinic is ready for you, Doctor.",
         "menu_text": "",
         "narrative_lines": [
-          "Isla (to Leo): The clinic is ready, Doctor. Lead the way.",
+          "Isla (to Leo): The clinic is ready for you, Doctor.",
           "Leo (to Isla): I always lead. Nurses follow. Write that down.",
           "You pat your pockets for a pencil. Leo sighs and heads for the hall anyway."
         ]
@@ -1186,21 +1167,23 @@
     "options": [
       {
         "id": "leo-signs-fix",
-        "title": "Everybody gets white hairs, Leo. It's nothing to worry about.",
+        "title": "Everybody gets white hairs when they're older, Leo.",
         "menu_text": "",
         "narrative_lines": [
-          "Isla (to Leo): Everybody gets white hairs, Leo. It's nothing to worry about.",
+          "Isla (to Leo): Everybody gets white hairs when they're older, Leo.",
           "Leo (to Isla): Pop had a whole head of them.",
           "He pulls the frog against his chest."
         ]
       },
       {
         "id": "leo-signs-reflect",
-        "title": "You've been keeping track of every white hair and every line.",
+        "title": "Regular tired goes away after you sleep.",
         "menu_text": "",
         "narrative_lines": [
-          "Isla (to Leo): You've been keeping track of every white hair and every line.",
-          "Leo (to Isla): Yes. I check. Write it down."
+          "Isla (to Leo): Regular tired goes away after you sleep.",
+          "You write OWL, WRINKLES, and FROG, 3 WHITE HAIRS on the back of the chart.",
+          "Leo (to Isla): Put regular tired at the bottom. In green.",
+          "He takes the green crayon and prints REGULAR TIRED under your line."
         ]
       },
       {
@@ -1209,7 +1192,8 @@
         "menu_text": "",
         "narrative_lines": [
           "You write OWL, WRINKLES, and then FROG, 3 WHITE HAIRS, on the back of the chart. Leo checks that the three is a three.",
-          "He stays close beside you while you finish."
+          "Leo (to Isla): Put regular tired at the bottom. In green.",
+          "He takes the green crayon and prints REGULAR TIRED under your line."
         ]
       },
       {
@@ -1308,10 +1292,10 @@
     "options": [
       {
         "id": "leo-owl-2-reassure",
-        "title": "Little Owl can rest, Leo. The branch is safe.",
+        "title": "Little Owl can rest now, Leo.",
         "menu_text": "",
         "narrative_lines": [
-          "Isla (to Leo): Little Owl can rest, Leo. The branch is safe.",
+          "Isla (to Leo): Little Owl can rest now, Leo.",
           "Leo (to Isla): You don't know that. Nobody checked.",
           "He straightens the frog against his knee."
         ]
@@ -1328,10 +1312,10 @@
       },
       {
         "id": "leo-owl-2-follow",
-        "title": "Emergency! Where's the siren, Doctor?",
+        "title": "Where's the siren, Doctor?",
         "menu_text": "",
         "narrative_lines": [
-          "Isla (to Leo): Emergency! Where's the siren, Doctor?",
+          "Isla (to Leo): Where's the siren, Doctor?",
           "Leo (to Isla): WEEOO WEEOO! Hold his stomach. Don't let the truck out.",
           "You hold the frog steady while Leo makes a siren that rattles the window. When he runs out of breath, he flops back on the cushion.",
           "Leo (to Isla): Okay. The truck is out. Frog is stable."
@@ -1339,10 +1323,10 @@
       },
       {
         "id": "leo-owl-2-push",
-        "title": "Let's finish the page, Leo. Little Owl is almost there.",
+        "title": "Let's finish reading this page first, Leo.",
         "menu_text": "",
         "narrative_lines": [
-          "Isla (to Leo): Let's finish the page, Leo. Little Owl is almost there.",
+          "Isla (to Leo): Let's finish reading this page first, Leo.",
           "Leo (to Isla): No! The fire truck is still IN there!",
           "He grabs the frog by both feet and shakes it at you. Then he lets it drop into his lap."
         ]
@@ -1362,10 +1346,10 @@
     "options": [
       {
         "id": "leo-resting-reassure",
-        "title": "Your mom's only tired, Leo. She isn't going anywhere.",
+        "title": "Your mom is only tired from work, Leo.",
         "menu_text": "",
         "narrative_lines": [
-          "Isla (to Leo): Your mom's only tired, Leo. She isn't going anywhere.",
+          "Isla (to Leo): Your mom is only tired from work, Leo.",
           "Leo (to Isla): You don't know that.",
           "He pulls the frog against his chest and turns the page himself."
         ]
@@ -1413,10 +1397,10 @@
     "options": [
       {
         "id": "leo-owl-3-vague",
-        "title": "Everybody just needs a good rest, Leo. That's all sleep is.",
+        "title": "Everybody just needs a good night's rest, Leo.",
         "menu_text": "",
         "narrative_lines": [
-          "Isla (to Leo): Everybody just needs a good rest, Leo. That's all sleep is.",
+          "Isla (to Leo): Everybody just needs a good night's rest, Leo.",
           "Leo (to Isla): That's not an answer.",
           "He turns the book around to face himself."
         ]
@@ -1427,8 +1411,8 @@
         "menu_text": "",
         "narrative_lines": [
           "Isla (to Leo): Breathing happens all by itself while we sleep, all night long.",
-          "Leo (to Isla): Automatic.",
-          "He says it under his breath, like he's writing it down."
+          "Leo (to Isla): Automatic. Write that on the chart.",
+          "He watches while you print it in red crayon."
         ]
       },
       {
@@ -1443,12 +1427,12 @@
       },
       {
         "id": "leo-owl-3-chest",
-        "title": "Yes. Your own chest is doing it right now.",
+        "title": "Your own chest is doing it right now.",
         "menu_text": "",
         "narrative_lines": [
-          "Isla (to Leo): Yes. Your own chest is doing it right now.",
+          "Isla (to Leo): Your own chest is doing it right now.",
           "Leo presses his palm flat against his coat and holds it there.",
-          "Leo (to Isla): It is. I can feel it."
+          "Leo (to Isla): Automatic. Write that on the chart."
         ]
       }
     ]
@@ -1536,10 +1520,10 @@
       },
       {
         "id": "leo-rabbit-1-play",
-        "title": "Yes, Doctor. Band-aids after. I'll write it down.",
+        "title": "Band-aids after, Doctor, I'll write that down.",
         "menu_text": "",
         "narrative_lines": [
-          "Isla (to Leo): Yes, Doctor. Band-aids after. I'll write it down.",
+          "Isla (to Leo): Band-aids after, Doctor, I'll write that down.",
           "You write BAND-AIDS AFTER on the chart. Leo reads it twice."
         ]
       },
@@ -1666,10 +1650,10 @@
       },
       {
         "id": "leo-closing-play",
-        "title": "Yes, Doctor. Last rounds, then I'll finish the chart.",
+        "title": "Last rounds, Doctor, then I'll finish the chart.",
         "menu_text": "",
         "narrative_lines": [
-          "Isla (to Leo): Yes, Doctor. Last rounds, then I'll finish the chart.",
+          "Isla (to Leo): Last rounds, Doctor, then I'll finish the chart.",
           "Leo (to Isla): Good. Check the lamb. I did the frog already."
         ]
       },
@@ -1683,10 +1667,10 @@
       },
       {
         "id": "leo-closing-plain",
-        "title": "That's the five-minute warning. The chime means we're done.",
+        "title": "That's the five-minute warning before we finish up.",
         "menu_text": "",
         "narrative_lines": [
-          "Isla (to Leo): That's the five-minute warning. The chime means we're done.",
+          "Isla (to Leo): That's the five-minute warning before we finish up.",
           "Leo (to Isla): Okay. Then I have five minutes of rounds."
         ]
       }

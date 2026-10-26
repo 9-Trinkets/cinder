@@ -8,7 +8,7 @@ Every episode after Wren's is checked against this sheet **before** anything is 
 |---|---|---|
 | **Before** | Isla's journal: the intake form, a school referral, her own notes from earlier sessions, a schedule page with Dr. Bell's margin. Free walk around Willow House. | `session-design.md` §4–5 |
 | **The session** | One child, in Willow House, as a series of menus. Isla's answers score as fits or misses. Secrets open when the room and the answers are right. One book, chosen from the shelves, decides how deep it goes. | §7, §9–11 |
-| **After** | The parent comes to the waiting room. Isla sits on the back steps. Her phone shows a text from the parent and one from Dr. Bell. She writes a private note. The child leaves a drawing or object. The game ends. | §8, §14 |
+| **After** | The parent comes to the waiting room. Isla sits on the back steps. Her phone shows a text from the parent. She writes a private note. The child leaves a drawing or object. The game ends. | §8, §14 |
 
 ## 2. What the game does not show
 
@@ -25,7 +25,6 @@ Every episode after Wren's is checked against this sheet **before** anything is 
 | **Case notes in the journal** | the parents, the school, Dr. Bell, or Isla herself | Isla, before the session | Facts someone at that source actually knows, and Isla's own earlier observations. **One of them holds the clue** that makes the right book easy. |
 | **Isla's note after** | Isla | Isla (and the player). **Nobody else.** | What she saw in the room and what she would try next week. Never anything she did not see. |
 | **The parent's text** | the parent, the same evening | Isla | One small thing the *child* did after the session that the parent saw. Not a summary, not a result, not a request. |
-| **Dr. Bell's text** | Dr. Bell | Isla | "How did it go? Come and find me tomorrow." |
 | **What the child leaves** | the child | Isla | A drawing or an object, chosen by the deepest secret held. |
 
 ## 4. The shape every child follows

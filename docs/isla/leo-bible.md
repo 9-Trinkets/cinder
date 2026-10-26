@@ -99,7 +99,7 @@ Each is something Isla finds in the room through how Leo runs his clinic, held o
 1. **Secret 1 — The "No Lying Down" Rule.**
    Leo examines the one-eyed frog and the owl with the plastic stethoscope, then props all three animals bolt upright against the playroom baseboard. When Isla offers a cushion or bed, he says: *"Nobody lies down in my clinic. Lying down is how you get worse."*
 2. **Secret 2 — Wrinkles and White Hair on the Chart.**
-   Leo dictates the "Warning Signs" for Nurse Isla to write on the paper chart: Owl has wrinkles by his eyes when he comes home from work (like Dad), and Frog has **three white hairs** right above her ear (*"I counted them on my mom when she was tying my shoes. Pop had a whole head of white hairs."*).
+   Leo dictates the "Warning Signs" for Nurse Isla to write on the back of the paper chart: Owl has lines by his eyes when he comes home from work, and Frog has **three white hairs** right beside its ear (*"I counted them when she tied my shoes. Pop had a whole head of white hairs. That's how you get doctor tired, not regular tired."*). At pickup in the waiting room, Claire kneels to tie Leo's loose boot lace and tucks her hair behind her ear, where three white strands show against the dark.
 3. **Secret 3 — "Just Resting My Eyes."**
    During the picture book, Leo stops and tells Isla confidentially that grown-ups trick you when they say *"I'm just resting my eyes"*—because Pop said that on the sofa the day before the ambulance came. So whenever Mom lies down on the sofa after work and closes her eyes, Leo drops his Lego bin or asks her spelling words until she opens them again.
 4. **Secret 4 — The Red Squeeze Light (The Night Watch).**

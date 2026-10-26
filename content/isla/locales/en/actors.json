@@ -81,7 +81,7 @@
         "label": "Greet Leo",
         "lines": [
           "You push through the green door. Leo is at the fish tank in his puffy red coat, one finger flat against the glass beside the snail.",
-          "Isla (to Leo): Hi, Leo. Looks like the snail has company.",
+          "Isla (to Leo): Hi, Leo. Did the snail move yet?",
           "Leo (to Isla): I'm checking if he's asleep or stuck. You can't tell from the outside.",
           "He gives the glass one more tap, then turns around.",
           "Leo (to Isla): Okay. The clinic is open today. Did you get the patients READY?"
@@ -128,8 +128,8 @@
           "!leo_left_waiting_room"
         ],
         "lines": [
-          "Isla (to Gloria): How's he doing out here?",
-          "Gloria (to Isla): He asked me twice if the snail is asleep or stuck. I said I couldn't tell either, hon.",
+          "Isla (to Gloria): Has he been waiting long?",
+          "Gloria (to Isla): Ten minutes, hon. He's been at that tank the whole time trying to decide if the snail is asleep or stuck.",
           "Gloria (to Isla): Then he made me check his coat zipper. It was fine."
         ]
       }

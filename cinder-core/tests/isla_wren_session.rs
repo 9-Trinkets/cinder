@@ -41,7 +41,6 @@ fn fit(menu: &str) -> &'static str {
         "bear-2" => "bear-2-reflect",
         "fox-1" => "fox-1-reflect",
         "phone-1" => "phone-1-open",
-        "phone-2" => "phone-2-next",
         "note" => "note-write",
         other => panic!("no fitting option known for {other}"),
     }
@@ -231,7 +230,6 @@ fn finish_after(runtime: &CinderRuntime) -> String {
         text += &turn(runtime, step);
     }
     text += &answer(runtime, "phone-1", fit("phone-1"));
-    text += &answer(runtime, "phone-2", fit("phone-2"));
     text += &answer(runtime, "note", fit("note"));
     text += &turn(runtime, "look at notes from today");
     text
@@ -554,10 +552,10 @@ fn the_messages_come_from_mom_and_dr_bell_and_say_who_they_are_to() {
     }
     let first = answer(&runtime, "phone-1", fit("phone-1"));
     assert!(first.contains("Mom (to Isla): She hummed"), "{first}");
-    let second = answer(&runtime, "phone-2", fit("phone-2"));
-    assert!(
-        second.contains("Dr. Bell (to Isla): How did it go?"),
-        "{second}"
+    assert_eq!(
+        active_menu(&runtime).as_deref(),
+        Some("note"),
+        "the note is next, with no second message"
     );
 }
 

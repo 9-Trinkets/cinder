@@ -65,7 +65,6 @@ fn fit(menu: &str) -> &'static str {
         "leo-clouds-1" => "leo-clouds-1-close",
         "leo-closing" => "leo-closing-plain",
         "phone-1" => "phone-1-open",
-        "phone-2" => "phone-2-next",
         "note" => "note-write",
         other => panic!("no fitting option known for {other}"),
     }
@@ -127,7 +126,6 @@ fn episode_two() -> (CinderRuntime, String) {
         "go kitchen",
         "go back yard",
         "phone-1-open",
-        "phone-2-next",
         "note-write",
         "look at notes from today",
     ] {
@@ -187,7 +185,6 @@ fn finish_after(runtime: &CinderRuntime) -> String {
         text += &turn(runtime, step);
     }
     text += &answer(runtime, "phone-1", fit("phone-1"));
-    text += &answer(runtime, "phone-2", fit("phone-2"));
     text += &answer(runtime, "note", fit("note"));
     text += &turn(runtime, "look at leo today");
     text
@@ -553,7 +550,10 @@ fn an_empty_tote_at_the_story_still_sends_isla_for_a_book() {
     let pack = load_named_pack("isla", Some("en")).expect("isla loads");
     let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime");
     let text = answer(&runtime, "leo-stories", fit("leo-stories"));
-    assert!(text.contains("I'll go and find one."), "{text}");
+    assert!(
+        text.contains("I'll go and find a story for the patients, Doctor."),
+        "{text}"
+    );
     assert!(active_stages(&runtime).contains(&"stage-leo-pick-book".to_string()));
 }
 
@@ -667,6 +667,27 @@ fn the_light_needs_the_resting_secret_to_have_been_held() {
         active_menu(&runtime).as_deref(),
         Some("leo-closing"),
         "no light when the resting secret was not held"
+    );
+
+    let (miss_owl3, _) = episode_two();
+    start_session(&miss_owl3, true, true, Some("owl book"));
+    for menu in [
+        "leo-clinic",
+        "leo-upright",
+        "leo-snack-have",
+        "leo-signs",
+        "leo-stories",
+        "leo-owl-1",
+        "leo-owl-2",
+        "leo-resting",
+    ] {
+        answer(&miss_owl3, menu, fit(menu));
+    }
+    answer(&miss_owl3, "leo-owl-3", miss("leo-owl-3"));
+    assert_eq!(
+        active_menu(&miss_owl3).as_deref(),
+        Some("leo-closing"),
+        "no light when the automatic-breathing question was missed"
     );
 }
 
@@ -829,7 +850,7 @@ fn the_farewell_shows_what_leo_left_behind_for_each_ending() {
 }
 
 #[test]
-fn the_messages_come_from_claire_and_dr_bell_and_say_who_they_are_to() {
+fn the_message_comes_from_claire_and_says_who_it_is_to() {
     let (runtime, _) = episode_two();
     start_session(&runtime, true, true, Some("owl book"));
     play_owl_to_the_end(&runtime);
@@ -841,10 +862,10 @@ fn the_messages_come_from_claire_and_dr_bell_and_say_who_they_are_to() {
         first.contains("Claire (to Isla): I closed my eyes"),
         "{first}"
     );
-    let second = answer(&runtime, "phone-2", fit("phone-2"));
-    assert!(
-        second.contains("Dr. Bell (to Isla): How did it go?"),
-        "{second}"
+    assert_eq!(
+        active_menu(&runtime).as_deref(),
+        Some("note"),
+        "the note is next, with no second message"
     );
 }
 
@@ -950,8 +971,6 @@ fn a_game_saved_before_leos_messages_existed_still_gets_them() {
     let pack = load_named_pack("isla", Some("en")).expect("isla loads");
     let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime");
     turn(&runtime, "go back yard");
-    let mut text = answer(&runtime, "phone-1", fit("phone-1"));
-    text += &answer(&runtime, "phone-2", fit("phone-2"));
+    let text = answer(&runtime, "phone-1", fit("phone-1"));
     assert!(text.contains("Claire (to Isla):"), "{text}");
-    assert!(text.contains("Dr. Bell (to Isla):"), "{text}");
 }

@@ -259,7 +259,7 @@ Full rules are in `leo-bible.md`, section 9. In short: seven to twelve words, br
 - "I'm the Chief Doctor. You're the nurse. Bring me the frog."
 - "Twenty-four beats. Write that down on the chart."
 - "Nobody lies down in my hospital. Lying down makes you worse."
-- "Frog has three white hairs right by her ear. I counted them on my mom."
+- "Frog has three white hairs right here. I counted them when she tied my shoes."
 - "Grown-ups say 'I'm just resting my eyes' right before they don't wake up."
 - "If you let go of the middle, the light goes right out."
 
