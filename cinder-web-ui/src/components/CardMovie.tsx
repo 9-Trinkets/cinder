@@ -159,12 +159,12 @@ export default function CardMovie({ movie, frame, onAdvance, onClose, contained 
       className={`${contained ? 'absolute inset-0 z-20' : 'fixed inset-0 z-50'} flex cursor-pointer items-center justify-center outline-none`}
       style={{ background, transition: `background-color ${fadeMs}ms ease` }}
     >
-      <Ambient kind={card.ambient} />
+      <Ambient kind={f.ambient || card.ambient} />
       <div
         key={frame}
         className={`relative mx-6 flex max-w-xl flex-col gap-4 ${align}`}
         style={{
-          color: color(card.text_color, 'var(--color-text)'),
+          color: color(f.text_color || card.text_color, 'var(--color-text)'),
           fontFamily: fontFamily(card.font),
           animation: fadeMs ? `card-fade ${fadeMs}ms ease both` : undefined,
         }}

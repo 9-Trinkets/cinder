@@ -35,6 +35,14 @@ impl ContentValidator for MoviesValidator {
             if movie.frames.is_empty() {
                 diagnostics.push(format!("card movie '{}' has no frames", movie.id));
             }
+            for frame in &movie.frames {
+                if !AMBIENTS.contains(&frame.ambient.as_str()) {
+                    diagnostics.push(format!(
+                        "card movie '{}' has a frame with unknown ambient '{}'",
+                        movie.id, frame.ambient
+                    ));
+                }
+            }
             for (setting, value, allowed) in [
                 ("font", movie.card.font.as_str(), FONTS),
                 ("align", movie.card.align.as_str(), ALIGNS),

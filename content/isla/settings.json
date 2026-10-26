@@ -1,7 +1,7 @@
 {
   "title": "Isla",
   "tagline": "Stories first. Toys are sleeping.",
-  "description": "You are Isla, a child psychologist in an old brick house on a corner. Read a picture book with a six-year-old and notice what she does with it.",
+  "description": "You are Isla, a child psychologist in an old brick house on a corner. Sit with a child, read a picture book, and notice what they do with it.",
   "tags": [
     "Bibliotherapy",
     "Cozy Narrative",
@@ -71,6 +71,16 @@
       "participants": [
         "player",
         "nadia"
+      ],
+      "label": "Phone"
+    },
+    {
+      "id": "phone-claire",
+      "kind": "direct",
+      "privacy": "private",
+      "participants": [
+        "player",
+        "claire"
       ],
       "label": "Phone"
     }

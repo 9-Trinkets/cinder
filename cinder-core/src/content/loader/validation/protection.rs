@@ -168,6 +168,26 @@ fn validate_stage_effects(
             AdvanceEffect::ConsumeItem { item_id } => {
                 validate_reward_reference(pack, stage_id, item_id, "", diagnostics);
             }
+            AdvanceEffect::SetFeatureItems { feature, items } => {
+                let named = feature
+                    .split_once('/')
+                    .and_then(|(room_id, feature_id)| {
+                        pack.room(room_id)?
+                            .features
+                            .iter()
+                            .find(|candidate| candidate.id == feature_id)
+                    })
+                    .is_some();
+                if !named {
+                    diagnostics.push(format!(
+                        "stage '{}' restocks unknown feature '{}', which must be written room/feature",
+                        stage_id, feature
+                    ));
+                }
+                for item_id in items.keys() {
+                    validate_reward_reference(pack, stage_id, item_id, "", diagnostics);
+                }
+            }
             AdvanceEffect::AdjustActorStat { .. }
             | AdvanceEffect::AdjustPairStat { .. }
             | AdvanceEffect::RunHook { .. }

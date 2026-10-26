@@ -908,5 +908,788 @@
         ]
       }
     ]
+  },
+  {
+    "id": "leo-meet",
+    "actor_id": "leo",
+    "stage_id": "stage-leo-meet",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "requires_actor_present": true,
+    "selection_prompt": "",
+    "invalid_choice_text": "Leo waits. Choose one of the options.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "leo-meet-probe",
+        "title": "How come you keep checking if the snail is asleep?",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): How come you keep checking if the snail is asleep?",
+          "Leo (to Isla): Nurses don't ask that. Nurses say, Yes, Doctor.",
+          "He turns on his heel and heads for the hall without waiting for an answer."
+        ]
+      },
+      {
+        "id": "leo-meet-play",
+        "title": "Nurse Isla, reporting for duty, Doctor.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Nurse Isla, reporting for duty, Doctor.",
+          "Leo (to Isla): Good. I'm the Chief Doctor. You're the nurse. Follow me.",
+          "He gives the snail a quick salute on his way past the tank."
+        ]
+      },
+      {
+        "id": "leo-meet-soften",
+        "title": "How are you feeling about being here today?",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): How are you feeling about being here today?",
+          "Leo (to Isla): I feel like opening a clinic. Come on.",
+          "He is already halfway to the hall."
+        ]
+      },
+      {
+        "id": "leo-meet-ready",
+        "title": "The clinic is ready, Doctor. Lead the way.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): The clinic is ready, Doctor. Lead the way.",
+          "Leo (to Isla): I always lead. Nurses follow. Write that down.",
+          "You pat your pockets for a pencil. Leo sighs and heads for the hall anyway."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "leo-clinic",
+    "actor_id": "leo",
+    "stage_id": "stage-leo-clinic",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "requires_actor_present": true,
+    "selection_prompt": "",
+    "invalid_choice_text": "Leo waits. Choose one of the options.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "leo-clinic-probe",
+        "title": "Why are we playing hospital today?",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Why are we playing hospital today?",
+          "Leo (to Isla): It's not playing. It's a real clinic. Write the names.",
+          "You write the names."
+        ]
+      },
+      {
+        "id": "leo-clinic-join",
+        "title": "Print the three names on the chart.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You print FROG, OWL and LAMB in a column down the paper. Leo reads over your arm and taps each name with the end of the crayon.",
+          "Leo (to Isla): Good letters. Now we do vitals."
+        ]
+      },
+      {
+        "id": "leo-clinic-soften",
+        "title": "We could do something else if you'd like.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): We could do something else if you'd like.",
+          "Leo (to Isla): No. The patients are here. Write the names.",
+          "He taps the paper until you do."
+        ]
+      },
+      {
+        "id": "leo-clinic-play",
+        "title": "Frog, Owl, Lamb. Yes, Doctor.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Frog, Owl, Lamb. Yes, Doctor.",
+          "You print the three names across the top of the paper. Leo reads over your arm and nods at each one.",
+          "Leo (to Isla): Good letters. Now we do vitals."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "leo-upright",
+    "actor_id": "leo",
+    "stage_id": "stage-leo-upright",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "requires_actor_present": true,
+    "selection_prompt": "",
+    "invalid_choice_text": "Leo waits. Choose one of the options.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "leo-upright-cushion",
+        "title": "Offer the lamb a cushion from the beanbag.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You pick a cushion up off the beanbag and hold it out toward the lamb.",
+          "Leo takes the cushion out of your hand and drops it behind him.",
+          "Leo (to Isla): Nobody lies down. I said."
+        ]
+      },
+      {
+        "id": "leo-upright-wait",
+        "title": "Write it on the chart and say nothing.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You write ALL PATIENTS SITTING UP across the top of the chart. Leo watches the crayon the whole way across.",
+          "Leo (to Isla): Underline it."
+        ]
+      },
+      {
+        "id": "leo-upright-probe",
+        "title": "What happens to a patient who lies down?",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): What happens to a patient who lies down?",
+          "Leo (to Isla): They get worse. I said. Nurses listen.",
+          "He pulls the owl a little straighter against the wall."
+        ]
+      },
+      {
+        "id": "leo-upright-reflect",
+        "title": "All patients stay sitting up in this clinic.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): All patients stay sitting up in this clinic.",
+          "Leo (to Isla): Yes. Basic'ly that's the first rule. Write it on the chart.",
+          "You write it across the top, and he checks every letter."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "leo-snack-have",
+    "actor_id": "leo",
+    "stage_id": "stage-leo-snack-have",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "requires_actor_present": true,
+    "selection_prompt": "",
+    "invalid_choice_text": "Leo waits. Choose one of the options.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "leo-snack-have-probe",
+        "title": "Why do you take his temperature first?",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Why do you take his temperature first?",
+          "Leo (to Isla): Because that's how it's done. Obviously.",
+          "He grabs a pretzel stick anyway, checks the frog, and eats it."
+        ]
+      },
+      {
+        "id": "leo-snack-have-join",
+        "title": "Hand him a pretzel stick, thermometer first.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You hold out a pretzel stick, tip first, the way a nurse hands over a thermometer.",
+          "Leo takes it and holds it to the frog's mouth.",
+          "Leo (to Isla): Ninety-eight. He's still warm.",
+          "He bites the thermometer in half and chews."
+        ]
+      },
+      {
+        "id": "leo-snack-have-soften",
+        "title": "We can just have snack and talk, if you want.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): We can just have snack and talk, if you want.",
+          "Leo (to Isla): This is a clinic snack. It's different.",
+          "He takes a pretzel stick, checks the frog's temperature, and eats it without a word."
+        ]
+      },
+      {
+        "id": "leo-snack-have-play",
+        "title": "Pretzel sticks and oat cookies, Doctor. Right here.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Pretzel sticks and oat cookies, Doctor. Right here.",
+          "You set them on the low table. Leo takes one pretzel stick and holds it to the frog's mouth.",
+          "Leo (to Isla): Ninety-eight. He's still warm.",
+          "He bites the thermometer in half and chews."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "leo-snack-none",
+    "actor_id": "leo",
+    "stage_id": "stage-leo-snack-none",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "requires_actor_present": true,
+    "selection_prompt": "",
+    "selection_id_var_key": "leo_snack_choice",
+    "invalid_choice_text": "Leo waits. Choose one of the options.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "leo-snack-none-probe",
+        "title": "Why does the staff need supplies right now?",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Why does the staff need supplies right now?",
+          "Leo (to Isla): Because they do. Never mind. Next patient.",
+          "He turns back to the frog."
+        ]
+      },
+      {
+        "id": "leo-snack-none-play",
+        "title": "I'll go and get them right away, Doctor.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): I'll go and get them right away, Doctor.",
+          "Leo (to Isla): Kitchen shelf. Pretzel sticks. Oat cookies. Hurry."
+        ]
+      },
+      {
+        "id": "leo-snack-none-soften",
+        "title": "We can skip snack today.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): We can skip snack today.",
+          "Leo (to Isla): Fine. The frog doesn't eat anyway.",
+          "He turns back to the frog."
+        ]
+      },
+      {
+        "id": "leo-snack-none-join",
+        "title": "Stand up and head for the kitchen.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You stand and head for the door. Leo calls after you.",
+          "Leo (to Isla): Pretzel sticks! And the oat cookies!"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "leo-signs",
+    "actor_id": "leo",
+    "stage_id": "stage-leo-signs",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "requires_actor_present": true,
+    "selection_prompt": "",
+    "invalid_choice_text": "Leo waits. Choose one of the options.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "leo-signs-fix",
+        "title": "Everybody gets white hairs, Leo. It's nothing to worry about.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Everybody gets white hairs, Leo. It's nothing to worry about.",
+          "Leo (to Isla): Pop had a whole head of them.",
+          "He pulls the frog against his chest."
+        ]
+      },
+      {
+        "id": "leo-signs-reflect",
+        "title": "You've been keeping track of every white hair and every line.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): You've been keeping track of every white hair and every line.",
+          "Leo (to Isla): Yes. I check. Write it down."
+        ]
+      },
+      {
+        "id": "leo-signs-wait",
+        "title": "Write it on the back of the chart, and wait.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You write OWL, WRINKLES, and then FROG, 3 WHITE HAIRS, on the back of the chart. Leo checks that the three is a three.",
+          "He stays close beside you while you finish."
+        ]
+      },
+      {
+        "id": "leo-signs-probe",
+        "title": "Do you check their hair every day?",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Do you check their hair every day?",
+          "Leo (to Isla): Nurse. That's not a chart question.",
+          "He flips the chart back over and taps the front."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "leo-stories",
+    "actor_id": "leo",
+    "stage_id": "stage-leo-stories-intro",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "requires_actor_present": true,
+    "selection_prompt": "",
+    "invalid_choice_text": "Leo is waiting for the story.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "leo-stories-read",
+        "title": "Open the picture book.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You sit in your chair beside him and open the book across your knees so he can see the pages."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "leo-owl-1",
+    "actor_id": "leo",
+    "stage_id": "stage-leo-owl-1",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "requires_actor_present": true,
+    "selection_prompt": "",
+    "invalid_choice_text": "Leo waits. Choose one of the options.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "leo-owl-1-probe",
+        "title": "Do you ever stay awake like Little Owl?",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Do you ever stay awake like Little Owl?",
+          "Leo (to Isla): It's a book, Nurse. Turn the page.",
+          "He pulls the frog a little closer."
+        ]
+      },
+      {
+        "id": "leo-owl-1-wait",
+        "title": "Let the page stay open a moment.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You let the page sit open between you. Leo counts the sleeping birds under his breath and gets to nine."
+        ]
+      },
+      {
+        "id": "leo-owl-1-reflect",
+        "title": "Little Owl watches so nobody falls.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Little Owl watches so nobody falls.",
+          "Leo (to Isla): Yes. That's his whole job. Don't skip any pages."
+        ]
+      },
+      {
+        "id": "leo-owl-1-join",
+        "title": "Tap the branch where he's pointing.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You tap the branch in the picture, right next to his finger.",
+          "Leo moves his finger to a dark knot near the end of the branch.",
+          "Leo (to Isla): There. That's the weak spot."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "leo-owl-2",
+    "actor_id": "leo",
+    "stage_id": "stage-leo-owl-2",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "requires_actor_present": true,
+    "selection_prompt": "",
+    "invalid_choice_text": "Leo waits. Choose one of the options.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "leo-owl-2-reassure",
+        "title": "Little Owl can rest, Leo. The branch is safe.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Little Owl can rest, Leo. The branch is safe.",
+          "Leo (to Isla): You don't know that. Nobody checked.",
+          "He straightens the frog against his knee."
+        ]
+      },
+      {
+        "id": "leo-owl-2-wait",
+        "title": "Wait for the siren to run out.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You wait while Leo makes a long siren and holds the frog's stomach with both hands.",
+          "When he runs out of breath, he flops back on the cushion.",
+          "Leo (to Isla): Frog is stable now."
+        ]
+      },
+      {
+        "id": "leo-owl-2-follow",
+        "title": "Emergency! Where's the siren, Doctor?",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Emergency! Where's the siren, Doctor?",
+          "Leo (to Isla): WEEOO WEEOO! Hold his stomach. Don't let the truck out.",
+          "You hold the frog steady while Leo makes a siren that rattles the window. When he runs out of breath, he flops back on the cushion.",
+          "Leo (to Isla): Okay. The truck is out. Frog is stable."
+        ]
+      },
+      {
+        "id": "leo-owl-2-push",
+        "title": "Let's finish the page, Leo. Little Owl is almost there.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Let's finish the page, Leo. Little Owl is almost there.",
+          "Leo (to Isla): No! The fire truck is still IN there!",
+          "He grabs the frog by both feet and shakes it at you. Then he lets it drop into his lap."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "leo-resting",
+    "actor_id": "leo",
+    "stage_id": "stage-leo-resting",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "requires_actor_present": true,
+    "selection_prompt": "",
+    "invalid_choice_text": "Leo waits. Choose one of the options.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "leo-resting-reassure",
+        "title": "Your mom's only tired, Leo. She isn't going anywhere.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Your mom's only tired, Leo. She isn't going anywhere.",
+          "Leo (to Isla): You don't know that.",
+          "He pulls the frog against his chest and turns the page himself."
+        ]
+      },
+      {
+        "id": "leo-resting-probe",
+        "title": "Do you drop the bin every time she closes her eyes?",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Do you drop the bin every time she closes her eyes?",
+          "Leo (to Isla): That's not a nurse question. You're off the chart.",
+          "He reaches across and turns the page himself."
+        ]
+      },
+      {
+        "id": "leo-resting-wait",
+        "title": "Stay quiet beside him and let the page sit.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You stay quiet beside him. Leo runs his thumb along the frog's arm, back and forth, and does not look up."
+        ]
+      },
+      {
+        "id": "leo-resting-reflect",
+        "title": "When she says Pop's words, you make sure she wakes up.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): When she says Pop's words, you make sure she wakes up.",
+          "Leo (to Isla): Yes. Every time. Even if I have to drop the whole bin.",
+          "He sets the frog back upright against his knee."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "leo-owl-3",
+    "actor_id": "leo",
+    "stage_id": "stage-leo-owl-3",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "requires_actor_present": true,
+    "selection_prompt": "",
+    "invalid_choice_text": "Leo waits. Choose one of the options.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "leo-owl-3-vague",
+        "title": "Everybody just needs a good rest, Leo. That's all sleep is.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Everybody just needs a good rest, Leo. That's all sleep is.",
+          "Leo (to Isla): That's not an answer.",
+          "He turns the book around to face himself."
+        ]
+      },
+      {
+        "id": "leo-owl-3-plain",
+        "title": "Breathing happens all by itself while we sleep, all night long.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Breathing happens all by itself while we sleep, all night long.",
+          "Leo (to Isla): Automatic.",
+          "He says it under his breath, like he's writing it down."
+        ]
+      },
+      {
+        "id": "leo-owl-3-probe",
+        "title": "What made you want to know that?",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): What made you want to know that?",
+          "Leo (to Isla): It's in the book, Nurse. Turn the page.",
+          "There are no more pages. He studies the end paper instead."
+        ]
+      },
+      {
+        "id": "leo-owl-3-chest",
+        "title": "Yes. Your own chest is doing it right now.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Yes. Your own chest is doing it right now.",
+          "Leo presses his palm flat against his coat and holds it there.",
+          "Leo (to Isla): It is. I can feel it."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "leo-light",
+    "actor_id": "leo",
+    "stage_id": "stage-leo-light",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "requires_actor_present": true,
+    "selection_prompt": "",
+    "invalid_choice_text": "Leo waits. Choose one of the options.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "leo-light-probe",
+        "title": "Do you do that every night?",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Do you do that every night?",
+          "Leo (to Isla): Nurse. The patient's eye needs checking.",
+          "He aims the beam back at the frog and does not look up."
+        ]
+      },
+      {
+        "id": "leo-light-wait",
+        "title": "Stay quiet and watch the beam with him.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You stay quiet. The beam shakes a little where his thumb presses, then holds steady on the frog's eye.",
+          "Neither of you says anything until Leo lets go, and the room goes back to lamplight."
+        ]
+      },
+      {
+        "id": "leo-light-fix",
+        "title": "You don't have to check on your parents, Leo.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): You don't have to check on your parents, Leo.",
+          "Leo (to Isla): Somebody has to. I said.",
+          "He clips the light back on his zipper and zips the coat up to his chin."
+        ]
+      },
+      {
+        "id": "leo-light-reflect",
+        "title": "You stand watch in the hall so you can see them breathing.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): You stand watch in the hall so you can see them breathing.",
+          "Leo (to Isla): Two seconds. Then I go back to bed.",
+          "He squeezes the light once more, and the beam holds steady on the frog's eye."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "leo-rabbit-1",
+    "actor_id": "leo",
+    "stage_id": "stage-leo-rabbit-1",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "requires_actor_present": true,
+    "selection_prompt": "",
+    "invalid_choice_text": "Leo waits. Choose one of the options.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "leo-rabbit-1-probe",
+        "title": "Why does it matter when you count them?",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Why does it matter when you count them?",
+          "Leo (to Isla): Because it does. Turn the page."
+        ]
+      },
+      {
+        "id": "leo-rabbit-1-join",
+        "title": "Count the band-aids on the counter with him.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You count the band-aids along the counter with him, pointing at each one.",
+          "Leo (to Isla): Twelve. We agree. Write that down."
+        ]
+      },
+      {
+        "id": "leo-rabbit-1-play",
+        "title": "Yes, Doctor. Band-aids after. I'll write it down.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Yes, Doctor. Band-aids after. I'll write it down.",
+          "You write BAND-AIDS AFTER on the chart. Leo reads it twice."
+        ]
+      },
+      {
+        "id": "leo-rabbit-1-wait",
+        "title": "Wait while he counts the whole line.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You wait. Leo counts every animal in the line, then counts them again.",
+          "Leo (to Isla): Seven. Rabbit needs more band-aids."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "leo-rabbit-2",
+    "actor_id": "leo",
+    "stage_id": "stage-leo-rabbit-2",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "requires_actor_present": true,
+    "selection_prompt": "",
+    "invalid_choice_text": "Leo waits. Choose one of the options.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "leo-rabbit-2-wait",
+        "title": "Give him a moment with the last page.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You let the book rest open. Leo looks at the empty waiting room, then at the hook where the white coat hangs."
+        ]
+      },
+      {
+        "id": "leo-rabbit-2-reassure",
+        "title": "I'm sure Doctor Rabbit checked everybody before the book started.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): I'm sure Doctor Rabbit checked everybody before the book started.",
+          "Leo (to Isla): You can't be sure. It's not in the book."
+        ]
+      },
+      {
+        "id": "leo-rabbit-2-play",
+        "title": "Doctor Rabbit could use a Chief Doctor like you.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Doctor Rabbit could use a Chief Doctor like you.",
+          "Leo (to Isla): I'm busy. I have my own clinic.",
+          "He tucks the frog under his arm."
+        ]
+      },
+      {
+        "id": "leo-rabbit-2-probe",
+        "title": "Do you worry about whether doctors check people?",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Do you worry about whether doctors check people?",
+          "Leo (to Isla): It's a rabbit, Nurse. Rabbits aren't real doctors."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "leo-clouds-1",
+    "actor_id": "leo",
+    "stage_id": "stage-leo-clouds-1",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "requires_actor_present": true,
+    "selection_prompt": "",
+    "invalid_choice_text": "Leo waits. Choose one of the options.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "leo-clouds-1-probe",
+        "title": "What part of the book felt wrong?",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): What part of the book felt wrong?",
+          "Leo (to Isla): All of it. No more books today, Nurse.",
+          "He holds the stethoscope to the frog's chest and counts under his breath."
+        ]
+      },
+      {
+        "id": "leo-clouds-1-close",
+        "title": "Close the book and set it aside.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You close the cover and set the book face down on the rug. Leo does not look at it again."
+        ]
+      },
+      {
+        "id": "leo-clouds-1-agree",
+        "title": "Sleeping isn't the same thing.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Sleeping isn't the same thing.",
+          "Leo (to Isla): No.",
+          "He holds the stethoscope to the frog's chest again and counts under his breath."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "leo-closing",
+    "actor_id": "leo",
+    "stage_id": "stage-leo-closing",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "requires_actor_present": true,
+    "selection_prompt": "",
+    "invalid_choice_text": "Leo waits. Choose one of the options.",
+    "selection_confirmation": "",
+    "options": [
+      {
+        "id": "leo-closing-probe",
+        "title": "Did you like being the doctor today?",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Did you like being the doctor today?",
+          "Leo (to Isla): Doctors don't like. They just do it."
+        ]
+      },
+      {
+        "id": "leo-closing-play",
+        "title": "Yes, Doctor. Last rounds, then I'll finish the chart.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): Yes, Doctor. Last rounds, then I'll finish the chart.",
+          "Leo (to Isla): Good. Check the lamb. I did the frog already."
+        ]
+      },
+      {
+        "id": "leo-closing-wait",
+        "title": "Let him finish putting his gear away.",
+        "menu_text": "",
+        "narrative_lines": [
+          "You let him finish. Leo lines the reflex hammer up beside the wooden syringe and squares the roll of paper tape next to them."
+        ]
+      },
+      {
+        "id": "leo-closing-plain",
+        "title": "That's the five-minute warning. The chime means we're done.",
+        "menu_text": "",
+        "narrative_lines": [
+          "Isla (to Leo): That's the five-minute warning. The chime means we're done.",
+          "Leo (to Isla): Okay. Then I have five minutes of rounds."
+        ]
+      }
+    ]
   }
 ]

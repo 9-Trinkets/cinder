@@ -279,7 +279,8 @@ pub(super) fn render_objective(content: &ContentPack, state: &WorldState) -> Str
 /// The line listing what a feature holds, shown when the feature is inspected.
 /// An item counts as available when the feature holds some, or when a consumable
 /// that belongs to the feature (it is listed with a count of zero) is lying in
-/// the room, as a dish that has just been cooked is.
+/// the room, as a dish that has just been cooked is. Items a stage has put on
+/// the feature since the start are listed too.
 pub(super) fn render_feature_items_line(
     content: &ContentPack,
     state: &WorldState,
@@ -287,7 +288,7 @@ pub(super) fn render_feature_items_line(
     feature_id: &str,
 ) -> Option<String> {
     let feature = content.feature(room_id, feature_id)?;
-    let available = feature
+    let mut available = feature
         .items
         .keys()
         .filter(|item_id| {
@@ -301,8 +302,15 @@ pub(super) fn render_feature_items_line(
                         room_id,
                     )
         })
-        .map(|item_id| content.item_label(item_id))
+        .map(|item_id| content.item_label(item_id).to_string())
         .collect::<Vec<_>>();
+    available.extend(
+        state
+            .feature_items(room_id, feature_id)
+            .into_iter()
+            .filter(|(item_id, _)| !feature.items.contains_key(item_id))
+            .map(|(item_id, _)| content.item_label(&item_id).to_string()),
+    );
     if available.is_empty() {
         return None;
     }

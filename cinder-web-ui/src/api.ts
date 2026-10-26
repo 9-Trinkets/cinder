@@ -103,6 +103,10 @@ export interface MovieFrameData {
   heading?: string
   /** Background tint for this frame: a theme color name or a CSS color. */
   tint?: string
+  /** Text color for this frame. Empty keeps the card's. */
+  text_color?: string
+  /** A slow layer for this frame. Empty keeps the card's. */
+  ambient?: string
 }
 
 /** Look of a card movie. Empty settings use the pack theme. */

@@ -1,6 +1,6 @@
 # Isla: voice guide (draft)
 
-How everyone in the Wren act sounds, and how the story is told. Read with `wren-bible.md`. The example lines are **calibration only**, not final script. Every in-game line follows the conventions in section 1.
+How everyone in the Wren and Leo acts sounds, and how the story is told. Read with `wren-bible.md` and `leo-bible.md`. The example lines are **calibration only**, not final script. Every in-game line follows the conventions in section 1.
 
 ## 1. Conventions for every line
 
@@ -235,8 +235,71 @@ Check every line against these:
 ## 19. Check before showing anything
 
 Read each path as plain transcript text and ask:
-1. Could a six-year-old plausibly say this line?
+1. Could a child of this age plausibly say this line?
 2. Is anyone naming a feeling they should be showing?
 3. Is it clear who is speaking, and when time has passed?
 4. Is anything explained that the player should discover?
 5. Are there any parentheses, clinical words, or British spellings?
+
+---
+
+## 20. Leo (seven and a half)
+
+Full rules are in `leo-bible.md`, section 9. In short: seven to twelve words, brisk and bossy, imperatives when playing Doctor, literal about bodies and sleep, uses loud jokes instead of silence when a subject gets too close.
+
+**Extra rules:**
+- He calls Isla **"Nurse"** whenever they are inside the clinic game, and drops to **"Isla"** only when he is asking a real question or telling a secret.
+- He says **"Write that down"** when something matters to him.
+- He uses **"basic'ly"** and **"automatic"** when explaining how things work.
+- He does not know adult ages or medical words; he notices **white hairs, wrinkles around the eyes, knees that crack, and how many beats a chest makes**.
+- When a book page or a question comes too close, he invents a loud, silly medical emergency for the one-eyed frog: "Beep beep! Frog swallowed a fire truck!"
+- He never says "I'm scared Mom will die." He talks about rules for keeping patients upright and awake.
+
+**Calibration (Leo):**
+- "I'm the Chief Doctor. You're the nurse. Bring me the frog."
+- "Twenty-four beats. Write that down on the chart."
+- "Nobody lies down in my hospital. Lying down makes you worse."
+- "Frog has three white hairs right by her ear. I counted them on my mom."
+- "Grown-ups say 'I'm just resting my eyes' right before they don't wake up."
+- "If you let go of the middle, the light goes right out."
+
+## 21. Claire (Leo's mom, 38)
+
+Affectionate, tired in her bones, practical. A dental hygienist who stands all day and is grieving her father while trying to keep the house running on time.
+
+- Speaks in warm, slightly run-on everyday sentences.
+- Calls Leo **"honey"** or **"bud"**.
+- Uses tired idioms without realizing how Leo hears them: **"dead tired"**, **"resting my eyes"**, **"out like a light"**.
+- Not defensive—she genuinely thinks Leo is just wired at bedtime and misses Pop.
+
+**Calibration (Claire):**
+- "Hey, bud. Coat on, mittens in your sleeves. Have a good half hour."
+- "He's been up and down the hall three times a night since December."
+- "I closed my eyes on the couch after dinner, waiting for him to poke me awake."
+
+## 22. Marcus (Leo's dad, 40)
+
+Warm, plainspoken, slightly baffled. A high-school history teacher and JV basketball coach who treats problems like team logistics.
+
+- Short, direct sentences. Calls Leo **"pal"**.
+- Jokes mildly about his own knees or back without knowing Leo is taking notes.
+
+**Calibration (Marcus):**
+- "He's been running the house like a hospital shift."
+- "Every time I get up off the rug, he asks if my knees are broken."
+
+## 23. Pop (Arthur, Mom's father, as remembered by Leo)
+
+Never appears onstage. Exists only in the two or three short things Leo quotes him saying, and in the tiny red Miller's Hardware squeeze light clipped to Leo's zipper.
+
+**Calibration (as quoted by Leo):**
+- "Pop always said, 'I'm just resting my eyes, champ.'"
+- "He said if you keep your thumb on the middle, the light stays on."
+
+## 24. Ms. Chen (second-grade teacher)
+
+Observant, matter-of-fact, fond of Leo. Writes concrete notes about what happens in the classroom and the nurse's office, never diagnosing.
+
+**Calibration (Ms. Chen):**
+- "He asked for a pass to the nurse four times in two weeks with no fever. He just wanted her to listen to his chest with the stethoscope and tell him the number."
+- "Whenever I pick up my coffee mug, he asks if I'm getting too tired."

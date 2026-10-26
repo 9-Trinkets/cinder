@@ -60,4 +60,4 @@ Rules for the ledger:
 
 ## 7. What the engine already supports (so nothing here is a reason to cut)
 
-Menus with scored answers, secrets gated on points, a book chosen from shelves by what Isla carries, journal pages, stage effects that grant items, phone messages in a speaker's name, conditions on features and items, dated cards between episodes, an act that ends and a world that carries on, actors who arrive later (`starts_away`), and the player relocated by a stage.
+Menus with scored answers, secrets gated on points, a book chosen from shelves by what Isla carries, journal pages, stage effects that grant items, phone messages in a speaker's name, conditions on features and items, dated cards between episodes, an act that ends and a world that carries on, actors who arrive later (`starts_away`), the player relocated by a stage, shelves restocked between acts (`set_feature_items`), and a card whose frames each set their own tint, text color and ambient layer.

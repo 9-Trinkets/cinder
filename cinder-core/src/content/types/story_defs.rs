@@ -1,5 +1,6 @@
 use super::Condition;
 use serde::{Deserialize, Serialize};
+use std::collections::BTreeMap;
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct OpeningDefinition {
@@ -118,6 +119,13 @@ pub enum AdvanceEffect {
         #[serde(default)]
         feature: String,
         state: String,
+    },
+    /// Restocks a feature: afterwards it holds exactly `items`, whatever it held
+    /// before. `feature` is `room/feature`, or a feature id in the player's room.
+    /// For a shelf that changes between acts.
+    SetFeatureItems {
+        feature: String,
+        items: BTreeMap<String, u32>,
     },
     /// Uses up an item the player carries, saying so ("You use the key.").
     ConsumeItem {
@@ -522,6 +530,14 @@ pub struct OpeningMovieFrameDefinition {
     /// it from frame to frame shows a change of season or time of day.
     #[serde(default)]
     pub tint: String,
+    /// Text color for this frame, as for the card's `text_color`. Empty keeps the
+    /// card's, so a dark frame can carry light text.
+    #[serde(default)]
+    pub text_color: String,
+    /// A slow layer for this frame, as for the card's `ambient`. Empty keeps the
+    /// card's.
+    #[serde(default)]
+    pub ambient: String,
     #[serde(default)]
     pub text: String,
     /// Take the text from an item's description, so a card can show a page the

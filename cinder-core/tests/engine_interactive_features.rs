@@ -286,3 +286,50 @@ fn an_interaction_that_needs_an_item_is_offered_for_that_item() {
     assert_eq!(offered[0].label, "Mend the lamp");
     assert_eq!(offered[0].command, "do test-lamp:repair");
 }
+
+#[test]
+fn an_interaction_can_restock_a_shelf() {
+    let mut pack = pack();
+    pack.rooms
+        .iter_mut()
+        .find(|room| room.id == "playroom")
+        .expect("playroom")
+        .features
+        .push(RoomFeatureDefinition {
+            id: "test-shelf".to_string(),
+            label: "test shelf".to_string(),
+            aliases: vec!["test shelf".to_string()],
+            inspect_text: "A shelf.".to_string(),
+            items: [("snack".to_string(), 1)].into_iter().collect(),
+            interactions: vec![Interaction {
+                id: "restock".to_string(),
+                label: "Restock the shelf".to_string(),
+                effects: vec![AdvanceEffect::SetFeatureItems {
+                    feature: "playroom/test-shelf".to_string(),
+                    items: [("book-owl".to_string(), 1)].into_iter().collect(),
+                }],
+                ..Default::default()
+            }],
+            ..Default::default()
+        });
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "playroom".to_string();
+    let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime");
+
+    let before = runtime.run_turn("look at test shelf").expect("look").text();
+    assert!(before.contains("clementine and crackers"), "{before}");
+
+    runtime.run_turn("do test-shelf:restock").expect("restock");
+    let after = runtime.run_turn("look at test shelf").expect("look").text();
+    assert!(after.contains("The Little Owl Who Kept Watch"), "{after}");
+    assert!(
+        !after.contains("clementine"),
+        "the shelf holds exactly what the effect says: {after}"
+    );
+
+    runtime.run_turn("take owl book").expect("take");
+    runtime.run_turn("take snack").expect("take");
+    let carried = runtime.inventory_items().expect("inventory");
+    assert_eq!(carried.get("book-owl"), Some(&1));
+    assert_eq!(carried.get("snack"), None, "the old stock is gone");
+}

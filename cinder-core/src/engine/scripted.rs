@@ -210,6 +210,7 @@ fn completion_effect_events(sequence: &ScriptedSequence) -> Vec<WorldEvent> {
             | AdvanceEffect::SetFollowsPlayer { .. }
             | AdvanceEffect::QueueSequence { .. }
             | AdvanceEffect::SetFeatureState { .. }
+            | AdvanceEffect::SetFeatureItems { .. }
             | AdvanceEffect::ConsumeItem { .. }
             | AdvanceEffect::RunHook { .. }
             | AdvanceEffect::EmitSignal { .. }

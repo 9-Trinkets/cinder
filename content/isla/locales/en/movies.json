@@ -17,6 +17,14 @@
         "heading": "Thursday, November 21",
         "text_item": "note-three-low",
         "duration_ms": 4000
+      },
+      {
+        "heading": "Tuesday, February 4",
+        "tint": "#1e2630",
+        "text_color": "text",
+        "ambient": "snow",
+        "text": "Leo.",
+        "duration_ms": 3500
       }
     ]
   },
@@ -38,6 +46,14 @@
         "heading": "Thursday, November 21",
         "text_item": "note-three-mid",
         "duration_ms": 4000
+      },
+      {
+        "heading": "Tuesday, February 4",
+        "tint": "#1e2630",
+        "text_color": "text",
+        "ambient": "snow",
+        "text": "Leo.",
+        "duration_ms": 3500
       }
     ]
   },
@@ -58,6 +74,77 @@
       {
         "heading": "Thursday, November 21",
         "text_item": "note-three-high",
+        "duration_ms": 4000
+      },
+      {
+        "heading": "Tuesday, February 4",
+        "tint": "#1e2630",
+        "text_color": "text",
+        "ambient": "snow",
+        "text": "Leo.",
+        "duration_ms": 3500
+      }
+    ]
+  },
+  {
+    "id": "leo-end-low",
+    "title": "The journal",
+    "style": "card",
+    "card": {
+      "background": "#efe6d2",
+      "text_color": "#3b3128",
+      "font": "hand",
+      "align": "left",
+      "ambient": "none",
+      "reveal": "type",
+      "fade_ms": 1200
+    },
+    "frames": [
+      {
+        "heading": "Tuesday, February 4",
+        "text_item": "note-leo-low",
+        "duration_ms": 4000
+      }
+    ]
+  },
+  {
+    "id": "leo-end-mid",
+    "title": "The journal",
+    "style": "card",
+    "card": {
+      "background": "#efe6d2",
+      "text_color": "#3b3128",
+      "font": "hand",
+      "align": "left",
+      "ambient": "none",
+      "reveal": "type",
+      "fade_ms": 1200
+    },
+    "frames": [
+      {
+        "heading": "Tuesday, February 4",
+        "text_item": "note-leo-mid",
+        "duration_ms": 4000
+      }
+    ]
+  },
+  {
+    "id": "leo-end-high",
+    "title": "The journal",
+    "style": "card",
+    "card": {
+      "background": "#efe6d2",
+      "text_color": "#3b3128",
+      "font": "hand",
+      "align": "left",
+      "ambient": "none",
+      "reveal": "type",
+      "fade_ms": 1200
+    },
+    "frames": [
+      {
+        "heading": "Tuesday, February 4",
+        "text_item": "note-leo-high",
         "duration_ms": 4000
       }
     ]

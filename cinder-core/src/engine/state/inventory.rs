@@ -261,6 +261,21 @@ impl WorldState {
             .or_insert(0) += amount;
     }
 
+    /// Replaces what the feature holds with exactly `items`.
+    pub fn set_feature_items(
+        &mut self,
+        room_id: &str,
+        feature_id: &str,
+        items: &BTreeMap<String, u32>,
+    ) {
+        let prefix = format!("{room_id}::{feature_id}::");
+        self.feature_item_stock
+            .retain(|key, _| !key.starts_with(&prefix));
+        for (item_id, count) in items.iter().filter(|(_, count)| **count > 0) {
+            self.add_feature_item(room_id, feature_id, item_id, *count);
+        }
+    }
+
     /// What the feature holds right now, as `(item_id, count)`.
     pub fn feature_items(&self, room_id: &str, feature_id: &str) -> Vec<(String, u32)> {
         let prefix = format!("{room_id}::{feature_id}::");

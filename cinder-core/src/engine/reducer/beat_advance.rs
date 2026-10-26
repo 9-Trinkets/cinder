@@ -265,6 +265,21 @@ fn apply_stage_effect(
                 ))
             };
         }
+        AdvanceEffect::SetFeatureItems { feature, items } => {
+            let (room_id, feature_id) = feature
+                .split_once('/')
+                .map(|(room, feature)| (room.to_string(), feature.to_string()))
+                .unwrap_or_else(|| (state.current_room_id.clone(), feature.clone()));
+            let exists = content
+                .room(&room_id)
+                .is_some_and(|room| room.features.iter().any(|f| f.id == feature_id));
+            return if exists {
+                state.set_feature_items(&room_id, &feature_id, items);
+                Ok(())
+            } else {
+                Err(format!("feature '{room_id}/{feature_id}' does not exist"))
+            };
+        }
         AdvanceEffect::ConsumeItem { item_id } => {
             let room_id = state.current_room_id.clone();
             if state.remove_item_from_storage(

@@ -5,5 +5,7 @@
   "item.swapped": "You put {returned} back on the shelf and take {label}.",
   "note.written": "You slip the page into your tote, with the others.",
   "session.snack_returned": "You set the napkin on the low table between you, with a peeled clementine and four square pieces of cracker.\n\nWren (to Isla): Thank you. Four squares is the right number.",
-  "drawing.tucked": "You slip the drawing into your journal, between the week's pages."
+  "drawing.tucked": "You slip the drawing into your journal, between the week's pages.",
+  "session.leo_snack_returned": "You set the pretzel sticks and the oat cookies on the low table. Leo takes one stick and holds it to the frog's mouth.\n\nLeo (to Isla): Ninety-eight. He's still warm.",
+  "chart.tucked": "You fold the chart into your journal, between the week's pages."
 }

@@ -100,7 +100,7 @@ An **interaction** is an authored choice with a label, optional conditions, line
 
 Interactions apply **effects.** Instead of a second effect type, they use the same effect list as hooks (`set_story_var`, `acquire_item`, `adjust_actor_stat`, `narrate_message`, `move_actors`, ...), plus a few new ones that remove today's workaround through a story variable:
 - `set_feature_state`
-- `place_item` and `remove_item` (in a room or on a feature)
+- `place_item` and `remove_item` (in a room or on a feature). **Built so far:** `set_feature_items`, which restocks a feature so it holds exactly the items named. Isla uses it to restock the book room, the snack shelf and the quiet room between episodes.
 - `set_exit_open` is not needed: an exit just reads a condition.
 
 Stage effects (`AdvanceEffect`) and hook effects (`WorldHookEffect`) become **one `Effect`** list. This is the largest replacement and it can wait (Phase 5).

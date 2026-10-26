@@ -83,6 +83,90 @@
           "message": "note.written"
         }
       ]
+    },
+    {
+      "id": "after-leo-low",
+      "label": "Messages (Leo, low)",
+      "steps": [
+        {
+          "voice": "channel",
+          "channel_id": "phone-claire",
+          "speaker_id": "claire",
+          "recipient_id": "player",
+          "line": "Hi Isla, thanks for today. He talked the whole way home about his frog hospital, though he still came into the kitchen twice while I was resting my eyes before dinner to ask where his snow boots were. See you next Tuesday."
+        },
+        {
+          "voice": "channel",
+          "channel_id": "phone-bell",
+          "speaker_id": "dr-bell",
+          "recipient_id": "player",
+          "line": "How did it go? Come and find me tomorrow."
+        }
+      ],
+      "completion_effects": [
+        {
+          "kind": "grant_item",
+          "item_id": "note-leo-low",
+          "count": 1,
+          "message": "note.written"
+        }
+      ]
+    },
+    {
+      "id": "after-leo-mid",
+      "label": "Messages (Leo, mid)",
+      "steps": [
+        {
+          "voice": "channel",
+          "channel_id": "phone-claire",
+          "speaker_id": "claire",
+          "recipient_id": "player",
+          "line": "Hi Isla, something funny tonight. When I sat down on the sofa after work, Leo came over and asked me flat out if I was regular tired or doctor tired. When I said regular tired, he let me sit there with my eyes closed for ten minutes. Thank you."
+        },
+        {
+          "voice": "channel",
+          "channel_id": "phone-bell",
+          "speaker_id": "dr-bell",
+          "recipient_id": "player",
+          "line": "How did it go? Come and find me tomorrow."
+        }
+      ],
+      "completion_effects": [
+        {
+          "kind": "grant_item",
+          "item_id": "note-leo-mid",
+          "count": 1,
+          "message": "note.written"
+        }
+      ]
+    },
+    {
+      "id": "after-leo-high",
+      "label": "Messages (Leo, high)",
+      "steps": [
+        {
+          "voice": "channel",
+          "channel_id": "phone-claire",
+          "speaker_id": "claire",
+          "recipient_id": "player",
+          "line": "I closed my eyes on the couch after dinner, waiting for him to drop his Legos or poke me awake like he has every night since December. Instead he pulled the throw blanket over my legs, left his little red hardware-store flashlight on the coffee table, and went to build in his room. First twenty-minute nap I've had in two months. Thank you, Isla."
+        },
+        {
+          "voice": "channel",
+          "channel_id": "phone-bell",
+          "speaker_id": "dr-bell",
+          "recipient_id": "player",
+          "line": "How did it go? Come and find me tomorrow."
+        }
+      ],
+      "completion_effects": [
+        {
+          "kind": "grant_item",
+          "item_id": "note-leo-high",
+          "count": 1,
+          "message": "note.written"
+        }
+      ]
     }
   ]
 }

@@ -1391,9 +1391,15 @@
       "narrative_lines": [
         "You read your note through once, then close the journal. You sit on the top step a little longer, listening to a city bus sigh at the Calloway stop, before heading round to the front porch for your bike."
       ],
-      "end_game": true,
       "movie_id": "episode-end-low",
-      "lines_before_movie": true
+      "lines_before_movie": true,
+      "end_act": true,
+      "next_stage_ids": [
+        "stage-leo-open"
+      ],
+      "advance_signals": [
+        "act_continued"
+      ]
     },
     {
       "id": "stage-end-mid",
@@ -1404,9 +1410,15 @@
       "narrative_lines": [
         "You read your note through once, then close the journal. You sit on the top step a little longer, listening to a city bus sigh at the Calloway stop, before heading round to the front porch for your bike."
       ],
-      "end_game": true,
       "movie_id": "episode-end-mid",
-      "lines_before_movie": true
+      "lines_before_movie": true,
+      "end_act": true,
+      "next_stage_ids": [
+        "stage-leo-open"
+      ],
+      "advance_signals": [
+        "act_continued"
+      ]
     },
     {
       "id": "stage-end-high",
@@ -1417,8 +1429,1273 @@
       "narrative_lines": [
         "You read your note through once, then close the journal. You sit on the top step a little longer, listening to a city bus sigh at the Calloway stop, before heading round to the front porch for your bike."
       ],
-      "end_game": true,
       "movie_id": "episode-end-high",
+      "lines_before_movie": true,
+      "end_act": true,
+      "next_stage_ids": [
+        "stage-leo-open"
+      ],
+      "advance_signals": [
+        "act_continued"
+      ]
+    },
+    {
+      "id": "stage-leo-open",
+      "quest_id": "leo-notes",
+      "quest_title": "Read your notes",
+      "quest_kind": "main",
+      "summary": "Read your notes on Leo. They are in your journal. Use Look.",
+      "narrative_lines": [
+        "It is early February, and the front steps are slushy. You chain your bike to the porch rail and unclip your tote.",
+        "Through the glass in the green door, a boy in a puffy red coat is standing at the fish tank. He taps the glass once, near the snail, and waits.",
+        "Your journal is in your tote, with your notes on him. When you are ready, you can go in and say hello."
+      ],
+      "advance_signals": [
+        {
+          "signal": "item_observed:leo-intake",
+          "next_stage_ids": [
+            "stage-leo-waiting"
+          ]
+        },
+        {
+          "signal": "item_observed:leo-referral",
+          "next_stage_ids": [
+            "stage-leo-waiting"
+          ]
+        },
+        {
+          "signal": "item_observed:leo-session-one",
+          "next_stage_ids": [
+            "stage-leo-waiting"
+          ]
+        },
+        {
+          "signal": "item_observed:leo-schedule",
+          "next_stage_ids": [
+            "stage-leo-waiting"
+          ]
+        },
+        {
+          "signal": "interaction_done:leo:greet",
+          "next_stage_ids": [
+            "stage-leo-meet"
+          ]
+        }
+      ],
+      "actor_relocations": [
+        {
+          "actor_id": "player",
+          "to_room_id": "porch"
+        },
+        {
+          "actor_id": "leo",
+          "to_room_id": "waiting-room"
+        }
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "set_story_var",
+          "key": "episode_leo",
+          "value": "true"
+        },
+        {
+          "kind": "remove_item",
+          "item_id": "journal-index"
+        },
+        {
+          "kind": "grant_item",
+          "item_id": "journal-index-two",
+          "count": 1
+        },
+        {
+          "kind": "grant_item",
+          "item_id": "leo-intake",
+          "count": 1
+        },
+        {
+          "kind": "grant_item",
+          "item_id": "leo-referral",
+          "count": 1
+        },
+        {
+          "kind": "grant_item",
+          "item_id": "leo-session-one",
+          "count": 1
+        },
+        {
+          "kind": "grant_item",
+          "item_id": "leo-schedule",
+          "count": 1
+        },
+        {
+          "kind": "remove_item",
+          "item_id": "book-bird"
+        },
+        {
+          "kind": "remove_item",
+          "item_id": "book-bear"
+        },
+        {
+          "kind": "remove_item",
+          "item_id": "book-fox"
+        },
+        {
+          "kind": "remove_item",
+          "item_id": "snack"
+        },
+        {
+          "kind": "set_feature_items",
+          "feature": "book-room/book-shelves",
+          "items": {
+            "book-owl": 1,
+            "book-rabbit": 1,
+            "book-clouds": 1
+          }
+        },
+        {
+          "kind": "set_feature_items",
+          "feature": "kitchen/snack-shelf",
+          "items": {
+            "leo-snack": 1
+          }
+        },
+        {
+          "kind": "set_feature_items",
+          "feature": "quiet-room/stuffed-animals",
+          "items": {
+            "patient-basket": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "stage-leo-waiting",
+      "quest_id": "leo-greet",
+      "quest_title": "Greet Leo",
+      "quest_kind": "main",
+      "summary": "Say hello to Leo. Use Talk in the waiting room.",
+      "narrative_lines": [],
+      "advance_signals": [
+        "interaction_done:leo:greet"
+      ],
+      "next_stage_ids": [
+        "stage-leo-meet"
+      ]
+    },
+    {
+      "id": "stage-leo-meet",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Answer Leo.",
+      "narrative_lines": [],
+      "open_menu": "leo-meet",
+      "advance_signals": [
+        "menu_selected:leo-meet"
+      ],
+      "next_stage_ids": [
+        "stage-leo-follow"
+      ]
+    },
+    {
+      "id": "stage-leo-follow",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Take Leo to the playroom.",
+      "narrative_lines": [
+        "Leo is out the door before you stand up, one untied lace slapping the floor. In the hall he waits for you with his arms crossed."
+      ],
+      "advance_signals": [
+        {
+          "signal": "room_entered:playroom",
+          "conditions": [
+            {
+              "path": "inventory.patient-basket",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-leo-clinic"
+          ]
+        },
+        {
+          "signal": "room_entered:playroom",
+          "next_stage_ids": [
+            "stage-leo-fetch-basket"
+          ]
+        }
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "set_follows_player",
+          "actor_id": "leo",
+          "follows": true
+        }
+      ]
+    },
+    {
+      "id": "stage-leo-clinic",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Answer Leo.",
+      "narrative_lines": [
+        "Late light comes through the bay window onto the road rug. Leo goes straight to the toy shelf, still in his red coat, and pulls out the doctor's kit.",
+        "He hangs the plastic stethoscope around his neck and pushes a sheet of paper and a red crayon into your hands.",
+        "Leo (to Isla): You're the chart nurse. Write down everything I say.",
+        "You set the basket of stuffed animals on the low table. A one-eyed frog, an owl and a lamb look out over the rim.",
+        "Leo (to Isla): First patients. Frog, Owl, Lamb. Nurse, write that down."
+      ],
+      "open_menu": "leo-clinic",
+      "advance_signals": [
+        "menu_selected:leo-clinic"
+      ],
+      "next_stage_ids": [
+        "stage-leo-upright"
+      ],
+      "completion_effects": [
+        {
+          "kind": "remove_item",
+          "item_id": "patient-basket"
+        }
+      ],
+      "actor_relocations": [
+        {
+          "actor_id": "leo",
+          "to_room_id": "playroom"
+        }
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "set_follows_player",
+          "actor_id": "leo",
+          "follows": false
+        },
+        {
+          "kind": "set_story_var",
+          "key": "leo_left_waiting_room",
+          "value": "true"
+        }
+      ]
+    },
+    {
+      "id": "stage-leo-fetch-basket",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Fetch the basket of stuffed animals from the quiet room, on the second floor.",
+      "narrative_lines": [
+        "Late light comes through the bay window onto the road rug. Leo goes straight to the toy shelf, still in his red coat, and pulls out the doctor's kit.",
+        "He hangs the plastic stethoscope around his neck and pushes a sheet of paper and a red crayon into your hands.",
+        "Leo (to Isla): You're the chart nurse. Write down everything I say.",
+        "Leo looks into your empty hands, then at the door.",
+        "Leo (to Isla): Nurse! Where are the patients? In the basket. Upstairs. Go get them."
+      ],
+      "advance_signals": [
+        "item_acquired:patient-basket"
+      ],
+      "next_stage_ids": [
+        "stage-leo-bring-basket"
+      ],
+      "actor_relocations": [
+        {
+          "actor_id": "leo",
+          "to_room_id": "playroom"
+        }
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "set_follows_player",
+          "actor_id": "leo",
+          "follows": false
+        },
+        {
+          "kind": "set_story_var",
+          "key": "leo_left_waiting_room",
+          "value": "true"
+        }
+      ]
+    },
+    {
+      "id": "stage-leo-bring-basket",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Take the basket back to Leo in the playroom.",
+      "narrative_lines": [],
+      "advance_signals": [
+        "room_entered:playroom"
+      ],
+      "next_stage_ids": [
+        "stage-leo-clinic-late"
+      ]
+    },
+    {
+      "id": "stage-leo-clinic-late",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Answer Leo.",
+      "narrative_lines": [
+        "You set the basket on the low table. A one-eyed frog, an owl and a lamb look out over the rim.",
+        "Leo (to Isla): About time, Nurse. First patients. Frog, Owl, Lamb. Write that down."
+      ],
+      "open_menu": "leo-clinic",
+      "advance_signals": [
+        "menu_selected:leo-clinic"
+      ],
+      "next_stage_ids": [
+        "stage-leo-upright"
+      ],
+      "completion_effects": [
+        {
+          "kind": "remove_item",
+          "item_id": "patient-basket"
+        }
+      ]
+    },
+    {
+      "id": "stage-leo-upright",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Stay with Leo.",
+      "narrative_lines": [
+        "Leo kneels over the frog and presses the stethoscope to its chest. His lips move as he counts.",
+        "Leo (to Isla): Twenty-four beats. Write that down.",
+        "He sits the frog up against the baseboard, then the owl, then the lamb. All three lean in a row against the wall, facing the room.",
+        "Leo (to Isla): Nobody lies down in my hospital. Lying down makes you worse."
+      ],
+      "open_menu": "leo-upright",
+      "advance_signals": [
+        {
+          "signal": "menu_selected:leo-upright",
+          "conditions": [
+            {
+              "path": "inventory.leo-snack",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-leo-snack-have"
+          ]
+        },
+        {
+          "signal": "menu_selected:leo-upright",
+          "next_stage_ids": [
+            "stage-leo-snack-none"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-leo-snack-have",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Answer Leo.",
+      "narrative_lines": [
+        "Leo checks the frog's chest once more, then the owl's, then the lamb's. Then he looks at your tote.",
+        "Leo (to Isla): The staff needs supplies. Nurse, what do we have?"
+      ],
+      "open_menu": "leo-snack-have",
+      "advance_signals": [
+        {
+          "signal": "menu_selected:leo-snack-have",
+          "conditions": [
+            {
+              "path": "actor_stats.leo.points",
+              "operator": "gte",
+              "value": 3
+            }
+          ],
+          "next_stage_ids": [
+            "stage-leo-signs"
+          ]
+        },
+        {
+          "signal": "menu_selected:leo-snack-have",
+          "conditions": [
+            {
+              "any": [
+                "item:book-owl",
+                "item:book-rabbit",
+                "item:book-clouds"
+              ]
+            }
+          ],
+          "next_stage_ids": [
+            "stage-leo-stories-intro"
+          ]
+        },
+        {
+          "signal": "menu_selected:leo-snack-have",
+          "next_stage_ids": [
+            "stage-leo-pick-book"
+          ]
+        }
+      ],
+      "completion_effects": [
+        {
+          "kind": "remove_item",
+          "item_id": "leo-snack"
+        }
+      ]
+    },
+    {
+      "id": "stage-leo-snack-none",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Answer Leo.",
+      "narrative_lines": [
+        "Leo checks the frog's chest once more, then the owl's, then the lamb's. Then he looks at your tote.",
+        "Leo (to Isla): The staff needs supplies. Pretzels and cookies. Nurse, where are they?"
+      ],
+      "open_menu": "leo-snack-none",
+      "advance_signals": [
+        {
+          "signal": "menu_selected:leo-snack-none",
+          "conditions": [
+            {
+              "path": "story_vars.values.leo_snack_choice",
+              "operator": "equal",
+              "value": "leo-snack-none-probe"
+            },
+            {
+              "path": "actor_stats.leo.points",
+              "operator": "gte",
+              "value": 3
+            }
+          ],
+          "next_stage_ids": [
+            "stage-leo-signs"
+          ]
+        },
+        {
+          "signal": "menu_selected:leo-snack-none",
+          "conditions": [
+            {
+              "path": "story_vars.values.leo_snack_choice",
+              "operator": "equal",
+              "value": "leo-snack-none-probe"
+            },
+            {
+              "any": [
+                "item:book-owl",
+                "item:book-rabbit",
+                "item:book-clouds"
+              ]
+            }
+          ],
+          "next_stage_ids": [
+            "stage-leo-stories-intro"
+          ]
+        },
+        {
+          "signal": "menu_selected:leo-snack-none",
+          "conditions": [
+            {
+              "path": "story_vars.values.leo_snack_choice",
+              "operator": "equal",
+              "value": "leo-snack-none-probe"
+            }
+          ],
+          "next_stage_ids": [
+            "stage-leo-pick-book"
+          ]
+        },
+        {
+          "signal": "menu_selected:leo-snack-none",
+          "conditions": [
+            {
+              "path": "story_vars.values.leo_snack_choice",
+              "operator": "equal",
+              "value": "leo-snack-none-soften"
+            },
+            {
+              "path": "actor_stats.leo.points",
+              "operator": "gte",
+              "value": 3
+            }
+          ],
+          "next_stage_ids": [
+            "stage-leo-signs"
+          ]
+        },
+        {
+          "signal": "menu_selected:leo-snack-none",
+          "conditions": [
+            {
+              "path": "story_vars.values.leo_snack_choice",
+              "operator": "equal",
+              "value": "leo-snack-none-soften"
+            },
+            {
+              "any": [
+                "item:book-owl",
+                "item:book-rabbit",
+                "item:book-clouds"
+              ]
+            }
+          ],
+          "next_stage_ids": [
+            "stage-leo-stories-intro"
+          ]
+        },
+        {
+          "signal": "menu_selected:leo-snack-none",
+          "conditions": [
+            {
+              "path": "story_vars.values.leo_snack_choice",
+              "operator": "equal",
+              "value": "leo-snack-none-soften"
+            }
+          ],
+          "next_stage_ids": [
+            "stage-leo-pick-book"
+          ]
+        },
+        {
+          "signal": "menu_selected:leo-snack-none",
+          "next_stage_ids": [
+            "stage-leo-fetch-snack"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-leo-fetch-snack",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Fetch the pretzel sticks and oat cookies from the kitchen and return to Leo in the playroom.",
+      "narrative_lines": [],
+      "advance_signals": [
+        {
+          "signal": "room_entered:playroom",
+          "conditions": [
+            {
+              "path": "inventory.leo-snack",
+              "operator": "gte",
+              "value": 1
+            },
+            {
+              "path": "actor_stats.leo.points",
+              "operator": "gte",
+              "value": 3
+            }
+          ],
+          "next_stage_ids": [
+            "stage-leo-signs"
+          ]
+        },
+        {
+          "signal": "room_entered:playroom",
+          "conditions": [
+            {
+              "path": "inventory.leo-snack",
+              "operator": "gte",
+              "value": 1
+            },
+            {
+              "any": [
+                "item:book-owl",
+                "item:book-rabbit",
+                "item:book-clouds"
+              ]
+            }
+          ],
+          "next_stage_ids": [
+            "stage-leo-stories-intro"
+          ]
+        },
+        {
+          "signal": "room_entered:playroom",
+          "conditions": [
+            {
+              "path": "inventory.leo-snack",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-leo-pick-book"
+          ]
+        }
+      ],
+      "completion_message": "session.leo_snack_returned",
+      "completion_effects": [
+        {
+          "kind": "remove_item",
+          "item_id": "leo-snack"
+        }
+      ]
+    },
+    {
+      "id": "stage-leo-signs",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Stay with Leo.",
+      "narrative_lines": [
+        "Leo flips the chart over and smooths it flat on the rug. He pushes the red crayon back into your hand.",
+        "Leo (to Isla): Now the Warning Signs. On the back. Write that Owl has lines by his eyes when he comes home from work. Like my dad.",
+        "He holds up the frog and parts the fuzz beside its ear with one finger.",
+        "Leo (to Isla): And Frog has three white hairs right here. I counted them on my mom when she was tying my shoes.",
+        "Leo (to Isla): Pop had a whole head of white hairs."
+      ],
+      "open_menu": "leo-signs",
+      "advance_signals": [
+        {
+          "signal": "menu_selected:leo-signs",
+          "conditions": [
+            {
+              "any": [
+                "item:book-owl",
+                "item:book-rabbit",
+                "item:book-clouds"
+              ]
+            }
+          ],
+          "next_stage_ids": [
+            "stage-leo-stories-intro"
+          ]
+        },
+        {
+          "signal": "menu_selected:leo-signs",
+          "next_stage_ids": [
+            "stage-leo-pick-book"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-leo-pick-book",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Choose a picture book from the book room, at the top of the house.",
+      "narrative_lines": [
+        "Leo (to Isla): Rounds are slow. Nurse, go pick a book.",
+        "Isla (to Leo): I'll be right back."
+      ],
+      "advance_signals": [
+        "item_acquired:book-owl",
+        "item_acquired:book-rabbit",
+        "item_acquired:book-clouds"
+      ],
+      "next_stage_ids": [
+        "stage-leo-bring-book"
+      ]
+    },
+    {
+      "id": "stage-leo-bring-book",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Take the book back to Leo in the playroom.",
+      "narrative_lines": [],
+      "advance_signals": [
+        "room_entered:playroom"
+      ],
+      "next_stage_ids": [
+        "stage-leo-stories-intro"
+      ]
+    },
+    {
+      "id": "stage-leo-stories-intro",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Read to Leo.",
+      "narrative_lines": [
+        "You take the folded oatmeal cloth from your tote and drape it over the toy shelf. You switch on the warm lamp by the beanbag and turn off the overhead light.",
+        "Isla (to Leo): Even doctors take a reading break between rounds.",
+        "Leo climbs onto the window cushion and props the frog upright against his knee.",
+        "Leo (to Isla): One book. I'll monitor the frog."
+      ],
+      "open_menu": "leo-stories",
+      "advance_signals": [
+        {
+          "signal": "menu_selected:leo-stories",
+          "conditions": [
+            {
+              "path": "inventory.book-owl",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-leo-owl-1"
+          ]
+        },
+        {
+          "signal": "menu_selected:leo-stories",
+          "conditions": [
+            {
+              "path": "inventory.book-rabbit",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-leo-rabbit-1"
+          ]
+        },
+        {
+          "signal": "menu_selected:leo-stories",
+          "conditions": [
+            {
+              "path": "inventory.book-clouds",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-leo-clouds-1"
+          ]
+        },
+        {
+          "signal": "menu_selected:leo-stories",
+          "next_stage_ids": [
+            "stage-leo-pick-book"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-leo-owl-1",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Stay with Leo.",
+      "narrative_lines": [
+        "On the first page, a small owl in an acorn helmet marches up and down an oak branch. Below him, a row of birds sleeps wing to wing along the bark.",
+        "Isla (to Leo): Little Owl marched up the branch. Little Owl marched down the branch. All night long, nobody fell.",
+        "Leo taps the acorn helmet in the picture.",
+        "Leo (to Isla): See, somebody has to stay awake. Because once you're asleep you can't tell if your branch is breaking."
+      ],
+      "open_menu": "leo-owl-1",
+      "advance_signals": [
+        "menu_selected:leo-owl-1"
+      ],
+      "next_stage_ids": [
+        "stage-leo-owl-2"
+      ]
+    },
+    {
+      "id": "stage-leo-owl-2",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Stay with Leo.",
+      "narrative_lines": [
+        "You turn the page. The sky has gone gray, and the other birds lift their heads out of their feathers.",
+        "Isla (to Leo): Little Owl, said the birds, your eyes are drooping. Come and rest. We will watch the branch for you. But Little Owl only marched faster.",
+        "Leo slaps the page flat with his palm before you reach the end.",
+        "Leo (to Isla): BEEP BEEP! Nurse! Frog just swallowed a whole fire truck! His stomach is flashing red!"
+      ],
+      "open_menu": "leo-owl-2",
+      "advance_signals": [
+        {
+          "signal": "menu_selected:leo-owl-2",
+          "conditions": [
+            {
+              "path": "actor_stats.leo.points",
+              "operator": "gte",
+              "value": 6
+            }
+          ],
+          "next_stage_ids": [
+            "stage-leo-resting"
+          ]
+        },
+        {
+          "signal": "menu_selected:leo-owl-2",
+          "next_stage_ids": [
+            "stage-leo-owl-3"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-leo-resting",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Stay with Leo.",
+      "narrative_lines": [
+        "The siren fades, and Leo sits very still with the frog against his knee. He looks at Little Owl on the page for a long time.",
+        "Leo (to Isla): Isla. Grown-ups say \"I'm just resting my eyes.\" When they're really tired.",
+        "Leo (to Isla): That's what Pop said. The day before the ambulance came.",
+        "Leo (to Isla): So when Mom lies down after work and says it, I drop my Lego bin. So she opens her eyes again."
+      ],
+      "open_menu": "leo-resting",
+      "advance_signals": [
+        "menu_selected:leo-resting"
+      ],
+      "next_stage_ids": [
+        "stage-leo-owl-3"
+      ]
+    },
+    {
+      "id": "stage-leo-owl-3",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Stay with Leo.",
+      "narrative_lines": [
+        "The last page shows the old branch broken at the foot of the tree. The storm is over, and an old badger sits in the grass beside Little Owl.",
+        "Isla (to Leo): It was the storm, said Old Badger. The branch was old, and the storm was big. It was not the sleeping. Every night every bird sleeps, and every night every chest goes up and down, all by itself, until morning.",
+        "In the last picture, Little Owl tucks his head under his wing. Old Badger stays awake on the branch below.",
+        "Leo (to Isla): Badger's staying awake on the lower branch, though. And their chests keep going automatic.",
+        "Leo (to Isla): Is that how it is for real? Chests going automatic?"
+      ],
+      "open_menu": "leo-owl-3",
+      "advance_signals": [
+        {
+          "signal": "menu_selected:leo-owl-3",
+          "conditions": [
+            {
+              "path": "actor_stats.leo.points",
+              "operator": "gte",
+              "value": 8
+            },
+            {
+              "path": "actor_stats.leo.s3_held",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-leo-light"
+          ]
+        },
+        {
+          "signal": "menu_selected:leo-owl-3",
+          "next_stage_ids": [
+            "stage-leo-closing"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-leo-light",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Stay with Leo.",
+      "narrative_lines": [
+        "Leo reaches up to his coat zipper and unclips a tiny red plastic flashlight. He closes his fist around it and squeezes the middle with his thumb, and a small yellow beam falls on the frog's good eye.",
+        "Leo (to Isla): Pop got this for me at Miller's Hardware. Look. If you let go of the middle, the light goes right out.",
+        "He lets go, and the beam goes out. He squeezes it again.",
+        "Leo (to Isla): After everybody goes to bed, I stand in the hall by Mom and Dad's door. I squeeze it for two seconds. Just enough to see the blanket go up and down."
+      ],
+      "open_menu": "leo-light",
+      "advance_signals": [
+        "menu_selected:leo-light"
+      ],
+      "next_stage_ids": [
+        "stage-leo-closing"
+      ]
+    },
+    {
+      "id": "stage-leo-rabbit-1",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Stay with Leo.",
+      "narrative_lines": [
+        "On the first page, a rabbit in a white coat stands behind a counter heaped with band-aids. In the waiting room, a line of animals holds up bandaged paws.",
+        "Isla (to Leo): Doctor Rabbit counted the band-aids. One for a sneeze. Two for a scratch. Three for a bump on the nose.",
+        "Leo leans over the page and counts the animals in the line.",
+        "Leo (to Isla): Rabbit's doing it wrong. You count the band-aids AFTER. Write that down."
+      ],
+      "open_menu": "leo-rabbit-1",
+      "advance_signals": [
+        "menu_selected:leo-rabbit-1"
+      ],
+      "next_stage_ids": [
+        "stage-leo-rabbit-2"
+      ]
+    },
+    {
+      "id": "stage-leo-rabbit-2",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Stay with Leo.",
+      "narrative_lines": [
+        "On the last page, every animal leaves the clinic with a lollipop, and Doctor Rabbit hangs his white coat on a hook.",
+        "Isla (to Leo): And then Doctor Rabbit locked up the clinic and went home. The end.",
+        "Leo studies the picture of the empty waiting room.",
+        "Leo (to Isla): He didn't check anybody's chest. Not even once."
+      ],
+      "open_menu": "leo-rabbit-2",
+      "advance_signals": [
+        "menu_selected:leo-rabbit-2"
+      ],
+      "next_stage_ids": [
+        "stage-leo-closing"
+      ]
+    },
+    {
+      "id": "stage-leo-clouds-1",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Stay with Leo.",
+      "narrative_lines": [
+        "You open to the first page. An old gray bear sits down on a soft white cloud under a crescent moon.",
+        "Isla (to Leo): Old Bear was very old, and very, very tired. So he lay down on the cloud and went to sleep, and he never woke up.",
+        "Leo slaps the cover shut with both hands.",
+        "Leo (to Isla): That book is wrong. Sleeping isn't the same thing.",
+        "He pulls the frog into his lap and goes back to checking its pulse."
+      ],
+      "open_menu": "leo-clouds-1",
+      "advance_signals": [
+        "menu_selected:leo-clouds-1"
+      ],
+      "next_stage_ids": [
+        "stage-leo-closing"
+      ]
+    },
+    {
+      "id": "stage-leo-closing",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Stay with Leo.",
+      "narrative_lines": [
+        "On the shelf, the little pear timer gives its soft five-minute click. Leo takes the plastic stethoscope off his neck and hangs it back on the toy shelf.",
+        "Leo (to Isla): Is that the five-minute? Rounds are almost over."
+      ],
+      "open_menu": "leo-closing",
+      "advance_signals": [
+        {
+          "signal": "menu_selected:leo-closing",
+          "conditions": [
+            {
+              "path": "actor_stats.leo.s4_held",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-leo-farewell-high"
+          ]
+        },
+        {
+          "signal": "menu_selected:leo-closing",
+          "conditions": [
+            {
+              "path": "actor_stats.leo.s3_held",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-leo-farewell-mid"
+          ]
+        },
+        {
+          "signal": "menu_selected:leo-closing",
+          "conditions": [
+            {
+              "path": "actor_stats.leo.s2_held",
+              "operator": "gte",
+              "value": 1
+            }
+          ],
+          "next_stage_ids": [
+            "stage-leo-farewell-mid"
+          ]
+        },
+        {
+          "signal": "menu_selected:leo-closing",
+          "next_stage_ids": [
+            "stage-leo-farewell-low"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "stage-leo-farewell-low",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Sit on the back steps. Go through the kitchen and out the back.",
+      "narrative_lines": [
+        "The timer on the shelf gives its single soft chime. Leo zips his red coat up to his chin and pulls a hat out of one sleeve.",
+        "Out in the waiting room, Gloria is already on her feet. Claire is standing just inside the front door, with her scrubs showing under her coat.",
+        "Claire (to Leo): Hey, bud. Mittens in your sleeves. Ready?",
+        "Leo (to Isla): Bye, Nurse. Same time next Tuesday. Bring the patients.",
+        "Back in the playroom, the chart is on the low table, with 24 BEATS across the top in red crayon. The frog, the owl and the lamb are still propped upright against the baseboard.",
+        "The front door clicks shut behind them, and the house settles into quiet."
+      ],
+      "advance_signals": [
+        "room_entered:back-yard"
+      ],
+      "next_stage_ids": [
+        "stage-leo-steps-low"
+      ],
+      "actor_relocations": [
+        {
+          "actor_id": "leo",
+          "to_room_id": ""
+        }
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "grant_item",
+          "item_id": "leo-chart-low",
+          "count": 1,
+          "message": "chart.tucked"
+        }
+      ]
+    },
+    {
+      "id": "stage-leo-steps-low",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Check your phone.",
+      "narrative_lines": [
+        "The back steps are cold, and there is old snow along the fence. You set your tote beside you on the top step and sit down for five minutes before heading round to unchain your bike.",
+        "Inside your tote, your phone has buzzed."
+      ],
+      "open_menu": "phone-1",
+      "advance_signals": [
+        "menu_selected:phone-1"
+      ],
+      "next_stage_ids": [
+        "stage-leo-phone-2"
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "queue_sequence",
+          "sequence_id": "after-leo-low"
+        }
+      ]
+    },
+    {
+      "id": "stage-leo-farewell-mid",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Sit on the back steps. Go through the kitchen and out the back.",
+      "narrative_lines": [
+        "The timer on the shelf gives its single soft chime. Leo zips his red coat up to his chin and pulls a hat out of one sleeve.",
+        "Out in the waiting room, Gloria is already on her feet. Claire is standing just inside the front door, with her scrubs showing under her coat.",
+        "Claire (to Leo): Hey, bud. Mittens in your sleeves. Ready?",
+        "Leo (to Isla): Bye, Nurse. Same time next Tuesday. Bring the patients.",
+        "Back in the playroom, he has left the chart on the low table. On the back, in your handwriting, it says OWL, WRINKLES, and FROG, 3 WHITE HAIRS, and under them, in green crayon, REGULAR TIRED.",
+        "The front door clicks shut behind them, and the house settles into quiet."
+      ],
+      "advance_signals": [
+        "room_entered:back-yard"
+      ],
+      "next_stage_ids": [
+        "stage-leo-steps-mid"
+      ],
+      "actor_relocations": [
+        {
+          "actor_id": "leo",
+          "to_room_id": ""
+        }
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "grant_item",
+          "item_id": "leo-chart-mid",
+          "count": 1,
+          "message": "chart.tucked"
+        }
+      ]
+    },
+    {
+      "id": "stage-leo-steps-mid",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Check your phone.",
+      "narrative_lines": [
+        "The back steps are cold, and there is old snow along the fence. You set your tote beside you on the top step and sit down for five minutes before heading round to unchain your bike.",
+        "Inside your tote, your phone has buzzed."
+      ],
+      "open_menu": "phone-1",
+      "advance_signals": [
+        "menu_selected:phone-1"
+      ],
+      "next_stage_ids": [
+        "stage-leo-phone-2"
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "queue_sequence",
+          "sequence_id": "after-leo-mid"
+        }
+      ]
+    },
+    {
+      "id": "stage-leo-farewell-high",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Sit on the back steps. Go through the kitchen and out the back.",
+      "narrative_lines": [
+        "The timer on the shelf gives its single soft chime. Leo zips his red coat up to his chin and pulls a hat out of one sleeve.",
+        "Out in the waiting room, Gloria is already on her feet. Claire is standing just inside the front door, with her scrubs showing under her coat.",
+        "Claire (to Leo): Hey, bud. Mittens in your sleeves. Ready?",
+        "Leo (to Isla): Bye, Isla. Same time next Tuesday.",
+        "On the low table, Leo has folded the oatmeal cloth into a pillow and laid the one-eyed frog flat on its back. Taped beside it, the chart says SLEEPING. CHEST GOES AUTOMATIC. WILL WAKE UP.",
+        "The front door clicks shut behind them, and the house settles into quiet."
+      ],
+      "advance_signals": [
+        "room_entered:back-yard"
+      ],
+      "next_stage_ids": [
+        "stage-leo-steps-high"
+      ],
+      "actor_relocations": [
+        {
+          "actor_id": "leo",
+          "to_room_id": ""
+        }
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "grant_item",
+          "item_id": "leo-chart-high",
+          "count": 1,
+          "message": "chart.tucked"
+        }
+      ]
+    },
+    {
+      "id": "stage-leo-steps-high",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Check your phone.",
+      "narrative_lines": [
+        "The back steps are cold, and there is old snow along the fence. You set your tote beside you on the top step and sit down for five minutes before heading round to unchain your bike.",
+        "Inside your tote, your phone has buzzed."
+      ],
+      "open_menu": "phone-1",
+      "advance_signals": [
+        "menu_selected:phone-1"
+      ],
+      "next_stage_ids": [
+        "stage-leo-phone-2"
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "queue_sequence",
+          "sequence_id": "after-leo-high"
+        }
+      ]
+    },
+    {
+      "id": "stage-leo-phone-2",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Check your phone.",
+      "narrative_lines": [],
+      "open_menu": "phone-2",
+      "advance_signals": [
+        "menu_selected:phone-2"
+      ],
+      "next_stage_ids": [
+        "stage-leo-note"
+      ]
+    },
+    {
+      "id": "stage-leo-note",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Write your note.",
+      "narrative_lines": [],
+      "open_menu": "note",
+      "advance_signals": [
+        "menu_selected:note"
+      ],
+      "next_stage_ids": [
+        "stage-leo-read-note"
+      ]
+    },
+    {
+      "id": "stage-leo-read-note",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "Read your note.",
+      "narrative_lines": [],
+      "advance_signals": [
+        {
+          "signal": "item_observed:note-leo-low",
+          "next_stage_ids": [
+            "stage-leo-end-low"
+          ]
+        },
+        {
+          "signal": "item_observed:note-leo-mid",
+          "next_stage_ids": [
+            "stage-leo-end-mid"
+          ]
+        },
+        {
+          "signal": "item_observed:note-leo-high",
+          "next_stage_ids": [
+            "stage-leo-end-high"
+          ]
+        }
+      ],
+      "next_stage_ids": []
+    },
+    {
+      "id": "stage-leo-end-low",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "The session is over.",
+      "narrative_lines": [
+        "You read your note through once, then close the journal. The snow starts again over the back yard, and you sit a little longer before heading round to the front porch for your bike."
+      ],
+      "end_game": true,
+      "movie_id": "leo-end-low",
+      "lines_before_movie": true
+    },
+    {
+      "id": "stage-leo-end-mid",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "The session is over.",
+      "narrative_lines": [
+        "You read your note through once, then close the journal. The snow starts again over the back yard, and you sit a little longer before heading round to the front porch for your bike."
+      ],
+      "end_game": true,
+      "movie_id": "leo-end-mid",
+      "lines_before_movie": true
+    },
+    {
+      "id": "stage-leo-end-high",
+      "quest_id": "leo-session",
+      "quest_title": "The session",
+      "quest_kind": "main",
+      "summary": "The session is over.",
+      "narrative_lines": [
+        "You read your note through once, then close the journal. The snow starts again over the back yard, and you sit a little longer before heading round to the front porch for your bike."
+      ],
+      "end_game": true,
+      "movie_id": "leo-end-high",
       "lines_before_movie": true
     }
   ]

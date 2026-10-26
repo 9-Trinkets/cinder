@@ -202,5 +202,202 @@
     "kind": "misc",
     "group": "journal",
     "description": "Wren's drawing, in crayon, pressed between two pages. A bird sitting on the ground between two trees, with no nest in her wings. Beside her, very small, a girl holds up a red stop sign."
+  },
+  {
+    "id": "journal-index-two",
+    "label": "journal index",
+    "aliases": [
+      "index",
+      "contents",
+      "tabs",
+      "journal"
+    ],
+    "kind": "misc",
+    "group": "journal",
+    "description": "The first page of your journal, ruled by hand. A tab down the edge for each child you see. Wren is under the first, with a column of weeks that ends in November. Leo is under the second, with a column of Tuesdays, and a gap at the bottom where today will go."
+  },
+  {
+    "id": "leo-intake",
+    "label": "Leo, intake form",
+    "aliases": [
+      "leo intake",
+      "leo's intake form",
+      "leo form"
+    ],
+    "kind": "misc",
+    "group": "journal",
+    "description": "The intake form, clipped inside the front cover of your journal, filled in by two hands in two pens. Under what brought you here, Claire has written that her father died in his sleep in December. They told Leo that Pop's body got very old and very tired, so he went to sleep. Since then Leo has come down the hall to their room two or three times a night, and he will not let her close her eyes on the couch after work.\n\nMarcus has written underneath that Leo is full of energy, and has been playing hospital nonstop.\n\nUnder changes in the family, both of them have ticked the box for a death."
+  },
+  {
+    "id": "leo-referral",
+    "label": "Leo, school referral",
+    "aliases": [
+      "leo referral",
+      "leo's referral",
+      "leo letter"
+    ],
+    "kind": "misc",
+    "group": "journal",
+    "description": "A letter on school letterhead, from Ms. Chen, folded into the back pocket of your journal. She writes that Leo asked for a pass to the nurse four times in two weeks, with no fever and nothing hurt. Each time he only wanted the nurse to listen to his chest with the stethoscope and tell him the number.\n\nShe adds that whenever she picks up her coffee mug at her desk, he asks if she is getting too tired."
+  },
+  {
+    "id": "leo-session-one",
+    "label": "Leo, week one",
+    "aliases": [
+      "leo week one",
+      "leo session one",
+      "leo first notes"
+    ],
+    "kind": "misc",
+    "group": "journal",
+    "description": "Your own notes, in your small square writing. Leo opened every bin and drawer in the playroom to see what was inside. In the last five minutes he found the doctor's kit, and he told you that next Tuesday the playroom would be a clinic, and that you would need patients from the basket upstairs.\n\nHe said he is going to be an emergency room doctor, or the night watchman at the zoo, because somebody has to make sure the hippos don't roll over on each other."
+  },
+  {
+    "id": "leo-schedule",
+    "label": "Leo, family schedule",
+    "aliases": [
+      "leo schedule",
+      "leo's schedule",
+      "leo family schedule"
+    ],
+    "kind": "misc",
+    "group": "journal",
+    "description": "A typed page, taped into your journal. Tuesdays at four. Claire drops him off and picks him up.\n\nIn the margin, in Dr. Bell's green ink. Seven is a literal age. Be careful with \"sleep\" and \"tired.\""
+  },
+  {
+    "id": "book-owl",
+    "label": "The Little Owl Who Kept Watch",
+    "aliases": [
+      "owl book",
+      "little owl",
+      "little owl who kept watch",
+      "the little owl who kept watch"
+    ],
+    "kind": "misc",
+    "exclusive_group": "book",
+    "description": "A thin picture book. On the cover, a small owl in an acorn helmet marches along a branch under a round moon."
+  },
+  {
+    "id": "book-rabbit",
+    "label": "Doctor Rabbit's Busy Clinic",
+    "aliases": [
+      "rabbit book",
+      "doctor rabbit",
+      "busy clinic",
+      "doctor rabbit's busy clinic"
+    ],
+    "kind": "misc",
+    "exclusive_group": "book",
+    "description": "A bright, busy picture book. On the cover, a rabbit in a white coat holds a clipboard, and a line of animals waits with bandaged paws."
+  },
+  {
+    "id": "book-clouds",
+    "label": "The Long Sleep in the Clouds",
+    "aliases": [
+      "clouds book",
+      "long sleep",
+      "long sleep in the clouds",
+      "the long sleep in the clouds"
+    ],
+    "kind": "misc",
+    "exclusive_group": "book",
+    "description": "A soft gray picture book. On the cover, an old bear lies on a cloud under the moon. A sticker on the spine reads Losing Someone."
+  },
+  {
+    "id": "patient-basket",
+    "label": "basket of stuffed animals",
+    "aliases": [
+      "patient basket",
+      "patients",
+      "basket of animals",
+      "stuffed animal basket"
+    ],
+    "kind": "misc",
+    "description": "A wicker basket with a one-eyed frog, an owl and a lamb in it, all a little worn at the ears."
+  },
+  {
+    "id": "leo-snack",
+    "label": "pretzel sticks and oat cookies",
+    "aliases": [
+      "pretzels",
+      "pretzel sticks",
+      "oat cookies",
+      "cookies",
+      "leo snack"
+    ],
+    "kind": "misc",
+    "description": "A handful of pretzel sticks and three oat cookies on a paper napkin."
+  },
+  {
+    "id": "note-leo-low",
+    "label": "Leo, today",
+    "aliases": [
+      "leo today",
+      "leo session two",
+      "my note on leo"
+    ],
+    "kind": "misc",
+    "group": "journal",
+    "description": "Session two. Leo ran the playroom as a clinic and kept every stuffed animal propped upright against the wall. He stayed inside the doctor game the whole time. Next week, stay in the nurse role and let him set the rules."
+  },
+  {
+    "id": "note-leo-mid",
+    "label": "Leo, today",
+    "aliases": [
+      "leo today",
+      "leo session two",
+      "my note on leo"
+    ],
+    "kind": "misc",
+    "group": "journal",
+    "description": "Session two. Leo had me write the warning signs on the back of his chart. Lines by his dad's eyes, and three white hairs above his mom's ear. He counted them himself. Keep giving him plain, literal answers next week."
+  },
+  {
+    "id": "note-leo-high",
+    "label": "Leo, today",
+    "aliases": [
+      "leo today",
+      "leo session two",
+      "my note on leo"
+    ],
+    "kind": "misc",
+    "group": "journal",
+    "description": "Session two. He showed me the red squeeze light Pop gave him. Every night he stands outside his parents' door in the dark and squeezes it just long enough to see their blanket rise and fall. Before he left, he laid the one-eyed frog flat on the cloth to sleep. Next week, let him decide whether the clinic still needs a night watch."
+  },
+  {
+    "id": "leo-chart-low",
+    "label": "Leo, his chart",
+    "aliases": [
+      "chart",
+      "leo's chart",
+      "leo chart"
+    ],
+    "kind": "misc",
+    "group": "journal",
+    "description": "Leo's chart, folded into your journal. A sheet of drawing paper with 24 BEATS across the top in red crayon."
+  },
+  {
+    "id": "leo-chart-mid",
+    "label": "Leo, his chart",
+    "aliases": [
+      "chart",
+      "leo's chart",
+      "leo chart"
+    ],
+    "kind": "misc",
+    "group": "journal",
+    "description": "Leo's chart, folded into your journal. In your handwriting, OWL, WRINKLES, and FROG, 3 WHITE HAIRS. Under them, in green crayon, one line. REGULAR TIRED."
+  },
+  {
+    "id": "leo-chart-high",
+    "label": "Leo, his chart",
+    "aliases": [
+      "chart",
+      "leo's chart",
+      "leo chart"
+    ],
+    "kind": "misc",
+    "group": "journal",
+    "description": "Leo's chart, peeled off the table and folded into your journal. In red crayon, SLEEPING. CHEST GOES AUTOMATIC. WILL WAKE UP."
   }
 ]

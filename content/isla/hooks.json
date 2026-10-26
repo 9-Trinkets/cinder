@@ -883,5 +883,770 @@
         }
       ]
     }
+  },
+  "menu.leo-meet.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "next",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-meet-play"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-meet-ready"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "menu.leo-clinic.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "next",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-clinic-play"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-clinic-join"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "menu.leo-upright.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "next",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-upright-reflect"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 2
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-upright-wait"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 2
+          }
+        }
+      ]
+    }
+  },
+  "menu.leo-snack-have.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "next",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-snack-have-play"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-snack-have-join"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "menu.leo-snack-none.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "next",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-snack-none-play"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-snack-none-join"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "menu.leo-signs.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "next",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-signs-reflect"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 2
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-signs-reflect"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "s2_held",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-signs-wait"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 2
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-signs-wait"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "s2_held",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "menu.leo-owl-1.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "next",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-owl-1-wait"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-owl-1-reflect"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-owl-1-join"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "menu.leo-owl-2.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "next",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-owl-2-follow"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-owl-2-wait"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "menu.leo-resting.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "next",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-resting-reflect"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 2
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-resting-reflect"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "s3_held",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-resting-wait"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 2
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-resting-wait"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "s3_held",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "menu.leo-owl-3.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "next",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-owl-3-plain"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-owl-3-chest"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "menu.leo-light.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "next",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-light-reflect"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 2
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-light-reflect"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "s4_held",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-light-wait"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 2
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-light-wait"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "s4_held",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "menu.leo-rabbit-1.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "next",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-rabbit-1-play"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-rabbit-1-wait"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-rabbit-1-join"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "menu.leo-rabbit-2.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "next",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-rabbit-2-play"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-rabbit-2-wait"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "menu.leo-closing.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "next",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-closing-plain"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-closing-play"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "option_id",
+              "operator": "equal",
+              "value": "leo-closing-wait"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "leo",
+            "stat": "points",
+            "delta": 1
+          }
+        }
+      ]
+    }
   }
 }

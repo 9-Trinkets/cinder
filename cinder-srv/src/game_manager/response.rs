@@ -11,6 +11,10 @@ pub struct MovieFrameData {
     pub heading: String,
     #[serde(skip_serializing_if = "String::is_empty")]
     pub tint: String,
+    #[serde(skip_serializing_if = "String::is_empty")]
+    pub text_color: String,
+    #[serde(skip_serializing_if = "String::is_empty")]
+    pub ambient: String,
 }
 
 /// Look of a card movie, as the pack set it. Empty settings use the theme.
@@ -90,6 +94,8 @@ pub fn consume_projector_sequence(runtime: &CinderRuntime) -> Option<MovieData> 
             duration_ms: frame.duration_ms,
             heading: frame.heading,
             tint: frame.tint,
+            text_color: frame.text_color,
+            ambient: frame.ambient,
         })
         .collect();
     let style = match sequence.style {

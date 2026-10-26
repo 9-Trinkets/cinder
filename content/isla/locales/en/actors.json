@@ -58,6 +58,38 @@
     ]
   },
   {
+    "id": "leo",
+    "name": "Leo",
+    "initial_stats": {},
+    "aliases": [
+      "leo",
+      "boy",
+      "child"
+    ],
+    "inspect_text": "Leo is seven and a half, tall for his age, in a puffy red coat he has not unzipped. One bottom tooth has grown back crooked, and one of his boot laces is untied. A tiny red flashlight is clipped to his zipper.",
+    "prompt_context": {
+      "character_notes": [],
+      "subtext_notes": [],
+      "response_notes": [],
+      "behavior_examples": []
+    },
+    "room_id": "waiting-room",
+    "starts_away": true,
+    "interactions": [
+      {
+        "id": "greet",
+        "label": "Greet Leo",
+        "lines": [
+          "You push through the green door. Leo is at the fish tank in his puffy red coat, one finger flat against the glass beside the snail.",
+          "Isla (to Leo): Hi, Leo. Looks like the snail has company.",
+          "Leo (to Isla): I'm checking if he's asleep or stuck. You can't tell from the outside.",
+          "He gives the glass one more tap, then turns around.",
+          "Leo (to Isla): Okay. The clinic is open today. Did you get the patients READY?"
+        ]
+      }
+    ]
+  },
+  {
     "id": "gloria",
     "name": "Gloria",
     "room_id": "waiting-room",
@@ -85,6 +117,19 @@
           "Isla (to Gloria): How's she doing out here?",
           "Gloria (to Isla): She came up to the desk twice to ask me if today was really Thursday. I told her yes both times, sweetheart.",
           "Gloria (to Isla): Since then she's just been sitting there counting the stones in the fish tank. The snail doesn't seem to mind the company."
+        ]
+      },
+      {
+        "id": "about-leo",
+        "label": "Ask Gloria about Leo",
+        "when": [
+          "episode_leo",
+          "!leo_left_waiting_room"
+        ],
+        "lines": [
+          "Isla (to Gloria): How's he doing out here?",
+          "Gloria (to Isla): He asked me twice if the snail is asleep or stuck. I said I couldn't tell either, hon.",
+          "Gloria (to Isla): Then he made me check his coat zipper. It was fine."
         ]
       }
     ]
@@ -138,6 +183,25 @@
       "ben"
     ],
     "inspect_text": "Wren's father has already gone.",
+    "prompt_context": {
+      "character_notes": [],
+      "subtext_notes": [],
+      "response_notes": [],
+      "behavior_examples": []
+    },
+    "tags": [
+      "offstage"
+    ]
+  },
+  {
+    "id": "claire",
+    "name": "Claire",
+    "initial_stats": {},
+    "aliases": [
+      "claire",
+      "leo's mom"
+    ],
+    "inspect_text": "Leo's mother is not here yet.",
     "prompt_context": {
       "character_notes": [],
       "subtext_notes": [],

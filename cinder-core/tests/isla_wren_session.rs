@@ -286,7 +286,7 @@ fn the_best_session_with_the_right_book_reaches_every_secret_and_the_best_drawin
     assert!(after.contains("She showed me the handle."), "{after}");
     assert_eq!(
         runtime.export_state().expect("state").phase,
-        GamePhase::GameEnded
+        GamePhase::ActEnded
     );
     let card = runtime
         .consume_pending_projector_sequence()
@@ -499,7 +499,7 @@ fn a_quieter_session_gets_a_quieter_message_and_note() {
     );
     assert_eq!(
         runtime.export_state().expect("state").phase,
-        GamePhase::GameEnded
+        GamePhase::ActEnded
     );
 }
 
@@ -681,6 +681,12 @@ fn the_closing_lines_come_before_the_journal_card_which_shows_the_note() {
             format!("note-three-{tier}"),
             "the card shows the note Isla wrote, not a separate text"
         );
-        assert_eq!(card.frames.len(), 1, "the card is the date and the note");
+        assert_eq!(
+            card.frames.len(),
+            2,
+            "the card is the date and the note, then the jump to the next episode"
+        );
+        assert_eq!(card.frames[1].heading, "Tuesday, February 4");
+        assert_eq!(card.frames[1].ambient, "snow");
     }
 }
