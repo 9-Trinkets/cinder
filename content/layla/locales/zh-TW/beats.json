@@ -592,6 +592,11 @@
           "key": "met_witch",
           "kind": "set_story_var",
           "value": "true"
+        },
+        {
+          "key": "sanctum_door_unbolted",
+          "kind": "set_story_var",
+          "value": "true"
         }
       ],
       "quest_id": "high_sanctuary_infiltration",
@@ -689,6 +694,7 @@
     {
       "actor_relocations": [],
       "advance_signals": [
+        "feature_observed:sanctuary_inquisition_archive-ledger",
         "feature_observed:mortuary_reanimation_sanctum-ledger"
       ],
       "beat_note": "在靈柩殿的講台上，秘密名冊詳細記錄著自深井村與鹽灘擄走的居民如何被抽離靈魂並煉成石魔像與守衛。",

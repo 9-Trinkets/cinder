@@ -7,6 +7,8 @@
   "bookmark_modal_title": "書籤",
   "create_bookmark_label": "＋將此刻設為書籤",
   "dynamic_menu_context_label": "情境",
+  "equipment_label": "裝備",
+  "equipment_prompt": "選擇要裝備或收起的物品。",
   "error_prefix": "",
   "exit_confirm_body": "回到書庫？你的旅程已儲存。",
   "exit_confirm_title": "離開本章？",
@@ -17,6 +19,9 @@
   "final_summary_relationships_label": "羈絆",
   "final_summary_title": "章節回顧",
   "game_over_hint": "↑/↓ 或 PageUp/PageDown 捲動",
+  "give_label": "給予",
+  "give_panel_title": "交給隊友",
+  "give_prompt": "選擇要送出的物品",
   "help_label": "說明",
   "language_changed_text": "好，我把你的顯示語言換成{language_name}了。要是變得更糟，跟我說一聲。",
   "language_menu_label": "語言",
@@ -68,10 +73,5 @@
   },
   "shell_menu_close_hint": "用 ↑/↓ 與 Enter 選擇。Esc 關閉。",
   "shell_menu_title": "選單",
-  "trace_mark_present_label": "這裡已描過紋",
-  "give_label": "給予",
-  "give_panel_title": "交給隊友",
-  "equipment_label": "裝備",
-  "equipment_prompt": "選擇要裝備或收起的物品。",
-  "give_prompt": "選擇要送出的物品"
+  "trace_mark_present_label": "這裡已描過紋"
 }

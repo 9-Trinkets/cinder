@@ -11,8 +11,9 @@ const EXPECTED_FLOOR6_ROOMS: &[&str] = &[
     "sanctuary_main_platform",
     "sanctuary_west_colonnade",
     "herbarium_cliff_balcony",
-    // Inner Sanctuary Core (3 rooms)
+    // Inner Sanctuary Core (4 rooms)
     "sanctuary_crossroads",
+    "sanctuary_inquisition_archive",
     "herbarium_garden",
     "mortuary_reanimation_sanctum",
 ];
@@ -21,7 +22,7 @@ const EXPECTED_FLOOR6_ROOMS: &[&str] = &[
 fn floor6_rooms_load_and_validate() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
 
-    assert_eq!(EXPECTED_FLOOR6_ROOMS.len(), 8);
+    assert_eq!(EXPECTED_FLOOR6_ROOMS.len(), 9);
     for room_id in EXPECTED_FLOOR6_ROOMS {
         let room = pack
             .room(room_id)
@@ -97,6 +98,7 @@ fn floor6_outer_ring_traversal() {
     // Outer ring connects inwards to the inner sanctuary core
     let inner_connections = [
         ("sanctuary_grand_terrace", "sanctuary_crossroads"),
+        ("sanctuary_east_promenade", "sanctuary_inquisition_archive"),
         ("sanctuary_west_colonnade", "herbarium_garden"),
         ("sanctuary_main_platform", "mortuary_reanimation_sanctum"),
     ];
@@ -116,30 +118,25 @@ fn floor6_outer_ring_traversal() {
 }
 
 #[test]
-fn floor6_inner_crossroads_connections() {
+fn floor6_inner_ring_traversal() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
-    let crossroads = pack
-        .room("sanctuary_crossroads")
-        .expect("sanctuary_crossroads exists");
 
-    let expected_connections = [
-        "sanctuary_grand_terrace",
-        "herbarium_garden",
+    // 4 inner ring rooms in clockwise order:
+    // NW (Crossroads) -> NE (Archive) -> SE (Reanimation Sanctum) -> SW (Solarium Garden)
+    let inner_ring = [
+        "sanctuary_crossroads",
+        "sanctuary_inquisition_archive",
         "mortuary_reanimation_sanctum",
+        "herbarium_garden",
     ];
 
-    for room_id in expected_connections {
+    for i in 0..inner_ring.len() {
+        let current = inner_ring[i];
+        let next = inner_ring[(i + 1) % inner_ring.len()];
+        let room = pack.room(current).unwrap();
         assert!(
-            crossroads.exits.iter().any(|e| e.room_id == room_id),
-            "sanctuary_crossroads must connect to {room_id}"
-        );
-        let c_room = pack.room(room_id).unwrap();
-        assert!(
-            c_room
-                .exits
-                .iter()
-                .any(|e| e.room_id == "sanctuary_crossroads"),
-            "{room_id} must connect back to sanctuary_crossroads"
+            room.exits.iter().any(|e| e.room_id == next),
+            "inner ring room {current} must connect clockwise to {next}"
         );
     }
 }
@@ -205,12 +202,12 @@ fn floor6_layla_teleports_alone_into_sanctuary_and_explores() {
         order_outcome.text()
     );
 
-    // Walk south across terrace into the Crossroads
-    runtime.run_turn("go south").expect("turn runs");
+    // Step in through grand arch into the Crossroads Atrium
+    runtime.run_turn("go in").expect("turn runs");
     assert_eq!(
         runtime.current_room_id().unwrap(),
         "sanctuary_crossroads",
-        "walking south enters sanctuary_crossroads"
+        "entering in brings Layla to sanctuary_crossroads"
     );
 
     // Companions still remain on Floor 5 after moving within Floor 6
@@ -220,23 +217,25 @@ fn floor6_layla_teleports_alone_into_sanctuary_and_explores() {
         "courtyard_center"
     );
 
-    // Walk west into the Solarium Garden
-    runtime.run_turn("go west").expect("turn runs");
+    // Walk south into the Solarium Garden
+    runtime.run_turn("go south").expect("turn runs");
     assert_eq!(
         runtime.current_room_id().unwrap(),
         "herbarium_garden",
-        "walking west enters herbarium_garden"
+        "walking south enters herbarium_garden"
     );
 
-    // Slip through vent out to the Cliff Balcony
-    runtime.run_turn("go out").expect("turn runs");
+    // Dislodge loose brick and slip through vent out to the Cliff Balcony
+    runtime.run_turn("pry brick").expect("turn runs");
+    runtime.run_turn("go vent").expect("turn runs");
     assert_eq!(
         runtime.current_room_id().unwrap(),
         "herbarium_cliff_balcony",
         "crawling through vent enters herbarium_cliff_balcony"
     );
 
-    // Descend secret spiral stair to the Mortuary Reanimation Sanctum
+    // Unbolt door and descend secret spiral stair to the Mortuary Reanimation Sanctum
+    runtime.run_turn("unbolt door").expect("turn runs");
     runtime.run_turn("go down").expect("turn runs");
     assert_eq!(
         runtime.current_room_id().unwrap(),
@@ -244,28 +243,28 @@ fn floor6_layla_teleports_alone_into_sanctuary_and_explores() {
         "taking secret stair enters mortuary_reanimation_sanctum"
     );
 
-    // Step south out to the Mountain Relay Platform
-    runtime.run_turn("go south").expect("turn runs");
+    // Step out onto the Mountain Relay Platform
+    runtime.run_turn("go out").expect("turn runs");
     assert_eq!(
         runtime.current_room_id().unwrap(),
         "sanctuary_main_platform",
-        "walking south enters sanctuary_main_platform"
+        "walking out enters sanctuary_main_platform"
     );
 
-    // Walk northwest along the West Colonnade
-    runtime.run_turn("go northwest").expect("turn runs");
+    // Walk west along the perimeter to the West Colonnade
+    runtime.run_turn("go west").expect("turn runs");
     assert_eq!(
         runtime.current_room_id().unwrap(),
         "sanctuary_west_colonnade",
-        "walking northwest enters sanctuary_west_colonnade"
+        "walking west enters sanctuary_west_colonnade"
     );
 
-    // Complete the loop northeast back to Grand Terrace
-    runtime.run_turn("go northeast").expect("turn runs");
+    // Complete the loop north back to Grand Terrace
+    runtime.run_turn("go north").expect("turn runs");
     assert_eq!(
         runtime.current_room_id().unwrap(),
         "sanctuary_grand_terrace",
-        "walking northeast returns to sanctuary_grand_terrace"
+        "walking north returns to sanctuary_grand_terrace"
     );
 }
 

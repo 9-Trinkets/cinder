@@ -9,9 +9,11 @@
         "floor 4",
         "第四層傳送台"
       ],
-      "when": ["anchor_floor4_platform"],
       "room_id": "teleport_platform",
-      "title": "第四層傳送台"
+      "title": "第四層傳送台",
+      "when": [
+        "anchor_floor4_platform"
+      ]
     },
     {
       "aliases": [
@@ -24,9 +26,11 @@
         "floor 5",
         "霜之城中庭"
       ],
-      "when": ["anchor_floor5_gate"],
       "room_id": "courtyard_center",
-      "title": "霜之城中庭"
+      "title": "霜之城中庭",
+      "when": [
+        "anchor_floor5_gate"
+      ]
     },
     {
       "aliases": [
@@ -35,9 +39,11 @@
         "salt",
         "鹽灘"
       ],
-      "when": ["town_salt_reach_unlocked"],
       "room_id": "salt_reach_square",
-      "title": "鹽灘"
+      "title": "鹽灘",
+      "when": [
+        "town_salt_reach_unlocked"
+      ]
     },
     {
       "aliases": [
@@ -46,9 +52,11 @@
         "glass",
         "玻璃鎮"
       ],
-      "when": ["town_glassbank_unlocked"],
       "room_id": "glassbank_square",
-      "title": "玻璃鎮"
+      "title": "玻璃鎮",
+      "when": [
+        "town_glassbank_unlocked"
+      ]
     },
     {
       "aliases": [
@@ -57,9 +65,11 @@
         "wool",
         "羊毛鎮"
       ],
-      "when": ["town_woolcross_unlocked"],
       "room_id": "woolcross_square",
-      "title": "羊毛鎮"
+      "title": "羊毛鎮",
+      "when": [
+        "town_woolcross_unlocked"
+      ]
     },
     {
       "aliases": [
@@ -68,9 +78,11 @@
         "green",
         "綠息鎮"
       ],
-      "when": ["town_greenrest_unlocked"],
       "room_id": "greenrest_square",
-      "title": "綠息鎮"
+      "title": "綠息鎮",
+      "when": [
+        "town_greenrest_unlocked"
+      ]
     },
     {
       "aliases": [
@@ -79,9 +91,11 @@
         "brass",
         "黃銅鎮"
       ],
-      "when": ["town_brass_yard_unlocked"],
       "room_id": "brass_yard_square",
-      "title": "黃銅鎮"
+      "title": "黃銅鎮",
+      "when": [
+        "town_brass_yard_unlocked"
+      ]
     },
     {
       "aliases": [
@@ -92,9 +106,11 @@
         "floor 6",
         "聖堂傳送台"
       ],
-      "when": ["anchor_floor6_platform"],
       "room_id": "sanctuary_main_platform",
-      "title": "聖堂傳送台"
+      "title": "聖堂傳送台",
+      "when": [
+        "anchor_floor6_platform"
+      ]
     }
   ]
 }

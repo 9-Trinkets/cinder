@@ -2321,9 +2321,11 @@
     "allow_rest": false,
     "descriptions": [
       {
-        "when": ["defeated:goblin-shaman"],
         "inspect_text": "工作環的粉筆在你腳下已被蹭花、踩斷。被縛的石像維持著被留在石板上的姿态，鐵鏈鬆垂進塵土。近旁，吊索靜靜懸在通往深處的豎井上方，將熄的火在屋子中央扭起最後一縷煙。空氣變得靜止而寒冷。",
-        "summary": "腳下的粉筆圈已被蹭花、踩斷。被束縛的石像靜默地立在石板上，如今已沒有看守來為牠們烙印。只剩灰燼，和一爐無人照管的火升起的冷煙。"
+        "summary": "腳下的粉筆圈已被蹭花、踩斷。被束縛的石像靜默地立在石板上，如今已沒有看守來為牠們烙印。只剩灰燼，和一爐無人照管的火升起的冷煙。",
+        "when": [
+          "defeated:goblin-shaman"
+        ]
       }
     ],
     "exits": [
@@ -2371,8 +2373,10 @@
         ],
         "label": "下",
         "menu_label": "下",
-        "when": ["shaman_defeated"],
-        "room_id": "d1c1"
+        "room_id": "d1c1",
+        "when": [
+          "shaman_defeated"
+        ]
       }
     ],
     "features": [
@@ -4745,8 +4749,10 @@
         ],
         "label": "上",
         "menu_label": "上",
-        "when": ["shaman_defeated"],
-        "room_id": "r5c5"
+        "room_id": "r5c5",
+        "when": [
+          "shaman_defeated"
+        ]
       }
     ],
     "features": [
@@ -9010,9 +9016,11 @@
     "allow_rest": false,
     "descriptions": [
       {
-        "when": ["defeated:elf-king-5"],
         "inspect_text": "樹林豁然開出一間寬闊、靜止的石室。妖精王曾以樹根和淡光加冕而坐之處，如今只剩一張中空的灰樹皮王座。",
-        "summary": "樹林豁然開出一間寬闊、靜止的石室。妖精王曾以樹根和淡光加冕而坐之處，如今只剩一張中空的灰樹皮王座。"
+        "summary": "樹林豁然開出一間寬闊、靜止的石室。妖精王曾以樹根和淡光加冕而坐之處，如今只剩一張中空的灰樹皮王座。",
+        "when": [
+          "defeated:elf-king-5"
+        ]
       }
     ],
     "exits": [
@@ -9052,8 +9060,10 @@
         ],
         "label": "下",
         "menu_label": "下",
-        "when": ["elf_king_defeated"],
-        "room_id": "oan"
+        "room_id": "oan",
+        "when": [
+          "elf_king_defeated"
+        ]
       }
     ],
     "features": [
@@ -9324,8 +9334,10 @@
         ],
         "label": "上",
         "menu_label": "上",
-        "when": ["elf_king_defeated"],
-        "room_id": "d8c5"
+        "room_id": "d8c5",
+        "when": [
+          "elf_king_defeated"
+        ]
       }
     ],
     "features": [
@@ -10183,9 +10195,11 @@
     "allow_rest": false,
     "descriptions": [
       {
-        "when": ["defeated:fire-elemental"],
         "inspect_text": "棋盤的心是一個黑玻璃的淺坑。火元素曾燃燒之處，只剩一個圓形搖籃，仍舊溫熱，盛著一圈淡淡的灰燼旋紋。",
-        "summary": "火心坑空了。火元素曾燃燒之處，只剩一個黑玻璃的圓形搖籃，仍舊溫熱，盛著一圈淡淡的灰燼旋紋。"
+        "summary": "火心坑空了。火元素曾燃燒之處，只剩一個黑玻璃的圓形搖籃，仍舊溫熱，盛著一圈淡淡的灰燼旋紋。",
+        "when": [
+          "defeated:fire-elemental"
+        ]
       }
     ],
     "exits": [
@@ -10223,8 +10237,10 @@
         ],
         "label": "下",
         "menu_label": "下",
-        "when": ["elemental_released"],
-        "room_id": "village_square"
+        "room_id": "village_square",
+        "when": [
+          "elemental_released"
+        ]
       }
     ],
     "features": [
@@ -10267,9 +10283,11 @@
     "allow_rest": false,
     "descriptions": [
       {
-        "when": ["defeated:garrison_guard"],
         "inspect_text": "暖空氣從塔架邊的管道上散開，廣場聞起來像熱鐵上的雨。鋪石上的拖痕沒有被沖掉。哨兵站過的地方留著兩塊沒被踩過的石板，還有散落的黃銅弩機螺栓頭，那是弩解體的地方。少了他們，那道艙壁就只是一堵牆，而獨自走到它面前，是一件大得多的事。",
-        "summary": "路仍然在那堵牆前到頭，但廣場現在空了。你看得見整片鋪面、通長鋪開的蒸汽管，和遠端那座佔滿視野、以鐵與黃銅構成的軍事堡壘艙壁。它前面什麼也沒站著。"
+        "summary": "路仍然在那堵牆前到頭，但廣場現在空了。你看得見整片鋪面、通長鋪開的蒸汽管，和遠端那座佔滿視野、以鐵與黃銅構成的軍事堡壘艙壁。它前面什麼也沒站著。",
+        "when": [
+          "defeated:garrison_guard"
+        ]
       }
     ],
     "exits": [
@@ -10301,8 +10319,10 @@
         ],
         "label": "南",
         "menu_label": "南",
-        "when": ["fortress_gate_open"],
-        "room_id": "fortress_gate"
+        "room_id": "fortress_gate",
+        "when": [
+          "fortress_gate_open"
+        ]
       }
     ],
     "features": [
@@ -10319,11 +10339,8 @@
         "allow_rest": false,
         "id": "village_north_gate-feature",
         "inspect_text": "那道艙壁是鉚接黃銅外裹鐵箍，三個跨距寬，從對側上了栓。這一面你到處都找不到把手，還是用手沿著接縫摸了一遍。暖空氣在金屬前戛然而止。有人在齊膝高的一顆鉚釘上繫了一條紅布，已經褪色得幾乎透了。",
-        "label": "巨大的黃銅艙壁",
         "interactions": [
           {
-            "id": "unlock",
-            "label": "打開大門",
             "aliases": [
               "unlock gate",
               "unlock fortress gate",
@@ -10356,27 +10373,33 @@
               "打開要塞門",
               "解鎖要塞門"
             ],
-            "when": ["item:fortress-gate-key", "!fortress_gate_open"],
-            "lines": [
-              "你把沉重的黃銅鑰匙插進隔艙門鎖，重重轉動，發出一聲尖銳的金屬悶響。沉重的液壓門閂縮了回去，封死的要塞大門鬆開了。"
-            ],
             "effects": [
               {
-                "kind": "run_hook",
-                "hook_id": "gate.unlocked"
+                "hook_id": "gate.unlocked",
+                "kind": "run_hook"
               },
               {
                 "kind": "emit_signal",
                 "signal": "fortress_gate_opened"
               },
               {
-                "kind": "consume_item",
-                "item_id": "fortress-gate-key"
+                "item_id": "fortress-gate-key",
+                "kind": "consume_item"
               }
             ],
-            "repeatable": false
+            "id": "unlock",
+            "label": "打開大門",
+            "lines": [
+              "你把沉重的黃銅鑰匙插進隔艙門鎖，重重轉動，發出一聲尖銳的金屬悶響。沉重的液壓門閂縮了回去，封死的要塞大門鬆開了。"
+            ],
+            "repeatable": false,
+            "when": [
+              "item:fortress-gate-key",
+              "!fortress_gate_open"
+            ]
           }
-        ]
+        ],
+        "label": "巨大的黃銅艙壁"
       }
     ],
     "id": "village_north_gate",
@@ -10479,11 +10502,8 @@
         "allow_rest": false,
         "id": "village_west_1-valve",
         "inspect_text": "四條管道交會處的黃銅接頭上，齊腰高裝著一個鑄鐵閥輪。你把手放上去，它轉了四分之一圈才卡住，說明並沒有鏽死。輪軸上的鏽被磨掉了一圈，是戴手套的手留下的。再把它轉到底，管線壓力就會立刻從煙道排出。那聲響會大到整層樓都聽得見。",
-        "label": "蒸汽減壓閥",
         "interactions": [
           {
-            "id": "turn",
-            "label": "轉動閥門",
             "aliases": [
               "turn valve",
               "turn steam valve",
@@ -10506,14 +10526,10 @@
               "洩放蒸汽",
               "破壞閥門"
             ],
-            "when": ["!fortress_gate_open"],
-            "lines": [
-              "你抓住沉重的鐵輪，用盡全力扳動。閥門尖嘯著打開，噴出一陣蒸汽。白色水氣從洗滌煙道轟然湧出，直衝洞窟頂。通往要塞的管線上，液壓鎖銷一根接一根彈開，沉重的黃銅隔艙門隨之解鎖。"
-            ],
             "effects": [
               {
-                "kind": "run_hook",
-                "hook_id": "valve.diverted"
+                "hook_id": "valve.diverted",
+                "kind": "run_hook"
               },
               {
                 "kind": "emit_signal",
@@ -10524,9 +10540,18 @@
                 "signal": "valve_diverted"
               }
             ],
-            "repeatable": false
+            "id": "turn",
+            "label": "轉動閥門",
+            "lines": [
+              "你抓住沉重的鐵輪，用盡全力扳動。閥門尖嘯著打開，噴出一陣蒸汽。白色水氣從洗滌煙道轟然湧出，直衝洞窟頂。通往要塞的管線上，液壓鎖銷一根接一根彈開，沉重的黃銅隔艙門隨之解鎖。"
+            ],
+            "repeatable": false,
+            "when": [
+              "!fortress_gate_open"
+            ]
           }
-        ]
+        ],
+        "label": "蒸汽減壓閥"
       }
     ],
     "id": "village_west_1",
@@ -10910,9 +10935,11 @@
     "allow_rest": false,
     "descriptions": [
       {
-        "when": ["defeated:garrison_warden"],
         "inspect_text": "通風口一呼一吸，透上來的橘光搖晃不定。看守站過的地方，留著一塊磨凹的石板和一圈沒人收走的空口糧罐。絞盤控制台敞著，鎖桿抬起，就那麼垂著。小宰德雙手按在籠門上，還沒碰那把掛鎖，彷彿他已經決定不再等下去，只是在看有沒有人同意他。",
-        "summary": "鐵籠仍由四條鏈子吊在通風口上方，但走道上沒有人站著。絞盤手柄鬆脫在座殼裡，男孩移到了籠子前頭，從鐵條間望得出去。"
+        "summary": "鐵籠仍由四條鏈子吊在通風口上方，但走道上沒有人站著。絞盤手柄鬆脫在座殼裡，男孩移到了籠子前頭，從鐵條間望得出去。",
+        "when": [
+          "defeated:garrison_warden"
+        ]
       }
     ],
     "exits": [
@@ -10949,11 +10976,8 @@
         "allow_rest": false,
         "id": "steam_prison_cage-feature",
         "inspect_text": "鐵條密得連一隻手都伸不進去，地板也是如此。門上的黃銅掛鎖做工精良，鎖孔小得無法撬開。鏈條上了油，上油就意味著有人刻意為之。地板底下，鐵籠隨著通風口每一次呼氣微微晃動，總是同一個方向，總是同樣的一寸。",
-        "label": "懸吊的鐵籠",
         "interactions": [
           {
-            "id": "unlock",
-            "label": "打開籠子",
             "aliases": [
               "unlock cage",
               "unlock the cage",
@@ -10987,27 +11011,33 @@
               "解救宰德",
               "放出宰德"
             ],
-            "when": ["item:iron-cage-key", "!zayd_rescued"],
-            "lines": [
-              "你把沉重的鐵鑰匙插進懸吊鐵籠上那把巨大的掛鎖。喀的一聲脆響，鎖簧轉開，柵欄門蕩了開來。小宰德跌跌撞撞地爬上鐵架橋，淚水在他沾滿煤灰的臉頰上沖出兩道痕，抬頭用倔強的眼睛望著你。"
-            ],
             "effects": [
               {
-                "kind": "run_hook",
-                "hook_id": "zayd.freed"
+                "hook_id": "zayd.freed",
+                "kind": "run_hook"
               },
               {
                 "kind": "emit_signal",
                 "signal": "zayd_freed"
               },
               {
-                "kind": "consume_item",
-                "item_id": "iron-cage-key"
+                "item_id": "iron-cage-key",
+                "kind": "consume_item"
               }
             ],
-            "repeatable": false
+            "id": "unlock",
+            "label": "打開籠子",
+            "lines": [
+              "你把沉重的鐵鑰匙插進懸吊鐵籠上那把巨大的掛鎖。喀的一聲脆響，鎖簧轉開，柵欄門蕩了開來。小宰德跌跌撞撞地爬上鐵架橋，淚水在他沾滿煤灰的臉頰上沖出兩道痕，抬頭用倔強的眼睛望著你。"
+            ],
+            "repeatable": false,
+            "when": [
+              "item:iron-cage-key",
+              "!zayd_rescued"
+            ]
           }
-        ]
+        ],
+        "label": "懸吊的鐵籠"
       }
     ],
     "id": "steam_prison_cage",
@@ -11063,9 +11093,11 @@
     "allow_rest": false,
     "descriptions": [
       {
-        "when": ["defeated:captain_malik"],
         "inspect_text": "戰桌的凹槽裡積著粉筆灰，上頭兩道新添的刻痕停在一隻手停下的地方。一面紅綢旗從通風口上落了下來，橫搭在桌角。柵欄後的液壓撞桿已縮回牆裡，那一聲悶響還留在牆中迴盪。保險箱待在自己那盞燈下，腳下是它自己那塊乾淨的地面，燈還亮著，你和它之間什麼也沒有。",
-        "summary": "這間屋子依然是為開會而建，只是會已經開完了。黃銅戰桌仍擺在它的低燈下，四周地面空著。馬利克倒在石板上，一動不動，屋裡其他人也都不動。"
+        "summary": "這間屋子依然是為開會而建，只是會已經開完了。黃銅戰桌仍擺在它的低燈下，四周地面空著。馬利克倒在石板上，一動不動，屋裡其他人也都不動。",
+        "when": [
+          "defeated:captain_malik"
+        ]
       }
     ],
     "exits": [
@@ -11076,8 +11108,10 @@
         ],
         "label": "西",
         "menu_label": "西",
-        "when": ["malik_defeated"],
-        "room_id": "south_steam_gantry"
+        "room_id": "south_steam_gantry",
+        "when": [
+          "malik_defeated"
+        ]
       },
       {
         "aliases": [
@@ -11088,8 +11122,10 @@
         ],
         "label": "北",
         "menu_label": "北",
-        "when": ["malik_defeated"],
-        "room_id": "east_sentry_walk"
+        "room_id": "east_sentry_walk",
+        "when": [
+          "malik_defeated"
+        ]
       },
       {
         "aliases": [
@@ -11102,8 +11138,10 @@
         ],
         "label": "西北",
         "menu_label": "庭院",
-        "when": ["malik_defeated"],
-        "room_id": "teleport_platform"
+        "room_id": "teleport_platform",
+        "when": [
+          "malik_defeated"
+        ]
       }
     ],
     "features": [
@@ -11120,11 +11158,8 @@
         "allow_rest": false,
         "id": "command_bastion-feature",
         "inspect_text": "一個帶黃銅錶盤和加固鉸鏈的鐵箱，用螺栓穿透石頭固定，而非嵌進石裡。它前方的灰塵上留著一個乾淨的長方形，大小恰好是一個人跪著。鎖裡的轉輪用得很舊，周圍的黃銅被手摸得發亮。你想像著密碼會是什麼，錯的可能實在太多了。",
-        "label": "指揮官的鐵保險箱",
         "interactions": [
           {
-            "id": "unlock",
-            "label": "打開保險箱",
             "aliases": [
               "unlock safe",
               "unlock the safe",
@@ -11154,27 +11189,32 @@
               "開保險箱",
               "解鎖保險箱"
             ],
-            "when": ["item:commander-safe-key"],
-            "lines": [
-              "你把馬利克指揮官那把沉重的黃銅鑰匙插進保險箱的雙重鎖簧。沉重的鎖栓喀啦一聲退開，乾脆俐落。鋼製隔間裡，躺著那卷古老的傳送卷軸！"
-            ],
             "effects": [
               {
-                "kind": "run_hook",
-                "hook_id": "safe.unlocked"
+                "hook_id": "safe.unlocked",
+                "kind": "run_hook"
               },
               {
                 "kind": "emit_signal",
                 "signal": "safe_unlocked"
               },
               {
-                "kind": "consume_item",
-                "item_id": "commander-safe-key"
+                "item_id": "commander-safe-key",
+                "kind": "consume_item"
               }
             ],
-            "repeatable": false
+            "id": "unlock",
+            "label": "打開保險箱",
+            "lines": [
+              "你把馬利克指揮官那把沉重的黃銅鑰匙插進保險箱的雙重鎖簧。沉重的鎖栓喀啦一聲退開，乾脆俐落。鋼製隔間裡，躺著那卷古老的傳送卷軸！"
+            ],
+            "repeatable": false,
+            "when": [
+              "item:commander-safe-key"
+            ]
           }
-        ]
+        ],
+        "label": "指揮官的鐵保險箱"
       }
     ],
     "id": "command_bastion",
@@ -11367,11 +11407,8 @@
         "allow_rest": false,
         "id": "courtyard_center-cages",
         "inspect_text": "四只沉重的鐵籠，標著 01 區、04 區、07 區和 12 區。瑟瑟發抖的年邁平民和驚恐的孩子透過結霜的鐵條向外張望。一道巨大的掛鎖閘門把他們封在裡面。",
-        "label": "祭品籠",
         "interactions": [
           {
-            "id": "unlock",
-            "label": "打開籠子",
             "aliases": [
               "unlock cage",
               "unlock cages",
@@ -11408,27 +11445,33 @@
               "解救囚犯",
               "放出祭品"
             ],
-            "when": ["item:courtyard-cage-key", "!courtyard_cages_opened"],
-            "lines": [
-              "你轉動那把結霜的沉重鑰匙，掛鎖應聲彈開。鐵門嘩啦一聲晃開。幾十個受驚的孩子與年邁的平民湧到積雪的石板上，哭著鬆了一口氣。最大的那間牢房裡，艾絲翠德指揮官舉著闊劍走了出來，艾納也快步衝向發抖的平民，要照料他們。"
-            ],
             "effects": [
               {
-                "kind": "run_hook",
-                "hook_id": "courtyard.cages_unlocked"
+                "hook_id": "courtyard.cages_unlocked",
+                "kind": "run_hook"
               },
               {
                 "kind": "emit_signal",
                 "signal": "courtyard_cages_unlocked"
               },
               {
-                "kind": "consume_item",
-                "item_id": "courtyard-cage-key"
+                "item_id": "courtyard-cage-key",
+                "kind": "consume_item"
               }
             ],
-            "repeatable": false
+            "id": "unlock",
+            "label": "打開籠子",
+            "lines": [
+              "你轉動那把結霜的沉重鑰匙，掛鎖應聲彈開。鐵門嘩啦一聲晃開。幾十個受驚的孩子與年邁的平民湧到積雪的石板上，哭著鬆了一口氣。最大的那間牢房裡，艾絲翠德指揮官舉著闊劍走了出來，艾納也快步衝向發抖的平民，要照料他們。"
+            ],
+            "repeatable": false,
+            "when": [
+              "item:courtyard-cage-key",
+              "!courtyard_cages_opened"
+            ]
           }
-        ]
+        ],
+        "label": "祭品籠"
       }
     ],
     "id": "courtyard_center",
@@ -11485,8 +11528,10 @@
         ],
         "label": "北",
         "menu_label": "向北進入霜狼家長廊",
-        "when": ["frost_wolf_access_open"],
-        "room_id": "frost_wolf_gallery"
+        "room_id": "frost_wolf_gallery",
+        "when": [
+          "frost_wolf_access_open"
+        ]
       }
     ],
     "features": [
@@ -11635,8 +11680,10 @@
         ],
         "label": "東南",
         "menu_label": "東南進入鐵羊家稜堡",
-        "when": ["iron_ram_access_open"],
-        "room_id": "iron_ram_gallery"
+        "room_id": "iron_ram_gallery",
+        "when": [
+          "iron_ram_access_open"
+        ]
       }
     ],
     "features": [
@@ -11787,8 +11834,10 @@
         ],
         "label": "西南",
         "menu_label": "西南進入霜豹家廳堂",
-        "when": ["frost_leopard_access_open"],
-        "room_id": "frost_leopard_gallery"
+        "room_id": "frost_leopard_gallery",
+        "when": [
+          "frost_leopard_access_open"
+        ]
       }
     ],
     "features": [
@@ -11957,8 +12006,10 @@
         ],
         "label": "北",
         "menu_label": "向北至嚎嘯高台",
-        "when": ["citadel_final_wave_open"],
-        "room_id": "frost_wolf_throne"
+        "room_id": "frost_wolf_throne",
+        "when": [
+          "citadel_final_wave_open"
+        ]
       }
     ],
     "features": [
@@ -12087,8 +12138,10 @@
         ],
         "label": "東南",
         "menu_label": "東南至鐵砧王座",
-        "when": ["citadel_final_wave_open"],
-        "room_id": "iron_ram_throne"
+        "room_id": "iron_ram_throne",
+        "when": [
+          "citadel_final_wave_open"
+        ]
       }
     ],
     "features": [
@@ -12217,8 +12270,10 @@
         ],
         "label": "西南",
         "menu_label": "西南至蛋白石王座",
-        "when": ["citadel_final_wave_open"],
-        "room_id": "frost_leopard_throne"
+        "room_id": "frost_leopard_throne",
+        "when": [
+          "citadel_final_wave_open"
+        ]
       }
     ],
     "features": [
@@ -12397,591 +12452,766 @@
     "title": "黃銅鎮機械院"
   },
   {
-    "id": "sanctuary_grand_terrace",
-    "title": "聖所露台",
-    "summary": "開闊的大理石階梯在石灰岩欄杆間向開闊的山風延伸。前方朝南的高聳拱門通往大教堂中庭，長廊則沿著翻湧的雲海向東西兩側延伸。",
-    "inspect_text": "山風掠過拋光的白石，帶來濃烈的乳香與苦澀藥草氣味。往南是衛兵巡邏的十字中庭；西側長廊與東側露台則沿著懸崖邊緣環繞延伸。",
-    "allow_rest": true,
-    "features": [
-      {
-        "id": "sanctuary_grand_terrace-balustrade",
-        "label": "石灰岩欄杆",
-        "aliases": [
-          "欄杆",
-          "石欄",
-          "雲海",
-          "邊緣"
-        ],
-        "allow_rest": false,
-        "inspect_text": "雕刻精美的低矮石欄，下方是萬丈雲海。極目遠眺，第五層的雪山在白霧中若隱若現。"
-      },
-      {
-        "id": "sanctuary_grand_terrace-steps",
-        "label": "大理石階梯",
-        "aliases": [
-          "階梯",
-          "石階",
-          "拱門",
-          "入口"
-        ],
-        "allow_rest": false,
-        "inspect_text": "寬闊的白大理石階梯，朝南通往中央十字中庭的高聳拱門。"
-      }
-    ],
-    "exits": [
-      {
-        "room_id": "sanctuary_crossroads",
-        "label": "南",
-        "aliases": [
-          "南",
-          "s",
-          "南面",
-          "中庭",
-          "十字路口",
-          "拱門"
-        ],
-        "menu_label": "走進十字中庭"
-      },
-      {
-        "room_id": "sanctuary_west_colonnade",
-        "label": "西南",
-        "aliases": [
-          "西南",
-          "sw",
-          "西",
-          "w",
-          "西側長廊",
-          "長廊"
-        ],
-        "menu_label": "沿著西側長廊前進"
-      },
-      {
-        "room_id": "sanctuary_east_promenade",
-        "label": "東南",
-        "aliases": [
-          "東南",
-          "se",
-          "東",
-          "e",
-          "東側露台",
-          "露台"
-        ],
-        "menu_label": "漫步東側露台"
-      }
-    ],
-    "descriptions": []
-  },
-  {
-    "id": "sanctuary_west_colonnade",
-    "title": "西側長廊",
-    "summary": "一道高聳的大理石拱廊，沿著無垠雲海之上的西側懸崖邊緣延伸。陽光穿透樑柱傾瀉而下，一道拱形廊道向東通往植物玻璃暖房。",
-    "inspect_text": "極目遠眺，白雲在陡峭絕壁間翻湧。長廊向北通回入口露台，向南通往高山平台，向東則通往芳香四溢的玻璃花園。",
-    "allow_rest": true,
-    "features": [
-      {
-        "id": "sanctuary_west_colonnade-pillars",
-        "label": "高聳石柱",
-        "aliases": [
-          "石柱",
-          "立柱",
-          "長廊",
-          "雲海"
-        ],
-        "allow_rest": false,
-        "inspect_text": "開鑿著凹槽的石灰岩立柱支撐著雕花橫樑，柱外便是無垠青空。"
-      }
-    ],
-    "exits": [
-      {
-        "room_id": "sanctuary_grand_terrace",
-        "label": "東北",
-        "aliases": [
-          "東北",
-          "ne",
-          "北",
-          "n",
-          "露台",
-          "入口"
-        ],
-        "menu_label": "返回入口露台"
-      },
-      {
-        "room_id": "sanctuary_main_platform",
-        "label": "東南",
-        "aliases": [
-          "東南",
-          "se",
-          "南",
-          "s",
-          "平台",
-          "傳送台"
-        ],
-        "menu_label": "往南前往高山平台"
-      },
-      {
-        "room_id": "herbarium_garden",
-        "label": "東",
-        "aliases": [
-          "東",
-          "e",
-          "東面",
-          "花園",
-          "暖房"
-        ],
-        "menu_label": "走進玻璃花園"
-      }
-    ],
-    "descriptions": []
-  },
-  {
-    "id": "sanctuary_east_promenade",
-    "title": "東側露台",
-    "summary": "一片開闊而迎風的石造露台，依傍著聖域衛城的東側絕壁。高聳的凹槽立柱如遠古巨木般直刺淡藍蒼穹。",
-    "inspect_text": "東側邊緣是令人屏息的萬丈深淵。厚重的石門向西通往地下墓室區域，步道則向北連接入口露台、向南連接高山平台。",
-    "allow_rest": true,
-    "features": [
-      {
-        "id": "sanctuary_east_promenade-terrace",
-        "label": "露台石台",
-        "aliases": [
-          "露台",
-          "石階",
-          "懸崖",
-          "立柱"
-        ],
-        "allow_rest": false,
-        "inspect_text": "以蒼白石板鋪砌的長廊露台，高山冷冽的微風拂面而過。"
-      }
-    ],
-    "exits": [
-      {
-        "room_id": "sanctuary_grand_terrace",
-        "label": "西北",
-        "aliases": [
-          "西北",
-          "nw",
-          "北",
-          "n",
-          "露台",
-          "入口"
-        ],
-        "menu_label": "返回入口露台"
-      },
-      {
-        "room_id": "sanctuary_main_platform",
-        "label": "西南",
-        "aliases": [
-          "西南",
-          "sw",
-          "南",
-          "s",
-          "平台",
-          "傳送台"
-        ],
-        "menu_label": "往南前往高山平台"
-      },
-      {
-        "room_id": "mortuary_reanimation_sanctum",
-        "label": "西",
-        "aliases": [
-          "西",
-          "w",
-          "西面",
-          "靈柩殿",
-          "聖所",
-          "石門"
-        ],
-        "menu_label": "走進靈柩殿"
-      }
-    ],
-    "descriptions": []
-  },
-  {
-    "id": "sanctuary_main_platform",
-    "title": "高山傳送台",
-    "summary": "一座巨大的圓形石造露台，自懸崖延伸進開闊的天空之中。中央地磚上嵌著一座由黃銅與白銀鑄造的巨型共鳴錨點，環繞著五道坐標凹槽。",
-    "inspect_text": "從這個令人目眩的制高點望去，群山向天際無限延伸。嵌入五鎮信物並描繪縛紋，將能把第六層聖所與第五層要塞永久連通，為艾絲翠德與同伴們建立登頂前哨。",
     "allow_rest": false,
-    "features": [
-      {
-        "id": "sanctuary_main_platform-anchor",
-        "label": "共鳴錨點",
-        "aliases": [
-          "錨點",
-          "共鳴錨點",
-          "傳送台",
-          "控制台",
-          "凹槽"
-        ],
-        "allow_rest": false,
-        "inspect_text": "一座巨大的黃銅圓環，刻有五座工匠鎮的坐標槽與中央縛紋印記。在此描繪縛紋可永久校準傳送台。"
-      },
-      {
-        "id": "sanctuary_main_platform-ascent",
-        "label": "白光階梯",
-        "aliases": [
-          "階梯",
-          "白光階梯",
-          "傳送門",
-          "拱門",
-          "光芒"
-        ],
-        "allow_rest": false,
-        "inspect_text": "由純白光芒編織而成的浮空階梯，越過崖壁延伸進上方靜謐的霧氣中，通往第七層：白色前廳。"
-      }
-    ],
+    "descriptions": [],
     "exits": [
       {
-        "room_id": "mortuary_reanimation_sanctum",
-        "label": "北",
         "aliases": [
-          "北",
-          "n",
-          "北面",
-          "靈柩殿",
-          "聖所",
-          "先知"
-        ],
-        "menu_label": "返回靈柩殿"
-      },
-      {
-        "room_id": "sanctuary_west_colonnade",
-        "label": "西北",
-        "aliases": [
-          "西北",
-          "nw",
-          "西",
-          "w",
-          "西側長廊",
-          "長廊"
-        ],
-        "menu_label": "沿著西側長廊前進"
-      },
-      {
-        "room_id": "sanctuary_east_promenade",
-        "label": "東北",
-        "aliases": [
-          "東北",
-          "ne",
-          "東",
+          "east",
           "e",
-          "東側露台",
-          "露台"
+          "promenade",
+          "terrace",
+          "cliff"
         ],
-        "menu_label": "沿著東側露台前進"
-      },
-      {
-        "room_id": "floor7_antechamber",
-        "label": "上",
-        "aliases": [
-          "上",
-          "u",
-          "登頂",
-          "階梯",
-          "第七層",
-          "前廳"
-        ],
-        "menu_label": "登上第七層（白色前廳）",
-        "when": ["anchor_floor6_platform"]
-      }
-    ],
-    "descriptions": [
-      {
-        "when": ["anchor_floor6_platform"],
-        "summary": "一座突出於雲海之上的宏偉露天石台。青銅共鳴錨點脈動著溫暖的藍光，將聖所與霜之要塞緊密相連。艾絲翠德在胸牆邊警戒，純白光芒構成的階梯通向上方第七層。",
-        "inspect_text": "山風呼嘯著掠過石板。共鳴錨點已全面啟動，將第六層與下層徹底連通。懸崖邊緣上方，一道純白光芒編織的階梯通往第七層：白色前廳。"
-      }
-    ]
-  },
-  {
-    "id": "sanctuary_crossroads",
-    "title": "大教堂中庭",
-    "summary": "一座廣闊的石灰岩拱頂大廳，聖殿外環在此與內殿交會。高聳的石拱門向西通往草藥暖房、向東通往聖所深處，身披白甲的聖堂衛兵在拋光石板上來回巡邏。",
-    "inspect_text": "高處的天花板橫樑與黃銅通風管隱沒在深沉陰影中。下方石板上衛兵嚴密戒備，若沒有隱形藥劑掩護，穿過大廳將立刻引來刀劍相向。",
-    "allow_rest": true,
-    "features": [
-      {
-        "id": "sanctuary_crossroads-pillars",
-        "label": "石灰岩柱",
-        "aliases": [
-          "柱子",
-          "立柱",
-          "拱門",
-          "橫樑",
-          "通風管"
-        ],
-        "allow_rest": false,
-        "inspect_text": "支撐著高聳拱頂的巨大列柱。上方橫樑與黃銅管線在陰影中提供安全通行的盲區。"
-      }
-    ],
-    "exits": [
-      {
-        "room_id": "sanctuary_grand_terrace",
-        "label": "北",
-        "aliases": [
-          "北",
-          "n",
-          "北面",
-          "露台",
-          "階梯",
-          "出"
-        ],
-        "menu_label": "走出至入口露台"
-      },
-      {
-        "room_id": "herbarium_garden",
-        "label": "西",
-        "aliases": [
-          "西",
-          "w",
-          "西面",
-          "花園",
-          "暖房",
-          "草藥"
-        ],
-        "menu_label": "走進玻璃花園"
-      },
-      {
-        "room_id": "mortuary_reanimation_sanctum",
         "label": "東",
-        "aliases": [
-          "東",
-          "e",
-          "東面",
-          "靈柩殿",
-          "聖所",
-          "墓室"
-        ],
-        "menu_label": "走進靈柩殿"
-      }
-    ],
-    "descriptions": []
-  },
-  {
-    "id": "herbarium_garden",
-    "title": "草藥花園",
-    "summary": "一座由高聳柱列與白色濾光紗幔環繞的陽光天井花園。中央整齊排列著數十張花崗岩調劑石台與乾燥架，身穿純白麻布長袍、佩戴白瓷半面具的半身人僕役正低頭安靜地處理高山草藥。",
-    "inspect_text": "空氣中瀰漫著濃烈的乳香、硫磺與苦澀藥汁氣味。半身人調劑僕役維持著刻板而沉默的規訓節奏。在靠外牆的石洗水槽後方，近地面處有一塊鬆動的排氣石磚。",
-    "allow_rest": true,
-    "features": [
-      {
-        "id": "herbarium_garden-beds",
-        "label": "花崗岩石台",
-        "aliases": [
-          "石台",
-          "乾燥架",
-          "草藥",
-          "植物",
-          "工作台"
-        ],
-        "allow_rest": false,
-        "inspect_text": "擺滿乾燥紫斑烏頭草、雪松根與高山苔蘚的花崗岩台面。"
+        "menu_label": "漫步至東側露台",
+        "room_id": "sanctuary_east_promenade"
       },
       {
-        "id": "herbarium_garden-vent",
-        "label": "排氣石磚",
         "aliases": [
-          "通風口",
-          "石磚",
-          "磚塊",
-          "水槽",
-          "通風管道"
+          "south",
+          "s",
+          "colonnade",
+          "arcade"
         ],
-        "allow_rest": false,
-        "inspect_text": "洗藥水槽後方一塊鬆動的排氣石磚。搬開後露出一個半公尺寬的狹窄通風管道，通往懸崖邊緣的暗台。"
-      }
-    ],
-    "exits": [
-      {
-        "room_id": "sanctuary_crossroads",
-        "label": "東",
-        "aliases": [
-          "東",
-          "e",
-          "東面",
-          "中庭",
-          "大廳"
-        ],
-        "menu_label": "返回十字中庭"
+        "label": "南",
+        "menu_label": "沿露台向南前往西側長廊",
+        "room_id": "sanctuary_west_colonnade"
       },
       {
-        "room_id": "sanctuary_west_colonnade",
-        "label": "西",
         "aliases": [
-          "西",
-          "w",
-          "西面",
-          "西側長廊",
-          "長廊"
+          "in",
+          "enter",
+          "atrium",
+          "crossroads",
+          "arch",
+          "archway",
+          "cathedral",
+          "southeast",
+          "se"
         ],
-        "menu_label": "走出至西側長廊"
-      },
-      {
-        "room_id": "herbarium_cliff_balcony",
-        "label": "出",
-        "aliases": [
-          "出",
-          "通風口",
-          "排氣孔",
-          "懸崖",
-          "暗台",
-          "爬出"
-        ],
-        "menu_label": "鑽過排氣管道前往懸崖暗台"
-      }
-    ],
-    "descriptions": []
-  },
-  {
-    "id": "herbarium_cliff_balcony",
-    "title": "懸崖暗台",
-    "summary": "一處隱藏在倒扣岩壁與懸挑樑柱下方的險峻夾層，腳下是無垠雲海。一截廢棄的採暖蒸汽管吐出微弱暖氣，溫養著紮根在黑色腐殖土裡的幽藍野生靈魂草。",
-    "inspect_text": "外部呼嘯的山風吹不進這處隱密角落。靈魂草葉尖凝結的露珠如碎星般泛著幽藍微光。在岩壁內側，一扇半掩的生鐵石門後方有一座向下的旋轉石階。",
-    "allow_rest": true,
-    "features": [
-      {
-        "id": "herbarium_cliff_balcony-grass",
-        "label": "野生靈魂草",
-        "aliases": [
-          "靈魂草",
-          "草藥",
-          "露水",
-          "土壤",
-          "植物"
-        ],
-        "allow_rest": false,
-        "inspect_text": "生長在溫暖腐殖土裡的低矮高山靈魂草，鋸齒狀的葉片上凝結著散發幽藍光芒的珍貴露水。"
-      },
-      {
-        "id": "herbarium_cliff_balcony-door",
-        "label": "生鐵石門",
-        "aliases": [
-          "石門",
-          "生鐵門",
-          "旋轉石階",
-          "階梯"
-        ],
-        "allow_rest": false,
-        "inspect_text": "一扇從內側開鎖的沉原生鐵石門，後方是一座直通底層靈柩殿的狹窄旋轉石階。"
-      }
-    ],
-    "exits": [
-      {
-        "room_id": "herbarium_garden",
         "label": "入",
-        "aliases": [
-          "入",
-          "進",
-          "通風口",
-          "花園",
-          "暖房",
-          "爬回"
-        ],
-        "menu_label": "爬回草藥花園"
-      },
-      {
-        "room_id": "mortuary_reanimation_sanctum",
-        "label": "下",
-        "aliases": [
-          "下",
-          "d",
-          "階梯",
-          "靈柩殿",
-          "旋轉石階"
-        ],
-        "menu_label": "沿著旋轉石階下行至靈柩殿"
+        "menu_label": "穿過宏偉拱門走進十字中庭",
+        "room_id": "sanctuary_crossroads"
       }
     ],
-    "descriptions": []
-  },
-  {
-    "id": "mortuary_reanimation_sanctum",
-    "title": "忘卻聖堂靈柩殿",
-    "summary": "一座由粗大黑色大理石柱支撐的龐大地下殿堂。大殿中央矗立著刻滿生紋與縛紋的黑曜石祭壇，四周環繞著石棺與發光的靈魂槽，受困的人類魂魄在此被強行剝離記憶並繫入怪物造物之中。",
-    "inspect_text": "空氣中湧動著令人窒息的暗黑魔力。石台木架上堆疊著記錄被擄平民去向的黑皮名冊。黑曜石祭壇上方，先知瓦勒里烏斯正主持著恐怖的怪物轉化儀式。",
-    "allow_rest": false,
     "features": [
       {
-        "id": "mortuary_reanimation_sanctum-ledger",
-        "label": "黑皮名冊",
         "aliases": [
-          "名冊",
-          "黑皮名冊",
-          "紀錄",
-          "書",
-          "靈魂名冊"
+          "balustrade",
+          "barrier",
+          "clouds",
+          "view",
+          "mountains",
+          "parapet"
         ],
         "allow_rest": false,
-        "inspect_text": "一本蓋有宗教裁判所官印的沉重黑皮名冊，詳細記錄著被抽離者的真名：西拉傑（繫入石守）、努爾（繫入白棋王后）、切石匠歐林（黑石魔像一號）、磨坊匠瑪莉（黑石魔像二號）、礦工法瑞德（白石魔像一號）與織布匠哈娜（白石魔像二號）。"
+        "id": "sanctuary_grand_terrace-balustrade",
+        "inspect_text": "雕刻精美的低矮石欄，下方是萬丈雲海。極目遠眺，第五層的雪山在白霧中若隱若現。",
+        "label": "石灰岩欄杆"
       },
       {
-        "id": "mortuary_reanimation_sanctum-altar",
-        "label": "黑曜石祭壇",
         "aliases": [
-          "祭壇",
-          "黑曜石",
-          "石台"
+          "sigils",
+          "runes",
+          "runework",
+          "carvings",
+          "ward"
         ],
         "allow_rest": false,
-        "inspect_text": "一座由黑色火山玻璃鑄造的巨大祭壇，刻著猩紅的生紋與縛紋陣線。"
+        "id": "sanctuary_grand_terrace-sigils",
+        "inspect_text": "刻在石板上的微弱藍色防禦符文，旨在阻止翱翔的魔物靠近衛城露台。",
+        "label": "守護符印"
+      }
+    ],
+    "id": "sanctuary_grand_terrace",
+    "inspect_text": "山風掠過拋光的白石，帶來濃烈的乳香與苦澀藥草氣味。往南是十字中庭；東側露台與西側長廊則沿著懸崖邊緣環繞，包覆著聖域的核心。",
+    "summary": "開闊的大理石階梯在石灰岩欄杆間向開闊的山風延伸。前方朝南的高聳拱門通往十字中庭，露天石造長廊則沿著翻湧的雲海向東西兩側延伸。",
+    "title": "聖所入口露台"
+  },
+  {
+    "allow_rest": false,
+    "descriptions": [],
+    "exits": [
+      {
+        "aliases": [
+          "west",
+          "w",
+          "terrace",
+          "gate",
+          "stairs"
+        ],
+        "label": "西",
+        "menu_label": "向西返回入口露台",
+        "room_id": "sanctuary_grand_terrace"
+      },
+      {
+        "aliases": [
+          "south",
+          "s",
+          "platform",
+          "relay",
+          "south terrace"
+        ],
+        "label": "南",
+        "menu_label": "沿著絕壁向南前往高山傳送台",
+        "room_id": "sanctuary_main_platform"
+      },
+      {
+        "aliases": [
+          "in",
+          "enter",
+          "archive",
+          "doors",
+          "bronze doors",
+          "inquisition",
+          "cloister",
+          "southwest",
+          "sw"
+        ],
+        "label": "入",
+        "menu_label": "推開厚重青銅大門走進靜謐檔案庫",
+        "room_id": "sanctuary_inquisition_archive"
+      }
+    ],
+    "features": [
+      {
+        "aliases": [
+          "terrace",
+          "paving",
+          "flags",
+          "edge",
+          "drop",
+          "cliff",
+          "ledge"
+        ],
+        "allow_rest": false,
+        "id": "sanctuary_east_promenade-terrace",
+        "inspect_text": "經風霧打磨的蒼白石板，高高懸於深淵之上。",
+        "label": "露台石台"
+      }
+    ],
+    "id": "sanctuary_east_promenade",
+    "inspect_text": "東側邊緣是令人屏息的萬丈深淵。厚重的青銅大門向西通往靜謐檔案庫，步道則向北連接入口露台、向南連接高山傳送台。",
+    "summary": "一片開闊而迎風的石造露台，依傍著聖域衛城的東側絕壁。高聳的凹槽立柱如遠古巨木般直刺淡藍蒼穹。",
+    "title": "東側露台"
+  },
+  {
+    "allow_rest": true,
+    "descriptions": [
+      {
+        "inspect_text": "山風呼嘯著掠過石板。共鳴錨點已全面啟動，將第六層與下層徹底連通。懸崖邊緣上方，純白光芒編織的階梯通往第七層：白色前廳。",
+        "summary": "一座突出於雲海之上的宏偉露天石台。青銅共鳴錨點脈動著溫暖的藍光，將聖所與要塞緊密相連。艾絲翠德在胸牆邊警戒，純白光芒構成的階梯通向上方第七層。",
+        "when": [
+          "anchor_floor6_platform"
+        ]
       }
     ],
     "exits": [
       {
-        "room_id": "herbarium_cliff_balcony",
-        "label": "上",
         "aliases": [
-          "上",
-          "u",
-          "階梯",
-          "旋轉石階",
-          "暗台"
+          "north",
+          "n",
+          "promenade",
+          "northeast",
+          "ne"
         ],
-        "menu_label": "沿著旋轉石階爬上懸崖暗台"
+        "label": "北",
+        "menu_label": "沿懸崖步道向北前往東側露台",
+        "room_id": "sanctuary_east_promenade"
       },
       {
-        "room_id": "sanctuary_crossroads",
-        "label": "西",
         "aliases": [
-          "西",
+          "west",
           "w",
-          "中庭",
-          "大廳",
-          "出口"
+          "colonnade",
+          "walkway"
         ],
-        "menu_label": "走向十字中庭"
+        "label": "西",
+        "menu_label": "沿外圍向西前往西側長廊",
+        "room_id": "sanctuary_west_colonnade"
       },
       {
-        "room_id": "sanctuary_east_promenade",
-        "label": "東",
         "aliases": [
-          "東",
-          "e",
-          "東側露台",
-          "露台"
+          "in",
+          "enter",
+          "sanctum",
+          "crypt",
+          "doors",
+          "gates",
+          "northwest",
+          "nw"
         ],
-        "menu_label": "走出至東側露台"
+        "label": "入",
+        "menu_label": "穿過聖所大門走進復生聖所",
+        "room_id": "mortuary_reanimation_sanctum"
       },
       {
-        "room_id": "sanctuary_main_platform",
-        "label": "南",
         "aliases": [
-          "南",
-          "s",
-          "門",
-          "平台",
-          "高山平台"
+          "up",
+          "u",
+          "ascend",
+          "ascent",
+          "stair",
+          "stairs",
+          "light",
+          "climb",
+          "floor7",
+          "antechamber",
+          "portal"
         ],
-        "menu_label": "推開大門走出至高山傳送台"
+        "label": "上",
+        "menu_label": "登上第七層（白色前廳）",
+        "room_id": "floor7_antechamber",
+        "when": [
+          "anchor_floor6_platform"
+        ]
       }
     ],
+    "features": [
+      {
+        "aliases": [
+          "anchor",
+          "ring",
+          "teleport",
+          "brass ring",
+          "receptacle",
+          "slots",
+          "pedestal"
+        ],
+        "allow_rest": false,
+        "id": "sanctuary_main_platform-anchor",
+        "inspect_text": "一座巨大的黃銅圓環，刻有五座工匠鎮的坐標槽與中央縛紋印記。在此描繪縛紋可永久校準傳送台。",
+        "label": "共鳴錨點"
+      },
+      {
+        "aliases": [
+          "stairs",
+          "stair",
+          "light",
+          "staircase",
+          "steps",
+          "white light",
+          "ascent"
+        ],
+        "allow_rest": false,
+        "id": "sanctuary_main_platform-stairs",
+        "inspect_text": "由純白光芒編織而成的浮空階梯，越過崖壁延伸進上方靜謐的霧氣中，通往第七層：建築師之座。",
+        "label": "白光階梯"
+      }
+    ],
+    "id": "sanctuary_main_platform",
+    "inspect_text": "三面皆是令人目眩的峭壁，群山向天際無限延伸。嵌入五鎮信物並描繪縛紋，將能把第六層聖所與第五層要塞永久連通，為遠征隊建立登頂前哨。",
+    "summary": "一座巨大的圓形石造露台，自南側懸崖延伸進開闊的天空之中。中央地磚上嵌著一座由黃銅與白銀鑄造的巨型共鳴錨點，環繞著五道坐標凹槽。",
+    "title": "高山傳送台"
+  },
+  {
+    "allow_rest": false,
+    "descriptions": [],
+    "exits": [
+      {
+        "aliases": [
+          "north",
+          "n",
+          "terrace",
+          "gate",
+          "stairs"
+        ],
+        "label": "北",
+        "menu_label": "沿著長廊向北返回入口露台",
+        "room_id": "sanctuary_grand_terrace"
+      },
+      {
+        "aliases": [
+          "east",
+          "e",
+          "platform",
+          "relay"
+        ],
+        "label": "東",
+        "menu_label": "沿著長廊向東前往高山傳送台",
+        "room_id": "sanctuary_main_platform"
+      },
+      {
+        "aliases": [
+          "in",
+          "enter",
+          "solarium",
+          "garden",
+          "archway",
+          "northeast",
+          "ne"
+        ],
+        "label": "入",
+        "menu_label": "走進玻璃暖房",
+        "room_id": "herbarium_garden"
+      }
+    ],
+    "features": [
+      {
+        "aliases": [
+          "pillars",
+          "columns",
+          "marble",
+          "arcade",
+          "colonnade"
+        ],
+        "allow_rest": false,
+        "id": "sanctuary_west_colonnade-pillars",
+        "inspect_text": "開鑿著凹槽的石灰岩立柱支撐著雕花橫樑，柱外便是無垠青空。",
+        "label": "高聳石柱"
+      }
+    ],
+    "id": "sanctuary_west_colonnade",
+    "inspect_text": "雲海在下方陡峭絕壁間翻湧。長廊向北連接入口露台、向南連接高山傳送台，向東則穿過陽光紗幔通往玻璃暖房。",
+    "summary": "一道高聳的大理石拱廊，沿著無垠雲海之上的西側懸崖邊緣延伸。陽光穿透柱列傾瀉而下，拱形廊道向東通往玻璃暖房。",
+    "title": "西側長廊"
+  },
+  {
+    "allow_rest": false,
+    "descriptions": [],
+    "exits": [
+      {
+        "aliases": [
+          "east",
+          "e",
+          "archive",
+          "cloister",
+          "library"
+        ],
+        "label": "東",
+        "menu_label": "向東走進靜謐檔案庫",
+        "room_id": "sanctuary_inquisition_archive"
+      },
+      {
+        "aliases": [
+          "south",
+          "s",
+          "solarium",
+          "garden",
+          "herbarium"
+        ],
+        "label": "南",
+        "menu_label": "向南走進玻璃暖房",
+        "room_id": "herbarium_garden"
+      },
+      {
+        "aliases": [
+          "out",
+          "exit",
+          "terrace",
+          "gate",
+          "north",
+          "n",
+          "northwest",
+          "nw"
+        ],
+        "label": "出",
+        "menu_label": "走出至入口露台",
+        "room_id": "sanctuary_grand_terrace"
+      }
+    ],
+    "features": [
+      {
+        "aliases": [
+          "pillars",
+          "flues",
+          "ceiling",
+          "beams",
+          "ducts",
+          "vaults",
+          "guards"
+        ],
+        "allow_rest": false,
+        "id": "sanctuary_crossroads-pillars",
+        "inspect_text": "支撐著中央拱門的巨大凹槽立柱。上方橫樑與供暖管道在陰影中提供靜謐通行的盲區。",
+        "label": "石灰岩柱"
+      }
+    ],
+    "id": "sanctuary_crossroads",
+    "inspect_text": "高處的天花板拱頂與黃銅供暖管道隱沒在深沉陰影中。身披白瓷鎧甲的裁判所衛兵在下方石板上來回巡邏。",
+    "summary": "一座廣闊的石灰岩拱頂大廳，位於衛城外側長廊與內殿的交會處。高聳的拱門向東通往靜謐檔案庫、向南通往玻璃暖房、向北返回入口露台。",
+    "title": "十字中庭"
+  },
+  {
+    "allow_rest": false,
+    "descriptions": [],
+    "exits": [
+      {
+        "aliases": [
+          "west",
+          "w",
+          "atrium",
+          "crossroads"
+        ],
+        "label": "西",
+        "menu_label": "向西返回十字中庭",
+        "room_id": "sanctuary_crossroads"
+      },
+      {
+        "aliases": [
+          "south",
+          "s",
+          "sanctum",
+          "down",
+          "crypt",
+          "reanimation"
+        ],
+        "label": "南",
+        "menu_label": "向南下行進入復生聖所",
+        "room_id": "mortuary_reanimation_sanctum"
+      },
+      {
+        "aliases": [
+          "out",
+          "exit",
+          "promenade",
+          "doors",
+          "east",
+          "e",
+          "northeast",
+          "ne"
+        ],
+        "label": "出",
+        "menu_label": "向東踏出至東側露台",
+        "room_id": "sanctuary_east_promenade"
+      }
+    ],
+    "features": [
+      {
+        "aliases": [
+          "shelves",
+          "books",
+          "ledgers",
+          "registers",
+          "records",
+          "manifests",
+          "bookcases"
+        ],
+        "allow_rest": false,
+        "id": "sanctuary_inquisition_archive-shelves",
+        "inspect_text": "一排排黑橡木書架，放滿了從工匠鎮移送此地進行靈魂拘束的受試者詳細記錄。",
+        "label": "檔案書架"
+      }
+    ],
+    "id": "sanctuary_inquisition_archive",
+    "inspect_text": "檔案庫是裁判所魔物改造的核心記錄室。高聳的書架記錄著從下層擄來工匠的資料。向南的大門可直接走進底層的復生聖所。",
+    "summary": "一座莊嚴的石肋拱頂迴廊，陳列著一排排彩繪神學名冊與拘束手記。裁判所抄寫員在羊皮紙清冊前低聲私語。",
+    "title": "靜謐檔案庫"
+  },
+  {
+    "allow_rest": false,
+    "descriptions": [],
+    "exits": [
+      {
+        "aliases": [
+          "north",
+          "n",
+          "atrium",
+          "crossroads"
+        ],
+        "label": "北",
+        "menu_label": "向北前往十字中庭",
+        "room_id": "sanctuary_crossroads"
+      },
+      {
+        "aliases": [
+          "east",
+          "e",
+          "sanctum",
+          "crypt"
+        ],
+        "label": "東",
+        "menu_label": "向東走進復生聖所",
+        "room_id": "mortuary_reanimation_sanctum"
+      },
+      {
+        "aliases": [
+          "out",
+          "exit",
+          "colonnade",
+          "arcade",
+          "west",
+          "w",
+          "southwest",
+          "sw"
+        ],
+        "label": "出",
+        "menu_label": "走至西側長廊",
+        "room_id": "sanctuary_west_colonnade"
+      },
+      {
+        "aliases": [
+          "vent",
+          "flue",
+          "crawl",
+          "balcony",
+          "cliff",
+          "out"
+        ],
+        "label": "通風口",
+        "menu_label": "鑽過通風管道前往懸崖暗台",
+        "room_id": "herbarium_cliff_balcony",
+        "when": [
+          "discovered_vent"
+        ]
+      }
+    ],
+    "features": [
+      {
+        "aliases": [
+          "benches",
+          "tables",
+          "racks",
+          "herbs",
+          "servants",
+          "attendants"
+        ],
+        "allow_rest": false,
+        "id": "herbarium_garden-benches",
+        "inspect_text": "擺滿乾燥紫斑烏頭草、雪松根與高山苔蘚的花崗岩台面。",
+        "label": "調劑石台"
+      },
+      {
+        "aliases": [
+          "brick",
+          "vent",
+          "basin",
+          "wall",
+          "flue",
+          "stone"
+        ],
+        "allow_rest": false,
+        "id": "herbarium_garden-vent",
+        "inspect_text": "洗藥水槽後方的一塊長方形石磚。撬開後可露出一個通向懸崖邊緣的狹窄通風管道。",
+        "interactions": [
+          {
+            "aliases": [
+              "pry brick",
+              "pry loose brick",
+              "dislodge brick",
+              "remove brick",
+              "open vent",
+              "inspect basin",
+              "check brick",
+              "move brick"
+            ],
+            "effects": [
+              {
+                "key": "discovered_vent",
+                "kind": "set_story_var",
+                "value": "true"
+              }
+            ],
+            "id": "dislodge_vent_brick",
+            "label": "撬開水盆後方的鬆動石磚",
+            "lines": [
+              "You work your fingers into the mortar seams behind the wash basin and ease the loose brick outward. Behind it lies a narrow horizontal flue just wide enough to crawl through, catching the sharp whistling draft of the cliff winds."
+            ]
+          }
+        ],
+        "label": "鬆動石磚"
+      }
+    ],
+    "id": "herbarium_garden",
+    "inspect_text": "空氣中瀰漫著濃烈的乳香、硫磺與苦澀藥汁氣味。半身人僕役維持著規訓的沉默。在外牆的洗藥水槽後方，近地面處有一塊石磚顯得有些鬆動。",
+    "summary": "一座由高聳柱列與白色濾光紗幔環繞的陽光天井花園。數十張調劑石台與乾燥架整齊排列，身穿白袍的半身人僕役正安靜地處理高山草藥。",
+    "title": "玻璃暖房"
+  },
+  {
+    "allow_rest": false,
+    "descriptions": [],
+    "exits": [
+      {
+        "aliases": [
+          "vent",
+          "flue",
+          "in",
+          "garden",
+          "solarium",
+          "crawl",
+          "back"
+        ],
+        "label": "通風口",
+        "menu_label": "爬回通風管道回到玻璃暖房",
+        "room_id": "herbarium_garden"
+      },
+      {
+        "aliases": [
+          "down",
+          "d",
+          "stair",
+          "stairs",
+          "sanctum",
+          "door",
+          "crypt"
+        ],
+        "label": "下",
+        "menu_label": "沿螺旋階梯下到復生聖所",
+        "room_id": "mortuary_reanimation_sanctum",
+        "when": [
+          "sanctum_door_unbolted"
+        ]
+      }
+    ],
+    "features": [
+      {
+        "aliases": [
+          "grass",
+          "herbs",
+          "soul-grass",
+          "soul grass",
+          "dew",
+          "plants"
+        ],
+        "allow_rest": false,
+        "id": "herbarium_cliff_balcony-grass",
+        "inspect_text": "生長在溫暖腐殖土裡的低矮高山靈魂草，鋸齒狀的葉片上凝結著散發幽藍光芒的珍貴露水。",
+        "label": "野生靈魂草"
+      },
+      {
+        "aliases": [
+          "door",
+          "iron door",
+          "bolt",
+          "staircase",
+          "spiral stairs"
+        ],
+        "allow_rest": false,
+        "id": "herbarium_cliff_balcony-door",
+        "inspect_text": "從內部開鎖的厚重鐵門，通往一條直接下通至復生聖所的狹窄螺旋階梯。",
+        "interactions": [
+          {
+            "aliases": [
+              "unbolt door",
+              "open door",
+              "unlock door",
+              "slide bolt",
+              "unlatch door"
+            ],
+            "effects": [
+              {
+                "key": "sanctum_door_unbolted",
+                "kind": "set_story_var",
+                "value": "true"
+              }
+            ],
+            "id": "unbolt_sanctum_door",
+            "label": "拔開鏈鎖鐵門的門閂",
+            "lines": [
+              "You lift the heavy iron bar and slide the deadbolt back. The rusted hinges yield silently, unbolting the spiral stairs down into the Reanimation Sanctum."
+            ]
+          }
+        ],
+        "label": "鏈鎖鐵門"
+      }
+    ],
+    "id": "herbarium_cliff_balcony",
+    "inspect_text": "外部呼嘯的山風吹不進這處隱密角落。戴著有裂痕白瓷面具的半身人鍊金術士奧爾娃在此照料靈魂草。一扇從此處拔開門閂的鐵門通往一條下行至聖所的螺旋石階。",
+    "summary": "一處隱藏在倒扣岩壁與懸挑樑柱下方的險峻夾層，腳下是無垠雲海。一截廢棄的採暖蒸汽管吐出微弱暖氣，溫養著紮根在黑色腐殖土裡的幽藍野生靈魂草。",
+    "title": "懸崖暗台"
+  },
+  {
+    "allow_rest": false,
     "descriptions": [
       {
-        "when": ["spiritual_sight"],
-        "summary": "整座龐大的地下靈柩殿被數百道漂浮的淡藍色靈魂光點照亮。黑皮名冊靜靜置於祭壇邊緣的木架上。",
-        "inspect_text": "靈視覆蓋了視野，數百道無辜平民的靈魂安詳地懸浮在石台上方，擺脫了黑暗符文的禁錮。"
+        "inspect_text": "靈視覆蓋了視野，數百道無辜平民的靈魂安詳地懸浮在石台上方，擺脫了黑暗符文的禁錮。",
+        "summary": "靈視覆蓋了視野，數百道無辜平民的靈魂安詳地懸浮在石台上方，擺脫了黑暗符文的禁錮。",
+        "when": [
+          "spiritual_sight"
+        ]
       }
-    ]
+    ],
+    "exits": [
+      {
+        "aliases": [
+          "north",
+          "n",
+          "archive",
+          "cloister",
+          "library"
+        ],
+        "label": "北",
+        "menu_label": "向北上行進入靜謐檔案庫",
+        "room_id": "sanctuary_inquisition_archive"
+      },
+      {
+        "aliases": [
+          "west",
+          "w",
+          "solarium",
+          "garden"
+        ],
+        "label": "西",
+        "menu_label": "向西走進玻璃暖房",
+        "room_id": "herbarium_garden"
+      },
+      {
+        "aliases": [
+          "out",
+          "exit",
+          "platform",
+          "doors",
+          "south",
+          "s",
+          "southeast",
+          "se"
+        ],
+        "label": "出",
+        "menu_label": "踏出至高山傳送台",
+        "room_id": "sanctuary_main_platform"
+      },
+      {
+        "aliases": [
+          "up",
+          "u",
+          "stair",
+          "stairs",
+          "balcony",
+          "cliff"
+        ],
+        "label": "上",
+        "menu_label": "沿著旋轉石階爬上懸崖暗台",
+        "room_id": "herbarium_cliff_balcony",
+        "when": [
+          "sanctum_door_unbolted"
+        ]
+      }
+    ],
+    "features": [
+      {
+        "aliases": [
+          "ledger",
+          "book",
+          "register",
+          "tome",
+          "records",
+          "names"
+        ],
+        "allow_rest": false,
+        "id": "mortuary_reanimation_sanctum-ledger",
+        "inspect_text": "一本蓋有宗教裁判所官印的沉重黑皮名冊，詳細記錄著被抽離者的真名：西拉傑（繫入石守）、努爾（繫入白棋王后）、切石匠歐林（黑石魔像一號）、磨坊匠瑪莉（黑石魔像二號）、礦工法瑞德（白石魔像一號）與織布匠哈娜（白石魔像二號）。",
+        "label": "黑皮名冊"
+      },
+      {
+        "aliases": [
+          "altar",
+          "slabs",
+          "vats",
+          "obsidian",
+          "sigils",
+          "runes"
+        ],
+        "allow_rest": false,
+        "id": "mortuary_reanimation_sanctum-altar",
+        "inspect_text": "一座由黑色火山玻璃鑄造的巨大祭壇，刻著猩紅的生紋與縛紋陣線。",
+        "label": "黑曜石祭壇"
+      }
+    ],
+    "id": "mortuary_reanimation_sanctum",
+    "inspect_text": "空氣中湧動著令人窒息的暗黑魔力。石台木架上堆疊著記錄被擄平民去向的黑皮名冊。黑曜石祭壇上方，先知瓦勒里烏斯正主持著恐怖的怪物轉化儀式。",
+    "summary": "一座由粗大黑色大理石柱支撐的龐大地下殿堂。大殿中央矗立著刻滿生紋與縛紋的黑曜石祭壇，四周環繞著石棺與發光的靈魂槽，受困的人類魂魄在此被強行剝離記憶並繫入怪物造物之中。",
+    "title": "復生聖所"
   },
   {
     "allow_rest": true,
@@ -13008,8 +13238,7 @@
           "teapot",
           "chairs",
           "radio",
-          "tea",
-          "木桌"
+          "tea"
         ],
         "allow_rest": false,
         "id": "floor7_antechamber-table",

@@ -2859,7 +2859,9 @@
         }
       }
     ],
-    "unlocked_when": ["zayd_rescued"]
+    "unlocked_when": [
+      "zayd_rescued"
+    ]
   },
   {
     "aliases": [
@@ -3761,7 +3763,9 @@
       "ally"
     ],
     "transformations": [],
-    "unlocked_when": ["courtyard_cages_opened"]
+    "unlocked_when": [
+      "courtyard_cages_opened"
+    ]
   },
   {
     "aliases": [
@@ -3824,7 +3828,9 @@
       "ally"
     ],
     "transformations": [],
-    "unlocked_when": ["courtyard_cages_opened"]
+    "unlocked_when": [
+      "courtyard_cages_opened"
+    ]
   },
   {
     "aliases": [
@@ -3859,7 +3865,9 @@
       "offering",
       "salt_reach"
     ],
-    "unlocked_when": ["courtyard_cages_opened"]
+    "unlocked_when": [
+      "courtyard_cages_opened"
+    ]
   },
   {
     "aliases": [
@@ -3896,7 +3904,9 @@
       "offering",
       "glassbank"
     ],
-    "unlocked_when": ["courtyard_cages_opened"]
+    "unlocked_when": [
+      "courtyard_cages_opened"
+    ]
   },
   {
     "aliases": [
@@ -3931,7 +3941,9 @@
       "offering",
       "woolcross"
     ],
-    "unlocked_when": ["courtyard_cages_opened"]
+    "unlocked_when": [
+      "courtyard_cages_opened"
+    ]
   },
   {
     "aliases": [
@@ -3966,7 +3978,9 @@
       "offering",
       "greenrest"
     ],
-    "unlocked_when": ["courtyard_cages_opened"]
+    "unlocked_when": [
+      "courtyard_cages_opened"
+    ]
   },
   {
     "aliases": [
@@ -4004,7 +4018,9 @@
       "offering",
       "brass_yard"
     ],
-    "unlocked_when": ["courtyard_cages_opened"]
+    "unlocked_when": [
+      "courtyard_cages_opened"
+    ]
   },
   {
     "aliases": [
@@ -4242,27 +4258,6 @@
     ]
   },
   {
-    "id": "cathedral_guard_crossroads",
-    "name": "衛兵馬可斯",
-    "room_id": "sanctuary_crossroads",
-    "level": 7,
-    "initial_stats": {
-      "strength": 7,
-      "endurance": 7,
-      "dexterity": 7,
-      "intelligence": 6,
-      "hp": 64,
-      "mp": 42
-    },
-    "initial_hostile": true,
-    "attackable": true,
-    "skills": [
-      "strike",
-      "intercept"
-    ],
-    "initial_inventory": {},
-    "drops": {},
-    "xp_drop": 60,
     "aliases": [
       "馬可斯",
       "衛兵",
@@ -4270,13 +4265,26 @@
       "守衛",
       "衛兵馬可斯"
     ],
-    "tags": [
-      "hostile",
-      "cathedral_guard",
-      "guard"
-    ],
+    "attackable": true,
+    "drops": {},
+    "id": "cathedral_guard_crossroads",
+    "initial_hostile": true,
+    "initial_inventory": {},
+    "initial_stats": {
+      "dexterity": 7,
+      "endurance": 7,
+      "hp": 64,
+      "intelligence": 6,
+      "mp": 42,
+      "strength": 7
+    },
     "inspect_text": "一名身披銀白全身板甲、外罩純白連帽罩袍的魁梧聖堂衛兵。他手握精鋼長戟，眼神冰冷而戒備地監視著十字中庭的動向。",
+    "level": 7,
+    "name": "衛兵馬可斯",
     "prompt_context": {
+      "behavior_examples": [
+        "他筆直立定，白甲在光芒中反射出冰冷的光澤。"
+      ],
       "character_notes": [
         "你是衛兵馬可斯，在大教堂十字中庭巡邏的聖堂衛兵。",
         "你服從瓦勒里烏斯先知的命令，遇見任何闖入者一律就地逮捕。"
@@ -4284,38 +4292,59 @@
       "response_notes": [
         "厲聲要求闖入者立即繳械投降。",
         "你對外來者毫無寬容。"
-      ],
-      "behavior_examples": [
-        "他筆直立定，白甲在光芒中反射出冰冷的光澤。"
       ]
-    }
+    },
+    "room_id": "sanctuary_crossroads",
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "tags": [
+      "hostile",
+      "cathedral_guard",
+      "guard"
+    ],
+    "xp_drop": 60
   },
   {
-    "id": "halfling_servant_4",
-    "name": "四號僕役",
-    "room_id": "herbarium_garden",
-    "level": 6,
-    "initial_stats": {
-      "strength": 4,
-      "endurance": 4,
-      "dexterity": 8,
-      "intelligence": 6,
-      "hp": 40,
-      "mp": 30
-    },
-    "initial_hostile": false,
-    "attackable": false,
-    "skills": [
-      "strike"
-    ],
-    "initial_inventory": {},
-    "drops": {},
-    "xp_drop": 0,
     "aliases": [
       "四號僕役",
       "四號",
       "僕役四號",
       "女僕四號"
+    ],
+    "attackable": false,
+    "drops": {},
+    "id": "halfling_servant_4",
+    "initial_hostile": false,
+    "initial_inventory": {},
+    "initial_stats": {
+      "dexterity": 8,
+      "endurance": 4,
+      "hp": 40,
+      "intelligence": 6,
+      "mp": 30,
+      "strength": 4
+    },
+    "inspect_text": "一名身形矮小、套著過長連帽麻布長袍與白瓷半面具的半身人僕役。她在石水槽旁不住地發抖，雙手死死按著沾污的帆布圍裙暗兜，裡面偷偷藏著偷藏的乾黑麥麵包與無花果乾。",
+    "level": 6,
+    "name": "四號僕役",
+    "prompt_context": {
+      "behavior_examples": [
+        "她渾身發抖，雙手緊按著帆布圍裙的暗兜。",
+        "白瓷面具下傳來帶著哭腔的細微抽噎聲。"
+      ],
+      "character_notes": [
+        "你是四號僕役，忘卻聖堂裡極度恐懼的半身人調劑雜役。",
+        "你因為晚課少念禱詞被修女扣了乾糧，出於飢餓偷藏了黑麥麵包。"
+      ],
+      "response_notes": [
+        "帶著哭腔哀求訪客別向裁決騎士告發你的黑麥麵包。"
+      ]
+    },
+    "room_id": "herbarium_garden",
+    "skills": [
+      "strike"
     ],
     "tags": [
       "civilian",
@@ -4323,42 +4352,9 @@
       "servant",
       "herbalist"
     ],
-    "inspect_text": "一名身形矮小、套著過長連帽麻布長袍與白瓷半面具的半身人僕役。她在石水槽旁不住地發抖，雙手死死按著沾污的帆布圍裙暗兜，裡面偷偷藏著偷藏的乾黑麥麵包與無花果乾。",
-    "prompt_context": {
-      "character_notes": [
-        "你是四號僕役，忘卻聖堂裡極度恐懼的半身人調劑雜役。",
-        "你因為晚課少念禱詞被修女扣了乾糧，出於飢餓偷藏了黑麥麵包。"
-      ],
-      "response_notes": [
-        "帶著哭腔哀求訪客別向裁決騎士告發你的黑麥麵包。"
-      ],
-      "behavior_examples": [
-        "她渾身發抖，雙手緊按著帆布圍裙的暗兜。",
-        "白瓷面具下傳來帶著哭腔的細微抽噎聲。"
-      ]
-    }
+    "xp_drop": 0
   },
   {
-    "id": "halfling_servant_7",
-    "name": "七號僕役",
-    "room_id": "herbarium_garden",
-    "level": 7,
-    "initial_stats": {
-      "strength": 5,
-      "endurance": 6,
-      "dexterity": 9,
-      "intelligence": 8,
-      "hp": 52,
-      "mp": 45
-    },
-    "initial_hostile": false,
-    "attackable": false,
-    "skills": [
-      "strike"
-    ],
-    "initial_inventory": {},
-    "drops": {},
-    "xp_drop": 0,
     "aliases": [
       "七號僕役",
       "七號",
@@ -4366,56 +4362,89 @@
       "女僕七號",
       "藥草師"
     ],
-    "tags": [
-      "civilian",
-      "halfling",
-      "servant",
-      "herbalist"
-    ],
+    "attackable": false,
+    "drops": {},
+    "id": "halfling_servant_7",
+    "initial_hostile": false,
+    "initial_inventory": {},
+    "initial_stats": {
+      "dexterity": 9,
+      "endurance": 6,
+      "hp": 52,
+      "intelligence": 8,
+      "mp": 45,
+      "strength": 5
+    },
     "inspect_text": "一名套著純白麻布長袍與白瓷半面具的安靜半身人僕役，正以近乎外科手術般的俐落手法在乾燥架前切削草藥根莖。她隱蔽地將幾枚泛著銀斑的野生種子滑入衣袖暗袋，腳下草鞋邊緣沾著高山黑土與尚未乾枯的翠綠崖壁苔蘚，暗示著通往建築外部的秘密通道。",
+    "level": 7,
+    "name": "七號僕役",
     "prompt_context": {
+      "behavior_examples": [
+        "她以薄薄的骨刀精準沿著草藥脈絡剝離表皮，刀刀分毫不差。",
+        "她的小指隱蔽地微挑，將切藥板夾層裡的種子滑入長袍暗袋。"
+      ],
       "character_notes": [
         "你是七號僕役，暗中偷藏野生靈魂草種子，並在夜裡鑽過排氣管道前往懸崖暗台。",
         "你低頭專注工作，除非聽到秘密暗號，否則絕不輕易暴露。"
       ],
       "response_notes": [
         "保持沉默與專注。若訪客注意到你鞋上的苔蘚，眼神悄然示意水槽後的鬆動石磚。"
-      ],
-      "behavior_examples": [
-        "她以薄薄的骨刀精準沿著草藥脈絡剝離表皮，刀刀分毫不差。",
-        "她的小指隱蔽地微挑，將切藥板夾層裡的種子滑入長袍暗袋。"
       ]
-    }
-  },
-  {
-    "id": "orva",
-    "name": "奧爾娃",
-    "room_id": "herbarium_cliff_balcony",
-    "level": 7,
-    "initial_stats": {
-      "strength": 5,
-      "endurance": 6,
-      "dexterity": 7,
-      "intelligence": 9,
-      "hp": 55,
-      "mp": 60
     },
-    "initial_hostile": false,
-    "attackable": false,
+    "room_id": "herbarium_garden",
     "skills": [
       "strike"
     ],
-    "initial_inventory": {
-      "spirit-pill": 1
-    },
-    "drops": {},
-    "xp_drop": 0,
+    "tags": [
+      "civilian",
+      "halfling",
+      "servant",
+      "herbalist"
+    ],
+    "xp_drop": 0
+  },
+  {
     "aliases": [
       "奧爾娃",
       "修女奧爾娃",
       "女巫",
       "半身人",
       "藥草師"
+    ],
+    "attackable": false,
+    "drops": {},
+    "id": "orva",
+    "initial_hostile": false,
+    "initial_inventory": {
+      "spirit-pill": 1
+    },
+    "initial_stats": {
+      "dexterity": 7,
+      "endurance": 6,
+      "hp": 55,
+      "intelligence": 9,
+      "mp": 60,
+      "strength": 5
+    },
+    "inspect_text": "一名留著深褐色柔軟短髮、露出一對覆著細微絨毛小巧耳廓的半身人少女，正跪倒在野生靈魂草旁。白瓷面具已被解下丟在泥土中，她手中緊緊攥著一只裝著幽藍露水的銀色金屬膠囊，褐色的眼眸中閃爍著堅毅的光芒。",
+    "level": 7,
+    "name": "奧爾娃",
+    "prompt_context": {
+      "behavior_examples": [
+        "她將合攏的銀雙箭髮簪死死貼在胸口，眼中噙著淚水。",
+        "她神色焦急地指向通往底層靈柩殿的生鐵石門。"
+      ],
+      "character_notes": [
+        "你是奧爾娃，忘卻聖堂裡的半身人藥草師。因與艾納相愛並暗中抵抗宗教裁判所，被誣陷為『女巫』。",
+        "你秘密在懸崖暗台培育野生靈魂草，調配出了能看透靈魂維度的靈視膠囊。"
+      ],
+      "response_notes": [
+        "以溫和而急切的語氣說話。請蕾拉服下靈視膠囊，並穿過生鐵石門順著旋轉石階阻止瓦勒里烏斯。"
+      ]
+    },
+    "room_id": "herbarium_cliff_balcony",
+    "skills": [
+      "strike"
     ],
     "tags": [
       "civilian",
@@ -4424,20 +4453,7 @@
       "captive",
       "halfling"
     ],
-    "inspect_text": "一名留著深褐色柔軟短髮、露出一對覆著細微絨毛小巧耳廓的半身人少女，正跪倒在野生靈魂草旁。白瓷面具已被解下丟在泥土中，她手中緊緊攥著一只裝著幽藍露水的銀色金屬膠囊，褐色的眼眸中閃爍著堅毅的光芒。",
-    "prompt_context": {
-      "character_notes": [
-        "你是奧爾娃，忘卻聖堂裡的半身人藥草師。因與艾納相愛並暗中抵抗宗教裁判所，被誣陷為『女巫』。",
-        "你秘密在懸崖暗台培育野生靈魂草，調配出了能看透靈魂維度的靈視膠囊。"
-      ],
-      "response_notes": [
-        "以溫和而急切的語氣說話。請蕾拉服下靈視膠囊，並穿過生鐵石門順著旋轉石階阻止瓦勒里烏斯。"
-      ],
-      "behavior_examples": [
-        "她將合攏的銀雙箭髮簪死死貼在胸口，眼中噙著淚水。",
-        "她神色焦急地指向通往底層靈柩殿的生鐵石門。"
-      ]
-    }
+    "xp_drop": 0
   },
   {
     "aliases": [
@@ -4500,8 +4516,8 @@
           "who": "大教堂的大先知，因魔力反噬重創，白骨法杖碎裂"
         },
         "trigger": {
-          "kind": "story_var",
           "key": "dragon_defeated",
+          "kind": "story_var",
           "value": "true"
         }
       }

@@ -43,7 +43,7 @@ fn test_floor6_handoff_and_stealth_to_witch() {
     assert!(runtime.export_state().unwrap().is_player_invisible());
 
     // 2. Sneak into crossroads with hostile guard
-    runtime.run_turn("go south").expect("move to crossroads");
+    runtime.run_turn("go in").expect("move to crossroads");
     assert_eq!(
         runtime.export_state().unwrap().current_room_id,
         "sanctuary_crossroads"
@@ -58,8 +58,8 @@ fn test_floor6_handoff_and_stealth_to_witch() {
         "guard must not strike invisible player"
     );
 
-    // 3. Move west into herbarium garden
-    runtime.run_turn("go west").expect("move to garden");
+    // 3. Move south into herbarium garden
+    runtime.run_turn("go south").expect("move to garden");
     assert_eq!(
         runtime.export_state().unwrap().current_room_id,
         "herbarium_garden"
@@ -94,8 +94,9 @@ fn test_floor6_handoff_and_stealth_to_witch() {
         look_servant7.text()
     );
 
-    // Slip through vent flue out to cliff balcony
-    runtime.run_turn("go out").expect("crawl through vent");
+    // Dislodge loose brick and slip through vent flue out to cliff balcony
+    runtime.run_turn("pry brick").expect("dislodge vent brick");
+    runtime.run_turn("go vent").expect("crawl through vent");
     assert_eq!(
         runtime.export_state().unwrap().current_room_id,
         "herbarium_cliff_balcony"
@@ -365,7 +366,7 @@ fn test_floor6_stealth_sentry_marcus() {
     assert!(runtime.export_state().unwrap().is_player_invisible());
 
     // Enter Crossroads with Sentry Marcus
-    runtime.run_turn("go south").expect("enter crossroads");
+    runtime.run_turn("go in").expect("enter crossroads");
     let s1 = runtime.export_state().unwrap();
     assert_eq!(s1.current_room_id, "sanctuary_crossroads");
 

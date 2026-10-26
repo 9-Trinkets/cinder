@@ -1073,51 +1073,56 @@
   },
   {
     "id": "the-high-sanctuary",
-    "label": "忘卻聖堂",
+    "label": "高聖所",
+    "reveal_when": [
+      "has_sensory_enhancer"
+    ],
     "rooms": [
       {
         "room_id": "sanctuary_grand_terrace",
-        "x": 12.0,
+        "x": 4.0,
         "y": 4.0
       },
       {
         "room_id": "sanctuary_east_promenade",
         "x": 20.0,
-        "y": 12.0
+        "y": 4.0
       },
       {
         "room_id": "sanctuary_main_platform",
-        "x": 12.0,
+        "x": 20.0,
         "y": 20.0
       },
       {
         "room_id": "sanctuary_west_colonnade",
         "x": 4.0,
-        "y": 12.0
-      },
-      {
-        "room_id": "herbarium_cliff_balcony",
-        "x": 0.0,
-        "y": 14.0
+        "y": 20.0
       },
       {
         "room_id": "sanctuary_crossroads",
-        "x": 12.0,
-        "y": 9.0
+        "x": 8.0,
+        "y": 8.0
       },
       {
-        "room_id": "herbarium_garden",
-        "x": 8.0,
-        "y": 14.0
+        "room_id": "sanctuary_inquisition_archive",
+        "x": 16.0,
+        "y": 8.0
       },
       {
         "room_id": "mortuary_reanimation_sanctum",
         "x": 16.0,
-        "y": 14.0
+        "y": 16.0
+      },
+      {
+        "room_id": "herbarium_garden",
+        "x": 8.0,
+        "y": 16.0
+      },
+      {
+        "room_id": "herbarium_cliff_balcony",
+        "x": 0.0,
+        "y": 16.0
       }
-    ],
-    "reveal_when": [
-      "has_sensory_enhancer"
     ]
   },
   {

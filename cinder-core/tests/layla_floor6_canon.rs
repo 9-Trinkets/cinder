@@ -44,9 +44,12 @@ fn test_floor6_halfling_servants_and_orva_clues() {
         look_servant7.text()
     );
 
+    // Pry the loose brick behind the basin to reveal the flue
+    runtime.run_turn("pry brick").expect("dislodge vent brick");
+
     // Slip through vent to cliff balcony and inspect Orva
     runtime
-        .run_turn("go out")
+        .run_turn("go vent")
         .expect("slip through vent to balcony");
     let look_orva = runtime.run_turn("look at orva").expect("look orva");
     assert!(
@@ -68,9 +71,30 @@ fn test_floor6_cliff_balcony_navigation_and_soul_grass() {
 
     let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
 
-    // 1. Slip through the vent to the secret cliff balcony
+    // 1. Gated vent cannot be entered before discovering it
+    let move_fail = runtime
+        .run_turn("go vent")
+        .expect("attempt vent without discovery");
+    assert!(
+        move_fail.text().to_lowercase().contains("no exit")
+            || move_fail.text().to_lowercase().contains("no path")
+            || move_fail.text().to_lowercase().contains("cannot")
+            || move_fail.text().to_lowercase().contains("don't see"),
+        "vent must not be accessible before discovery: {}",
+        move_fail.text()
+    );
+
+    // Dislodge the loose brick
+    let pry_out = runtime.run_turn("pry brick").expect("pry brick");
+    assert!(
+        pry_out.text().contains("flue") || pry_out.text().contains("brick"),
+        "pry brick output: {}",
+        pry_out.text()
+    );
+
+    // Slip through the discovered vent to the secret cliff balcony
     let move_out = runtime
-        .run_turn("go out")
+        .run_turn("go vent")
         .expect("move out to cliff balcony");
     let s1 = runtime.export_state().unwrap();
     assert_eq!(
@@ -87,7 +111,8 @@ fn test_floor6_cliff_balcony_navigation_and_soul_grass() {
     assert!(
         look_grass.text().contains("azure light")
             || look_grass.text().contains("dew")
-            || look_grass.text().contains("Capsule"),
+            || look_grass.text().contains("Capsule")
+            || look_grass.text().contains("soul-grass"),
         "Soul grass inspect text: {}",
         look_grass.text()
     );
@@ -103,7 +128,8 @@ fn test_floor6_cliff_balcony_navigation_and_soul_grass() {
         look_door.text()
     );
 
-    // 4. Descend secret stairs into Reanimation Sanctum
+    // 4. Unbolt the door and descend secret stairs into Reanimation Sanctum
+    runtime.run_turn("unbolt door").expect("unbolt door");
     let descend_out = runtime.run_turn("go down").expect("descend into sanctum");
     let s2 = runtime.export_state().unwrap();
     assert_eq!(

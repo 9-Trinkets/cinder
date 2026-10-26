@@ -534,8 +534,8 @@
       "quest_id": "high_sanctuary_infiltration",
       "quest_title": "The High Sanctuary",
       "quest_kind": "main",
-      "summary": "Infiltrate the sanctuary, find Sister Orva on the secret cliff balcony, and speak the code word.",
-      "beat_note": "Layla has slipped into the High Sanctuary. Use invisibility to slip past the sentries, deduce the clues among the masked halfling herbalists in the Solarium, follow the vent flue to the Cliff Balcony, and speak the code word: 'The arrow always finds home'.",
+      "summary": "Infiltrate the solarium, deduce the hidden flue behind the water basin, and find Sister Orva on the cliff balcony.",
+      "beat_note": "In the Glass Solarium, examine the masked halfling servants for clues. Inspecting the stone water basin reveals the loosened brick and ventilation flue. Crawl out to the secret cliff balcony and speak the code word to Sister Orva: 'The arrow always finds home'.",
       "update_message": "Find Orva on the cliff balcony and give her the code word.",
       "narrative_lines": [
         "You stand alone on the High Sanctuary terrace. White-armored guards patrol the crossroads ahead. Drink your invisibility potion to sneak past into the glass solarium, deduce the clues among the masked halfling herbalists, and seek Orva."
@@ -580,6 +580,11 @@
         {
           "kind": "set_story_var",
           "key": "met_witch",
+          "value": "true"
+        },
+        {
+          "kind": "set_story_var",
+          "key": "sanctum_door_unbolted",
           "value": "true"
         }
       ],
@@ -700,6 +705,7 @@
       ],
       "on_advance_effects": [],
       "advance_signals": [
+        "feature_observed:sanctuary_inquisition_archive-ledger",
         "feature_observed:mortuary_reanimation_sanctum-ledger"
       ],
       "next_stage_ids": [],
