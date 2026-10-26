@@ -487,13 +487,18 @@ fn a_quieter_session_gets_a_quieter_message_and_note() {
     }
     let after = finish_after(&runtime);
     assert!(after.contains("pretty quiet in the car"), "{after}");
-    assert!(after.contains("no hurry about the book"), "{after}");
+    assert!(
+        after.contains("stayed with the things she could count"),
+        "{after}"
+    );
     let card = runtime
         .consume_pending_projector_sequence()
         .expect("movie lookup")
         .expect("a card closes this episode too");
     assert!(
-        card.frames[0].text.contains("no hurry about the book"),
+        card.frames[0]
+            .text
+            .contains("stayed with the things she could count"),
         "the quiet card shows the quiet note: {}",
         card.frames[0].text
     );

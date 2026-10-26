@@ -1691,7 +1691,8 @@
         "He hangs the plastic stethoscope around his neck and pushes a sheet of paper and a red crayon into your hands.",
         "Leo (to Isla): You're the chart nurse. Write down everything I say.",
         "Leo looks into your empty hands, then at the door.",
-        "Leo (to Isla): Nurse! Where are the patients? In the basket. Upstairs. Go get them."
+        "Leo (to Isla): Nurse! Where are the patients? Go and get them. Quick.",
+        "You remember the basket he asked for last week, up in the quiet room."
       ],
       "advance_signals": [
         "item_acquired:patient-basket"
@@ -2043,9 +2044,9 @@
       "summary": "Stay with Leo.",
       "narrative_lines": [
         "Leo flips the chart over and smooths it flat on the rug. He pushes the red crayon back into your hand.",
-        "Leo (to Isla): Now the Warning Signs. On the back. Write that Owl has lines by his eyes when he comes home from work. Like my dad.",
+        "Leo (to Isla): Now the Warning Signs. On the back. Write that Owl has lines by his eyes when he comes home from work.",
         "He holds up the frog and parts the fuzz beside its ear with one finger.",
-        "Leo (to Isla): And Frog has three white hairs right here. I counted them on my mom when she was tying my shoes.",
+        "Leo (to Isla): And Frog has three white hairs right here. I counted them.",
         "Leo (to Isla): Pop had a whole head of white hairs."
       ],
       "open_menu": "leo-signs",
@@ -2080,8 +2081,8 @@
       "quest_kind": "main",
       "summary": "Choose a picture book from the book room, at the top of the house.",
       "narrative_lines": [
-        "Leo (to Isla): Rounds are slow. Nurse, go pick a book.",
-        "Isla (to Leo): I'll be right back."
+        "Isla (to Leo): Doctor, the patients are getting restless. I think they need a story to settle them. I'll go and find one.",
+        "Leo (to Isla): Hm. Fine. Be fast."
       ],
       "advance_signals": [
         "item_acquired:book-owl",
@@ -2114,7 +2115,6 @@
       "summary": "Read to Leo.",
       "narrative_lines": [
         "You take the folded oatmeal cloth from your tote and drape it over the toy shelf. You switch on the warm lamp by the beanbag and turn off the overhead light.",
-        "Isla (to Leo): Even doctors take a reading break between rounds.",
         "Leo climbs onto the window cushion and props the frog upright against his knee.",
         "Leo (to Isla): One book. I'll monitor the frog."
       ],

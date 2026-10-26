@@ -83,6 +83,11 @@ fn the_world_carries_across_an_act_and_only_act_variables_clear() {
     let runtime = runtime();
     let outcome = runtime.run_turn("do test-lamp:finish").expect("turn");
     assert_eq!(outcome.phase, GamePhase::ActEnded, "{}", outcome.text());
+    assert!(
+        outcome.text().contains("== Staff Room =="),
+        "a player a stage has moved is shown the room: {}",
+        outcome.text()
+    );
 
     runtime.continue_after_act().expect("continues");
     let state = runtime.export_state().expect("state");

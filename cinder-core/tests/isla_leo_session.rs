@@ -220,7 +220,12 @@ fn play_owl_to_the_end(runtime: &CinderRuntime) {
 #[test]
 fn episode_two_opens_on_the_porch_with_leos_notes() {
     let (runtime, text) = episode_two();
-    assert!(text.contains("early February"), "{text}");
+    let heading = text.find("== Front Porch ==").expect("the porch is shown");
+    let opening = text.find("early February").expect("the opening is shown");
+    assert!(
+        heading < opening,
+        "Isla is shown where she is before the scene is set: {text}"
+    );
     assert!(text.contains("puffy red coat"), "{text}");
 
     let state = runtime.export_state().expect("state");
@@ -457,7 +462,7 @@ fn without_pretzels_isla_has_to_fetch_them() {
     answer(&runtime, "leo-clinic", fit("leo-clinic"));
     answer(&runtime, "leo-upright", fit("leo-upright"));
     let text = answer(&runtime, "leo-snack-none", fit("leo-snack-none"));
-    assert!(text.contains("Kitchen shelf."), "{text}");
+    assert!(text.contains("The staff is hungry."), "{text}");
     assert_eq!(active_menu(&runtime), None);
     assert!(active_stages(&runtime).contains(&"stage-leo-fetch-snack".to_string()));
 
@@ -548,7 +553,7 @@ fn an_empty_tote_at_the_story_still_sends_isla_for_a_book() {
     let pack = load_named_pack("isla", Some("en")).expect("isla loads");
     let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime");
     let text = answer(&runtime, "leo-stories", fit("leo-stories"));
-    assert!(text.contains("Nurse, go pick a book."), "{text}");
+    assert!(text.contains("I'll go and find one."), "{text}");
     assert!(active_stages(&runtime).contains(&"stage-leo-pick-book".to_string()));
 }
 
@@ -573,6 +578,10 @@ fn the_best_session_with_the_owl_book_reaches_every_secret_and_the_high_ending()
         "the chart is folded into the journal"
     );
     let after = finish_after(&runtime);
+    assert!(
+        !after.contains("The session is over."),
+        "the card closes the game, not a line of narration: {after}"
+    );
     assert!(after.contains("I closed my eyes on the couch"), "{after}");
     assert!(after.contains("red squeeze light Pop gave him"), "{after}");
     assert_eq!(
@@ -784,10 +793,7 @@ fn the_warning_signs_alone_give_the_middle_ending() {
     );
     let after = finish_after(&runtime);
     assert!(after.contains("regular tired or doctor tired"), "{after}");
-    assert!(
-        after.contains("three white hairs above his mom's ear"),
-        "{after}"
-    );
+    assert!(after.contains("three white hairs on Frog"), "{after}");
 }
 
 #[test]
@@ -928,4 +934,24 @@ fn leos_pages_are_in_the_journal_and_none_share_a_name_with_wrens() {
             }
         }
     }
+}
+
+#[test]
+fn a_game_saved_before_leos_messages_existed_still_gets_them() {
+    let (runtime, _) = episode_two();
+    start_session(&runtime, true, true, Some("owl book"));
+    play_owl_to_the_end(&runtime);
+    for step in ["go hall", "go kitchen"] {
+        turn(&runtime, step);
+    }
+    // The sequences are queued on reaching the back steps.
+    let mut state = runtime.export_state().expect("state");
+    state.scripted_sequences.remove("after-leo-high");
+    let pack = load_named_pack("isla", Some("en")).expect("isla loads");
+    let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime");
+    turn(&runtime, "go back yard");
+    let mut text = answer(&runtime, "phone-1", fit("phone-1"));
+    text += &answer(&runtime, "phone-2", fit("phone-2"));
+    assert!(text.contains("Claire (to Isla):"), "{text}");
+    assert!(text.contains("Dr. Bell (to Isla):"), "{text}");
 }

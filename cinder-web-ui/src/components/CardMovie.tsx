@@ -22,27 +22,49 @@ function fontFamily(font: string): string {
 const reducedMotion = () =>
   typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
-/** Shows `text` a letter at a time, or all at once when motion is reduced. */
-function useTyped(text: string, on: boolean, msPerChar: number): string {
-  const [count, setCount] = useState(on ? 0 : text.length)
+/**
+ * Shows `text` a letter at a time once `ready`, or all at once when motion is
+ * reduced. New text starts again from nothing, with no frame showing the old count.
+ */
+function useTyped(text: string, on: boolean, msPerChar: number, ready = true): string {
+  const [typed, setTyped] = useState({ text, count: on ? 0 : text.length })
+  const count = typed.text === text ? typed.count : on ? 0 : text.length
   useEffect(() => {
-    if (!on) {
-      setCount(text.length)
-      return
-    }
-    setCount(0)
+    if (!on) return
+    setTyped({ text, count: 0 })
+    if (!ready) return
     const timer = setInterval(() => {
-      setCount(c => {
-        if (c >= text.length) {
+      setTyped(t => {
+        if (t.count >= text.length) {
           clearInterval(timer)
-          return c
+          return t
         }
-        return c + 1
+        return { text, count: t.count + 1 }
       })
     }, msPerChar)
     return () => clearInterval(timer)
-  }, [text, on, msPerChar])
+  }, [text, on, msPerChar, ready])
   return text.slice(0, count)
+}
+
+const HEADING_MS = 70
+
+/** A short line is typed slowly enough to be seen being typed. */
+function textMs(text: string): number {
+  return text.length < 24 ? 90 : 35
+}
+
+/**
+ * Typed text sits over an invisible copy of the whole text, so the block keeps
+ * its final size and nothing shifts while the letters arrive.
+ */
+function Typed({ full, typed, className }: { full: string; typed: string; className: string }) {
+  return (
+    <div className={`relative w-full ${className}`}>
+      <div className="invisible" aria-hidden>{full}</div>
+      <div className="absolute inset-0" aria-label={full}>{typed}</div>
+    </div>
+  )
 }
 
 const PARTICLES = 28
@@ -114,8 +136,10 @@ export default function CardMovie({ movie, frame, onAdvance, onClose, contained 
   const motion = !reducedMotion()
   const typing = motion && card.reveal === 'type'
   const fadeMs = motion ? card.fade_ms || 900 : 0
-  const heading = useTyped(f?.heading ?? '', typing, 70)
-  const text = useTyped(f?.text ?? '', typing, 35)
+  // The heading is typed first, and the text begins when it is done.
+  const heading = useTyped(f?.heading ?? '', typing, HEADING_MS)
+  const headingDone = heading.length >= (f?.heading?.length ?? 0)
+  const text = useTyped(f?.text ?? '', typing, textMs(f?.text ?? ''), headingDone)
   const dialogRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -126,22 +150,29 @@ export default function CardMovie({ movie, frame, onAdvance, onClose, contained 
   const holdMs = useMemo(() => {
     const base = Math.max(1200, f?.duration_ms ?? 0)
     if (!typing || !f) return base
-    return Math.max(base, (f.heading?.length ?? 0) * 70 + (f.text?.length ?? 0) * 35 + 1200)
+    return Math.max(base, (f.heading?.length ?? 0) * HEADING_MS + (f.text?.length ?? 0) * textMs(f.text ?? '') + 1200)
   }, [f, typing])
 
+  const waits = !!f?.wait_for_click && !isLast
+  const textDone = text.length >= (f?.text?.length ?? 0) && headingDone
+
   useEffect(() => {
-    if (!f || isLast) return
+    if (!f || isLast || waits) return
     const timer = setTimeout(onAdvance, holdMs)
     return () => clearTimeout(timer)
-  }, [frame, f, isLast, onAdvance, holdMs])
+  }, [frame, f, isLast, waits, onAdvance, holdMs])
+
+  // A frame that waits moves on to the next frame, any other click skips the card.
+  const proceed = waits ? onAdvance : onClose
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' || event.key === 'Enter' || event.key === ' ') onClose()
+      if (event.key === 'Escape') onClose()
+      else if (event.key === 'Enter' || event.key === ' ') proceed()
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [onClose])
+  }, [onClose, proceed])
 
   if (!f) return null
 
@@ -155,24 +186,24 @@ export default function CardMovie({ movie, frame, onAdvance, onClose, contained 
       aria-modal={contained ? undefined : true}
       aria-label={movie.title}
       tabIndex={-1}
-      onClick={onClose}
+      onClick={proceed}
       className={`${contained ? 'absolute inset-0 z-20' : 'fixed inset-0 z-50'} flex cursor-pointer items-center justify-center outline-none`}
       style={{ background, transition: `background-color ${fadeMs}ms ease` }}
     >
       <Ambient kind={f.ambient || card.ambient} />
       <div
         key={frame}
-        className={`relative mx-6 flex max-w-xl flex-col gap-4 ${align}`}
+        className={`relative mx-6 flex w-full max-w-xl flex-col gap-4 ${align}`}
         style={{
           color: color(f.text_color || card.text_color, 'var(--color-text)'),
           fontFamily: fontFamily(card.font),
           animation: fadeMs ? `card-fade ${fadeMs}ms ease both` : undefined,
         }}
       >
-        {f.heading && <div className="text-2xl tracking-wide">{heading}</div>}
-        {f.text && <div className="whitespace-pre-wrap text-lg leading-relaxed">{text}</div>}
+        {f.heading && <Typed full={f.heading} typed={heading} className="text-2xl tracking-wide" />}
+        {f.text && <Typed full={f.text} typed={text} className="whitespace-pre-wrap text-lg leading-relaxed" />}
       </div>
-      {isLast && (
+      {(isLast || (waits && textDone)) && (
         <div className="absolute bottom-6 left-0 right-0 text-center text-sm text-muted animate-pulse">
           {t('hud.clickToContinue')}
         </div>

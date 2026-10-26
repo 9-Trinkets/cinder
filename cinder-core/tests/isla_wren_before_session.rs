@@ -267,7 +267,7 @@ fn the_pages_of_the_journal_are_grouped_and_the_index_comes_with_them() {
 #[test]
 fn a_page_can_be_read_by_its_old_name_as_well_as_its_new_one() {
     let runtime = runtime();
-    for name in ["wren, last week", "notes from last week", "last week"] {
+    for name in ["wren, november 14", "notes from last week", "last week"] {
         let text = runtime
             .run_turn(&format!("look at {name}"))
             .expect("look")

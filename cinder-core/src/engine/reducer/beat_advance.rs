@@ -1,4 +1,5 @@
 use crate::content::types::{AdvanceEffect, Condition, ContentPack, SurvivorRewardDefinition};
+use crate::engine::events::ObservationMode;
 use crate::engine::hooks::apply_narrating_world_hook_effects;
 use crate::engine::narrative::{NarrativeLine, NarrativeLines};
 use crate::engine::state::{GamePhase, SpawnActorConfig, SpawnActorOutcome, WorldState};
@@ -6,7 +7,7 @@ use crate::engine::turn_policies::clear_inactive_objective_state;
 use crate::engine::world_mutation::{WorldMutation, WorldMutationApplier};
 
 use super::handlers::{handle_item_transferred, rendered_message_line};
-use super::observation::render_actor_speech_line;
+use super::observation::{render_actor_speech_line, render_room_observation};
 
 pub(crate) fn advance_objective_for_signal(
     state: &mut WorldState,
@@ -80,6 +81,7 @@ pub(crate) fn advance_objective_for_signal(
             else {
                 continue;
             };
+            let mut player_arrived_in = None;
             for relocation in &next_stage.actor_relocations {
                 state
                     .actors
@@ -88,7 +90,16 @@ pub(crate) fn advance_objective_for_signal(
                 if content.is_player_actor(&relocation.actor_id) {
                     state.current_room_id = relocation.to_room_id.clone();
                     state.mark_actor_room_visited(&relocation.actor_id, &relocation.to_room_id);
+                    player_arrived_in = Some(relocation.to_room_id.clone());
                 }
+            }
+            // A player a stage has moved is shown where they now are, as walking
+            // there would show it, once everyone else has been placed too.
+            if let Some(room_id) = player_arrived_in
+                && let Some(observation) =
+                    render_room_observation(content, state, &room_id, ObservationMode::Summary)
+            {
+                messages.extend(observation.0);
             }
             dispatch_actor_spawns_for_stage(state, content, next_stage, 0);
             // A stage can open with a movie, picked by id or by a story variable. Its
@@ -311,7 +322,11 @@ fn apply_stage_effect(
             return Ok(());
         }
         AdvanceEffect::QueueSequence { sequence_id } => {
-            return state.queue_scripted_sequence(sequence_id);
+            if content.sequence(sequence_id).is_none() {
+                return Err(format!("unknown scripted sequence '{sequence_id}'"));
+            }
+            state.queue_scripted_sequence(sequence_id);
+            return Ok(());
         }
         AdvanceEffect::SetFollowsPlayer { actor_id, follows } => {
             state.set_follows_player(actor_id, *follows);

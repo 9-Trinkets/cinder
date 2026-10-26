@@ -40,8 +40,9 @@
   },
   {
     "id": "note-session-one",
-    "label": "Wren, week one",
+    "label": "Wren, November 7",
     "aliases": [
+      "november 7",
       "week one",
       "session one",
       "first notes",
@@ -53,8 +54,9 @@
   },
   {
     "id": "note-session-two",
-    "label": "Wren, last week",
+    "label": "Wren, November 14",
     "aliases": [
+      "november 14",
       "last week",
       "session two",
       "week two",
@@ -62,7 +64,7 @@
       "notes from last week"
     ],
     "kind": "misc",
-    "description": "Last week. Wren built a tower of blocks without a word, knocked it down, and put every block back in the bin. She counted under her breath, and then stopped herself.\n\nUnderlined in pencil. Did not name the move. W. left the table when I said \"two houses.\"",
+    "description": "Session two. Wren built a tower of blocks without a word, knocked it down, and put every block back in the bin. She counted under her breath, and then stopped herself.\n\nUnderlined in pencil. Did not name the move. W. left the table when I said \"two houses.\"",
     "group": "journal"
   },
   {
@@ -127,8 +129,9 @@
   },
   {
     "id": "note-three-low",
-    "label": "Wren, today",
+    "label": "Wren, November 21",
     "aliases": [
+      "november 21",
       "notes from today",
       "today",
       "session three",
@@ -136,13 +139,14 @@
       "wren today"
     ],
     "kind": "misc",
-    "description": "Session three. Dad dropped her off on a Thursday, and that threw her off from the start. She sorted the animals into the two bins until both sides were even. The story did not land today, and she stayed with the things she could count. Next time, stay with the bins first, and no hurry about the book.",
+    "description": "Session three. Dad dropped her off on a Thursday, and that threw her off from the start. She sorted the animals into the two bins until both sides were even. The story did not land today, and she stayed with the things she could count.",
     "group": "journal"
   },
   {
     "id": "note-three-mid",
-    "label": "Wren, today",
+    "label": "Wren, November 21",
     "aliases": [
+      "november 21",
       "notes from today",
       "today",
       "session three",
@@ -150,13 +154,14 @@
       "wren today"
     ],
     "kind": "misc",
-    "description": "Session three. W. showed me the notebook she keeps in Rabbit's bag, yellow squares for Mom and green for Dad, ticked every night before bed. Since the afternoon nobody came for her at school, she has been trying to keep the schedule straight on her own. Let her set the pace next week.",
+    "description": "Session three. W. showed me the notebook she keeps in Rabbit's bag, yellow squares for Mom and green for Dad, ticked every night before bed. Since the afternoon nobody came for her at school, she has been trying to keep the schedule straight on her own.",
     "group": "journal"
   },
   {
     "id": "note-three-high",
-    "label": "Wren, today",
+    "label": "Wren, November 21",
     "aliases": [
+      "november 21",
       "notes from today",
       "today",
       "session three",
@@ -164,7 +169,7 @@
       "wren today"
     ],
     "kind": "misc",
-    "description": "Session three. She showed me the handle. It was from one of Mom's blue cups, broken while she was trying to bring her tea, right before the first big fight she heard. She has been carrying it in Rabbit's bag since the spring because she thinks the cup is why they live in two houses now. I stayed with her and did not rush to talk her out of it. Next week, let her lead.",
+    "description": "Session three. She showed me the handle. It was from one of Mom's blue cups, broken while she was trying to bring her tea, right before the first big fight she heard. She has been carrying it in Rabbit's bag since the spring because she thinks the cup is why they live in two houses now. I stayed with her and did not rush to talk her out of it.",
     "group": "journal"
   },
   {
@@ -242,8 +247,9 @@
   },
   {
     "id": "leo-session-one",
-    "label": "Leo, week one",
+    "label": "Leo, January 28",
     "aliases": [
+      "january 28",
       "leo week one",
       "leo session one",
       "leo first notes"
@@ -330,8 +336,9 @@
   },
   {
     "id": "note-leo-low",
-    "label": "Leo, today",
+    "label": "Leo, February 4",
     "aliases": [
+      "february 4",
       "leo today",
       "leo session two",
       "my note on leo"
@@ -342,20 +349,22 @@
   },
   {
     "id": "note-leo-mid",
-    "label": "Leo, today",
+    "label": "Leo, February 4",
     "aliases": [
+      "february 4",
       "leo today",
       "leo session two",
       "my note on leo"
     ],
     "kind": "misc",
     "group": "journal",
-    "description": "Session two. Leo had me write the warning signs on the back of his chart. Lines by his dad's eyes, and three white hairs above his mom's ear. He counted them himself. Keep giving him plain, literal answers next week."
+    "description": "Session two. Leo had me write the warning signs on the back of his chart. Lines by Owl's eyes, and three white hairs on Frog. He counted them himself. Keep giving him plain, literal answers next week."
   },
   {
     "id": "note-leo-high",
-    "label": "Leo, today",
+    "label": "Leo, February 4",
     "aliases": [
+      "february 4",
       "leo today",
       "leo session two",
       "my note on leo"

@@ -18,7 +18,7 @@
     "actor_targeted_speech": "{actor_name} (to {target_name}): {text}",
     "actor_departed": "{actor_name} steps away to the {room_title}.",
     "actor_arrived": "{actor_name} returns from the {room_title}.",
-    "act_ended": "The session is over.",
+    "act_ended": "",
     "loose_items": "\n\nOn the ground: {items}.",
     "party": "Beside you: {party}.",
     "objective": "\n\nFocus:\n{objective}"

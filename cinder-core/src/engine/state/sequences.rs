@@ -45,14 +45,12 @@ impl ScriptedSequencePlayhead {
 
 impl super::WorldState {
     /// Queues a scripted sequence to play from its start (or re-plays it from
-    /// scratch). Unknown ids error so beats/hooks catch typos early.
-    pub fn queue_scripted_sequence(&mut self, sequence_id: &str) -> Result<(), String> {
-        let playhead = self
-            .scripted_sequences
-            .get_mut(sequence_id)
-            .ok_or_else(|| format!("unknown scripted sequence '{sequence_id}'"))?;
-        *playhead = ScriptedSequencePlayhead::queued();
-        Ok(())
+    /// scratch). A game saved before the pack gained this sequence has no
+    /// playhead for it yet, so one is made. The caller checks that the pack
+    /// declares the id.
+    pub fn queue_scripted_sequence(&mut self, sequence_id: &str) {
+        self.scripted_sequences
+            .insert(sequence_id.to_string(), ScriptedSequencePlayhead::queued());
     }
 
     pub fn scripted_sequence_playhead(

@@ -548,4 +548,8 @@ pub struct OpeningMovieFrameDefinition {
     pub text_path: String,
     #[serde(default)]
     pub duration_ms: u64,
+    /// Hold this frame until the player clicks or taps, however long it takes to
+    /// read. Without it the frame moves on by itself after `duration_ms`.
+    #[serde(default)]
+    pub wait_for_click: bool,
 }

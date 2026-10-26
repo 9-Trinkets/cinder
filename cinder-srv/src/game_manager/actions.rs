@@ -1,6 +1,7 @@
 use cinder_core::content::loader;
+use cinder_core::engine::narrative::NarrativeLine;
 use cinder_core::engine::runtime::CinderRuntime;
-use cinder_core::engine::state::GamePhase;
+use cinder_core::engine::state::{GamePhase, TurnOutcome};
 use sqlx::PgPool;
 use uuid::Uuid;
 
@@ -197,11 +198,7 @@ pub async fn run_command(
             if outcome.phase == GamePhase::ActEnded {
                 // The world carries on into the next act; only act-scoped
                 // variables are cleared.
-                let lines = runtime
-                    .continue_after_act()
-                    .map_err(|e| format!("act continuation error: {e}"))?;
-                outcome.lines.extend(lines);
-                outcome.phase = GamePhase::Active;
+                continue_ended_act(runtime, &mut outcome, &mut narrative)?;
             }
 
             for line in &outcome.lines {
@@ -420,6 +417,23 @@ pub async fn set_locale(
     Err("play changed too frequently; please retry".to_string())
 }
 
+/// Carries the game on into the next act. The lines that act opens with belong
+/// to this response, so they go to the player's screen and the stored transcript
+/// as well as the outcome.
+fn continue_ended_act(
+    runtime: &CinderRuntime,
+    outcome: &mut TurnOutcome,
+    narrative: &mut Vec<NarrativeLine>,
+) -> Result<(), String> {
+    let lines = runtime
+        .continue_after_act()
+        .map_err(|e| format!("act continuation error: {e}"))?;
+    narrative.extend(lines.iter().cloned());
+    outcome.lines.extend(lines);
+    outcome.phase = GamePhase::Active;
+    Ok(())
+}
+
 pub async fn continue_play(
     pool: &PgPool,
     play_id: &str,
@@ -489,5 +503,80 @@ mod paragraph_tests {
         );
         assert_eq!(split_paragraphs("Solo."), vec!["Solo."]);
         assert!(split_paragraphs("  \n\n ").is_empty());
+    }
+}
+
+#[cfg(test)]
+mod act_tests {
+    use super::continue_ended_act;
+    use cinder_core::content::loader::load_named_pack;
+    use cinder_core::engine::runtime::CinderRuntime;
+    use cinder_core::engine::state::{GamePhase, WorldState};
+
+    /// Isla's first act by its quickest road, up to the turn that ends it.
+    fn turn_that_ends_the_first_act() -> (CinderRuntime, cinder_core::engine::state::TurnOutcome) {
+        let pack = load_named_pack("isla", Some("en")).expect("isla loads");
+        let state = WorldState::new(&pack);
+        let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime");
+        let steps = [
+            "go inside",
+            "go hall",
+            "go upstairs",
+            "go upstairs",
+            "go book room",
+            "take fox book",
+            "go landing",
+            "go downstairs",
+            "go downstairs",
+            "go waiting room",
+            "say wren:greet",
+            "meet-probe",
+            "go hall",
+            "go playroom",
+            "bins-probe",
+            "snack-none-probe",
+            "stories-read",
+            "fox-1-probe",
+            "closing-probe",
+            "go hall",
+            "go kitchen",
+            "go back yard",
+            "phone-1-open",
+            "phone-2-next",
+            "note-write",
+        ];
+        for step in steps {
+            runtime.run_turn(step).expect(step);
+        }
+        let last = runtime
+            .run_turn("look at notes from today")
+            .expect("last turn");
+        (runtime, last)
+    }
+
+    #[test]
+    fn the_next_acts_opening_reaches_the_response_and_the_transcript() {
+        let (runtime, mut outcome) = turn_that_ends_the_first_act();
+        assert_eq!(outcome.phase, GamePhase::ActEnded);
+        let mut narrative = outcome.lines.clone();
+
+        continue_ended_act(&runtime, &mut outcome, &mut narrative).expect("continues");
+
+        assert_eq!(outcome.phase, GamePhase::Active);
+        let shown: Vec<&str> = narrative.iter().map(|line| line.text.as_str()).collect();
+        let heading = shown
+            .iter()
+            .position(|text| text.contains("== Front Porch =="))
+            .expect("the new act says where Isla is");
+        let opening = shown
+            .iter()
+            .position(|text| text.contains("early February"))
+            .expect("the new act's opening is shown");
+        assert!(heading < opening, "{shown:?}");
+        assert_eq!(
+            narrative.len(),
+            outcome.lines.len(),
+            "what is shown and what is stored are the same lines"
+        );
     }
 }

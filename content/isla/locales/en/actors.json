@@ -111,6 +111,7 @@
         "id": "about-wren",
         "label": "Ask Gloria about Wren",
         "when": [
+          "!episode_leo",
           "!wren_left_waiting_room"
         ],
         "lines": [

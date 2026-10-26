@@ -107,6 +107,8 @@ export interface MovieFrameData {
   text_color?: string
   /** A slow layer for this frame. Empty keeps the card's. */
   ambient?: string
+  /** Hold the frame until the player clicks or taps. */
+  wait_for_click?: boolean
 }
 
 /** Look of a card movie. Empty settings use the pack theme. */

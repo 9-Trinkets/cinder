@@ -16,6 +16,7 @@
       {
         "heading": "Thursday, November 21",
         "text_item": "note-three-low",
+        "wait_for_click": true,
         "duration_ms": 4000
       },
       {
@@ -23,7 +24,6 @@
         "tint": "#1e2630",
         "text_color": "text",
         "ambient": "snow",
-        "text": "Leo.",
         "duration_ms": 3500
       }
     ]
@@ -45,6 +45,7 @@
       {
         "heading": "Thursday, November 21",
         "text_item": "note-three-mid",
+        "wait_for_click": true,
         "duration_ms": 4000
       },
       {
@@ -52,7 +53,6 @@
         "tint": "#1e2630",
         "text_color": "text",
         "ambient": "snow",
-        "text": "Leo.",
         "duration_ms": 3500
       }
     ]
@@ -74,6 +74,7 @@
       {
         "heading": "Thursday, November 21",
         "text_item": "note-three-high",
+        "wait_for_click": true,
         "duration_ms": 4000
       },
       {
@@ -81,7 +82,6 @@
         "tint": "#1e2630",
         "text_color": "text",
         "ambient": "snow",
-        "text": "Leo.",
         "duration_ms": 3500
       }
     ]
