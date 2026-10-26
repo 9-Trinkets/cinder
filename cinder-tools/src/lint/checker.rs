@@ -1,5 +1,6 @@
+use crate::lint::rule::{LintRule, RuleContext};
+use crate::lint::rules::{ActorsRule, DropsRule, HooksRule, ItemsRule, MapsRule, RoomsRule};
 use cinder_core::content::loader::load_pack_from_dir_with_locale;
-use cinder_core::content::types::DropSpec;
 use std::collections::BTreeSet;
 use std::path::Path;
 
@@ -32,137 +33,29 @@ pub fn lint_pack(pack_dir: &Path, locale: &str) -> LintReport {
         }
     };
 
-    let room_ids: BTreeSet<&str> = pack.rooms.iter().map(|r| r.id.as_str()).collect();
-    let item_ids: BTreeSet<&str> = pack.items.iter().map(|i| i.id.as_str()).collect();
-    let hook_names: BTreeSet<&str> = pack.hooks.keys().map(|k| k.as_str()).collect();
+    let ctx = RuleContext {
+        room_ids: pack.rooms.iter().map(|r| r.id.as_str()).collect(),
+        item_ids: pack.items.iter().map(|i| i.id.as_str()).collect(),
+        hook_names: pack.hooks.keys().map(|k| k.as_str()).collect(),
+    };
 
-    // 1. Room exits
-    for room in &pack.rooms {
-        for exit in &room.exits {
-            if !room_ids.contains(exit.room_id.as_str()) {
-                report.warnings.push(format!(
-                    "[{pack_name}] room '{}' has exit to unknown room '{}'",
-                    room.id, exit.room_id
-                ));
-            }
+    let rules: Vec<Box<dyn LintRule>> = vec![
+        Box::new(RoomsRule),
+        Box::new(MapsRule),
+        Box::new(ActorsRule),
+        Box::new(ItemsRule),
+        Box::new(DropsRule),
+        Box::new(HooksRule),
+    ];
 
-            // Check reciprocal cardinal exits
-            let opp_label = match exit.label.as_str() {
-                "North" => Some("South"),
-                "South" => Some("North"),
-                "East" => Some("West"),
-                "West" => Some("East"),
-                _ => None,
-            };
-            if let Some(back_label) = opp_label
-                && let Some(target_room) = pack.room(&exit.room_id)
-            {
-                let has_back = target_room
-                    .exits
-                    .iter()
-                    .any(|e| e.room_id == room.id && e.label == back_label);
-                if !has_back && exit.when.is_empty() {
-                    // Non-gated cardinal exit should ideally be bidirectional
-                    report.warnings.push(format!(
-                            "[{pack_name}] one-way cardinal exit: '{}' -> '{}' ({}) lacks reciprocal '{}' in target",
-                            room.id, exit.room_id, exit.label, back_label
-                        ));
-                }
-            }
-        }
-
-        // Features
-        for feature in &room.features {
-            if feature.label.trim().is_empty() {
-                report.warnings.push(format!(
-                    "[{pack_name}] room '{}' feature '{}' has empty label",
-                    room.id, feature.id
-                ));
-            }
-            if feature.inspect_text.trim().is_empty() {
-                report.warnings.push(format!(
-                    "[{pack_name}] room '{}' feature '{}' has empty inspect text",
-                    room.id, feature.id
-                ));
-            }
-        }
-    }
-
-    // 2. Maps
-    for map in &pack.maps {
-        for map_room in &map.rooms {
-            if !room_ids.contains(map_room.room_id.as_str()) {
-                report.warnings.push(format!(
-                    "[{pack_name}] map '{}' references unknown room '{}'",
-                    map.id, map_room.room_id
-                ));
-            }
-        }
-    }
-
-    // 3. Actors
-    for actor in &pack.actors {
-        if !actor.room_id.is_empty() && !room_ids.contains(actor.room_id.as_str()) {
-            report.warnings.push(format!(
-                "[{pack_name}] actor '{}' starts in unknown room '{}'",
-                actor.id, actor.room_id
-            ));
-        }
-
-        for specs in [&actor.initial_inventory, &actor.drops] {
-            for (item_id, drop_spec) in specs {
-                match drop_spec {
-                    DropSpec::Always(_) | DropSpec::Chance(_) | DropSpec::Conditional(_) => {
-                        if !item_ids.contains(item_id.as_str()) {
-                            report.warnings.push(format!(
-                                "[{pack_name}] actor '{}' inventory/drop references unknown item '{}'",
-                                actor.id, item_id
-                            ));
-                        }
-                    }
-                    DropSpec::Weighted(pool) => {
-                        for entry in &pool.entries {
-                            if !item_ids.contains(entry.item_id.as_str()) {
-                                report.warnings.push(format!(
-                                    "[{pack_name}] actor '{}' weighted spec references unknown item '{}'",
-                                    actor.id, entry.item_id
-                                ));
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // 4. Items & Hooks
-    for item in &pack.items {
-        if !item.use_hook.is_empty() && !hook_names.contains(item.use_hook.as_str()) {
-            report.warnings.push(format!(
-                "[{pack_name}] item '{}' use_hook '{}' not found in hooks.json",
-                item.id, item.use_hook
-            ));
-        }
-        if !item.look_description.is_empty() && item.is_takeable() {
-            report.warnings.push(format!(
-                "[{pack_name}] item '{}' is takeable but defines look_description; look_description is reserved for non-takeable room marks (trace marks)",
-                item.id
-            ));
-        }
-    }
-
-    // 5. Action creation gates
-    for action in &pack.actions {
-        if let Some(creation) = &action.item_creation {
-            for craftable_id in creation.craftable_item_gates.keys() {
-                if !item_ids.contains(craftable_id.as_str()) {
-                    report.warnings.push(format!(
-                        "[{pack_name}] action '{}' craftable gate references unknown item '{}'",
-                        action.id, craftable_id
-                    ));
-                }
-            }
-        }
+    for rule in &rules {
+        rule.check(
+            &pack,
+            &ctx,
+            &mut report.warnings,
+            &mut report.errors,
+            pack_name,
+        );
     }
 
     report

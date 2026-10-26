@@ -1,7 +1,8 @@
 use clap::{Parser, Subcommand};
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 mod builder;
+mod commands;
 mod hygiene;
 mod lint;
 mod locale;
@@ -133,181 +134,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 pack_dir,
                 locale,
                 export,
-            } => match preset.as_str() {
-                "floor1" => {
-                    let builder = builder::presets::build_floor1();
-                    if export {
-                        let (floor_count, total) =
-                            builder
-                                .export_to_pack(&pack_dir, &locale, |id| !id.starts_with('r'))?;
-                        println!(
-                            "Exported Floor 1 ({} rooms) to {}. Total rooms: {}",
-                            floor_count,
-                            pack_dir.display(),
-                            total
-                        );
-                    } else {
-                        let (rooms, map) = builder.build();
-                        println!(
-                            "Built Floor 1: {} rooms, map '{}' ({} rooms)",
-                            rooms.len(),
-                            map.label,
-                            map.rooms.len()
-                        );
-                    }
-                }
-                "floor4" => {
-                    let builder = builder::presets::build_floor4();
-                    if export {
-                        let (floor_count, total) =
-                            builder.export_to_pack(&pack_dir, &locale, |id| {
-                                id.starts_with('r')
-                                    || id.starts_with('d')
-                                    || (id.starts_with('o') && id != "old_drain_pipe")
-                            })?;
-                        println!(
-                            "Exported Floor 4 ({} rooms) to {}. Total rooms: {}",
-                            floor_count,
-                            pack_dir.display(),
-                            total
-                        );
-                    } else {
-                        let (rooms, map) = builder.build();
-                        println!(
-                            "Built Floor 4: {} rooms, map '{}' ({} rooms)",
-                            rooms.len(),
-                            map.label,
-                            map.rooms.len()
-                        );
-                    }
-                }
-                other => {
-                    eprintln!(
-                        "Unknown preset: '{}'. Available presets: floor1, floor4",
-                        other
-                    );
-                    std::process::exit(1);
-                }
-            },
+            } => {
+                commands::floor::run_build(preset, pack_dir, locale, export)?;
+            }
         },
         Commands::Lint { pack, content_dir } => {
-            let packs_to_check: Vec<String> = if let Some(p) = pack {
-                vec![p]
-            } else {
-                let mut found = Vec::new();
-                if let Ok(entries) = std::fs::read_dir(&content_dir) {
-                    for entry in entries.flatten() {
-                        if entry.path().is_dir()
-                            && let Some(name) = entry.file_name().to_str()
-                            && !name.starts_with('.')
-                        {
-                            found.push(name.to_string());
-                        }
-                    }
-                }
-                found.sort();
-                found
-            };
-
-            let mut total_warnings = 0;
-            let mut total_errors = 0;
-
-            for pack_name in &packs_to_check {
-                let pdir = content_dir.join(pack_name);
-                let report = lint::lint_pack(&pdir, "en");
-                for err in &report.errors {
-                    eprintln!("error: {}", err);
-                    total_errors += 1;
-                }
-                for warn in &report.warnings {
-                    println!("warning: {}", warn);
-                    total_warnings += 1;
-                }
-                if report.is_clean() {
-                    println!("Pack '{}' is clean.", pack_name);
-                }
-            }
-
-            println!(
-                "\nTotal errors: {}, warnings: {}",
-                total_errors, total_warnings
-            );
-            if total_errors > 0 {
-                std::process::exit(1);
-            }
+            commands::lint::run(pack, content_dir)?;
         }
         Commands::NewPack { name, content_dir } => {
-            scaffold::scaffold_pack(&content_dir, &name)?;
-            println!(
-                "Scaffolded new content pack at {}/{}",
-                content_dir.display(),
-                name
-            );
+            commands::newpack::run(name, content_dir)?;
         }
         Commands::Transcript { target, raw } => {
-            let path = if let Some(t) = target {
-                t
-            } else {
-                let runs_dir = Path::new(".cinder-state/runs");
-                let mut files = Vec::new();
-                if let Ok(entries) = std::fs::read_dir(runs_dir) {
-                    for entry in entries.flatten() {
-                        if entry.path().extension().is_some_and(|ext| ext == "ndjson") {
-                            files.push(entry.path());
-                        }
-                    }
-                }
-                files.sort_by_key(|p| p.metadata().and_then(|m| m.modified()).ok());
-                if let Some(latest) = files.last() {
-                    latest.clone()
-                } else {
-                    eprintln!("No .ndjson files found in .cinder-state/runs");
-                    std::process::exit(1);
-                }
-            };
-
-            let output = transcript::render_transcript_file(&path, raw)?;
-            println!("{}", output);
+            commands::transcript::run(target, raw)?;
         }
         Commands::Hygiene { limit, complexity } => {
-            let root = Path::new(".");
-            let length_warnings = hygiene::check_file_lengths(root, limit);
-            for w in &length_warnings {
-                println!(
-                    "warning: {} has {} lines, exceeding the {}-line soft limit",
-                    w.path.display(),
-                    w.lines,
-                    limit
-                );
-            }
-
-            let complexity_warnings = hygiene::check_complexity(root, complexity);
-            for cw in &complexity_warnings {
-                println!(
-                    "warning: {}:{} '{}' has cyclomatic complexity {}, exceeding the {} limit (max nesting: {})",
-                    cw.path.display(),
-                    cw.line,
-                    cw.fn_name,
-                    cw.complexity,
-                    complexity,
-                    cw.max_nesting
-                );
-            }
-
-            let test_warnings = hygiene::check_test_placement(root);
-            for tw in &test_warnings {
-                println!(
-                    "warning: [{}] is an integration test suite under src/; move it to tests/",
-                    tw.display()
-                );
-            }
-
-            println!(
-                "\nFile length warnings: {}. Complexity warnings: {}. Placement warnings: {}.",
-                length_warnings.len(),
-                complexity_warnings.len(),
-                test_warnings.len()
-            );
+            commands::hygiene::run(limit, complexity);
         }
         Commands::Locale { cmd } => match cmd {
             LocaleCommands::Scaffold {
@@ -316,21 +157,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 to,
                 force,
             } => {
-                locale::scaffold::scaffold(&pack_dir, &from, &to, force)?;
+                commands::locale::scaffold(pack_dir, from, to, force)?;
             }
             LocaleCommands::Apply { pack_dir, locale } => {
-                locale::apply::apply(&pack_dir, &locale)?;
+                commands::locale::apply(pack_dir, locale)?;
             }
             LocaleCommands::Check {
                 pack_dir,
                 from,
                 locale,
             } => {
-                let mut pending = locale::apply::check(&pack_dir, &from, &locale)?;
-                pending += locale::overlay_check::check_overlays(&pack_dir, &locale)?;
-                if pending > 0 {
-                    std::process::exit(1);
-                }
+                commands::locale::check(pack_dir, from, locale)?;
             }
         },
     }
