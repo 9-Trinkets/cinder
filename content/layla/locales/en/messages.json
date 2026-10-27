@@ -293,5 +293,11 @@
     "party.order_dismiss_assigned": "You open your hand. {actor} gutters out like a spent ember and is gone.",
     "party.order_dismiss_refused": "{actor} is not yours to send away.",
     "party.directive.dismiss.title": "Dismiss",
-    "party.directive.dismiss.subtitle": "Send a conjured ally away and free its place."
+    "party.directive.dismiss.subtitle": "Send a conjured ally away and free its place.",
+    "sigil.bind_cast": "You trace the interlocking knot in silver chalk. The lantern at your side flares a warm amber, and its light leans out toward everyone near you.",
+    "sigil.bind_no_one": "The silver knot glows, and the lantern's light searches the room. There is no one here it can reach.",
+    "sigil.bind_release.golem-dark-nw": "A spark of pale gold slips out of the lantern, warm as a mason's hand. It hovers over the place where a dark golem once stood, as if reading a name there: Orin, who cut stone, and was cut for it. Then it rises and is gone.",
+    "sigil.bind_release.golem-dark-sw": "A spark slips from the lantern, soft as flour dust in the sun. It circles once, and a name comes with it: Mari, who ran a mill. Then it drifts upward and out into the open air.",
+    "sigil.bind_release.golem-pale-ne": "A dark gold spark leaves the lantern, like a lamp seen far down a shaft. Ferid, who dug the deep wells. It dips, as if bowing, and rises out of sight.",
+    "sigil.bind_release.golem-pale-se": "A fine thread of light unspools from the lantern and loops once through the air, the way a shuttle crosses a loom. Hana, who wove. The thread draws tight, and then it is gone."
 }

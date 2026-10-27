@@ -2515,10 +2515,6 @@
             "value": "true"
           },
           {
-            "kind": "acquire_item",
-            "item_id": "bind-sigil"
-          },
-          {
             "kind": "narrate_message",
             "key": "item.bind_scroll_read.learned"
           },
@@ -2552,6 +2548,176 @@
     },
     "input_overlay": {
       "rules": []
+    }
+  },
+  "item.bind_sigil_placed": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "next",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "sigil.bind_cast"
+          }
+        },
+        {
+          "conditions": [],
+          "payload_template": {
+            "kind": "awaken_allies_in_room",
+            "stage_id": "awakening",
+            "none_message": "sigil.bind_no_one"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_stats.golem-dark-nw.hp",
+              "operator": "less_than",
+              "value": 1
+            },
+            {
+              "path": "story_vars.spirit_released_golem-dark-nw",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "sigil.bind_release.golem-dark-nw"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_stats.golem-dark-nw.hp",
+              "operator": "less_than",
+              "value": 1
+            },
+            {
+              "path": "story_vars.spirit_released_golem-dark-nw",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "spirit_released_golem-dark-nw",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_stats.golem-dark-sw.hp",
+              "operator": "less_than",
+              "value": 1
+            },
+            {
+              "path": "story_vars.spirit_released_golem-dark-sw",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "sigil.bind_release.golem-dark-sw"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_stats.golem-dark-sw.hp",
+              "operator": "less_than",
+              "value": 1
+            },
+            {
+              "path": "story_vars.spirit_released_golem-dark-sw",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "spirit_released_golem-dark-sw",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_stats.golem-pale-ne.hp",
+              "operator": "less_than",
+              "value": 1
+            },
+            {
+              "path": "story_vars.spirit_released_golem-pale-ne",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "sigil.bind_release.golem-pale-ne"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_stats.golem-pale-ne.hp",
+              "operator": "less_than",
+              "value": 1
+            },
+            {
+              "path": "story_vars.spirit_released_golem-pale-ne",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "spirit_released_golem-pale-ne",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_stats.golem-pale-se.hp",
+              "operator": "less_than",
+              "value": 1
+            },
+            {
+              "path": "story_vars.spirit_released_golem-pale-se",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "sigil.bind_release.golem-pale-se"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_stats.golem-pale-se.hp",
+              "operator": "less_than",
+              "value": 1
+            },
+            {
+              "path": "story_vars.spirit_released_golem-pale-se",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "spirit_released_golem-pale-se",
+            "value": "true"
+          }
+        }
+      ]
     }
   }
 }

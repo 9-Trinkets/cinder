@@ -466,6 +466,8 @@
     "description": "An interlocking knot drawn in silver chalk. Used to bind spirits into bodies or anchor spirit shards to restore lost memories.",
     "look_description": "An interlocking silver knot glowing with quiet, binding power on the stone floor.",
     "trace_mark": true,
-    "mp_cost": 5
+    "mp_cost": 5,
+    "consumed_on_placement": true,
+    "placement_hook": "item.bind_sigil_placed"
   }
 ]

@@ -388,12 +388,14 @@
             "charm-sigil",
             "drain-sigil",
             "spawn-sigil",
-            "teleport-sigil"
+            "teleport-sigil",
+            "bind-sigil"
           ],
           "craftable_item_gates": {
             "drain-sigil": ["knows_drain"],
             "spawn-sigil": ["knows_spawn"],
-            "teleport-sigil": ["knows_teleport"]
+            "teleport-sigil": ["knows_teleport"],
+            "bind-sigil": ["knows_bind", "item:zayd-lantern"]
           },
           "storage": "current_room"
         },

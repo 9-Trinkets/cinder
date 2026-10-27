@@ -271,7 +271,6 @@ fn valerius_drops_the_bind_scroll_and_reading_it_teaches_the_sigil() {
     let read = runtime.run_turn("read bind scroll").expect("read");
     assert!(read.text().contains("Bind Sigil"), "{}", read.text());
     let state = runtime.export_state().unwrap();
-    assert!(state.has_item("bind-sigil"));
     assert_eq!(state.story_vars.get("knows_bind"), Some("true"));
 }
 
