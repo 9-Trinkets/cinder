@@ -1072,60 +1072,6 @@
     ]
   },
   {
-    "id": "the-high-sanctuary",
-    "label": "高聖所",
-    "reveal_when": [
-      "has_sensory_enhancer"
-    ],
-    "rooms": [
-      {
-        "room_id": "sanctuary_grand_terrace",
-        "x": 4.0,
-        "y": 4.0
-      },
-      {
-        "room_id": "sanctuary_east_promenade",
-        "x": 20.0,
-        "y": 4.0
-      },
-      {
-        "room_id": "sanctuary_main_platform",
-        "x": 20.0,
-        "y": 20.0
-      },
-      {
-        "room_id": "sanctuary_west_colonnade",
-        "x": 4.0,
-        "y": 20.0
-      },
-      {
-        "room_id": "sanctuary_crossroads",
-        "x": 8.0,
-        "y": 8.0
-      },
-      {
-        "room_id": "sanctuary_inquisition_archive",
-        "x": 16.0,
-        "y": 8.0
-      },
-      {
-        "room_id": "mortuary_reanimation_sanctum",
-        "x": 16.0,
-        "y": 16.0
-      },
-      {
-        "room_id": "herbarium_garden",
-        "x": 8.0,
-        "y": 16.0
-      },
-      {
-        "room_id": "herbarium_cliff_balcony",
-        "x": 0.0,
-        "y": 16.0
-      }
-    ]
-  },
-  {
     "id": "the-architects-seat",
     "label": "設計者之座",
     "reveal_when": [

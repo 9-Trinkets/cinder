@@ -1250,25 +1250,6 @@
             {
               "path": "to_room_id",
               "operator": "equal",
-              "value": "sanctuary_grand_terrace"
-            },
-            {
-              "path": "first_visit",
-              "operator": "equal",
-              "value": true
-            }
-          ],
-          "payload_template": {
-            "kind": "narrate_message",
-            "key": "handler.descend.high_sanctuary",
-            "generate_commentary": true
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "to_room_id",
-              "operator": "equal",
               "value": "village_south_1"
             },
             {
@@ -1646,46 +1627,6 @@
             "kind": "narrate_message",
             "key": "platform.activated"
           }
-        },
-        {
-          "conditions": [
-            {
-              "path": "room_id",
-              "operator": "equal",
-              "value": "sanctuary_main_platform"
-            }
-          ],
-          "payload_template": {
-            "kind": "set_story_var",
-            "key": "anchor_floor6_platform",
-            "value": "true"
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "room_id",
-              "operator": "equal",
-              "value": "sanctuary_main_platform"
-            }
-          ],
-          "payload_template": {
-            "kind": "narrate_message",
-            "key": "sanctuary.platform_activated"
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "room_id",
-              "operator": "equal",
-              "value": "sanctuary_main_platform"
-            }
-          ],
-          "payload_template": {
-            "kind": "narrate_message",
-            "key": "handler.sanctuary_platform_armed"
-          }
         }
       ]
     }
@@ -1973,11 +1914,6 @@
             "kind": "set_story_var",
             "key": "entered_floor6",
             "value": "true"
-          },
-          {
-            "kind": "move_actors",
-            "actor_id": "player",
-            "room_id": "sanctuary_grand_terrace"
           }
         ]
       }

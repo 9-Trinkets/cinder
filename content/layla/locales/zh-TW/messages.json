@@ -132,10 +132,6 @@
     "text": "第五層。霜之城。三支駐軍。撐住。",
     "voice": "handler"
   },
-  "handler.descend.high_sanctuary": {
-    "text": "第六層。聖堂。你一個人。安靜。",
-    "voice": "handler"
-  },
   "handler.descend.the_board": {
     "text": "第三層。火之間。十二個火窪。別讓牠把火苗撒滿。",
     "voice": "handler"

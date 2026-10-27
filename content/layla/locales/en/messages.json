@@ -164,10 +164,6 @@
         "voice": "handler",
         "text": "Floor five. Frost Citadel courtyard. Three garrison houses have the perimeter pinned down, and the culling cages are loaded. Move fast before the wolves start feeding."
     },
-    "handler.descend.high_sanctuary": {
-        "voice": "handler",
-        "text": "Floor six. High Sanctuary. Monastic perimeter. You're alone. Stay quiet."
-    },
     "handler.first_skill_used": {
         "voice": "handler",
         "text": "Technique, chalk, blade. Repeat a motion enough times and it gets sharper — or at least less clumsy. I've patched skill proficiency into your readout. Keep practicing. Don't expect praise."

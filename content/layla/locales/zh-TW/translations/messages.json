@@ -148,7 +148,6 @@
   "/floor4.arrival.the_village": "你踏下最後一階，進入煤氣燈的光與麵包的氣味裡。溫熱的石地在靴下作響，從階梯一路磨得發白，通到一座低矮的鐵灶。有人在灶石旁的一雙小靴子上耙了灰，然後去做別的事了。前方、蒸氣管之外，一道鐵製艙門封死了村莊的整個北側，兩名士兵紋風不動地站在門前。階地後方某處，一只車輪碾過格柵，有人高聲報出一個數字，卻報錯了。",
   "/handler.descend.the_village/text": "第四層。活人的地盤。把你的石頭收斂點，別一進去就把人嚇死。",
   "/handler.descend.frost_citadel/text": "第五層。霜之城。三支駐軍。撐住。",
-  "/handler.descend.high_sanctuary/text": "第六層。聖堂。你一個人。安靜。",
   "/handler.first_skill_used/text": "熟練度上線了。繼續。",
   "/handler.first_mob_killed/text": "倒了一隻。生命徵象上線。繼續。",
   "/handler.first_mob_charmed/text": "沒殺，圍了牠。……也行。追蹤上線。",
