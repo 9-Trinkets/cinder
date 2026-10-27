@@ -1633,9 +1633,11 @@
         "stance": "allied",
         "follows_player": true,
         "signals": [
-          "actor_awakened:elf-queen-4",
-          "actor_awakened"
-        ]
+          "awakened:elf-queen-4"
+        ],
+        "story_vars": {
+          "nur_awake": "true"
+        }
       }
     ],
     "prompt_context": {
@@ -2988,9 +2990,11 @@
         "stance": "allied",
         "follows_player": true,
         "signals": [
-          "actor_awakened:sakhra",
-          "actor_awakened"
-        ]
+          "awakened:sakhra"
+        ],
+        "story_vars": {
+          "siraj_awake": "true"
+        }
       }
     ],
     "prompt_context": {

@@ -44,6 +44,36 @@
           "value": "true"
         }
       ]
+    },
+    {
+      "id": "siraj-nur-reunion",
+      "label": "Siraj and Nur",
+      "steps": [
+        {
+          "voice": "narrate",
+          "line": "Siraj's stone head turns, and the lantern's light slides across the hall to the woman beside him."
+        },
+        {
+          "voice": "narrate",
+          "line": "Nur stops mid-breath. Her hand rises to her mouth. She is looking at a giant of dark rock and copper pipe, and she knows the way he holds his shoulders."
+        },
+        {
+          "voice": "narrate",
+          "line": "\"Nur,\" he says. The word comes slowly, like a rusted hinge learning to move."
+        },
+        {
+          "voice": "narrate",
+          "line": "\"Siraj.\" She says it as if it were the only word she has left, and then she is crossing the floor."
+        },
+        {
+          "voice": "narrate",
+          "line": "He kneels to meet her. His great stone arms close around her, careful, the way a man holds something he almost lost for good. Her forehead rests against the warm brass of his chest."
+        },
+        {
+          "voice": "narrate",
+          "line": "Beside you the lantern burns bright and steady. Far below, a boy has kept a lamp for his father all this time. Soon he will not have to keep it alone."
+        }
+      ]
     }
   ]
 }

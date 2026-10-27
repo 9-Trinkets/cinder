@@ -519,7 +519,7 @@
           ]
         }
       ],
-      "next_stage_ids": [],
+      "next_stage_ids": ["reunion_siraj_nur"],
       "completion_effects": []
     },
     {
@@ -946,6 +946,40 @@
         "item_acquired:shaman-ring"
       ],
       "next_stage_ids": []
+    },
+    {
+      "id": "reunion_siraj_nur",
+      "summary": "Waits for the stone guardian and the queen to wake.",
+      "advance_signals": [
+        {
+          "signal": "awakened:sakhra",
+          "conditions": [
+            {
+              "path": "story_vars.values.nur_awake",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        },
+        {
+          "signal": "awakened:elf-queen-4",
+          "conditions": [
+            {
+              "path": "story_vars.values.siraj_awake",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [],
+      "completion_effects": [
+        {
+          "kind": "queue_sequence",
+          "sequence_id": "siraj-nur-reunion",
+          "immediate": true
+        }
+      ]
     }
   ],
   "topic_signals": [

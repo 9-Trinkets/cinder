@@ -142,3 +142,98 @@ fn with_no_one_to_wake_the_sigil_says_so() {
         out.text()
     );
 }
+
+// --- Siraj and Nur ----------------------------------------------------------------
+
+const REUNION: &str = "rusted hinge learning to move";
+
+fn watch_for_the_reunion(s: &mut WorldState) {
+    s.active_objective_stage_ids
+        .push("reunion_siraj_nur".to_string());
+}
+
+#[test]
+fn siraj_and_nur_are_reunited_when_the_lantern_wakes_both() {
+    let runtime = runtime_with(|pack, s| {
+        s.add_item("zayd-lantern");
+        ally(pack, s, "sakhra", HALL);
+        ally(pack, s, "elf-queen-4", HALL);
+        watch_for_the_reunion(s);
+    });
+    let first = runtime.run_turn("trace bind sigil").expect("trace");
+    assert!(first.text().contains(REUNION), "{}", first.text());
+    assert!(
+        first.text().contains("close around her"),
+        "{}",
+        first.text()
+    );
+
+    let again = runtime.run_turn("trace bind sigil").expect("trace");
+    assert!(!again.text().contains(REUNION), "once only");
+}
+
+#[test]
+fn a_lone_awakening_waits_until_the_other_wakes() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = HALL.to_string();
+    state.clock.turn_number = 1;
+    state.story_vars.set_unchecked("knows_bind", "true");
+    state.add_item("zayd-lantern");
+    state
+        .combat
+        .actor_stats
+        .entry("player".to_string())
+        .or_default()
+        .insert("mp".to_string(), 60);
+    ally(&pack, &mut state, "sakhra", HALL);
+    ally(&pack, &mut state, "elf-queen-4", "courtyard_center");
+    watch_for_the_reunion(&mut state);
+    let runtime = CinderRuntime::with_dialogue_generator(
+        pack.clone(),
+        state,
+        Arc::new(ScriptedDialogueGenerator::new()),
+    )
+    .expect("runtime creates");
+
+    let first = runtime.run_turn("trace bind sigil").expect("trace");
+    assert!(!first.text().contains(REUNION), "{}", first.text());
+    let mid = runtime.export_state().unwrap();
+    assert!(mid.is_actor_awakened("sakhra"));
+    assert!(!mid.is_actor_awakened("elf-queen-4"));
+
+    // The queen joins them, and the next cast wakes her.
+    let mut state = mid;
+    ally(&pack, &mut state, "elf-queen-4", HALL);
+    let runtime = CinderRuntime::with_dialogue_generator(
+        pack,
+        state,
+        Arc::new(ScriptedDialogueGenerator::new()),
+    )
+    .expect("runtime creates");
+    let second = runtime.run_turn("trace bind sigil").expect("trace");
+    assert!(second.text().contains(REUNION), "{}", second.text());
+}
+
+#[test]
+fn entering_floor_six_switches_the_reunion_on() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "courtyard_center".to_string();
+    state.clock.turn_number = 1;
+    state.acquire_player_item(&pack, "clandestine-sanctuary-token");
+    state.active_objective_stage_ids = vec!["mq_infiltrate_sanctuary".to_string()];
+    let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
+
+    runtime
+        .run_turn("use clandestine-sanctuary-token")
+        .expect("token");
+    let state = runtime.export_state().unwrap();
+    assert!(
+        state
+            .active_objective_stage_ids
+            .contains(&"reunion_siraj_nur".to_string()),
+        "{:?}",
+        state.active_objective_stage_ids
+    );
+}
