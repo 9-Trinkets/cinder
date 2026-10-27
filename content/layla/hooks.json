@@ -1870,6 +1870,26 @@
       "rules": []
     }
   },
+  "item.spirit_pill_used": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": [
+          {
+            "kind": "set_story_var",
+            "key": "spiritual_sight",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    "input_overlay": {
+      "rules": []
+    }
+  },
   "item.clandestine_sanctuary_token_used": {
     "rule": "effect_table",
     "rule_config": {
@@ -1882,6 +1902,11 @@
             "kind": "set_story_var",
             "key": "entered_floor6",
             "value": "true"
+          },
+          {
+            "kind": "move_actors",
+            "actor_id": "player",
+            "room_id": "sanctuary_terrace"
           }
         ]
       }

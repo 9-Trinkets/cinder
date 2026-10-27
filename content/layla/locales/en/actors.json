@@ -4150,5 +4150,92 @@
         "She waits in stillness, letting the mist settle before speaking."
       ]
     }
+  },
+  {
+    "id": "orva",
+    "name": "Orva",
+    "room_id": "sanctuary_cliff_garden",
+    "level": 7,
+    "initial_stats": {
+      "strength": 5,
+      "endurance": 6,
+      "dexterity": 7,
+      "intelligence": 9,
+      "hp": 55,
+      "mp": 60
+    },
+    "initial_hostile": false,
+    "attackable": false,
+    "skills": [
+      "strike"
+    ],
+    "initial_inventory": {},
+    "drops": {},
+    "xp_drop": 0,
+    "aliases": [
+      "orva",
+      "sister orva",
+      "witch",
+      "halfling",
+      "herbalist"
+    ],
+    "tags": [
+      "civilian",
+      "healer",
+      "halfling"
+    ],
+    "inspect_text": "A young halfling woman with soft dark hair and rounded, furry ear tips, kneeling beside the glowing plants. A scarred porcelain mask lies in the soil beside her. She watches you with large, wary brown eyes.",
+    "prompt_context": {
+      "character_notes": [
+        "You are Orva, a halfling herbalist in the High Sanctuary. The priests call you a witch because you brew remedies against their memory-wiping drugs.",
+        "You love Einar, the human healer they threw into the cages. You trust no one who cannot say his words.",
+        "You grow wild soul-grass on this cliff shelf, and you alone hold the key to the iron door."
+      ],
+      "response_notes": [
+        "Speak quietly and quickly. You are wary until you hear the words 'The arrow always finds home.'",
+        "Once you trust Layla, you are warm and urgent. You open the door yourself, and you never give away the key."
+      ],
+      "behavior_examples": [
+        "She hides her hands in her sleeves and watches the ledge behind you.",
+        "She touches the silver hairpin tucked inside her collar."
+      ]
+    },
+    "interactions": [
+      {
+        "id": "say_the_words",
+        "label": "Say the words Einar gave you",
+        "aliases": [
+          "say the words",
+          "the arrow always finds home",
+          "say the arrow always finds home",
+          "tell orva einar sent you",
+          "einar sent me"
+        ],
+        "lines": [
+          "The halfling woman freezes at the sound of your footsteps. Her hand slides toward a small knife in the soil. You stop, keep your hands low and open, and speak slowly.",
+          "Layla (to Orva): The arrow always finds home.",
+          "For a moment Orva does not move. Then her shoulders drop, and her eyes fill. She pulls a silver hairpin from inside her collar and holds it against her chest.",
+          "Orva (to Layla): He is alive? He told you that? Then you are not one of theirs.",
+          "She wipes her face with the back of her hand. Then she bends over the plants, catches a bead of glowing dew in a thumb-sized silver capsule, and snaps it shut.",
+          "Orva (to Layla): Swallow this before you go down. Down there the people are not people any more, and you will not see them without it.",
+          "She crosses to the iron door, takes a key from a cord at her neck, and turns it. The bar lifts, the chain falls away, and the door swings in on a narrow stair.",
+          "Orva (to Layla): Go quietly, and finish it. I will hold the door.",
+          "She presses the capsule into your hand."
+        ],
+        "effects": [
+          {
+            "kind": "grant_item",
+            "item_id": "spirit-pill",
+            "count": 1,
+            "message": ""
+          },
+          {
+            "kind": "set_feature_state",
+            "feature": "sanctuary_cliff_garden/sanctuary_cliff_garden-door",
+            "state": "unbolted"
+          }
+        ]
+      }
+    ]
   }
 ]

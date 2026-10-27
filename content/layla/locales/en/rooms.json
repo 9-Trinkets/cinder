@@ -11615,5 +11615,1694 @@
     ],
     "exits": [],
     "descriptions": []
+  },
+  {
+    "id": "sanctuary_terrace",
+    "title": "The Cloud Terrace",
+    "summary": "You land on a wide terrace of white stone. The sky is huge and clear, and a sea of cloud rolls far below. To the north, a tall arch is shut by a sheet of thin silver light. One line in it, near the left post, runs crooked.",
+    "inspect_text": "The floor is polished so well that it shows the sky. The air is cold and smells of incense. The arch has no door. A silver shimmer fills it and hums when the wind brushes it. Past the shimmer you can see a long hall of white stone. This is the only way in, and your chalk is still in your hand. A mark on that crooked line might bend the others. Try it from the Do menu.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_terrace-barrier",
+        "label": "the silver barrier",
+        "aliases": [
+          "barrier",
+          "arch",
+          "shimmer",
+          "silver",
+          "light",
+          "gate"
+        ],
+        "allow_rest": false,
+        "inspect_text": "A sheet of silver light fills the arch. Up close you can see it is woven from fine straight lines, like a net. One line near the left post runs a little crooked.",
+        "states": [
+          "sealed",
+          "open"
+        ],
+        "descriptions": [
+          {
+            "when": [
+              "feature:sanctuary_terrace-barrier=open"
+            ],
+            "inspect_text": "The barrier has a gap in it, just wide enough for a person. The lines of light bend around the edge like a curtain held open."
+          }
+        ],
+        "interactions": [
+          {
+            "id": "trace_gap",
+            "label": "Trace a gap in the barrier with chalk",
+            "aliases": [
+              "trace gap",
+              "trace a gap",
+              "chalk barrier",
+              "open barrier",
+              "draw gap",
+              "use chalk on barrier"
+            ],
+            "when": [
+              "item:magic-chalk"
+            ],
+            "lines": [
+              "You kneel and draw a thin chalk line along the crooked strand. The silver lines bend toward it, one by one, and slide apart. A gap opens that is just wide enough to walk through."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "state": "open"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "sanctuary_terrace-wall",
+        "label": "the low wall",
+        "aliases": [
+          "wall",
+          "edge",
+          "balustrade",
+          "clouds",
+          "cloud sea",
+          "drop"
+        ],
+        "allow_rest": false,
+        "inspect_text": "A low wall of carved stone. Beyond it the mountain drops away. The clouds below are so thick that you cannot see the ground."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_nave",
+        "label": "North",
+        "aliases": [
+          "north",
+          "n",
+          "arch",
+          "nave",
+          "in"
+        ],
+        "menu_label": "Walk north through the arch into the Angel Nave",
+        "when": [
+          "feature:sanctuary_terrace-barrier=open"
+        ]
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_nave",
+    "title": "The Angel Nave",
+    "summary": "A long hall with a high, pointed roof. White stone angels stand along both walls, one every ten steps. Small figures in white robes and pale masks hurry past without a sound.",
+    "inspect_text": "Incense hangs in the air, sweet and thick. The servants are only as tall as your shoulder. When two of them meet, both stop, put a hand on their chests, and bow. One says, 'May the sanctuary be spotless.' The other answers, 'Wash away the dust of the world.' Then they walk on. No one looks at the roof.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_nave-angels",
+        "label": "the stone angels",
+        "aliases": [
+          "angels",
+          "angel",
+          "statues",
+          "statue",
+          "wings"
+        ],
+        "allow_rest": false,
+        "inspect_text": "Every angel has the same smooth, calm face with no eyes carved in. Their wings are folded close, and their hands hold nothing."
+      },
+      {
+        "id": "sanctuary_nave-roof",
+        "label": "the roof beams",
+        "aliases": [
+          "roof",
+          "beams",
+          "pipes",
+          "ducts",
+          "ceiling",
+          "rafters",
+          "above"
+        ],
+        "allow_rest": false,
+        "inspect_text": "Dark marble beams and brass pipes cross high above the floor. Old incense ash lies thick on top of them. It would hide a person, if a person could climb that far."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_terrace",
+        "label": "South",
+        "aliases": [
+          "south",
+          "s",
+          "arch",
+          "terrace",
+          "out"
+        ],
+        "menu_label": "Go back south through the arch to the Cloud Terrace",
+        "when": [
+          "feature:sanctuary_terrace/sanctuary_terrace-barrier=open"
+        ]
+      },
+      {
+        "room_id": "sanctuary_garden",
+        "label": "North",
+        "aliases": [
+          "north",
+          "n",
+          "garden",
+          "herb garden"
+        ],
+        "menu_label": "Walk north into the Herb Garden"
+      },
+      {
+        "room_id": "sanctuary_cistern_tower",
+        "label": "East",
+        "aliases": [
+          "east",
+          "e",
+          "cistern",
+          "tower"
+        ],
+        "menu_label": "Go east to the Cistern Tower"
+      },
+      {
+        "room_id": "sanctuary_lamp_tower",
+        "label": "West",
+        "aliases": [
+          "west",
+          "w",
+          "lamp",
+          "tower"
+        ],
+        "menu_label": "Go west to the Lamp Tower"
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_cistern_tower",
+    "title": "The Cistern Tower",
+    "summary": "A round room at the corner of the walls. A huge copper tank fills the middle, and pipes run down into the floor.",
+    "inspect_text": "The tank holds the rain water for the whole sanctuary. It drips slowly, plink, plink. Some of the pipes lead down and out through the wall. The water they carry never comes back.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_cistern_tower-tank",
+        "label": "the copper tank",
+        "aliases": [
+          "tank",
+          "copper",
+          "cistern",
+          "water"
+        ],
+        "allow_rest": false,
+        "inspect_text": "Green stains run down the copper where the water has crept out over many years. The lid is bolted shut."
+      },
+      {
+        "id": "sanctuary_cistern_tower-pipes",
+        "label": "the drain pipes",
+        "aliases": [
+          "pipes",
+          "pipe",
+          "drain",
+          "drains"
+        ],
+        "allow_rest": false,
+        "inspect_text": "One pipe is as wide as your arm. It runs out through the outer wall and over the cliff. Where it leaves the room, the stone around it is dark and wet."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_nave",
+        "label": "West",
+        "aliases": [
+          "west",
+          "w",
+          "nave"
+        ],
+        "menu_label": "Go west to the Angel Nave"
+      },
+      {
+        "room_id": "sanctuary_knights_hall",
+        "label": "North",
+        "aliases": [
+          "north",
+          "n",
+          "hall",
+          "knights hall"
+        ],
+        "menu_label": "Go north to the Knights' Hall"
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_knights_hall",
+    "title": "The Knights' Hall",
+    "summary": "A wide hall with a stone floor and a smell of oil and metal. Racks of silver-white armor stand along the walls. Long halberds lean beside the door.",
+    "inspect_text": "The bench by the wall is still warm, as if someone just got up. A board by the door lists patrol times in neat chalk. A heavy iron barrel stands in the corner, full of small metal things: pins, buttons, needles and hair clips.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_knights_hall-racks",
+        "label": "the armor racks",
+        "aliases": [
+          "armor",
+          "racks",
+          "rack",
+          "halberds",
+          "plate"
+        ],
+        "allow_rest": false,
+        "inspect_text": "Plain white plate, polished until it shines. Every helmet has a narrow slit and no face."
+      },
+      {
+        "id": "sanctuary_knights_hall-board",
+        "label": "the patrol board",
+        "aliases": [
+          "board",
+          "patrol",
+          "times",
+          "chalk",
+          "list"
+        ],
+        "allow_rest": false,
+        "inspect_text": "The chalk says: Gate, Nave, Garden, Arcade. Each one is checked every twenty minutes. The same four names repeat down the board."
+      },
+      {
+        "id": "sanctuary_knights_hall-barrel",
+        "label": "the iron barrel",
+        "aliases": [
+          "barrel",
+          "iron barrel",
+          "pins",
+          "hairpins",
+          "metal"
+        ],
+        "allow_rest": false,
+        "inspect_text": "Servants are not allowed to keep anything made of metal. This is where it all goes. Hairpins lie on top, bent and tangled."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_cistern_tower",
+        "label": "South",
+        "aliases": [
+          "south",
+          "s",
+          "cistern",
+          "tower"
+        ],
+        "menu_label": "Go south to the Cistern Tower"
+      },
+      {
+        "room_id": "sanctuary_censer_tower",
+        "label": "North",
+        "aliases": [
+          "north",
+          "n",
+          "censer",
+          "tower"
+        ],
+        "menu_label": "Go north to the Censer Tower"
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_censer_tower",
+    "title": "The Censer Tower",
+    "summary": "A round room full of smoke. Huge brass burners hang from chains and glow like red eyes.",
+    "inspect_text": "Sweet white smoke curls up through a hole in the roof. The heat makes your eyes water. It is hard to see more than a few steps.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_censer_tower-censers",
+        "label": "the brass burners",
+        "aliases": [
+          "burners",
+          "censers",
+          "censer",
+          "chains",
+          "brass"
+        ],
+        "allow_rest": false,
+        "inspect_text": "Each burner is big enough to hold a child. Gray ash falls from them like snow."
+      },
+      {
+        "id": "sanctuary_censer_tower-hole",
+        "label": "the smoke hole",
+        "aliases": [
+          "hole",
+          "smoke",
+          "roof",
+          "vent"
+        ],
+        "allow_rest": false,
+        "inspect_text": "A round hole in the roof, black with soot. Far up, a tiny circle of sky shows through."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_knights_hall",
+        "label": "South",
+        "aliases": [
+          "south",
+          "s",
+          "hall",
+          "knights hall"
+        ],
+        "menu_label": "Go south to the Knights' Hall"
+      },
+      {
+        "room_id": "sanctuary_chapel",
+        "label": "West",
+        "aliases": [
+          "west",
+          "w",
+          "chapel"
+        ],
+        "menu_label": "Go west to the Reliquary Chapel"
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_chapel",
+    "title": "The Reliquary Chapel",
+    "summary": "A small white chapel with rows of candles on stone shelves. At the back, a low door is covered in wax and stamped with a silver eye.",
+    "inspect_text": "The candles burn without any wind. The wax on the floor is thick and old. The door at the back has no handle on this side. A line of cold air comes from under it, and it smells like wet stone.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_chapel-candles",
+        "label": "the candles",
+        "aliases": [
+          "candles",
+          "candle",
+          "shelves",
+          "shelf",
+          "names"
+        ],
+        "allow_rest": false,
+        "inspect_text": "Hundreds of candles, all the same height. Each one stands over a name scratched into the shelf, then rubbed almost smooth."
+      },
+      {
+        "id": "sanctuary_chapel-door",
+        "label": "the sealed door",
+        "aliases": [
+          "door",
+          "sealed door",
+          "wax",
+          "seal",
+          "stair"
+        ],
+        "allow_rest": false,
+        "inspect_text": "A low door sealed with white wax. The wax is stamped with a silver eye. There is no handle and no keyhole. It was made to be opened from the other side.",
+        "states": [
+          "sealed",
+          "open"
+        ],
+        "descriptions": [
+          {
+            "when": [
+              "feature:sanctuary_chapel-door=open"
+            ],
+            "inspect_text": "The door stands open. The wax seal hangs in broken strips. Cold air flows up a stair that goes down into the dark."
+          }
+        ]
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_censer_tower",
+        "label": "East",
+        "aliases": [
+          "east",
+          "e",
+          "censer",
+          "tower"
+        ],
+        "menu_label": "Go east to the Censer Tower"
+      },
+      {
+        "room_id": "sanctuary_bell_tower",
+        "label": "West",
+        "aliases": [
+          "west",
+          "w",
+          "bell",
+          "tower"
+        ],
+        "menu_label": "Go west to the Bell Tower"
+      },
+      {
+        "room_id": "sanctuary_sanctum",
+        "label": "Down",
+        "aliases": [
+          "down",
+          "d",
+          "stair",
+          "stairs",
+          "door",
+          "sanctum"
+        ],
+        "menu_label": "Go down the north stair to the Reanimation Sanctum",
+        "when": [
+          "feature:sanctuary_chapel-door=open"
+        ]
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_bell_tower",
+    "title": "The Bell Tower",
+    "summary": "A square room at the foot of a tall tower. A thick rope hangs from a hole in the ceiling.",
+    "inspect_text": "High above, a great bell waits. Each evening it rings three times, and the servants go to their rooms. The floor is worn into a pale circle around the rope, where the bell ringer walks.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_bell_tower-rope",
+        "label": "the bell rope",
+        "aliases": [
+          "rope",
+          "bell",
+          "ceiling",
+          "hole"
+        ],
+        "allow_rest": false,
+        "inspect_text": "A rope as thick as your wrist, wrapped in pale cloth where hands pull it. It sways a little, though the air is still."
+      },
+      {
+        "id": "sanctuary_bell_tower-floor",
+        "label": "the worn circle",
+        "aliases": [
+          "floor",
+          "circle",
+          "worn",
+          "stone"
+        ],
+        "allow_rest": false,
+        "inspect_text": "Boot marks go round and round the rope. The stone is polished smooth in a ring."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_chapel",
+        "label": "East",
+        "aliases": [
+          "east",
+          "e",
+          "chapel"
+        ],
+        "menu_label": "Go east to the Reliquary Chapel"
+      },
+      {
+        "room_id": "sanctuary_scriptorium",
+        "label": "South",
+        "aliases": [
+          "south",
+          "s",
+          "scriptorium"
+        ],
+        "menu_label": "Go south to the Scriptorium"
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_scriptorium",
+    "title": "The Scriptorium",
+    "summary": "A quiet room of tall shelves and slanted desks. Pens, ink and bundles of paper tied with white string.",
+    "inspect_text": "Everything is in order and everything is in rows. Each register is labeled with the name of a town or a workshop. The pages list people by number and by trade. Beside each number is a short note in red ink: SENT, KEPT, or USED.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_scriptorium-shelves",
+        "label": "the register shelves",
+        "aliases": [
+          "shelves",
+          "shelf",
+          "registers",
+          "register",
+          "books",
+          "ledgers"
+        ],
+        "allow_rest": false,
+        "inspect_text": "Hundreds of thin books in plain gray covers. The spines read like a map of the lower floors: towns, mines, mills, workshops."
+      },
+      {
+        "id": "sanctuary_scriptorium-desk",
+        "label": "the slanted desks",
+        "aliases": [
+          "desk",
+          "desks",
+          "pens",
+          "ink",
+          "paper"
+        ],
+        "allow_rest": false,
+        "inspect_text": "Pens lie in a straight line beside each inkwell. A half-finished page waits under a weight, with a number at the top and nothing after it."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_bell_tower",
+        "label": "North",
+        "aliases": [
+          "north",
+          "n",
+          "bell",
+          "tower"
+        ],
+        "menu_label": "Go north to the Bell Tower"
+      },
+      {
+        "room_id": "sanctuary_lamp_tower",
+        "label": "South",
+        "aliases": [
+          "south",
+          "s",
+          "lamp",
+          "tower"
+        ],
+        "menu_label": "Go south to the Lamp Tower"
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_lamp_tower",
+    "title": "The Lamp Tower",
+    "summary": "A tall, narrow room with hundreds of little glass lamps on shelves. Most are dark.",
+    "inspect_text": "Every evening the lamps are lit, one by one, by servants on tall ladders. Each lamp has a tiny number painted on its base. Spare wicks hang in bundles from nails.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_lamp_tower-lamps",
+        "label": "the glass lamps",
+        "aliases": [
+          "lamps",
+          "lamp",
+          "glass",
+          "shelves",
+          "wicks"
+        ],
+        "allow_rest": false,
+        "inspect_text": "The glass is clean and the oil is full. The numbers on the bases run in order, from one to a few hundred."
+      },
+      {
+        "id": "sanctuary_lamp_tower-ladder",
+        "label": "the tall ladders",
+        "aliases": [
+          "ladder",
+          "ladders"
+        ],
+        "allow_rest": false,
+        "inspect_text": "Ladders on wheels, taller than two people. The rungs are worn pale in the middle."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_scriptorium",
+        "label": "North",
+        "aliases": [
+          "north",
+          "n",
+          "scriptorium"
+        ],
+        "menu_label": "Go north to the Scriptorium"
+      },
+      {
+        "room_id": "sanctuary_nave",
+        "label": "East",
+        "aliases": [
+          "east",
+          "e",
+          "nave"
+        ],
+        "menu_label": "Go east to the Angel Nave"
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_garden",
+    "title": "The Herb Garden",
+    "summary": "A round courtyard roofed with white silk. Stone benches and drying racks stand in neat circles. Seven low doors open off a round arcade around its edge.",
+    "inspect_text": "The air tastes of sulfur and bitter plants. Small servants work in silence, washing roots, cutting leaves and tying bundles. Thin silk drapes soften the light above them. The seven doors are numbered in small black paint, one to seven, going around the circle.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_garden-benches",
+        "label": "the compounding benches",
+        "aliases": [
+          "benches",
+          "bench",
+          "tables",
+          "slabs"
+        ],
+        "allow_rest": false,
+        "inspect_text": "Slabs of gray granite, scrubbed pale. Monkshood, cedar root and mountain moss lie in tidy piles."
+      },
+      {
+        "id": "sanctuary_garden-racks",
+        "label": "the drying racks",
+        "aliases": [
+          "racks",
+          "rack",
+          "herbs",
+          "bundles"
+        ],
+        "allow_rest": false,
+        "inspect_text": "Tall bamboo frames hung with bundles of leaves. They smell sharp and a little sweet."
+      },
+      {
+        "id": "sanctuary_garden-basin",
+        "label": "the wash basin",
+        "aliases": [
+          "basin",
+          "water",
+          "sink",
+          "wash"
+        ],
+        "allow_rest": false,
+        "inspect_text": "A wide stone bowl, always full. The water runs in at one side and out at the other, down a drain too narrow to see."
+      },
+      {
+        "id": "sanctuary_garden-doors",
+        "label": "the seven doors",
+        "aliases": [
+          "doors",
+          "door",
+          "cells",
+          "arcade",
+          "numbers"
+        ],
+        "allow_rest": false,
+        "inspect_text": "Seven low wooden doors, each with a number painted in black. The paint is fresh on all of them but one, where it has faded."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_nave",
+        "label": "South",
+        "aliases": [
+          "south",
+          "s",
+          "nave"
+        ],
+        "menu_label": "Go south to the Angel Nave"
+      },
+      {
+        "room_id": "sanctuary_cell_1",
+        "label": "Cell 1",
+        "aliases": [
+          "cell 1",
+          "1"
+        ],
+        "menu_label": "Go through door 1 into Cell 1"
+      },
+      {
+        "room_id": "sanctuary_cell_2",
+        "label": "Cell 2",
+        "aliases": [
+          "cell 2",
+          "2"
+        ],
+        "menu_label": "Go through door 2 into Cell 2"
+      },
+      {
+        "room_id": "sanctuary_cell_3",
+        "label": "Cell 3",
+        "aliases": [
+          "cell 3",
+          "3"
+        ],
+        "menu_label": "Go through door 3 into Cell 3"
+      },
+      {
+        "room_id": "sanctuary_cell_4",
+        "label": "Cell 4",
+        "aliases": [
+          "cell 4",
+          "4"
+        ],
+        "menu_label": "Go through door 4 into Cell 4"
+      },
+      {
+        "room_id": "sanctuary_cell_5",
+        "label": "Cell 5",
+        "aliases": [
+          "cell 5",
+          "5"
+        ],
+        "menu_label": "Go through door 5 into Cell 5"
+      },
+      {
+        "room_id": "sanctuary_cell_6",
+        "label": "Cell 6",
+        "aliases": [
+          "cell 6",
+          "6"
+        ],
+        "menu_label": "Go through door 6 into Cell 6"
+      },
+      {
+        "room_id": "sanctuary_cell_7",
+        "label": "Cell 7",
+        "aliases": [
+          "cell 7",
+          "7"
+        ],
+        "menu_label": "Go through door 7 into Cell 7"
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_cell_1",
+    "title": "Cell 1",
+    "summary": "A tiny stone room with a narrow bed, a clay jug and a nail for a robe. The door opens onto the round arcade.",
+    "inspect_text": "The room is cold and smells of straw. There is no window. A string of wooden prayer beads hangs from the nail. Half of them are cracked.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_cell_1-bed",
+        "label": "the narrow bed",
+        "aliases": [
+          "bed",
+          "straw",
+          "blanket",
+          "mattress"
+        ],
+        "allow_rest": false,
+        "inspect_text": "A stone shelf with a thin mattress of straw and one gray blanket."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_garden",
+        "label": "Out",
+        "aliases": [
+          "out",
+          "garden",
+          "arcade",
+          "door"
+        ],
+        "menu_label": "Step out to the Herb Garden"
+      },
+      {
+        "room_id": "sanctuary_cell_2",
+        "label": "Next cell",
+        "aliases": [
+          "next",
+          "next cell",
+          "cell 2"
+        ],
+        "menu_label": "Walk the arcade to Cell 2"
+      },
+      {
+        "room_id": "sanctuary_cell_7",
+        "label": "Previous cell",
+        "aliases": [
+          "previous",
+          "prev",
+          "back",
+          "cell 7"
+        ],
+        "menu_label": "Walk the arcade back to Cell 7"
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_cell_2",
+    "title": "Cell 2",
+    "summary": "A tiny stone room with a narrow bed, a clay jug and a nail for a robe. The door opens onto the round arcade.",
+    "inspect_text": "The room is cold and smells of straw. There is no window. The jug is chipped at the rim. A paper star, folded very small, is tucked under the bed.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_cell_2-bed",
+        "label": "the narrow bed",
+        "aliases": [
+          "bed",
+          "straw",
+          "blanket",
+          "mattress"
+        ],
+        "allow_rest": false,
+        "inspect_text": "A stone shelf with a thin mattress of straw and one gray blanket."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_garden",
+        "label": "Out",
+        "aliases": [
+          "out",
+          "garden",
+          "arcade",
+          "door"
+        ],
+        "menu_label": "Step out to the Herb Garden"
+      },
+      {
+        "room_id": "sanctuary_cell_3",
+        "label": "Next cell",
+        "aliases": [
+          "next",
+          "next cell",
+          "cell 3"
+        ],
+        "menu_label": "Walk the arcade to Cell 3"
+      },
+      {
+        "room_id": "sanctuary_cell_1",
+        "label": "Previous cell",
+        "aliases": [
+          "previous",
+          "prev",
+          "back",
+          "cell 1"
+        ],
+        "menu_label": "Walk the arcade back to Cell 1"
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_cell_3",
+    "title": "Cell 3",
+    "summary": "A tiny stone room with a narrow bed, a clay jug and a nail for a robe. The door opens onto the round arcade.",
+    "inspect_text": "The room is cold and smells of straw. There is no window. The blanket has been patched so many times that no one could say what color it was.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_cell_3-bed",
+        "label": "the narrow bed",
+        "aliases": [
+          "bed",
+          "straw",
+          "blanket",
+          "mattress"
+        ],
+        "allow_rest": false,
+        "inspect_text": "A stone shelf with a thin mattress of straw and one gray blanket."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_garden",
+        "label": "Out",
+        "aliases": [
+          "out",
+          "garden",
+          "arcade",
+          "door"
+        ],
+        "menu_label": "Step out to the Herb Garden"
+      },
+      {
+        "room_id": "sanctuary_cell_4",
+        "label": "Next cell",
+        "aliases": [
+          "next",
+          "next cell",
+          "cell 4"
+        ],
+        "menu_label": "Walk the arcade to Cell 4"
+      },
+      {
+        "room_id": "sanctuary_cell_2",
+        "label": "Previous cell",
+        "aliases": [
+          "previous",
+          "prev",
+          "back",
+          "cell 2"
+        ],
+        "menu_label": "Walk the arcade back to Cell 2"
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_cell_4",
+    "title": "Cell 4",
+    "summary": "A tiny stone room with a narrow bed, a clay jug and a nail for a robe. The door opens onto the round arcade.",
+    "inspect_text": "The room is cold and smells of straw. There is no window. The straw in the bed has been stirred up, and a few dry crumbs lie in it.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_cell_4-bed",
+        "label": "the narrow bed",
+        "aliases": [
+          "bed",
+          "straw",
+          "blanket",
+          "mattress"
+        ],
+        "allow_rest": false,
+        "inspect_text": "A stone shelf with a thin mattress of straw and one gray blanket."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_garden",
+        "label": "Out",
+        "aliases": [
+          "out",
+          "garden",
+          "arcade",
+          "door"
+        ],
+        "menu_label": "Step out to the Herb Garden"
+      },
+      {
+        "room_id": "sanctuary_cell_5",
+        "label": "Next cell",
+        "aliases": [
+          "next",
+          "next cell",
+          "cell 5"
+        ],
+        "menu_label": "Walk the arcade to Cell 5"
+      },
+      {
+        "room_id": "sanctuary_cell_3",
+        "label": "Previous cell",
+        "aliases": [
+          "previous",
+          "prev",
+          "back",
+          "cell 3"
+        ],
+        "menu_label": "Walk the arcade back to Cell 3"
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_cell_5",
+    "title": "Cell 5",
+    "summary": "A tiny stone room with a narrow bed, a clay jug and a nail for a robe. The door opens onto the round arcade.",
+    "inspect_text": "The room is cold and smells of straw. There is no window. A tiny wooden bird, carved by a patient hand, sits on a ledge in the wall.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_cell_5-bed",
+        "label": "the narrow bed",
+        "aliases": [
+          "bed",
+          "straw",
+          "blanket",
+          "mattress"
+        ],
+        "allow_rest": false,
+        "inspect_text": "A stone shelf with a thin mattress of straw and one gray blanket."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_garden",
+        "label": "Out",
+        "aliases": [
+          "out",
+          "garden",
+          "arcade",
+          "door"
+        ],
+        "menu_label": "Step out to the Herb Garden"
+      },
+      {
+        "room_id": "sanctuary_cell_6",
+        "label": "Next cell",
+        "aliases": [
+          "next",
+          "next cell",
+          "cell 6"
+        ],
+        "menu_label": "Walk the arcade to Cell 6"
+      },
+      {
+        "room_id": "sanctuary_cell_4",
+        "label": "Previous cell",
+        "aliases": [
+          "previous",
+          "prev",
+          "back",
+          "cell 4"
+        ],
+        "menu_label": "Walk the arcade back to Cell 4"
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_cell_6",
+    "title": "Cell 6",
+    "summary": "A tiny stone room with a narrow bed, a clay jug and a nail for a robe. The door opens onto the round arcade.",
+    "inspect_text": "The room is cold and smells of straw. There is no window. Someone has scratched tally marks beside the bed, in rows of five. There are a great many.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_cell_6-bed",
+        "label": "the narrow bed",
+        "aliases": [
+          "bed",
+          "straw",
+          "blanket",
+          "mattress"
+        ],
+        "allow_rest": false,
+        "inspect_text": "A stone shelf with a thin mattress of straw and one gray blanket."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_garden",
+        "label": "Out",
+        "aliases": [
+          "out",
+          "garden",
+          "arcade",
+          "door"
+        ],
+        "menu_label": "Step out to the Herb Garden"
+      },
+      {
+        "room_id": "sanctuary_cell_7",
+        "label": "Next cell",
+        "aliases": [
+          "next",
+          "next cell",
+          "cell 7"
+        ],
+        "menu_label": "Walk the arcade to Cell 7"
+      },
+      {
+        "room_id": "sanctuary_cell_5",
+        "label": "Previous cell",
+        "aliases": [
+          "previous",
+          "prev",
+          "back",
+          "cell 5"
+        ],
+        "menu_label": "Walk the arcade back to Cell 5"
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_cell_7",
+    "title": "Cell 7",
+    "summary": "A tiny stone room with a narrow bed, a clay jug and a nail for a robe. The door opens onto the round arcade.",
+    "inspect_text": "The room is cold and smells of straw. This is the only cell with a window, because it sits against the outer wall. A wooden lattice covers it. Black soil is dusted across the floor beneath, and a few strands of green moss lie in it.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_cell_7-bed",
+        "label": "the narrow bed",
+        "aliases": [
+          "bed",
+          "straw",
+          "blanket",
+          "mattress"
+        ],
+        "allow_rest": false,
+        "inspect_text": "A stone shelf with a thin mattress of straw and one gray blanket. The blanket is neatly folded, as if it were never used."
+      },
+      {
+        "id": "sanctuary_cell_7-lattice",
+        "label": "the window lattice",
+        "aliases": [
+          "lattice",
+          "window",
+          "screen",
+          "shutter",
+          "latch"
+        ],
+        "allow_rest": false,
+        "inspect_text": "A carved wooden screen set into the wall. A small latch holds it shut. The latch is worn bright, and the wood around it is dark with the oil of many fingers.",
+        "states": [
+          "latched",
+          "open"
+        ],
+        "descriptions": [
+          {
+            "when": [
+              "feature:sanctuary_cell_7-lattice=open"
+            ],
+            "inspect_text": "The lattice hangs open on its hinges. Cold wind pours in. Just below the sill, a narrow stone gutter runs along the face of the cliff."
+          }
+        ],
+        "interactions": [
+          {
+            "id": "slide_lattice",
+            "label": "Slide the lattice open",
+            "aliases": [
+              "open window",
+              "open lattice",
+              "open the window",
+              "unlatch window",
+              "slide lattice"
+            ],
+            "lines": [
+              "You slip the latch and push. The lattice swings out without a sound. Cold wind rushes in. Outside, a narrow stone gutter runs along the cliff, just below the sill."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "state": "open"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_garden",
+        "label": "Out",
+        "aliases": [
+          "out",
+          "garden",
+          "arcade",
+          "door"
+        ],
+        "menu_label": "Step out to the Herb Garden"
+      },
+      {
+        "room_id": "sanctuary_cell_1",
+        "label": "Next cell",
+        "aliases": [
+          "next",
+          "next cell",
+          "cell 1"
+        ],
+        "menu_label": "Walk the arcade to Cell 1"
+      },
+      {
+        "room_id": "sanctuary_cell_6",
+        "label": "Previous cell",
+        "aliases": [
+          "previous",
+          "prev",
+          "back",
+          "cell 6"
+        ],
+        "menu_label": "Walk the arcade back to Cell 6"
+      },
+      {
+        "room_id": "sanctuary_ledge",
+        "label": "Window",
+        "aliases": [
+          "window",
+          "ledge",
+          "lattice",
+          "gutter"
+        ],
+        "menu_label": "Climb out of the window onto the Drainage Ledge",
+        "when": [
+          "feature:sanctuary_cell_7-lattice=open"
+        ]
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_ledge",
+    "title": "The Drainage Ledge",
+    "summary": "A narrow stone gutter runs along the face of the cliff. Cold wind pulls at your clothes. Below you there is nothing but cloud.",
+    "inspect_text": "The gutter carries the sanctuary's waste water out and over the edge. It is only two hands wide, so you must walk on the stone beside it with your back to the wall. Ahead, a fallen boulder leans against the cliff.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_ledge-gutter",
+        "label": "the gutter",
+        "aliases": [
+          "gutter",
+          "slime",
+          "water",
+          "footprints",
+          "prints"
+        ],
+        "allow_rest": false,
+        "inspect_text": "Green slime coats the stone. Small bare footprints are pressed into it, going the same way as the water."
+      },
+      {
+        "id": "sanctuary_ledge-boulder",
+        "label": "the fallen boulder",
+        "aliases": [
+          "boulder",
+          "rock",
+          "slot",
+          "gap",
+          "glow"
+        ],
+        "allow_rest": false,
+        "inspect_text": "A rock as big as a cart, wedged against the wall. Between its edge and the cliff there is a slot. It looks very tight, and a faint blue glow comes from behind it.",
+        "states": [
+          "blocking",
+          "passable"
+        ],
+        "descriptions": [
+          {
+            "when": [
+              "feature:sanctuary_ledge-boulder=passable"
+            ],
+            "inspect_text": "You have scraped the slot wider. Now you can slip through it sideways without trouble."
+          }
+        ],
+        "interactions": [
+          {
+            "id": "squeeze_past",
+            "label": "Squeeze through the slot behind the boulder",
+            "aliases": [
+              "squeeze past",
+              "squeeze through",
+              "go behind boulder",
+              "pass boulder",
+              "slip past boulder"
+            ],
+            "lines": [
+              "You breathe out, turn sideways and edge into the slot. The rock scrapes your back. For a moment you are stuck. Then the stone gives, and you slide through into blue light."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "state": "passable"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_cell_7",
+        "label": "In",
+        "aliases": [
+          "in",
+          "window",
+          "cell",
+          "cell 7",
+          "back"
+        ],
+        "menu_label": "Climb back in through the window to Cell 7",
+        "when": [
+          "feature:sanctuary_cell_7/sanctuary_cell_7-lattice=open"
+        ]
+      },
+      {
+        "room_id": "sanctuary_cliff_garden",
+        "label": "Ahead",
+        "aliases": [
+          "ahead",
+          "boulder",
+          "slot",
+          "behind",
+          "forward"
+        ],
+        "menu_label": "Slip through the slot behind the boulder",
+        "when": [
+          "feature:sanctuary_ledge-boulder=passable"
+        ]
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_cliff_garden",
+    "title": "The Cliff Garden",
+    "summary": "A tiny shelf of rock under a huge overhang. A warm pipe breathes steam into the cold air, and a patch of low plants glows soft blue.",
+    "inspect_text": "It is no bigger than a small room. The roof is bare rock that leans out over the drop. In the dark soil grow dozens of short plants with blue-dotted leaves. They brighten when the steam touches them and dim when it fades. On the back wall is a heavy iron door, bound with chain.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_cliff_garden-grass",
+        "label": "the glowing plants",
+        "aliases": [
+          "plants",
+          "grass",
+          "soul grass",
+          "soul-grass",
+          "dew",
+          "leaves",
+          "herbs"
+        ],
+        "allow_rest": false,
+        "inspect_text": "The plants are low and tough. Fine drops of glowing dew gather on their tips. Someone has cared for them for a long time: the soil is turned and the weeds are pulled."
+      },
+      {
+        "id": "sanctuary_cliff_garden-pipe",
+        "label": "the steam pipe",
+        "aliases": [
+          "pipe",
+          "steam",
+          "heating pipe"
+        ],
+        "allow_rest": false,
+        "inspect_text": "An old heating pipe, cut off at one end. It leaks a thin line of warm steam, steady as breathing."
+      },
+      {
+        "id": "sanctuary_cliff_garden-door",
+        "label": "the chained iron door",
+        "aliases": [
+          "door",
+          "iron door",
+          "chain",
+          "bar",
+          "bolt"
+        ],
+        "allow_rest": false,
+        "inspect_text": "A heavy iron door set into the cliff. A thick bar and a loop of chain hold it shut, and a keyhole shows in the lock. The hinges are oiled. Someone uses this door, and they keep the key.",
+        "states": [
+          "chained",
+          "unbolted"
+        ],
+        "descriptions": [
+          {
+            "when": [
+              "feature:sanctuary_cliff_garden-door=unbolted"
+            ],
+            "inspect_text": "The door stands unbolted. Behind it, a narrow stair winds down into the dark."
+          }
+        ]
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_ledge",
+        "label": "Back",
+        "aliases": [
+          "back",
+          "ledge",
+          "boulder",
+          "slot",
+          "out"
+        ],
+        "menu_label": "Slip back through the slot to the Drainage Ledge"
+      },
+      {
+        "room_id": "sanctuary_spiral_stair",
+        "label": "Down",
+        "aliases": [
+          "down",
+          "d",
+          "door",
+          "stair",
+          "stairs"
+        ],
+        "menu_label": "Go through the iron door and down the spiral stair",
+        "when": [
+          "feature:sanctuary_cliff_garden-door=unbolted"
+        ]
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_spiral_stair",
+    "title": "The Spiral Stair",
+    "summary": "A narrow stair turns round and round, down into the dark. The steps are worn smooth in the middle.",
+    "inspect_text": "The air gets colder with every turn. The wall is bare rock, damp to the touch. A chill and a smell of old herbs rise from below. Far down you can hear slow dripping, and something like a low hum.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_spiral_stair-steps",
+        "label": "the worn steps",
+        "aliases": [
+          "steps",
+          "step",
+          "stair",
+          "dust",
+          "footprints",
+          "prints"
+        ],
+        "allow_rest": false,
+        "inspect_text": "The steps are deep in the middle, as if thousands of feet had walked them. But the dust on them is thin and fresh, and the footprints are small."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_cliff_garden",
+        "label": "Up",
+        "aliases": [
+          "up",
+          "u",
+          "door",
+          "garden"
+        ],
+        "menu_label": "Climb up to the iron door and the Cliff Garden",
+        "when": [
+          "feature:sanctuary_cliff_garden/sanctuary_cliff_garden-door=unbolted"
+        ]
+      },
+      {
+        "room_id": "sanctuary_sanctum",
+        "label": "Down",
+        "aliases": [
+          "down",
+          "d",
+          "sanctum"
+        ],
+        "menu_label": "Go down into the Reanimation Sanctum"
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_sanctum",
+    "title": "The Reanimation Sanctum",
+    "summary": "A huge cold hall held up by columns of black marble. A white mist hangs low over the floor. In the middle stands an altar of black glass.",
+    "inspect_text": "Rows of stone slabs fill the hall, each one long enough to lay a person on. The mist is thicker over the slabs than anywhere else. The air hums, very low, like a held note. Thick books bound in black leather lie on a stand beside the altar. A low door in the north wall is barred from this side.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_sanctum-altar",
+        "label": "the obsidian altar",
+        "aliases": [
+          "altar",
+          "obsidian",
+          "glass",
+          "circles"
+        ],
+        "allow_rest": false,
+        "inspect_text": "A block of black glass, as tall as your chest. Red circles are cut deep into its top, one inside another. They are scratched and stained from long use.",
+        "descriptions": [
+          {
+            "when": [
+              "spiritual_sight"
+            ],
+            "inspect_text": "Red threads run out of the cut circles and into the spirits, thin as hair. The circles on the stone are the knots where the threads join."
+          }
+        ]
+      },
+      {
+        "id": "sanctuary_sanctum-slabs",
+        "label": "the stone slabs",
+        "aliases": [
+          "slabs",
+          "slab",
+          "stone",
+          "mist"
+        ],
+        "allow_rest": false,
+        "inspect_text": "Long, flat slabs, cold as ice. Each has a groove along one edge, and a ring set in the floor beside it.",
+        "descriptions": [
+          {
+            "when": [
+              "spiritual_sight"
+            ],
+            "inspect_text": "Above every slab floats a spirit with a calm, empty face. Some lie so close to the stone that they look asleep."
+          }
+        ]
+      },
+      {
+        "id": "sanctuary_sanctum-ledgers",
+        "label": "the black ledgers",
+        "aliases": [
+          "ledgers",
+          "ledger",
+          "books",
+          "book",
+          "stand",
+          "register"
+        ],
+        "allow_rest": false,
+        "inspect_text": "Thick books stamped with a silver eye. The ink looks faint, as if you can only see the surface of it.",
+        "descriptions": [
+          {
+            "when": [
+              "spiritual_sight"
+            ],
+            "inspect_text": "With the dew in your eyes, the pages glow and the tight writing becomes clear. Each line names a person and says where they were put. Siraj, a miner of the deep wells: bound into the steam guardian. Wife Nur. Son Zayd. Nur, a miner of the deep wells: bound into the White Queen of the forest. Husband Siraj. Son Zayd. Orin, stonecutter: bound into the first black golem. Mari, miller: bound into the second black golem. Ferid, miner: bound into the first white golem. Hana, weaver: bound into the second white golem."
+          }
+        ]
+      },
+      {
+        "id": "sanctuary_sanctum-bar",
+        "label": "the bar on the north door",
+        "aliases": [
+          "bar",
+          "north door",
+          "door",
+          "iron bar",
+          "stair"
+        ],
+        "allow_rest": false,
+        "inspect_text": "A heavy iron bar rests across a low door in the north wall. The door leads up a stair. It is the same door that is sealed with wax on the other side.",
+        "states": [
+          "barred",
+          "lifted"
+        ],
+        "descriptions": [
+          {
+            "when": [
+              "feature:sanctuary_sanctum-bar=lifted"
+            ],
+            "inspect_text": "The bar leans against the wall. The north door stands open, and a stair climbs up into the dark."
+          }
+        ],
+        "interactions": [
+          {
+            "id": "lift_bar",
+            "label": "Lift the bar off the north door",
+            "aliases": [
+              "lift bar",
+              "open north door",
+              "unbar door",
+              "remove bar"
+            ],
+            "lines": [
+              "You heave the bar up and lean it against the wall. The door swings inward. Cold air from the chapel above rolls down the stair, and the wax seal tears off in long strips."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "state": "lifted"
+              },
+              {
+                "kind": "set_feature_state",
+                "feature": "sanctuary_chapel/sanctuary_chapel-door",
+                "state": "open"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_spiral_stair",
+        "label": "Up",
+        "aliases": [
+          "up",
+          "u",
+          "spiral",
+          "spiral stair"
+        ],
+        "menu_label": "Climb the spiral stair"
+      },
+      {
+        "room_id": "sanctuary_chapel",
+        "label": "North",
+        "aliases": [
+          "north",
+          "n",
+          "chapel",
+          "north stair"
+        ],
+        "menu_label": "Go up the north stair to the Reliquary Chapel",
+        "when": [
+          "feature:sanctuary_sanctum-bar=lifted"
+        ]
+      },
+      {
+        "room_id": "sanctuary_control_hall",
+        "label": "East",
+        "aliases": [
+          "east",
+          "e",
+          "hall",
+          "control hall"
+        ],
+        "menu_label": "Go east to the Control Hall"
+      }
+    ],
+    "descriptions": [
+      {
+        "when": [
+          "spiritual_sight"
+        ],
+        "summary": "The white mist is not mist at all. It is hundreds of people, pale and silent, floating just above the stone slabs. The altar of black glass stands in the middle, wrapped in thin red threads.",
+        "inspect_text": "Each spirit is a glow in the shape of a person: old and young, tall and short, all with the same blank, sleeping look. Red threads run from the altar to many of them, like strings. The low hum is their voices, too faint to be words. Beside the altar, the black books glow, and their writing is clear at last. A low door in the north wall is barred from this side."
+      }
+    ]
+  },
+  {
+    "id": "sanctuary_control_hall",
+    "title": "The Control Hall",
+    "summary": "A round hall of white stone that opens straight onto the sky. A wide platform of brass and silver is set into the floor, facing the sea of cloud.",
+    "inspect_text": "The wall that faces the clouds is missing, so the wind blows straight through. The platform is a perfect circle, with five small slots cut around its edge and one larger socket at the center. A console of cold brass stands beside it, covered in tiny carved symbols. Nothing on it is lit.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_control_hall-platform",
+        "label": "the platform",
+        "aliases": [
+          "platform",
+          "circle",
+          "slots",
+          "socket",
+          "brass",
+          "silver"
+        ],
+        "allow_rest": false,
+        "inspect_text": "Brass and silver rings, one inside another, worn bright at the edges. Five slots are cut around the rim. In the center is a socket shaped like a six-pointed star."
+      },
+      {
+        "id": "sanctuary_control_hall-console",
+        "label": "the console",
+        "aliases": [
+          "console",
+          "symbols",
+          "controls",
+          "panel"
+        ],
+        "allow_rest": false,
+        "inspect_text": "A slanted brass desk covered in tiny carved symbols. Its surface is cold and dead. A thin groove runs from it to the platform."
+      },
+      {
+        "id": "sanctuary_control_hall-opening",
+        "label": "the open wall",
+        "aliases": [
+          "wall",
+          "opening",
+          "sky",
+          "clouds",
+          "wind"
+        ],
+        "allow_rest": false,
+        "inspect_text": "There is no wall here, only a wide arch cut into the mountain. Beyond it the cloud sea rolls on and on, bright and empty."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_sanctum",
+        "label": "West",
+        "aliases": [
+          "west",
+          "w",
+          "sanctum",
+          "back"
+        ],
+        "menu_label": "Go west to the Reanimation Sanctum"
+      }
+    ],
+    "descriptions": []
   }
 ]

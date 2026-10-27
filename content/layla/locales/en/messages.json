@@ -273,5 +273,6 @@
     "transformation.wake.fragment": "\"{fragment}\"",
     "transformation.wake.reveal": "{actor_name} remembers who they are: {actor_name} is now {woken_name}.",
     "item.sensory_enhancer.consumed": "You swallow the translucent blue capsule. An electric chill shoots through your veins, clearing the static behind your eyes. Your senses sharpen with startling clarity: you can feel where your allies breathe through the stone, and the hum of active teleport portals burns bright against your inner map.",
-    "transformation.secret_passages.revealed": "As the frost-bind shatters from their mind, a gasp echoes through the high hall. Ancient counterweights shudder in the stone as hidden seals slide open, revealing the Citadel's secret perimeter ring connecting the three throne rooms!"
+    "transformation.secret_passages.revealed": "As the frost-bind shatters from their mind, a gasp echoes through the high hall. Ancient counterweights shudder in the stone as hidden seals slide open, revealing the Citadel's secret perimeter ring connecting the three throne rooms!",
+    "item.spirit-pill.used": "You swallow the luminous blue dew from the silver capsule. An icy chill surges through your nerves, and the dimensional veil lifts from your eyes. You can now see spirits."
 }

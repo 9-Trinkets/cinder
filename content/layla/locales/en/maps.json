@@ -1070,5 +1070,127 @@
     "reveal_when": [
       "town_brass_yard_unlocked"
     ]
+  },
+  {
+    "id": "the-high-sanctuary",
+    "label": "The High Sanctuary",
+    "rooms": [
+      {
+        "room_id": "sanctuary_terrace",
+        "x": 0.0,
+        "y": 12.0
+      },
+      {
+        "room_id": "sanctuary_nave",
+        "x": 0.0,
+        "y": 8.0
+      },
+      {
+        "room_id": "sanctuary_cistern_tower",
+        "x": 8.0,
+        "y": 8.0
+      },
+      {
+        "room_id": "sanctuary_knights_hall",
+        "x": 8.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "sanctuary_censer_tower",
+        "x": 8.0,
+        "y": -8.0
+      },
+      {
+        "room_id": "sanctuary_chapel",
+        "x": 0.0,
+        "y": -8.0
+      },
+      {
+        "room_id": "sanctuary_bell_tower",
+        "x": -8.0,
+        "y": -8.0
+      },
+      {
+        "room_id": "sanctuary_scriptorium",
+        "x": -8.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "sanctuary_lamp_tower",
+        "x": -8.0,
+        "y": 8.0
+      },
+      {
+        "room_id": "sanctuary_garden",
+        "x": 0.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "sanctuary_ledge",
+        "x": 4.0,
+        "y": -11.0
+      },
+      {
+        "room_id": "sanctuary_cliff_garden",
+        "x": 7.0,
+        "y": -14.0
+      },
+      {
+        "room_id": "sanctuary_cell_1",
+        "x": 3.13,
+        "y": -2.49
+      },
+      {
+        "room_id": "sanctuary_cell_2",
+        "x": 3.9,
+        "y": 0.89
+      },
+      {
+        "room_id": "sanctuary_cell_3",
+        "x": 1.74,
+        "y": 3.6
+      },
+      {
+        "room_id": "sanctuary_cell_4",
+        "x": -1.74,
+        "y": 3.6
+      },
+      {
+        "room_id": "sanctuary_cell_5",
+        "x": -3.9,
+        "y": 0.89
+      },
+      {
+        "room_id": "sanctuary_cell_6",
+        "x": -3.13,
+        "y": -2.49
+      },
+      {
+        "room_id": "sanctuary_cell_7",
+        "x": -0.0,
+        "y": -4.0
+      }
+    ]
+  },
+  {
+    "id": "the-vaults",
+    "label": "The Vaults",
+    "rooms": [
+      {
+        "room_id": "sanctuary_spiral_stair",
+        "x": 0.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "sanctuary_sanctum",
+        "x": 7.0,
+        "y": 5.0
+      },
+      {
+        "room_id": "sanctuary_control_hall",
+        "x": 14.0,
+        "y": 5.0
+      }
+    ]
   }
 ]

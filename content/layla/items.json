@@ -412,5 +412,20 @@
     "kind": "key",
     "use_hook": "item.clandestine_sanctuary_token_used",
     "description": "A smuggled silver token etched with High Sanctuary resonance sigils. Consuming it teleports Layla past the outer wards into the High Sanctuary terrace alone."
+  },
+  {
+    "id": "spirit-pill",
+    "label": "spirit capsule",
+    "aliases": [
+      "spirit capsule",
+      "spirit-capsule",
+      "spirit pill",
+      "spirit-pill",
+      "capsule",
+      "pill"
+    ],
+    "kind": "potion",
+    "use_hook": "item.spirit_pill_used",
+    "description": "A thumb-sized silver capsule filled with luminous blue dew harvested from cliffside soul plants. Swallowing it lets you see the trapped spirits of the dead."
   }
 ]
