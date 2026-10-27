@@ -13294,7 +13294,15 @@
           "silver"
         ],
         "allow_rest": false,
-        "inspect_text": "Brass and silver rings, one inside another, worn bright at the edges. Five slots are cut around the rim. In the center is a socket shaped like a six-pointed star."
+        "inspect_text": "Brass and silver rings, one inside another, worn bright at the edges. Five slots are cut around the rim. In the center is a socket shaped like a six-pointed star.",
+        "descriptions": [
+          {
+            "when": [
+              "anchor_floor6_platform"
+            ],
+            "inspect_text": "The rings turn slowly, one inside another, and the slots around the rim glow blue. A line of light runs from the center socket down into the mountain, toward the Frost Courtyard."
+          }
+        ]
       },
       {
         "id": "sanctuary_control_hall-console",
@@ -13306,7 +13314,15 @@
           "panel"
         ],
         "allow_rest": false,
-        "inspect_text": "A slanted brass desk covered in tiny carved symbols. Its surface is cold and dead. A thin groove runs from it to the platform."
+        "inspect_text": "A slanted brass desk covered in tiny carved symbols. Its surface is cold and dead. A thin groove runs from it to the platform.",
+        "descriptions": [
+          {
+            "when": [
+              "anchor_floor6_platform"
+            ],
+            "inspect_text": "The brass is warm now. The carved symbols shift and settle, as if the console were counting."
+          }
+        ]
       },
       {
         "id": "sanctuary_control_hall-opening",
@@ -13335,6 +13351,14 @@
         "menu_label": "Go west to the Reanimation Sanctum"
       }
     ],
-    "descriptions": []
+    "descriptions": [
+      {
+        "when": [
+          "anchor_floor6_platform"
+        ],
+        "summary": "A round hall of white stone that opens straight onto the sky. The brass and silver platform glows softly, and the console beside it hums.",
+        "inspect_text": "The wind still blows straight through the open wall, but the platform no longer sits dead. Its rings glow pale blue, and the five slots around the rim are lit. The console is warm under your hand, and its tiny carved symbols drift like slow sparks."
+      }
+    ]
   }
 ]

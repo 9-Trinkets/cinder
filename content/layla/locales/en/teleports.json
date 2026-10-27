@@ -55,6 +55,12 @@
       "when": ["town_brass_yard_unlocked"],
       "title": "Brass Yard",
       "aliases": ["brass yard", "brass_yard", "brass"]
+    },
+    {
+      "room_id": "sanctuary_control_hall",
+      "when": ["anchor_floor6_platform"],
+      "title": "Sanctuary Platform",
+      "aliases": ["sanctuary_control_hall", "floor6_platform", "floor 6 platform", "sanctuary platform", "floor 6"]
     }
   ]
 }

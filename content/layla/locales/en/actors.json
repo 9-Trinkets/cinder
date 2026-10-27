@@ -4167,7 +4167,12 @@
     "initial_hostile": false,
     "attackable": false,
     "skills": [
-      "strike"
+      "strike",
+      {
+        "id": "heal",
+        "power": 4,
+        "narration_key": "combat.orva_heal"
+      }
     ],
     "initial_inventory": {},
     "drops": {},
@@ -4219,8 +4224,8 @@
           "She wipes her face with the back of her hand. Then she bends over the plants, catches a bead of glowing dew in a thumb-sized silver capsule, and snaps it shut.",
           "Orva (to Layla): Swallow this before you go down. Down there the people are not people any more, and you will not see them without it.",
           "She crosses to the iron door, takes a key from a cord at her neck, and turns it. The bar lifts, the chain falls away, and the door swings in on a narrow stair.",
-          "Orva (to Layla): Go quietly, and finish it. I will hold the door.",
-          "She presses the capsule into your hand."
+          "Orva (to Layla): I know these stairs, and I know what the seer's circle does to the people it breaks. You will need someone who can mend you. I am coming with you.",
+          "She presses the capsule into your hand, picks her porcelain mask out of the soil and tucks it into her belt. The glowing plants dim behind her as she steps to your side."
         ],
         "effects": [
           {
@@ -4233,6 +4238,10 @@
             "kind": "set_feature_state",
             "feature": "sanctuary_cliff_garden/sanctuary_cliff_garden-door",
             "state": "unbolted"
+          },
+          {
+            "kind": "run_hook",
+            "hook_id": "orva.joins_party"
           }
         ]
       }
@@ -4256,8 +4265,12 @@
     "skills": [
       "strike"
     ],
-    "initial_inventory": {},
-    "drops": {},
+    "initial_inventory": {
+      "bind-scroll": 1
+    },
+    "drops": {
+      "bind-scroll": 1
+    },
     "xp_drop": 100,
     "aliases": [
       "valerius",

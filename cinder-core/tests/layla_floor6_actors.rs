@@ -249,3 +249,53 @@ fn layla_arrives_alone_and_her_golems_stay_behind() {
         "allies must not follow her through the token"
     );
 }
+
+#[test]
+fn valerius_drops_the_bind_scroll_and_reading_it_teaches_the_sigil() {
+    let runtime = runtime_in("sanctuary_sanctum", |s| {
+        strong_player(s);
+        set_hp(s, "the_seer", 1);
+    });
+    runtime.run_turn("attack seer valerius").expect("attack");
+    let state = runtime.export_state().unwrap();
+    assert!(
+        state
+            .loose_room_items("sanctuary_sanctum")
+            .iter()
+            .any(|(item, count)| item == "bind-scroll" && *count > 0),
+        "the scroll should lie where he fell"
+    );
+
+    runtime.run_turn("take bind scroll").expect("take");
+    assert!(runtime.export_state().unwrap().has_item("bind-scroll"));
+    let read = runtime.run_turn("read bind scroll").expect("read");
+    assert!(read.text().contains("Bind Sigil"), "{}", read.text());
+    let state = runtime.export_state().unwrap();
+    assert!(state.has_item("bind-sigil"));
+    assert_eq!(state.story_vars.get("knows_bind"), Some("true"));
+}
+
+#[test]
+fn orva_joins_the_party_as_a_healer_after_she_opens_the_door() {
+    let runtime = runtime_in("sanctuary_cliff_garden", |_| {});
+    let state = runtime.export_state().unwrap();
+    assert!(!state.follows_player("orva"));
+
+    runtime.run_turn("say the words").expect("talk");
+    let state = runtime.export_state().unwrap();
+    assert!(state.follows_player("orva"));
+    assert_eq!(state.stance("orva"), ActorStance::Allied);
+
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let orva = pack.actor("orva").expect("orva");
+    assert!(orva.tags.iter().any(|tag| tag == "healer"));
+
+    // She walks down the stair with Layla.
+    runtime.run_turn("go down").expect("down");
+    runtime.run_turn("go down").expect("down");
+    assert_eq!(runtime.current_room_id().unwrap(), "sanctuary_sanctum");
+    assert_eq!(
+        runtime.export_state().unwrap().actor_room_id("orva", ""),
+        "sanctuary_sanctum"
+    );
+}

@@ -441,5 +441,31 @@
     "use_hook": "item.invisibility_potion_used",
     "description": "A glass bottle of cold, shimmering blue liquid. Drinking it hides you from cathedral guards for 8 turns.",
     "hides_player_minutes": 8
+  },
+  {
+    "id": "bind-scroll",
+    "label": "bind scroll",
+    "aliases": [
+      "bind scroll",
+      "binding scroll",
+      "scroll"
+    ],
+    "kind": "misc",
+    "use_hook": "item.bind_scroll_read",
+    "description": "A parchment scroll covered in glowing silver runes recovered from Seer Valerius. Reading it teaches you the Bind Sigil."
+  },
+  {
+    "id": "bind-sigil",
+    "label": "bind sigil",
+    "aliases": [
+      "bind sigil",
+      "binding sigil",
+      "sigil"
+    ],
+    "kind": "misc",
+    "description": "An interlocking knot drawn in silver chalk. Used to bind spirits into bodies or anchor spirit shards to restore lost memories.",
+    "look_description": "An interlocking silver knot glowing with quiet, binding power on the stone floor.",
+    "trace_mark": true,
+    "mp_cost": 5
   }
 ]

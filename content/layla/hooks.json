@@ -1617,6 +1617,11 @@
               "path": "room_id",
               "operator": "not_equal",
               "value": "teleport_platform"
+            },
+            {
+              "path": "room_id",
+              "operator": "not_equal",
+              "value": "sanctuary_control_hall"
             }
           ],
           "payload_template": {
@@ -1677,6 +1682,285 @@
           "payload_template": {
             "kind": "narrate_message",
             "key": "platform.activated"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "sanctuary_control_hall"
+            },
+            {
+              "path": "story_vars.seer_defeated",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "sanctuary.platform_held"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "sanctuary_control_hall"
+            },
+            {
+              "path": "story_vars.seer_defeated",
+              "operator": "equal",
+              "value": "true"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "anchor_floor6_platform",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "sanctuary_control_hall"
+            },
+            {
+              "path": "story_vars.seer_defeated",
+              "operator": "equal",
+              "value": "true"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "sanctuary.platform_activated"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "sanctuary_control_hall"
+            },
+            {
+              "path": "story_vars.seer_defeated",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "actor_stats.commander_astrid.hp",
+              "operator": "greater_than",
+              "value": 0
+            }
+          ],
+          "payload_template": {
+            "kind": "convert_actor_to_ally",
+            "actor_id": "commander_astrid",
+            "follows_player": true,
+            "messages": []
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "sanctuary_control_hall"
+            },
+            {
+              "path": "story_vars.seer_defeated",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "actor_stats.einar.hp",
+              "operator": "greater_than",
+              "value": 0
+            }
+          ],
+          "payload_template": {
+            "kind": "convert_actor_to_ally",
+            "actor_id": "einar",
+            "follows_player": true,
+            "messages": []
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "sanctuary_control_hall"
+            },
+            {
+              "path": "story_vars.seer_defeated",
+              "operator": "equal",
+              "value": "true"
+            }
+          ],
+          "payload_template": {
+            "kind": "move_actors",
+            "following_player": true,
+            "room_id": "player"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "sanctuary_control_hall"
+            },
+            {
+              "path": "story_vars.seer_defeated",
+              "operator": "equal",
+              "value": "true"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "sanctuary.party_arrives"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "sanctuary_control_hall"
+            },
+            {
+              "path": "story_vars.seer_defeated",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "actor_stats.commander_astrid.hp",
+              "operator": "greater_than",
+              "value": 0
+            }
+          ],
+          "payload_template": {
+            "kind": "actor_speech",
+            "actor_id": "commander_astrid",
+            "target_id": "player",
+            "key": "astrid.floor6_arrival_1"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "sanctuary_control_hall"
+            },
+            {
+              "path": "story_vars.seer_defeated",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "actor_stats.commander_astrid.hp",
+              "operator": "greater_than",
+              "value": 0
+            }
+          ],
+          "payload_template": {
+            "kind": "actor_speech",
+            "actor_id": "commander_astrid",
+            "target_id": "player",
+            "key": "astrid.floor6_arrival_2"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "sanctuary_control_hall"
+            },
+            {
+              "path": "story_vars.seer_defeated",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "actor_stats.einar.hp",
+              "operator": "greater_than",
+              "value": 0
+            },
+            {
+              "path": "actor_stats.orva.hp",
+              "operator": "greater_than",
+              "value": 0
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "sanctuary.reunion_einar_orva"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "sanctuary_control_hall"
+            },
+            {
+              "path": "story_vars.seer_defeated",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "actor_stats.einar.hp",
+              "operator": "greater_than",
+              "value": 0
+            },
+            {
+              "path": "actor_stats.orva.hp",
+              "operator": "greater_than",
+              "value": 0
+            }
+          ],
+          "payload_template": {
+            "kind": "actor_speech",
+            "actor_id": "einar",
+            "target_id": "orva",
+            "key": "einar.reunion_orva"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "sanctuary_control_hall"
+            },
+            {
+              "path": "story_vars.seer_defeated",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "actor_stats.einar.hp",
+              "operator": "greater_than",
+              "value": 0
+            },
+            {
+              "path": "actor_stats.orva.hp",
+              "operator": "greater_than",
+              "value": 0
+            }
+          ],
+          "payload_template": {
+            "kind": "actor_speech",
+            "actor_id": "orva",
+            "target_id": "einar",
+            "key": "orva.reunion_einar"
           }
         }
       ]
@@ -2209,6 +2493,59 @@
             "kind": "set_story_var",
             "key": "is_invisible",
             "value": "true"
+          }
+        ]
+      }
+    },
+    "input_overlay": {
+      "rules": []
+    }
+  },
+  "item.bind_scroll_read": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": [
+          {
+            "kind": "set_story_var",
+            "key": "knows_bind",
+            "value": "true"
+          },
+          {
+            "kind": "acquire_item",
+            "item_id": "bind-sigil"
+          },
+          {
+            "kind": "narrate_message",
+            "key": "item.bind_scroll_read.learned"
+          },
+          {
+            "kind": "narrate_message",
+            "key": "handler.bind_tutorial"
+          }
+        ]
+      }
+    },
+    "input_overlay": {
+      "rules": []
+    }
+  },
+  "orva.joins_party": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": [
+          {
+            "kind": "convert_actor_to_ally",
+            "actor_id": "orva",
+            "follows_player": true,
+            "messages": []
           }
         ]
       }
