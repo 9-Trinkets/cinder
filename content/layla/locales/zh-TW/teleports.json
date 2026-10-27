@@ -96,21 +96,6 @@
       "when": [
         "town_brass_yard_unlocked"
       ]
-    },
-    {
-      "aliases": [
-        "sanctuary_main_platform",
-        "floor6_platform",
-        "floor 6 platform",
-        "sanctuary platform",
-        "floor 6",
-        "聖堂傳送台"
-      ],
-      "room_id": "sanctuary_main_platform",
-      "title": "聖堂傳送台",
-      "when": [
-        "anchor_floor6_platform"
-      ]
     }
   ]
 }

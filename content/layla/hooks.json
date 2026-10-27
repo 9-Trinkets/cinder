@@ -28,89 +28,6 @@
         {
           "conditions": [
             {
-              "path": "actor_id",
-              "operator": "equal",
-              "value": "the_seer"
-            }
-          ],
-          "payload_template": {
-            "kind": "set_story_var",
-            "key": "seer_defeated",
-            "value": "true"
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "actor_id",
-              "operator": "equal",
-              "value": "the_seer"
-            }
-          ],
-          "payload_template": {
-            "kind": "narrate_message",
-            "key": "handler.seer_valerius_defeated"
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "actor_id",
-              "operator": "equal",
-              "value": "the_seer"
-            }
-          ],
-          "payload_template": {
-            "kind": "move_actors",
-            "actor_id": "sanctuary_dragon",
-            "room_id": ""
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "actor_id",
-              "operator": "equal",
-              "value": "sanctuary_dragon"
-            }
-          ],
-          "payload_template": {
-            "kind": "set_story_var",
-            "key": "dragon_defeated",
-            "value": "true"
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "actor_id",
-              "operator": "equal",
-              "value": "sanctuary_dragon"
-            }
-          ],
-          "payload_template": {
-            "kind": "narrate_message",
-            "key": "sanctuary.dragon_defeated_backlash"
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "actor_id",
-              "operator": "equal",
-              "value": "sanctuary_dragon"
-            }
-          ],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "the_seer",
-            "stat": "hp",
-            "delta": -56
-          }
-        },
-        {
-          "conditions": [
-            {
               "path": "tags",
               "operator": "array_contains_any",
               "value": ["house_head"]
@@ -1124,38 +1041,6 @@
       "rules": []
     }
   },
-  "item.bind_scroll_read": {
-    "rule": "effect_table",
-    "rule_config": {
-      "cases_path": "rules",
-      "next_on_match": "complete",
-      "next_on_default": "complete",
-      "default_payload_template": {
-        "effects": [
-          {
-            "kind": "set_story_var",
-            "key": "knows_bind",
-            "value": "true"
-          },
-          {
-            "kind": "acquire_item",
-            "item_id": "bind-sigil"
-          },
-          {
-            "kind": "narrate_message",
-            "key": "item.bind_scroll_read.learned"
-          },
-          {
-            "kind": "narrate_message",
-            "key": "handler.bind_tutorial"
-          }
-        ]
-      }
-    },
-    "input_overlay": {
-      "rules": []
-    }
-  },
   "player.moved": {
     "rule": "effect_table",
     "rule_config": {
@@ -1168,83 +1053,6 @@
     },
     "input_overlay": {
       "rules": [
-        {
-          "conditions": [
-            {
-              "path": "to_room_id",
-              "operator": "equal",
-              "value": "sanctuary_main_platform"
-            }
-          ],
-          "payload_template": {
-            "kind": "set_story_var",
-            "key": "anchor_floor6_platform",
-            "value": "true"
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "to_room_id",
-              "operator": "equal",
-              "value": "sanctuary_main_platform"
-            }
-          ],
-          "payload_template": {
-            "kind": "set_actor_stance",
-            "actor_id": "commander_astrid",
-            "stance": "allied",
-            "follows_player": false
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "to_room_id",
-              "operator": "equal",
-              "value": "sanctuary_main_platform"
-            }
-          ],
-          "payload_template": {
-            "kind": "set_actor_stance",
-            "actor_id": "einar",
-            "stance": "allied",
-            "follows_player": false
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "to_room_id",
-              "operator": "equal",
-              "value": "sanctuary_main_platform"
-            }
-          ],
-          "payload_template": {
-            "kind": "set_actor_stance",
-            "actor_id": "orva",
-            "stance": "allied",
-            "follows_player": false
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "to_room_id",
-              "operator": "equal",
-              "value": "sanctuary_main_platform"
-            },
-            {
-              "path": "first_visit",
-              "operator": "equal",
-              "value": true
-            }
-          ],
-          "payload_template": {
-            "kind": "narrate_message",
-            "key": "handler.sanctuary_platform_armed"
-          }
-        },
         {
           "conditions": [
             {
@@ -1275,24 +1083,6 @@
           "payload_template": {
             "kind": "narrate_message",
             "key": "floor7.antechamber_arrival"
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "to_room_id",
-              "operator": "equal",
-              "value": "herbarium_cliff_balcony"
-            },
-            {
-              "path": "first_visit",
-              "operator": "equal",
-              "value": true
-            }
-          ],
-          "payload_template": {
-            "kind": "narrate_message",
-            "key": "sanctuary.secret_archive_arrival"
           }
         },
         {
@@ -1900,61 +1690,6 @@
       ]
     }
   },
-  "item.bind_sigil_placed": {
-    "rule": "effect_table",
-    "rule_config": {
-      "cases_path": "rules",
-      "next_on_match": "next",
-      "next_on_default": "complete",
-      "default_payload_template": {
-        "effects": []
-      }
-    },
-    "input_overlay": {
-      "rules": [
-        {
-          "conditions": [
-            {
-              "path": "room_id",
-              "operator": "equal",
-              "value": "sanctuary_main_platform"
-            }
-          ],
-          "payload_template": {
-            "kind": "set_story_var",
-            "key": "anchor_floor6_platform",
-            "value": "true"
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "room_id",
-              "operator": "equal",
-              "value": "sanctuary_main_platform"
-            }
-          ],
-          "payload_template": {
-            "kind": "narrate_message",
-            "key": "sanctuary.platform_activated"
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "room_id",
-              "operator": "equal",
-              "value": "sanctuary_main_platform"
-            }
-          ],
-          "payload_template": {
-            "kind": "narrate_message",
-            "key": "handler.sanctuary_platform_armed"
-          }
-        }
-      ]
-    }
-  },
   "actor.time_advanced": {
     "rule": "effect_table",
     "rule_config": {
@@ -2243,46 +1978,6 @@
             "kind": "move_actors",
             "actor_id": "player",
             "room_id": "sanctuary_grand_terrace"
-          }
-        ]
-      }
-    },
-    "input_overlay": {
-      "rules": []
-    }
-  },
-  "item.invisibility_potion_used": {
-    "rule": "effect_table",
-    "rule_config": {
-      "cases_path": "rules",
-      "next_on_match": "complete",
-      "next_on_default": "complete",
-      "default_payload_template": {
-        "effects": [
-          {
-            "kind": "set_story_var",
-            "key": "is_invisible",
-            "value": "true"
-          }
-        ]
-      }
-    },
-    "input_overlay": {
-      "rules": []
-    }
-  },
-  "item.spirit_pill_used": {
-    "rule": "effect_table",
-    "rule_config": {
-      "cases_path": "rules",
-      "next_on_match": "complete",
-      "next_on_default": "complete",
-      "default_payload_template": {
-        "effects": [
-          {
-            "kind": "set_story_var",
-            "key": "spiritual_sight",
-            "value": "true"
           }
         ]
       }

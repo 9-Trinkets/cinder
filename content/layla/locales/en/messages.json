@@ -196,10 +196,6 @@
         "voice": "handler",
         "text": "Spawn sigil. Pulls an elemental spark into physical form. They don't last forever and they test your concentration, but a distraction with teeth buys time. Keep your summon cap in mind."
     },
-    "handler.bind_tutorial": {
-        "voice": "handler",
-        "text": "The Bind Sigil. That's Valerius's personal chalk line — hooks wandering souls back into living anchors. Handle that pattern carefully, Layla. It's the difference between a broken shell and a person."
-    },
     "handler.floor2_court_cleared": {
         "voice": "handler",
         "text": "The King yields his square. Eight pieces on the defense and you took the court with a chalk stub. Checkmate, Layla. Stairway to the crucible is unsealed. Move down."
@@ -208,15 +204,6 @@
         "voice": "handler",
         "text": "Core temperature dropping to baseline. The machine breathes cooler without an elemental boiling in the pipe. Sluice gates open. Descent to floor four is clear."
     },
-    "handler.seer_valerius_defeated": {
-        "voice": "handler",
-        "text": "Valerius is down. The reanimation circle just bled out into cold air. That's the grand architect of the converter pipeline, Layla. You just cut the head off the snake."
-    },
-    "handler.sanctuary_platform_armed": {
-        "voice": "handler",
-        "text": "Acropolis relay lit up. Whole mountain grid just hummed. You brought your little army to the door. Stairway to the top is white and clear."
-    },
-    
     "bastion.entry_scene": "You step through the reinforced archway into the command bastion. Heavy steam vents hiss along the vaulted granite ceiling. Ahead, standing over a brass tactical map table, Captain Malik and Priest Harun are locked in a venomous exchange, oblivious to your entrance.",
     "harun.bastion_entry": "The transport cart sits idle on the gantry, Malik. The temple's patience is not infinite. Where is the offering? If your soldiers cannot secure a single boy, the high priests will find a commander who can.",
     "malik.bastion_entry": "Hold your tongue, priest! My sentries were killed when the steam line blew. There is an infiltrator loose in the complex, sabotaging valves, and you prattle about your holy offerings while my fortress burns—",
@@ -291,17 +278,5 @@
     "transformation.wake.reveal": "{actor_name} remembers who they are: {actor_name} is now {woken_name}.",
     "item.sensory_enhancer.consumed": "You swallow the translucent blue capsule. An electric chill shoots through your veins, clearing the static behind your eyes. Your senses sharpen with startling clarity: you can feel where your allies breathe through the stone, and the hum of active teleport portals burns bright against your inner map.",
     "transformation.secret_passages.revealed": "As the frost-bind shatters from their mind, a gasp echoes through the high hall. Ancient counterweights shudder in the stone as hidden seals slide open, revealing the Citadel's secret perimeter ring connecting the three throne rooms!",
-    "item.invisibility-potion.used": "You drink the shimmering blue potion. A cold chill sweeps over your skin as you fade from sight. Cathedral guards cannot see you for 8 turns.",
-    "item.spirit-pill.used": "You swallow the luminous blue dew from the silver capsule. An icy chill surges through your nerves, and the dimensional veil lifts from your eyes. You can now see spirits.",
-    "item.bind_scroll_read.learned": "You read the glowing parchment. The silver lines of the Bind Sigil burn into your mind.",
-    "sanctuary.dragon_defeated_backlash": "The twenty-meter Soul Chimera Dragon lets out a deafening screech as the Bind Sigil on its chest shatters! The colossal construct collapses into a massive storm of grey dust and obsidian shards. Violent magical recoil slams into Seer Valerius—his white bone staff snaps in three, and he collapses coughing blood onto the obsidian altar, stripped of his constructs and gravely wounded!",
-    "sanctuary.platform_activated": "You slot the five town tokens into the console coordinates and trace the Bind Sigil upon the central resonance anchor. A roaring pillar of azure light erupts into the sky, permanently linking Floor 6 to the Frost Citadel below!\n\nThe blinding beam stabilizes, and Commander Astrid, Einar, and your fortress vanguard step onto the platform, shields raised and weapons ready. The bridgehead is secure, and the white marble staircase to the seventh floor stands open before you.",
-    "floor7.antechamber_arrival": "You step through the white light into a vast, silent room of glowing white stone. The mountain wind is gone. At a plain wooden table sits an older man in a faded grey coat, watching you with tired, knowing eyes: the Handler.",
-    "sanctuary.secret_archive_arrival": "You step quietly into the hidden archive. Stacks of iron racks hold secret mortuary ledgers with official Inquisition seals.",
-    "handler.quest.archive_discovered": {
-        "voice": "handler",
-        "text": "So you found the logs. Every monster in this place was once a person from the worker towns below. Now you see the machine for what it is."
-    },
-    "sanctuary.reunion_astrid": "Astrid: 'The acropolis perimeter is secure, Layla. Einar and Orva are safe, and we will hold this platform with our shields. Climb the white stair and finish what we started.'",
-    "sanctuary.reunion_einar": "Einar: 'Layla... I can never thank you enough. Orva is safe, and the Seer's binding ritual is broken. Be careful up there. We are with you in spirit.'"
+    "floor7.antechamber_arrival": "You step through the white light into a vast, silent room of glowing white stone. The mountain wind is gone. At a plain wooden table sits an older man in a faded grey coat, watching you with tired, knowing eyes: the Handler."
 }

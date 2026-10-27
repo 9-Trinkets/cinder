@@ -493,22 +493,13 @@
         "Einar steps forward, his expression grave as he clutches his herbalist satchel.",
         "Einar: That cathedral is not a place of prayer, Layla. Before they threw me into the cages down here, I worked in their dispensary. The high clergy takes every person executed in this citadel, wipes their memories, and turns them into the monsters you've been fighting all the way up this tower. The man conducting this horror is their high priest, Seer Valerius.",
         "Einar: Valerius hides the ritual behind thick illusions, but someone inside can help. My partner, Orva, is trapped in the cathedral herb gardens. The priests call her 'the Witch' because she secretly brews remedies to resist their mind-wiping magic. She is also... the woman I love.",
-        "Einar presses a silver token, three bottles of blue invisibility potion, and a silver hairpin shaped like a feathered arrow into your hands.",
-        "Einar: This token can slip only one person through their outer wards. Drink these invisibility potions to walk past the white-armored cathedral guards unseen. Find Orva in the herb garden. Show her this arrow pin and tell her: 'The arrow always finds home.' She will give you the spirit pill to reveal Valerius's ritual and defeat him. Once the Seer falls, activate the master platform so Astrid and the rest of us can join you."
+        "Einar presses a silver token into your hands.",
+        "Einar: This token can slip only one person through their outer wards. Once you are inside, find a way to activate the master platform so Astrid and the rest of us can join you."
       ],
       "on_advance_effects": [
         {
           "kind": "grant_item",
           "item_id": "clandestine-sanctuary-token"
-        },
-        {
-          "kind": "grant_item",
-          "item_id": "invisibility-potion",
-          "count": 3
-        },
-        {
-          "kind": "grant_item",
-          "item_id": "silver-arrow-pin"
         }
       ],
       "advance_signals": [
@@ -523,200 +514,8 @@
           ]
         }
       ],
-      "next_stage_ids": [
-        "mq_find_the_witch",
-        "sq_archive_of_the_disappeared"
-      ],
-      "completion_effects": []
-    },
-    {
-      "id": "mq_find_the_witch",
-      "quest_id": "high_sanctuary_infiltration",
-      "quest_title": "The High Sanctuary",
-      "quest_kind": "main",
-      "summary": "Infiltrate the solarium, deduce the hidden flue behind the water basin, and find Sister Orva on the cliff balcony.",
-      "beat_note": "In the Glass Solarium, examine the masked halfling servants for clues. Inspecting the stone water basin reveals the loosened brick and ventilation flue. Crawl out to the secret cliff balcony and speak the code word to Sister Orva: 'The arrow always finds home'.",
-      "update_message": "Find Orva on the cliff balcony and give her the code word.",
-      "narrative_lines": [
-        "You stand alone on the High Sanctuary terrace. White-armored guards patrol the crossroads ahead. Drink your invisibility potion to sneak past into the glass solarium, deduce the clues among the masked halfling herbalists, and seek Orva."
-      ],
-      "on_advance_effects": [],
-      "advance_signals": [
-        "spoken_to:orva",
-        "witch_code_word_spoken",
-        "speech_topic:arrow_code_word",
-        {
-          "signal": "story_vars_changed",
-          "conditions": [
-            {
-              "path": "story_vars.values.met_witch",
-              "operator": "equal",
-              "value": "true"
-            }
-          ]
-        }
-      ],
-      "next_stage_ids": [
-        "mq_slay_the_seer"
-      ],
-      "completion_effects": []
-    },
-    {
-      "id": "mq_slay_the_seer",
-      "quest_id": "high_sanctuary_infiltration",
-      "quest_title": "The High Sanctuary",
-      "quest_kind": "main",
-      "summary": "Swallow the spirit capsule, descend the spiral stair into the Reanimation Sanctum, and defeat Seer Valerius.",
-      "beat_note": "Orva gave Layla the spirit capsule and unblocked the secret spiral stair. Swallow the capsule to pierce the veil, read the black ledger to learn your companions' true names, and defeat Seer Valerius and his Soul Chimera Dragon to claim the Bind Scroll.",
-      "update_message": "Swallow the spirit capsule and defeat Seer Valerius.",
-      "narrative_lines": [
-        "Orva clutches the matching silver arrow to her chest with tear-streaked eyes. 'Einar... he lives! Take this spirit capsule—swallow it before you face Valerius to see the trapped souls. Take the spiral stair behind this iron door down into the sanctum!'"
-      ],
-      "on_advance_effects": [
-        {
-          "kind": "grant_item",
-          "item_id": "spirit-pill"
-        },
-        {
-          "kind": "set_story_var",
-          "key": "met_witch",
-          "value": "true"
-        },
-        {
-          "kind": "set_story_var",
-          "key": "sanctum_door_unbolted",
-          "value": "true"
-        }
-      ],
-      "advance_signals": [
-        {
-          "signal": "story_vars_changed",
-          "conditions": [
-            {
-              "path": "story_vars.values.seer_defeated",
-              "operator": "equal",
-              "value": "true"
-            }
-          ]
-        }
-      ],
-      "next_stage_ids": [
-        "mq_activate_sanctuary_platform"
-      ],
-      "completion_effects": []
-    },
-    {
-      "id": "mq_activate_sanctuary_platform",
-      "quest_id": "high_sanctuary_infiltration",
-      "quest_title": "The High Sanctuary",
-      "quest_kind": "main",
-      "summary": "Step out onto the Mountain Relay Platform and activate the master resonance anchor.",
-      "beat_note": "Seer Valerius is defeated and the Bind Scroll is recovered. Head south from the sanctum to the mountain relay platform, insert the five town tokens, and trace the Bind Sigil on the anchor.",
-      "update_message": "Activate the master anchor on the platform to bring your party through.",
-      "narrative_lines": [
-        "The dark ritual is broken, and Seer Valerius lies defeated. Head to the outer platform and activate the master resonance anchor to bring Commander Astrid and your companions up to Floor 6."
-      ],
-      "on_advance_effects": [],
-      "advance_signals": [
-        {
-          "signal": "story_vars_changed",
-          "conditions": [
-            {
-              "path": "story_vars.values.anchor_floor6_platform",
-              "operator": "equal",
-              "value": "true"
-            }
-          ]
-        }
-      ],
-      "next_stage_ids": [
-        "mq_prepare_the_ascent"
-      ],
-      "completion_effects": [
-        {
-          "kind": "set_story_var",
-          "key": "floor6_infiltration_complete",
-          "value": "true"
-        }
-      ],
-      "actor_relocations": []
-    },
-    {
-      "id": "mq_prepare_the_ascent",
-      "quest_id": "high_sanctuary_infiltration",
-      "quest_title": "The High Sanctuary",
-      "quest_kind": "main",
-      "summary": "Reunite with your companions on the platform and ascend the white stair to Floor 7.",
-      "beat_note": "Astrid, Einar, and Orva are reunited on the Mountain Relay Platform. Commander Astrid will hold the platform while Layla climbs the white stair to Floor 7.",
-      "update_message": "Speak with Commander Astrid and ascend to Floor 7 via the glowing white stair.",
-      "narrative_lines": [
-        "A blinding pillar of blue light erupts from the resonance anchor, permanently linking Floor 6 to the Frost Citadel below! The light stabilizes, and Commander Astrid, Einar, and your fortress vanguard step onto the platform, shields raised and weapons ready.",
-        "Across the terrace, Einar and Orva rush toward each other, embracing with joyful tears as their matching silver hairpins gleam in the morning sun.",
-        "Astrid: The acropolis perimeter is secure, Layla. We will hold this platform with our shields so nothing can sneak up behind you. The white stair is open. Ascend to Floor 7 and end this game."
-      ],
-      "on_advance_effects": [],
-      "advance_signals": [
-        {
-          "signal": "story_vars_changed",
-          "conditions": [
-            {
-              "path": "story_vars.values.entered_floor7",
-              "operator": "equal",
-              "value": "true"
-            }
-          ]
-        },
-        "room_entered:floor7_antechamber"
-      ],
       "next_stage_ids": [],
-      "completion_effects": [
-        {
-          "kind": "set_story_var",
-          "key": "floor6_ascent_completed",
-          "value": "true"
-        }
-      ],
-      "actor_relocations": [
-        {
-          "actor_id": "commander_astrid",
-          "to_room_id": "sanctuary_main_platform"
-        },
-        {
-          "actor_id": "einar",
-          "to_room_id": "sanctuary_main_platform"
-        },
-        {
-          "actor_id": "orva",
-          "to_room_id": "sanctuary_main_platform"
-        }
-      ]
-    },
-    {
-      "id": "sq_archive_of_the_disappeared",
-      "quest_id": "archive_of_the_disappeared",
-      "quest_title": "The Truth of the Disappeared",
-      "quest_kind": "side",
-      "summary": "Uncover the secret mortuary ledger in the Reanimation Sanctum to learn the truth about the dungeon monsters.",
-      "beat_note": "In the Reanimation Sanctum, confidential mortuary ledgers detail the harvest of citizens from Deepwell and Salt Reach and their conversion into dungeon golems and guardians.",
-      "update_message": "Inspect the confidential mortuary ledger in the Reanimation Sanctum.",
-      "completion_message": "handler.quest.archive_discovered",
-      "narrative_lines": [
-        "On the lectern near the obsidian altar, a black leather ledger catalogs the disappeared. Opening it reveals the truth behind the monster creation pipeline."
-      ],
-      "on_advance_effects": [],
-      "advance_signals": [
-        "feature_observed:sanctuary_inquisition_archive-ledger",
-        "feature_observed:mortuary_reanimation_sanctum-ledger"
-      ],
-      "next_stage_ids": [],
-      "completion_effects": [
-        {
-          "kind": "set_story_var",
-          "key": "discovered_monster_pipeline",
-          "value": "true"
-        }
-      ],
-      "actor_relocations": []
+      "completion_effects": []
     },
     {
       "id": "sq_five_offerings",

@@ -400,11 +400,8 @@ fn handler_boss_and_sigil_lines_are_defined() {
         "handler.descend.frost_citadel",
         "handler.drain_tutorial",
         "handler.spawn_tutorial",
-        "handler.bind_tutorial",
         "handler.floor2_court_cleared",
         "handler.floor3_elemental_resolved",
-        "handler.seer_valerius_defeated",
-        "handler.sanctuary_platform_armed",
         "handler.quest.citadel_siege_complete",
     ] {
         let msg = pack
@@ -443,17 +440,6 @@ fn scroll_reading_triggers_handler_sigil_tutorials() {
         handler_spoke(&out2.lines, "Spawn sigil"),
         "Handler must comment on learning Spawn Sigil: {:#?}",
         out2.lines
-    );
-
-    // 3. Bind scroll
-    let mut s3 = WorldState::new(&pack);
-    s3.acquire_player_item(&pack, "bind-scroll");
-    let rt3 = CinderRuntime::from_state(pack.clone(), s3, false).expect("runtime");
-    let out3 = rt3.run_turn("read bind scroll").expect("read bind scroll");
-    assert!(
-        handler_spoke(&out3.lines, "The Bind Sigil"),
-        "Handler must comment on learning Bind Sigil: {:#?}",
-        out3.lines
     );
 }
 
@@ -530,44 +516,5 @@ fn floor3_fire_elemental_resolution_triggers_commentary() {
         handler_spoke(&out.lines.0, "Core temperature dropping to baseline"),
         "Handler must comment on Fire Elemental charm: {:#?}",
         out.lines.0
-    );
-}
-
-#[test]
-fn floor6_seer_valerius_defeat_triggers_commentary() {
-    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
-    let mut state = WorldState::new(&pack);
-    state.current_room_id = "mortuary_reanimation_sanctum".to_string(); // seer room
-    strong_player(&mut state);
-
-    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime");
-    let out = runtime
-        .run_turn("attack seer valerius")
-        .expect("attack seer succeeds");
-
-    assert!(
-        handler_spoke(&out.lines, "Valerius is down"),
-        "Handler must comment on Seer Valerius defeat: {:#?}",
-        out.lines
-    );
-}
-
-#[test]
-fn floor6_sanctuary_platform_activation_triggers_commentary() {
-    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
-    let mut state = WorldState::new(&pack);
-    state.current_room_id = "mortuary_reanimation_sanctum".to_string();
-
-    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime");
-    let out = runtime.run_turn("go south").expect("move to platform");
-
-    assert_eq!(
-        runtime.current_room_id().unwrap(),
-        "sanctuary_main_platform"
-    );
-    assert!(
-        handler_spoke(&out.lines, "Acropolis relay lit up"),
-        "Handler must comment on reaching the Sanctuary Platform: {:#?}",
-        out.lines
     );
 }
