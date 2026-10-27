@@ -312,7 +312,6 @@ impl WorldState {
                 actor_skill_levels: seeded_actor_skill_levels(content),
                 actor_skill_sp: seeded_actor_skill_sp(content, &seeded_actor_skill_levels(content)),
                 next_hostile_strike_at: BTreeMap::new(),
-                invisible_until_minute: None,
             },
             pending_replies: BTreeMap::new(),
             active_objective_stage_ids: content.beats.initial_stage_ids.clone(),
@@ -410,21 +409,6 @@ impl WorldState {
 
     pub fn current_room<'a>(&self, content: &'a ContentPack) -> Option<&'a RoomDefinition> {
         content.room(&self.current_room_id)
-    }
-
-    /// Whether the player is currently under an active invisibility effect.
-    pub fn is_player_invisible(&self) -> bool {
-        self.combat
-            .invisible_until_minute
-            .is_some_and(|until| self.clock.current_time_minutes < until)
-    }
-
-    /// Minutes of invisibility remaining for the player, or 0 if visible.
-    pub fn player_invisibility_remaining_minutes(&self) -> u32 {
-        self.combat
-            .invisible_until_minute
-            .map(|until| until.saturating_sub(self.clock.current_time_minutes))
-            .unwrap_or(0)
     }
 
     /// Looks up an actor definition by id, checking runtime spawned actors first

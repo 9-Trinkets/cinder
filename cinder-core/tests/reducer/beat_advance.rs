@@ -149,8 +149,8 @@ fn terminal_completion_rewards_apply_once_and_signal_can_override_default_succes
 fn terminal_completion_grant_item_honors_count_and_still_applies_once() {
     let mut pack = reducer_test_pack();
     pack.items.push(ItemDefinition {
-        id: "invisibility-potion".to_string(),
-        label: "invisibility potion".to_string(),
+        id: "ration".to_string(),
+        label: "ration".to_string(),
         ..ItemDefinition::default()
     });
     pack.beats = BeatsDefinition {
@@ -165,7 +165,7 @@ fn terminal_completion_grant_item_honors_count_and_still_applies_once() {
                 }],
                 next_stage_ids: vec!["wrong-branch".to_string()],
                 completion_effects: vec![AdvanceEffect::GrantItem {
-                    item_id: "invisibility-potion".to_string(),
+                    item_id: "ration".to_string(),
                     count: 3,
                     message: String::new(),
                 }],
@@ -185,8 +185,8 @@ fn terminal_completion_grant_item_honors_count_and_still_applies_once() {
         value: "true".to_string(),
     })];
     apply_events(&mut state, &pack, &signal);
-    assert_eq!(state.item_count("invisibility-potion"), 3);
+    assert_eq!(state.item_count("ration"), 3);
 
     apply_events(&mut state, &pack, &signal);
-    assert_eq!(state.item_count("invisibility-potion"), 3);
+    assert_eq!(state.item_count("ration"), 3);
 }
