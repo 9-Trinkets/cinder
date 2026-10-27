@@ -58,6 +58,10 @@ pub struct ItemDefinition {
     /// Rules typically adjust actor stats (potions healing hp/mp).
     #[serde(default)]
     pub use_hook: String,
+    /// Minutes the player is hidden from hostile actors after using this item.
+    /// Zero means the item hides no one. Attacking ends it early.
+    #[serde(default, skip_serializing_if = "is_zero")]
+    pub hides_player_minutes: u32,
     /// Hook fired when this item is equipped (once per equip). Rules can make
     /// lasting world changes, e.g. converting surviving tagged actors into
     /// followers.
@@ -135,6 +139,10 @@ impl ItemDefinition {
 
 fn is_false(value: &bool) -> bool {
     !*value
+}
+
+fn is_zero(value: &u32) -> bool {
+    *value == 0
 }
 
 fn is_zero_u32(value: &u32) -> bool {

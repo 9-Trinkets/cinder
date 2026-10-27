@@ -76,6 +76,9 @@ fn living_party_actors_in_room(
         .iter()
         .filter(|actor| {
             let is_player = content.is_player_actor(&actor.id);
+            if is_player && state.is_player_invisible() {
+                return false;
+            }
             (is_player || state.stance(&actor.id) == ActorStance::Allied)
                 && party_actor_is_in_room(content, state, &actor.id, room_id)
                 && !state.actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)

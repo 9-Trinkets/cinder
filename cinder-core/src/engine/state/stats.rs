@@ -5,7 +5,7 @@ use crate::content::types::{ContentPack, ItemDefinition, StatDefinition};
 use serde::{Deserialize, Serialize};
 
 /// Combat and progression state: stat definitions and current/initial values
-/// for actors and pairs, experience, levels, acquired skills, and
+/// for actors and pairs, experience, levels, acquired skills, and stealth /
 /// hostile-strike scheduling.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CombatState {
@@ -36,6 +36,10 @@ pub struct CombatState {
     /// Absent entries have no pending autonomous strike.
     #[serde(default)]
     pub next_hostile_strike_at: BTreeMap<String, u32>,
+    /// Minute until which player is invisible. Absent or in the past means
+    /// visible.
+    #[serde(default)]
+    pub invisible_until_minute: Option<u32>,
 }
 
 impl WorldState {

@@ -264,6 +264,12 @@ pub(crate) fn handle_player_used_item(
     let player_id = content.settings.combat.player_actor_id.clone();
     let initial_room_id = state.current_room_id.clone();
 
+    if item.hides_player_minutes > 0 {
+        state.combat.invisible_until_minute =
+            Some(state.clock.current_time_minutes + item.hides_player_minutes);
+        state.story_vars.set_unchecked("is_invisible", "true");
+    }
+
     let specific_key = format!("item.{item_id}.used");
     let specific_line = if content.message(&specific_key).is_some() {
         content.render_message(&specific_key, &[("item", item.label.as_str())])

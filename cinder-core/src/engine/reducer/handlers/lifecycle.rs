@@ -33,6 +33,13 @@ pub(crate) fn handle_turn_started(
         }
         lines.extend_lines(advance_house_progress_objectives(state, content));
         lines.extend_lines(advance_stat_threshold_objectives(state, content));
+        if let Some(until) = state.combat.invisible_until_minute {
+            if state.clock.current_time_minutes >= until {
+                state.combat.invisible_until_minute = None;
+                state.story_vars.set_unchecked("is_invisible", "false");
+                lines.narration("Your invisibility wears off. You fade back into view.");
+            }
+        }
     }
     // Strike policy is external (tick workflows, rules or LLM); the reducer
     // only resolves declared HostileStrike events.
