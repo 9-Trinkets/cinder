@@ -11615,29 +11615,5 @@
     ],
     "exits": [],
     "descriptions": []
-  },
-  {
-    "id": "floor7_antechamber",
-    "title": "The White Antechamber",
-    "summary": "A vast, quiet chamber of glowing white stone stretching into silent mist. In the center sits a plain wooden table with two chairs, an antique brass teapot, and a radio transmitter.",
-    "inspect_text": "There are no monsters, no locked iron gates, and no traps here. Smooth white stone stretches in every direction into soft light. At the table sits an older man in a faded grey coat: the Handler.",
-    "allow_rest": true,
-    "features": [
-      {
-        "id": "floor7_antechamber-table",
-        "label": "the wooden table",
-        "aliases": [
-          "table",
-          "teapot",
-          "chairs",
-          "radio",
-          "tea"
-        ],
-        "allow_rest": false,
-        "inspect_text": "A simple oak table with two chairs. Steam rises quietly from an antique brass teapot next to a familiar portable radio."
-      }
-    ],
-    "exits": [],
-    "descriptions": []
   }
 ]

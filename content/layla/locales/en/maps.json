@@ -1070,19 +1070,5 @@
     "reveal_when": [
       "town_brass_yard_unlocked"
     ]
-  },
-  {
-    "id": "the-architects-seat",
-    "label": "The Architect's Seat",
-    "rooms": [
-      {
-        "room_id": "floor7_antechamber",
-        "x": 0.0,
-        "y": 0.0
-      }
-    ],
-    "reveal_when": [
-      "entered_floor7"
-    ]
   }
 ]

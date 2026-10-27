@@ -116,7 +116,6 @@
   "error.target_required": "選擇一個目標（{actors}）。",
   "error.trace_mark_exists": "這個位置已經畫有軌跡標記。",
   "floor4.arrival.the_village": "你踏下最後一階，進入煤氣燈的光與麵包的氣味裡。溫熱的石地在靴下作響，從階梯一路磨得發白，通到一座低矮的鐵灶。有人在灶石旁的一雙小靴子上耙了灰，然後去做別的事了。前方、蒸氣管之外，一道鐵製艙門封死了村莊的整個北側，兩名士兵紋風不動地站在門前。階地後方某處，一只車輪碾過格柵，有人高聲報出一個數字，卻報錯了。",
-  "floor7.antechamber_arrival": "你穿過白光，走進一間廣大而寂靜、以發光白石構成的房間。山風消失了。一張樸素的木桌旁坐著一名身披褪色灰外套的年長男子，以疲憊而洞悉一切的眼神看著你：操作員。",
   "follow.actor_follows": "{actor}跟到你身旁。",
   "follow.large_party_follows": "你的隊伍緊隨其後。",
   "follow.party_follows": "{actors}跟到你身旁。",

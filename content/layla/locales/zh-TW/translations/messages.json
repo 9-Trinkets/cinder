@@ -203,6 +203,5 @@
   "/transformation.wake.fragment": "「{fragment}」",
   "/transformation.wake.reveal": "{actor_name}想起了自己是誰：{actor_name}如今是{woken_name}。",
   "/item.sensory_enhancer.consumed": "你吞下那顆半透明的藍色膠囊。一股電似的寒意竄過血管，掃去你眼後的雜訊。你的感官以驚人的清晰度銳利起來：你能感覺同伴在石頭彼端的呼吸，而作用中的傳送門嗡鳴，在你內心的地圖上灼亮地燃著。",
-  "/transformation.secret_passages.revealed": "霜縛自牠腦中碎裂的同時，一聲抽氣迴盪於高廳。古老的配重石在石中顫動，隱藏的封印滑開，顯露出連接三座王座的堡壘秘密外環！",
-  "/floor7.antechamber_arrival": "你穿過白光，走進一間廣大而寂靜、以發光白石構成的房間。山風消失了。一張樸素的木桌旁坐著一名身披褪色灰外套的年長男子，以疲憊而洞悉一切的眼神看著你：操作員。"
+  "/transformation.secret_passages.revealed": "霜縛自牠腦中碎裂的同時，一聲抽氣迴盪於高廳。古老的配重石在石中顫動，隱藏的封印滑開，顯露出連接三座王座的堡壘秘密外環！"
 }

@@ -1070,19 +1070,5 @@
         "y": 12.0
       }
     ]
-  },
-  {
-    "id": "the-architects-seat",
-    "label": "設計者之座",
-    "reveal_when": [
-      "entered_floor7"
-    ],
-    "rooms": [
-      {
-        "room_id": "floor7_antechamber",
-        "x": 0.0,
-        "y": 0.0
-      }
-    ]
   }
 ]

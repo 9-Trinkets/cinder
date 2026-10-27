@@ -1058,38 +1058,6 @@
             {
               "path": "to_room_id",
               "operator": "equal",
-              "value": "floor7_antechamber"
-            }
-          ],
-          "payload_template": {
-            "kind": "set_story_var",
-            "key": "entered_floor7",
-            "value": "true"
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "to_room_id",
-              "operator": "equal",
-              "value": "floor7_antechamber"
-            },
-            {
-              "path": "first_visit",
-              "operator": "equal",
-              "value": true
-            }
-          ],
-          "payload_template": {
-            "kind": "narrate_message",
-            "key": "floor7.antechamber_arrival"
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "to_room_id",
-              "operator": "equal",
               "value": "teleport_platform"
             },
             {
