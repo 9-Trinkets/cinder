@@ -125,7 +125,7 @@ Japanese light novel cover illustration, refined literary anime art style with d
 - [x] `01-第一章-柳樹下的紅手套.md`
 - [x] `02-第二章-比斯吉的帆布包.md`
 - [x] `03-第三章-不肯落地的鳥巢.md`
-- [ ] `04-第四章-註腳先生的冬天.md`
+- [x] `04-第四章-註腳先生的冬天.md`
 - [ ] `05-第五章-穿紅羽絨衣的醫生.md`
 - [ ] `06-第六章-九十八度的蝴蝶餅乾.md`
 - [ ] `07-第七章-米勒五金行的小紅燈.md`
