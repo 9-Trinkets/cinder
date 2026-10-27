@@ -1,4 +1,4 @@
-use crate::content::types::ContentPack;
+use crate::content::types::{ContentPack, TransformationTrigger};
 use crate::engine::narrative::{NarrativeLines, PendingCommentaryUpgrade};
 use crate::engine::reducer::handlers::push_rendered_message;
 use crate::engine::state::{
@@ -87,6 +87,14 @@ pub(crate) enum WorldHookEffect {
         vars: Vec<(String, String)>,
         #[serde(default)]
         generate_commentary: bool,
+    },
+    /// Wakes every allied, living, dormant actor in the player's room whose
+    /// stage `stage_id` is triggered by a story variable, by setting that
+    /// variable. `none_message` is narrated when there was no one to wake.
+    AwakenAlliesInRoom {
+        stage_id: String,
+        #[serde(default)]
+        none_message: String,
     },
     /// Instantiates a new runtime actor from an authored template.
     SpawnActor {
@@ -235,6 +243,19 @@ impl WorldHookEffect {
             }
             WorldHookEffect::SetStoryVar { key, value } => {
                 self.apply_set_story_var(state, content, key, value, lines.as_deref_mut());
+            }
+            WorldHookEffect::AwakenAlliesInRoom {
+                stage_id,
+                none_message,
+            } => {
+                self.apply_awaken_allies_in_room(
+                    state,
+                    content,
+                    input,
+                    stage_id,
+                    none_message,
+                    lines.as_deref_mut(),
+                );
             }
             WorldHookEffect::GrantSkill { skill_id, actor_id } => {
                 self.apply_grant_skill(state, content, skill_id, actor_id.as_deref())?;
@@ -408,6 +429,49 @@ impl WorldHookEffect {
         for id in matching_actors {
             state.mark_actor_room_visited(&id, target_room_id);
             state.set_actor_room(&id, target_room_id);
+        }
+    }
+
+    fn apply_awaken_allies_in_room(
+        &self,
+        state: &mut WorldState,
+        content: &ContentPack,
+        input: &Value,
+        stage_id: &str,
+        none_message: &str,
+        lines: Option<&mut NarrativeLines>,
+    ) {
+        let health_stat_id = &content.settings.combat.health_stat_id;
+        let room_id = state.current_room_id.clone();
+        let triggers: Vec<(String, String)> = state
+            .actors(content)
+            .filter(|actor| {
+                !content.is_player_actor(&actor.id)
+                    && state.stance(&actor.id) == ActorStance::Allied
+                    && !state.actor_is_defeated(&actor.id, health_stat_id)
+                    && !state.actor_is_offstage(content, &actor.id)
+                    && !state.actor_is_imprisoned(content, &actor.id)
+                    && state.actor_is_in_room(content, &actor.id, &room_id)
+                    && !state.is_actor_transformed(&actor.id, stage_id)
+            })
+            .filter_map(|actor| {
+                let stage = actor
+                    .transformations
+                    .iter()
+                    .find(|stage| stage.id == stage_id)?;
+                match &stage.trigger {
+                    TransformationTrigger::StoryVar { key, value } => {
+                        Some((key.clone(), value.clone()))
+                    }
+                    _ => None,
+                }
+            })
+            .collect();
+        for (key, value) in &triggers {
+            state.story_vars.set_unchecked(key, value);
+        }
+        if triggers.is_empty() && !none_message.is_empty() {
+            self.apply_narrate_message(content, input, none_message, &[], false, lines);
         }
     }
 

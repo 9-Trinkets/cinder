@@ -46,7 +46,7 @@ pub fn holds(condition: &Condition, ctx: &ConditionContext<'_>) -> bool {
     match condition {
         Condition::StoryVar(name) => story_var_is_truthy(ctx.state, name),
         Condition::StoryVarIs { name, value } => ctx.state.story_vars.get(name) == Some(value),
-        Condition::Carries(item) => ctx.state.has_item(item),
+        Condition::Carries(item) => ctx.state.has_item(item) || ctx.state.has_item_equipped(item),
         Condition::ItemHere(item) => {
             ctx.state
                 .has_item_in_storage(item, ItemStorageTarget::CurrentRoom, ctx.room_id)

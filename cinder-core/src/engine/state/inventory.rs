@@ -35,6 +35,14 @@ impl WorldState {
             > 0
     }
 
+    /// Whether the player has this item equipped in any slot.
+    pub fn has_item_equipped(&self, item_id: &str) -> bool {
+        self.inventory
+            .equipment
+            .values()
+            .any(|equipped| equipped == item_id)
+    }
+
     pub fn item_count(&self, item_id: &str) -> u32 {
         self.inventory
             .player_inventory
