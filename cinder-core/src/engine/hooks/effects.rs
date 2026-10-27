@@ -60,6 +60,9 @@ pub(crate) enum WorldHookEffect {
         tag: Option<String>,
         #[serde(default)]
         stance: Option<ActorStance>,
+        /// Moves every living actor that follows the player, wherever they are.
+        #[serde(default)]
+        following_player: bool,
         room_id: String,
     },
     /// Sets a story variable (e.g. a flag marking a boss as defeated).
@@ -216,6 +219,7 @@ impl WorldHookEffect {
                 actor_id,
                 tag,
                 stance,
+                following_player,
                 room_id,
             } => {
                 self.apply_move_actors(
@@ -224,6 +228,7 @@ impl WorldHookEffect {
                     actor_id.as_deref(),
                     tag.as_deref(),
                     *stance,
+                    *following_player,
                     room_id,
                     lines.as_deref_mut(),
                 );
@@ -356,6 +361,7 @@ impl WorldHookEffect {
         actor_id: Option<&str>,
         tag: Option<&str>,
         stance: Option<ActorStance>,
+        following_player: bool,
         room_id: &str,
         lines: Option<&mut NarrativeLines>,
     ) {
@@ -367,6 +373,10 @@ impl WorldHookEffect {
 
         if let Some(tag) = tag {
             Self::apply_move_tagged_actors(state, content, tag, stance, &target_room_id);
+        }
+
+        if following_player {
+            Self::apply_move_following_actors(state, content, &target_room_id);
         }
 
         if let Some(actor_id) = actor_id {
@@ -396,6 +406,30 @@ impl WorldHookEffect {
             .collect();
 
         for id in matching_actors {
+            state.mark_actor_room_visited(&id, target_room_id);
+            state.set_actor_room(&id, target_room_id);
+        }
+    }
+
+    /// Moves every living actor that follows the player to `target_room_id`.
+    fn apply_move_following_actors(
+        state: &mut WorldState,
+        content: &ContentPack,
+        target_room_id: &str,
+    ) {
+        let health_stat_id = &content.settings.combat.health_stat_id;
+        let party: Vec<String> = state
+            .actors(content)
+            .filter(|actor| {
+                !content.is_player_actor(&actor.id)
+                    && state.follows_player(&actor.id)
+                    && !state.actor_is_defeated(&actor.id, health_stat_id)
+                    && !state.actor_is_offstage(content, &actor.id)
+                    && !state.actor_is_imprisoned(content, &actor.id)
+            })
+            .map(|actor| actor.id.clone())
+            .collect();
+        for id in party {
             state.mark_actor_room_visited(&id, target_room_id);
             state.set_actor_room(&id, target_room_id);
         }

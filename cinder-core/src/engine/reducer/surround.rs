@@ -276,6 +276,8 @@ pub(super) fn trigger_placement_hooks(
             "item_id": item_id,
             "actor_id": placer_actor_id,
             "room_id": room_id,
+            "story_vars": state.story_vars.to_map(),
+            "actor_stats": state.combat.actor_stats,
         });
         if let Err(error) =
             apply_narrating_world_hook_effects(state, content, &item.placement_hook, input, lines)
