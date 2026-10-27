@@ -16,6 +16,20 @@ pub(crate) fn handle_party_order_assigned(
     let content = ctx.content;
     let lines = &mut *ctx.lines;
 
+    if matches!(
+        crate::engine::orders::parse_order(&order),
+        Some(crate::engine::orders::OrderKind::Dismiss)
+    ) {
+        let actor = actor_display_name(state, content, actor_id);
+        let key = if state.dismiss_spawned_actor(actor_id) {
+            "party.order_dismiss_assigned"
+        } else {
+            "party.order_dismiss_refused"
+        };
+        push_message(lines, content, key, &[("actor", actor.as_str())]);
+        return;
+    }
+
     let was_in_room = state.actor_is_in_room(content, actor_id, &state.current_room_id);
     if let Err(error) = state.assign_party_order(content, actor_id, order.clone()) {
         eprintln!("[cinder] party order error: {error}");

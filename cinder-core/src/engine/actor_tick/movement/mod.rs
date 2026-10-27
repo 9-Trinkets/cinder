@@ -47,7 +47,7 @@ pub(crate) fn strategy_from_order(
         OrderKind::Hold => Some(Box::new(StayStrategy)),
         OrderKind::Patrol => Some(Box::new(RandomAdjacentStrategy::new(cadence))),
         OrderKind::Hunt => Some(Box::new(TowardPlayerStrategy::new(cadence))),
-        OrderKind::Follow => None,
+        OrderKind::Follow | OrderKind::Dismiss => None,
         OrderKind::Deploy(target) => Some(Box::new(DeployStrategy::new(
             cadence,
             order_target(order, target),

@@ -289,5 +289,9 @@
     "einar.reunion_orva": "Orva... I thought they had burned you.",
     "orva.reunion_einar": "And I thought the cold had taken you. You are warm. You are really warm.",
     "combat.orva_heal": "{actor} presses a poultice of bruised leaves to {target}'s wounds, restoring {amount} health. ({remaining} HP remaining)",
-    "combat.orva_heal_self": "{actor} chews a bitter root, and her color returns, restoring {amount} health. ({remaining} HP remaining)"
+    "combat.orva_heal_self": "{actor} chews a bitter root, and her color returns, restoring {amount} health. ({remaining} HP remaining)",
+    "party.order_dismiss_assigned": "You open your hand. {actor} gutters out like a spent ember and is gone.",
+    "party.order_dismiss_refused": "{actor} is not yours to send away.",
+    "party.directive.dismiss.title": "Dismiss",
+    "party.directive.dismiss.subtitle": "Send a conjured ally away and free its place."
 }

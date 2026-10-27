@@ -209,5 +209,9 @@
   "/handler.seer_valerius_defeated/text": "瓦勒里烏斯倒了。轉化管線的設計者。……蛇頭斷了。",
   "/sanctuary.dragon_defeated_backlash": "二十公尺長的石骨巨龍發出一聲絕望的嘶鳴，胸骨處的縛紋應聲碎裂！整具龐大造物分崩離析，化作漫天飄灑的灰色塵埃與黑曜石碎片。狂暴的魔力反噬如巨浪般重重撞擊在先知瓦勒里烏斯胸口——他狂噴出一大口鮮血，手中的白骨法杖啪的一聲斷裂成三截，整個人狼狽地癱倒在黑曜石祭壇前，失去了所有的造物屏障！",
   "/item.bind_scroll_read.learned": "你讀著發光的羊皮紙。縛紋的銀色線條烙進你的腦海。",
-  "/handler.bind_tutorial/text": "縛紋。把跑的靈魂鉤回來。……那是殼跟人的差別。"
+  "/handler.bind_tutorial/text": "縛紋。把跑的靈魂鉤回來。……那是殼跟人的差別。",
+  "/party.order_dismiss_assigned": "你攤開手掌，{actor}像燃盡的餘燼般熄滅，消失了。",
+  "/party.order_dismiss_refused": "{actor}不是你能遣散的。",
+  "/party.directive.dismiss.title": "遣散",
+  "/party.directive.dismiss.subtitle": "遣散召喚而來的盟友，騰出它的位置。"
 }

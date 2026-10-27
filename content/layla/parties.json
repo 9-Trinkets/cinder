@@ -6,7 +6,8 @@
       "guard",
       "follow",
       "patrol",
-      "deploy"
+      "deploy",
+      "dismiss"
     ],
     "initial_orders": {
       "golem-dark-nw": "follow",

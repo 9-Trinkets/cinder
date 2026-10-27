@@ -47,21 +47,41 @@ impl WorldState {
             .cloned()
             .collect::<Vec<_>>();
         for actor_id in &actor_ids {
-            self.actors.spawned_actors.remove(actor_id);
-            self.actors.actor_room_overrides.remove(actor_id);
-            self.combat.actor_stats.remove(actor_id);
-            self.inventory.actor_inventories.remove(actor_id);
-            self.inventory.actor_equipment.remove(actor_id);
-            self.relations.relationships.remove(actor_id);
-            self.relations.party_orders.remove(actor_id);
-            self.relations.followed_actors.remove(actor_id);
-            self.combat.next_hostile_strike_at.remove(actor_id);
-            self.combat.actor_level.remove(actor_id);
-            self.combat.actor_skills.remove(actor_id);
-            self.combat.actor_skill_levels.remove(actor_id);
-            self.combat.actor_skill_sp.remove(actor_id);
+            self.remove_spawned_actor(actor_id);
         }
         actor_ids.len()
+    }
+
+    /// Whether `actor_id` was conjured at runtime (by a spawn effect) rather than
+    /// authored in the pack. Only conjured actors can be dismissed.
+    pub fn is_spawned_actor(&self, actor_id: &str) -> bool {
+        self.actors.spawned_actors.contains_key(actor_id)
+    }
+
+    /// Sends a conjured actor away, removing every trace of it. Returns whether
+    /// there was one to remove.
+    pub fn dismiss_spawned_actor(&mut self, actor_id: &str) -> bool {
+        if !self.is_spawned_actor(actor_id) {
+            return false;
+        }
+        self.remove_spawned_actor(actor_id);
+        true
+    }
+
+    fn remove_spawned_actor(&mut self, actor_id: &str) {
+        self.actors.spawned_actors.remove(actor_id);
+        self.actors.actor_room_overrides.remove(actor_id);
+        self.combat.actor_stats.remove(actor_id);
+        self.inventory.actor_inventories.remove(actor_id);
+        self.inventory.actor_equipment.remove(actor_id);
+        self.relations.relationships.remove(actor_id);
+        self.relations.party_orders.remove(actor_id);
+        self.relations.followed_actors.remove(actor_id);
+        self.combat.next_hostile_strike_at.remove(actor_id);
+        self.combat.actor_level.remove(actor_id);
+        self.combat.actor_skills.remove(actor_id);
+        self.combat.actor_skill_levels.remove(actor_id);
+        self.combat.actor_skill_sp.remove(actor_id);
     }
 
     pub fn spawn_actor(

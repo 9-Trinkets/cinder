@@ -290,6 +290,8 @@ pub(super) fn build_party_order_panels(
     for member in members {
         let options = directives
             .iter()
+            // Only conjured allies can be sent away.
+            .filter(|directive| *directive != "dismiss" || state.is_spawned_actor(&member.id))
             .map(|directive| {
                 let title = content
                     .render_message(&format!("party.directive.{directive}.title"), &[])
@@ -587,6 +589,47 @@ mod tests {
         assert_eq!(options[1].id, "guard");
         assert!(options[1].selected);
         assert!(options[1].disabled);
+    }
+
+    #[test]
+    fn only_conjured_allies_are_offered_the_dismiss_order() {
+        let mut content = minimal_test_pack();
+        content.settings.ensure_player_party().directives =
+            vec!["guard".to_string(), "dismiss".to_string()];
+        let mut state = WorldState::new(&content);
+        let mut conjured = content.actors[0].clone();
+        conjured.id = "wisp-1".to_string();
+        state
+            .actors
+            .spawned_actors
+            .insert(conjured.id.clone(), conjured);
+
+        let member = |id: &str| PartyMember {
+            id: id.to_string(),
+            label: id.to_string(),
+            level: 1,
+            hp: 8,
+            hp_max: 8,
+            order: "follow".to_string(),
+            order_panel: format!("party-order:{id}"),
+            inventory: Vec::new(),
+            equipped_items: Vec::new(),
+            skills: Vec::new(),
+            in_room: true,
+        };
+        let members = vec![member("golem-1"), member("wisp-1")];
+        let panels = build_party_order_panels(&content, &state, &members);
+
+        let golem: Vec<&str> = panels["party-order:golem-1"]
+            .iter()
+            .map(|o| o.id.as_str())
+            .collect();
+        assert_eq!(golem, vec!["guard"]);
+        let wisp = panels["party-order:wisp-1"]
+            .iter()
+            .find(|o| o.id == "dismiss")
+            .expect("the conjured wisp can be dismissed");
+        assert_eq!(wisp.command.as_deref(), Some("order wisp-1 dismiss"));
     }
 
     #[test]

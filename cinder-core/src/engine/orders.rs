@@ -27,6 +27,8 @@ pub(crate) enum OrderKind {
     Goto(String),
     /// Take an exit matching a label or alias (`exit`).
     Exit(String),
+    /// Send a conjured ally away (`dismiss`). Never held: the actor is removed.
+    Dismiss,
 }
 
 /// Parses an order token (case-insensitive) into an [`OrderKind`]. Accepts an
@@ -48,6 +50,7 @@ pub(crate) fn parse_order(token: &str) -> Option<OrderKind> {
         "deploy" => Some(OrderKind::Deploy(target)),
         "to" | "goto" | "move_to" => Some(OrderKind::Goto(target)),
         "exit" | "exit_label" | "follow_exit" => Some(OrderKind::Exit(target)),
+        "dismiss" => Some(OrderKind::Dismiss),
         _ => None,
     }
 }
