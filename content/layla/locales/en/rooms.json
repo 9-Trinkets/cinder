@@ -11779,7 +11779,9 @@
           "east",
           "e",
           "cistern",
-          "tower"
+          "tower",
+          "clockwise",
+          "cw"
         ],
         "menu_label": "Go east to the Cistern Tower"
       },
@@ -11790,7 +11792,9 @@
           "west",
           "w",
           "lamp",
-          "tower"
+          "tower",
+          "counterclockwise",
+          "ccw"
         ],
         "menu_label": "Go west to the Lamp Tower"
       }
@@ -11836,7 +11840,9 @@
         "aliases": [
           "west",
           "w",
-          "nave"
+          "nave",
+          "counterclockwise",
+          "ccw"
         ],
         "menu_label": "Go west to the Angel Nave"
       },
@@ -11847,7 +11853,9 @@
           "north",
           "n",
           "hall",
-          "knights hall"
+          "knights hall",
+          "clockwise",
+          "cw"
         ],
         "menu_label": "Go north to the Knights' Hall"
       }
@@ -11909,7 +11917,9 @@
           "south",
           "s",
           "cistern",
-          "tower"
+          "tower",
+          "counterclockwise",
+          "ccw"
         ],
         "menu_label": "Go south to the Cistern Tower"
       },
@@ -11920,7 +11930,9 @@
           "north",
           "n",
           "censer",
-          "tower"
+          "tower",
+          "clockwise",
+          "cw"
         ],
         "menu_label": "Go north to the Censer Tower"
       }
@@ -11968,7 +11980,9 @@
           "south",
           "s",
           "hall",
-          "knights hall"
+          "knights hall",
+          "counterclockwise",
+          "ccw"
         ],
         "menu_label": "Go south to the Knights' Hall"
       },
@@ -11978,7 +11992,9 @@
         "aliases": [
           "west",
           "w",
-          "chapel"
+          "chapel",
+          "clockwise",
+          "cw"
         ],
         "menu_label": "Go west to the Reliquary Chapel"
       }
@@ -12039,7 +12055,9 @@
           "east",
           "e",
           "censer",
-          "tower"
+          "tower",
+          "counterclockwise",
+          "ccw"
         ],
         "menu_label": "Go east to the Censer Tower"
       },
@@ -12050,7 +12068,9 @@
           "west",
           "w",
           "bell",
-          "tower"
+          "tower",
+          "clockwise",
+          "cw"
         ],
         "menu_label": "Go west to the Bell Tower"
       },
@@ -12112,7 +12132,9 @@
         "aliases": [
           "east",
           "e",
-          "chapel"
+          "chapel",
+          "counterclockwise",
+          "ccw"
         ],
         "menu_label": "Go east to the Reliquary Chapel"
       },
@@ -12122,7 +12144,9 @@
         "aliases": [
           "south",
           "s",
-          "scriptorium"
+          "scriptorium",
+          "clockwise",
+          "cw"
         ],
         "menu_label": "Go south to the Scriptorium"
       }
@@ -12172,7 +12196,9 @@
           "north",
           "n",
           "bell",
-          "tower"
+          "tower",
+          "counterclockwise",
+          "ccw"
         ],
         "menu_label": "Go north to the Bell Tower"
       },
@@ -12183,7 +12209,9 @@
           "south",
           "s",
           "lamp",
-          "tower"
+          "tower",
+          "clockwise",
+          "cw"
         ],
         "menu_label": "Go south to the Lamp Tower"
       }
@@ -12228,7 +12256,9 @@
         "aliases": [
           "north",
           "n",
-          "scriptorium"
+          "scriptorium",
+          "counterclockwise",
+          "ccw"
         ],
         "menu_label": "Go north to the Scriptorium"
       },
@@ -12238,7 +12268,9 @@
         "aliases": [
           "east",
           "e",
-          "nave"
+          "nave",
+          "clockwise",
+          "cw"
         ],
         "menu_label": "Go east to the Angel Nave"
       }

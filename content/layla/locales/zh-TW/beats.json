@@ -509,6 +509,11 @@
         {
           "item_id": "clandestine-sanctuary-token",
           "kind": "grant_item"
+        },
+        {
+          "kind": "grant_item",
+          "item_id": "invisibility-potion",
+          "count": 3
         }
       ],
       "quest_id": "high_sanctuary_infiltration",

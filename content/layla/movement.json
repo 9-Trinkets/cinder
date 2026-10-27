@@ -83,6 +83,12 @@
     },
     "fire-sprite-6": {
       "order": { "token": "patrol", "cadence_ticks": 1 }
+    },
+    "sanctuary_knight_1": {
+      "order": { "token": "exit", "exit_label": "clockwise", "cadence_ticks": 3 }
+    },
+    "sanctuary_knight_2": {
+      "order": { "token": "exit", "exit_label": "clockwise", "cadence_ticks": 3 }
     }
   }
 }

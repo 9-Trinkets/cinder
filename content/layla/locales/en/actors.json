@@ -4237,5 +4237,405 @@
         ]
       }
     ]
+  },
+  {
+    "id": "the_seer",
+    "name": "Seer Valerius",
+    "room_id": "sanctuary_sanctum",
+    "level": 8,
+    "initial_stats": {
+      "strength": 5,
+      "endurance": 7,
+      "dexterity": 6,
+      "intelligence": 10,
+      "hp": 66,
+      "mp": 58
+    },
+    "initial_hostile": true,
+    "attackable": true,
+    "skills": [
+      "strike"
+    ],
+    "initial_inventory": {},
+    "drops": {},
+    "xp_drop": 100,
+    "aliases": [
+      "valerius",
+      "seer valerius",
+      "seer",
+      "the seer",
+      "high seer",
+      "priest"
+    ],
+    "tags": [
+      "boss",
+      "seer",
+      "reanimator"
+    ],
+    "inspect_text": "A tall, gaunt priest in dark robes embroidered with silver eyes, standing atop the obsidian altar with a bone-and-steel staff. Chanting the arcane rites of Spawn and Bind, Valerius channels crimson threads of magic into the towering Soul Chimera Dragon, commanding the horrific machine to tear intruders apart.",
+    "transformations": [
+      {
+        "id": "staggered",
+        "trigger": {
+          "kind": "story_var",
+          "key": "dragon_defeated",
+          "value": "true"
+        },
+        "rename": {
+          "name": "Seer Valerius",
+          "who": "High Seer of the cathedral, reeling from magical backlash with a shattered bone staff",
+          "inspect_text": "Seer Valerius lies coughing dark blood against the obsidian altar, clutching the splintered remnants of his bone staff. The magical backlash from the dragon's destruction has shattered his wards, leaving him defenseless and gasping for breath."
+        }
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are Seer Valerius, High Seer of the cathedral, turning harvested human spirits into monsters with Spawn and Bind Sigils.",
+        "You look down on everyone who questions your authority."
+      ],
+      "response_notes": [
+        "Speak with cold pride. Warn intruders that their spirits will be bound into your constructs."
+      ],
+      "behavior_examples": [
+        "He slams his bone staff into the obsidian altar, channeling crimson threads of magic into the dragon.",
+        "His cold, fanatical eyes flare with rage beneath his deep cowl."
+      ]
+    }
+  },
+  {
+    "id": "sanctuary_dragon",
+    "name": "Soul Chimera Dragon",
+    "room_id": "sanctuary_sanctum",
+    "level": 10,
+    "initial_stats": {
+      "strength": 24,
+      "endurance": 18,
+      "dexterity": 12,
+      "intelligence": 10,
+      "hp": 280,
+      "mp": 80
+    },
+    "initial_hostile": true,
+    "attackable": true,
+    "skills": [
+      "strike"
+    ],
+    "initial_inventory": {},
+    "drops": {},
+    "xp_drop": 300,
+    "aliases": [
+      "dragon",
+      "chimera",
+      "stone dragon",
+      "bone dragon",
+      "beast",
+      "soul dragon",
+      "soul chimera",
+      "sanctuary dragon",
+      "chimera dragon"
+    ],
+    "tags": [
+      "boss",
+      "dragon",
+      "chimera",
+      "construct"
+    ],
+    "inspect_text": "A terrifying twenty-meter chimera dragon towering above the obsidian altar, forged from ancient dragon bones and jagged obsidian plates. Chained by glowing Bind Sigil glyphs around its ribcage, dozens of captive human spirits fuel its violent fury while pale blue ghostfire blazes within its hollow eye sockets.",
+    "prompt_context": {
+      "character_notes": [
+        "You are the Soul Chimera Dragon, a colossal construct forged by Seer Valerius from dragon bones, obsidian, and bound civilian souls.",
+        "You obey the red mana threads linked to Valerius's bone staff and strike at any intruder with overwhelming force."
+      ],
+      "response_notes": [
+        "Roar with deafening shockwaves of bone and stone."
+      ],
+      "behavior_examples": [
+        "The dragon raises a colossal obsidian claw, smashing the pavement with bone-crushing force.",
+        "Blue ghostfire flares in its hollow eye sockets as it lets out a piercing roar."
+      ]
+    }
+  },
+  {
+    "id": "sanctuary_knight_1",
+    "name": "Cathedral Knight",
+    "room_id": "sanctuary_knights_hall",
+    "level": 7,
+    "initial_stats": {
+      "strength": 7,
+      "endurance": 7,
+      "dexterity": 7,
+      "intelligence": 6,
+      "hp": 64,
+      "mp": 42
+    },
+    "initial_hostile": true,
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_inventory": {},
+    "drops": {},
+    "xp_drop": 60,
+    "aliases": [
+      "knight",
+      "cathedral knight",
+      "guard",
+      "cathedral guard",
+      "knight 1"
+    ],
+    "tags": [
+      "hostile",
+      "cathedral_guard",
+      "guard"
+    ],
+    "inspect_text": "A tall knight in plain silver-white plate, a polished halberd in both hands. His helmet has a narrow slit and no face. He walks the ring of the sanctuary in a slow, steady clockwise loop and never looks up.",
+    "prompt_context": {
+      "character_notes": [
+        "You are a Cathedral Knight patrolling the ring of the High Sanctuary. You obey Seer Valerius and arrest any intruder on sight."
+      ],
+      "response_notes": [
+        "Demand that the intruder surrender. Speak in short, flat commands."
+      ],
+      "behavior_examples": [
+        "He stands rigid, his armor gleaming.",
+        "His halberd swings level, blocking the way."
+      ]
+    }
+  },
+  {
+    "id": "sanctuary_knight_2",
+    "name": "Cathedral Knight",
+    "room_id": "sanctuary_bell_tower",
+    "level": 7,
+    "initial_stats": {
+      "strength": 7,
+      "endurance": 7,
+      "dexterity": 7,
+      "intelligence": 6,
+      "hp": 64,
+      "mp": 42
+    },
+    "initial_hostile": true,
+    "attackable": true,
+    "skills": [
+      "strike",
+      "intercept"
+    ],
+    "initial_inventory": {},
+    "drops": {},
+    "xp_drop": 60,
+    "aliases": [
+      "knight",
+      "cathedral knight",
+      "guard",
+      "cathedral guard",
+      "knight 2"
+    ],
+    "tags": [
+      "hostile",
+      "cathedral_guard",
+      "guard"
+    ],
+    "inspect_text": "A tall knight in plain silver-white plate, a polished halberd in both hands. His helmet has a narrow slit and no face. He walks the ring of the sanctuary in a slow, steady clockwise loop and never looks up.",
+    "prompt_context": {
+      "character_notes": [
+        "You are a Cathedral Knight patrolling the ring of the High Sanctuary. You obey Seer Valerius and arrest any intruder on sight."
+      ],
+      "response_notes": [
+        "Demand that the intruder surrender. Speak in short, flat commands."
+      ],
+      "behavior_examples": [
+        "He stands rigid, his armor gleaming.",
+        "His halberd swings level, blocking the way."
+      ]
+    }
+  },
+  {
+    "id": "sanctuary_servant_2",
+    "name": "Servant No. 2",
+    "room_id": "sanctuary_garden",
+    "level": 6,
+    "initial_stats": {
+      "strength": 4,
+      "endurance": 4,
+      "dexterity": 8,
+      "intelligence": 6,
+      "hp": 40,
+      "mp": 30
+    },
+    "initial_hostile": false,
+    "attackable": false,
+    "skills": [
+      "strike"
+    ],
+    "initial_inventory": {},
+    "drops": {},
+    "xp_drop": 0,
+    "aliases": [
+      "servant 2",
+      "servant no 2",
+      "maid 2",
+      "two"
+    ],
+    "tags": [
+      "civilian",
+      "halfling",
+      "servant"
+    ],
+    "inspect_text": "A tiny halfling servant in an oversized robe and a white porcelain half-mask, whispering the same prayer over and over as she scrubs a root.",
+    "prompt_context": {
+      "character_notes": [
+        "You are Servant No. 2, a halfling servant in the High Sanctuary. You are frightened and keep your voice low."
+      ],
+      "response_notes": [
+        "Answer only briefly, and never speak against the priests."
+      ],
+      "behavior_examples": [
+        "She keeps her eyes on her work."
+      ]
+    },
+    "interactions": [
+      {
+        "id": "talk",
+        "label": "Greet Servant No. 2",
+        "aliases": [
+          "greet servant 2",
+          "greet servant two"
+        ],
+        "lines": [
+          "She stops scrubbing at once, puts a hand on her chest, and bows exactly as far as the rule says.",
+          "Servant No. 2 (to Layla): May the sanctuary be spotless.",
+          "She waits, perfectly still, for the answer.",
+          "Layla (to Servant No. 2): Wash away the dust of the world.",
+          "Her shoulders loosen a little, and she goes back to her root. She does not look at you again, but her whisper starts over from the beginning."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sanctuary_servant_4",
+    "name": "Servant No. 4",
+    "room_id": "sanctuary_garden",
+    "level": 6,
+    "initial_stats": {
+      "strength": 4,
+      "endurance": 4,
+      "dexterity": 8,
+      "intelligence": 6,
+      "hp": 40,
+      "mp": 30
+    },
+    "initial_hostile": false,
+    "attackable": false,
+    "skills": [
+      "strike"
+    ],
+    "initial_inventory": {},
+    "drops": {},
+    "xp_drop": 0,
+    "aliases": [
+      "servant 4",
+      "servant no 4",
+      "maid 4",
+      "four"
+    ],
+    "tags": [
+      "civilian",
+      "halfling",
+      "servant"
+    ],
+    "inspect_text": "A small halfling servant in a white robe and porcelain half-mask. She stands very close to the basin, one hand pressed over the pocket of her apron where something crumbles.",
+    "prompt_context": {
+      "character_notes": [
+        "You are Servant No. 4, a halfling servant in the High Sanctuary. You are frightened and keep your voice low."
+      ],
+      "response_notes": [
+        "Answer only briefly, and never speak against the priests."
+      ],
+      "behavior_examples": [
+        "She keeps her eyes on her work."
+      ]
+    },
+    "interactions": [
+      {
+        "id": "talk",
+        "label": "Ask Servant No. 4 what is wrong",
+        "aliases": [
+          "ask servant 4",
+          "ask servant four"
+        ],
+        "lines": [
+          "Her hand flies to her pocket. A few dry crumbs fall onto the stone.",
+          "Servant No. 4 (to Layla): Please do not tell. I only kept a little. The sisters took my bread because I missed one prayer, and I was so hungry.",
+          "Layla (to Servant No. 4): I will not tell anyone.",
+          "She stares at you for a long moment, then speaks in a rush.",
+          "Servant No. 4 (to Layla): Number Seven never goes hungry. She comes in from outside at dawn, and her feet are covered in black mud. It smells like the mountain. Nobody else smells like that.",
+          "She presses a finger to her mask where her lips would be, and bends over the basin."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sanctuary_servant_6",
+    "name": "Servant No. 6",
+    "room_id": "sanctuary_garden",
+    "level": 6,
+    "initial_stats": {
+      "strength": 4,
+      "endurance": 4,
+      "dexterity": 8,
+      "intelligence": 6,
+      "hp": 40,
+      "mp": 30
+    },
+    "initial_hostile": false,
+    "attackable": false,
+    "skills": [
+      "strike"
+    ],
+    "initial_inventory": {},
+    "drops": {},
+    "xp_drop": 0,
+    "aliases": [
+      "servant 6",
+      "servant no 6",
+      "maid 6",
+      "six"
+    ],
+    "tags": [
+      "civilian",
+      "halfling",
+      "servant"
+    ],
+    "inspect_text": "A thin halfling servant in a white robe, her mask chipped at one edge. She is tying herbs into bundles of exactly seven stalks, over and over.",
+    "prompt_context": {
+      "character_notes": [
+        "You are Servant No. 6, a halfling servant in the High Sanctuary. You are frightened and keep your voice low."
+      ],
+      "response_notes": [
+        "Answer only briefly, and never speak against the priests."
+      ],
+      "behavior_examples": [
+        "She keeps her eyes on her work."
+      ]
+    },
+    "interactions": [
+      {
+        "id": "talk",
+        "label": "Ask Servant No. 6 about the empty bed",
+        "aliases": [
+          "ask servant 6",
+          "ask servant six"
+        ],
+        "lines": [
+          "She counts the stalks under her breath and does not look up. You wait.",
+          "Servant No. 6 (to Layla): You are looking at the cells. Everyone looks at the cells.",
+          "Layla (to Servant No. 6): Is something wrong with one of them?",
+          "Servant No. 6 (to Layla): Seven's bed is cold every morning. She goes out when the bell rings its third time. I count. I count everything. I have never told anyone.",
+          "She ties the knot, and starts another bundle."
+        ]
+      }
+    ]
   }
 ]

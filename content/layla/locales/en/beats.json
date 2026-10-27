@@ -493,13 +493,18 @@
         "Einar steps forward, his expression grave as he clutches his herbalist satchel.",
         "Einar: That cathedral is not a place of prayer, Layla. Before they threw me into the cages down here, I worked in their dispensary. The high clergy takes every person executed in this citadel, wipes their memories, and turns them into the monsters you've been fighting all the way up this tower. The man conducting this horror is their high priest, Seer Valerius.",
         "Einar: Valerius hides the ritual behind thick illusions, but someone inside can help. My partner, Orva, is trapped in the cathedral herb gardens. The priests call her 'the Witch' because she secretly brews remedies to resist their mind-wiping magic. She is also... the woman I love.",
-        "Einar presses a silver token into your hands.",
-        "Einar: This token can slip only one person through their outer wards. Once you are inside, find a way to activate the master platform so Astrid and the rest of us can join you. And if you find Orva, say these words to her: 'The arrow always finds home.' She will know I sent you."
+        "Einar presses a silver token and three bottles of blue invisibility potion into your hands.",
+        "Einar: This token can slip only one person through their outer wards. Drink a potion to walk past the white-armored knights unseen. It lasts only a few minutes, and attacking breaks it. Find a way to activate the master platform so Astrid and the rest of us can join you. And if you find Orva, say these words to her: 'The arrow always finds home.' She will know I sent you."
       ],
       "on_advance_effects": [
         {
           "kind": "grant_item",
           "item_id": "clandestine-sanctuary-token"
+        },
+        {
+          "kind": "grant_item",
+          "item_id": "invisibility-potion",
+          "count": 3
         }
       ],
       "advance_signals": [
