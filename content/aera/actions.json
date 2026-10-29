@@ -4,37 +4,45 @@
       "id": "look",
       "command": "LOOK",
       "label": "Look",
-      "group": "",
+      "group": "observation",
       "phrases": [
         "look",
         "l",
+        "look at",
         "look room",
         "look around",
         "inspect room",
-        "x room"
+        "examine",
+        "x",
+        "inspect"
       ],
       "player_enabled": true,
       "target_mode": "none",
+      "outcome_mode": "event",
       "effects": [
         "observe_room"
       ],
-      "player_command": {
-        "usage": "look",
-        "example": "look around",
-        "advances_time": false
-      },
       "available": {},
       "ui": {
         "bar": true,
         "overflow": false,
-        "group": "",
-        "sort_order": 100,
         "panel": "look",
         "panel_config": {
           "title": "Look Around",
           "prompt": "What catches your eye?",
           "data_source": "features",
           "on_select": "execute_command"
+        },
+        "group": "observe",
+        "sort_order": 100
+      },
+      "player_command": {
+        "target_mode": "actor_or_feature_reference",
+        "usage": "look [at <thing or person>]",
+        "example": "look around",
+        "advances_time": false,
+        "input": {
+          "required": false
         }
       }
     },
@@ -42,7 +50,7 @@
       "id": "move",
       "command": "MOVE",
       "label": "Move",
-      "group": "",
+      "group": "movement",
       "phrases": [
         "go to",
         "go",
@@ -57,15 +65,19 @@
         "move_actor"
       ],
       "player_command": {
+        "target_mode": "room_reference",
         "usage": "go <room>",
         "example": "go lounge",
-        "advances_time": true
+        "advances_time": true,
+        "input": {
+          "required": true
+        }
       },
       "available": {},
       "ui": {
         "bar": true,
         "overflow": false,
-        "group": "",
+        "group": "movement",
         "sort_order": 200,
         "panel": "move",
         "panel_config": {
@@ -77,85 +89,10 @@
       }
     },
     {
-      "id": "inspect_feature",
-      "command": "INSPECT",
-      "label": "Inspect",
-      "group": "",
-      "phrases": [
-        "inspect",
-        "x",
-        "examine",
-        "look at",
-        "check"
-      ],
-      "player_enabled": true,
-      "target_mode": "feature",
-      "effects": [
-        "observe_feature"
-      ],
-      "player_command": {
-        "usage": "look <feature>",
-        "example": "look sofa",
-        "advances_time": false
-      },
-      "available": {},
-      "ui": {
-        "bar": true,
-        "overflow": false,
-        "group": "",
-        "sort_order": 300,
-        "panel": "inspect",
-        "panel_config": {
-          "title": "Inspect Something",
-          "prompt": "What would you like to examine?",
-          "data_source": "features",
-          "on_select": "execute_command"
-        }
-      }
-    },
-    {
-      "id": "inspect_actor",
-      "command": "INSPECT",
-      "label": "Inspect Person",
-      "group": "",
-      "phrases": [
-        "inspect",
-        "x",
-        "examine",
-        "look at",
-        "watch",
-        "check"
-      ],
-      "player_enabled": true,
-      "target_mode": "actor",
-      "effects": [
-        "observe_actor"
-      ],
-      "player_command": {
-        "usage": "look <person>",
-        "example": "look aera",
-        "advances_time": false
-      },
-      "available": {},
-      "ui": {
-        "bar": true,
-        "overflow": false,
-        "group": "",
-        "sort_order": 350,
-        "panel": "inspect_actor",
-        "panel_config": {
-          "title": "Observe Person",
-          "prompt": "Who would you like to watch?",
-          "data_source": "actors_in_room",
-          "on_select": "execute_command"
-        }
-      }
-    },
-    {
       "id": "follow",
       "command": "FOLLOW",
       "label": "Follow",
-      "group": "",
+      "group": "observation",
       "phrases": [
         "follow",
         "track",
@@ -168,15 +105,19 @@
         "follow_actor"
       ],
       "player_command": {
+        "target_mode": "actor_reference",
         "usage": "follow <person>",
         "example": "follow ren",
-        "advances_time": false
+        "advances_time": false,
+        "input": {
+          "required": true
+        }
       },
       "available": {},
       "ui": {
         "bar": true,
         "overflow": false,
-        "group": "",
+        "group": "observe",
         "sort_order": 400,
         "panel": "follow",
         "panel_config": {
@@ -191,7 +132,7 @@
       "id": "rest",
       "command": "REST",
       "label": "Rest",
-      "group": "",
+      "group": "recovery",
       "phrases": [
         "rest",
         "sit",
@@ -213,7 +154,7 @@
       "ui": {
         "bar": true,
         "overflow": false,
-        "group": "",
+        "group": "recovery",
         "sort_order": 500
       }
     },
@@ -221,7 +162,7 @@
       "id": "speak",
       "command": "SPEAK",
       "label": "Speak",
-      "group": "",
+      "group": "conversation",
       "phrases": [
         "talk to",
         "talk",
