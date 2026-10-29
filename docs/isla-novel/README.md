@@ -127,6 +127,6 @@ Japanese light novel cover illustration, refined literary anime art style with d
 - [x] `03-第三章-不肯落地的鳥巢.md`
 - [x] `04-第四章-註腳先生的冬天.md`
 - [x] `05-第五章-穿紅羽絨衣的醫生.md`
-- [ ] `06-第六章-九十八度的蝴蝶餅乾.md`
+- [x] `06-第六章-九十八度的蝴蝶餅乾.md`
 - [ ] `07-第七章-米勒五金行的小紅燈.md`
 - [ ] `08-終章-門檻上的三根白髮.md`
