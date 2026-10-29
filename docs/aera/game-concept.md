@@ -6,8 +6,8 @@
 
 ## 1. High Concept & Overview
 * **Title**: *Aera* (or *AERA: The Pilot Season*)
-* **Protagonist / Player Role**: The Producer / Control Room Director stationed in the on-site "Video Village".
-* **Genre**: Reality TV Simulation × Social Engineering × Psychological Drama.
+* **Protagonist / Player Role**: The Showrunner / Field Producer stationed in the on-site "Video Village" control room.
+* **Genre**: Reality TV Simulation × Workplace Social Engineering × Psychological Drama.
 * **Inspirations**: *Terrace House*, *UnREAL*, Joan Didion's observational essays, Kazuo Ishiguro's detached emotional restraint.
 * **Core Themes**:
   - The architecture of manufactured vulnerability vs. authentic human connection.
@@ -37,34 +37,29 @@ The narrator is not a cartoon villain; they are an expert diagnostician of human
 
 ---
 
-## 3. The Core Tension: Ratings vs. Cast Well-being
+## 3. The Central Workplace Dynamic: The Production Crew
 
-The player navigates two opposing forces across a 2-day pilot shoot:
+Rather than operating abstract user interfaces, the player interacts with a dedicated **three-person production crew** that represents the different pressures of unscripted television:
 
 ```
-                  ┌──────────────────────────────┐
-                  │       NETWORK RATINGS        │
-                  │  (Drama, Romance, Conflict)  │
-                  └──────────────┬───────────────┘
-                                 │
-                        [The Producer's Desk]
-                                 │
-                  ┌──────────────┴───────────────┐
-                  │      CAST WELL-BEING         │
-                  │   (Safety, Trust, Dignity)   │
-                  └──────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────┐
+│                        THE CONTROL TRUCK CREW                          │
+├────────────────────┬────────────────────┬──────────────────────────────┤
+│  MAYA (Network)    │  CHIKA (Floor PA)  │  TOBY (Lead Editor)          │
+│  "Give me numbers  │  "I'm on the floor │  "I can make anyone look     │
+│   or we're done."  │   with the kids."  │   like a saint or a monster."│
+└────────────────────┴────────────────────┴──────────────────────────────┘
 ```
 
-1. **Network Ratings (The Survival Metric)**:
-   - Driven by public vulnerability, romantic sparks, jealousy, direct confrontations, and tearful confessionals.
-   - If Ratings are too low by the end of Day 2, the network rejects the pilot: **Cancelled in Post-Production**.
-
-2. **Cast Well-being & Safety (The Humanity Metric)**:
-   - Each housemate tracks `safety` (-10 to 10) and `confidence` (0 to 10).
-   - If an actor's `safety` drops below critical thresholds, they shut down emotionally, refuse to leave their bedroom, or stage a sudden midnight walkout: **Scandal / Production Shutdown**.
-
-3. **The Sweet Spot**:
-   - Pushing the housemates just enough to break through their polite social facades without destroying their mental health—allowing authentic love or genuine mutual respect to emerge from the artificial crucible.
+1. **Maya (Network Liaison / Executive Producer)**:
+   * Demands ratings, high demographic engagement, and commercial viability.
+   * Hands down the **Morning Mandate** and **Event Cards**.
+2. **Chika (Floor PA / Field Producer)**:
+   * Wears sneakers and a headset behind the two-way mirrors; actually talks to the cast between takes.
+   * Radios in the **Afternoon Situation Report** and offers tactical **Relationship Nudges**.
+3. **Toby (Senior Video Editor)**:
+   * Cynical, sleep-deprived veteran who treats human heartache purely as rhythm and timeline pacing.
+   * Conducts the night Confessionals and assembles the competing **Broadcast Cuts** for your final sign-off.
 
 ---
 

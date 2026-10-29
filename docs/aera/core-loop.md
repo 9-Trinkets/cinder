@@ -1,116 +1,91 @@
 # Core Loop & Progression: AERA
 
-> *"A shoot day is twenty hours of surveillance compressed into twenty minutes of entertainment."*
+> *"A shoot day is twenty hours of surveillance compressed into three executive calls with your crew."*
 
 ---
 
-## 1. The Daily Rhythm: Three-Phase Loop
+## 1. The Daily Rhythm: The 3-Conversation Crew Loop
 
-Each day in *Aera* follows a strict three-phase production rhythm:
+Rather than forcing the player to navigate multiple abstract mini-games or spreadsheet menus, each day in *Aera* is driven by **three high-stakes conversations with your production team**:
 
 ```mermaid
 flowchart TD
-    subgraph Phase1["Phase 1: Morning Call Sheet"]
-        A1["Review Overnight Stats & Roster"] --> A2["Draw 3 Event Cards"]
-        A2 --> A3["Select 1 Event Card & Assign Cast"]
-    end
-
-    subgraph Phase2["Phase 2: Live Surveillance & Producer Levers"]
-        B1["Monitor Video Feeds across Rooms"] --> B2["Autonomous Cast Interaction"]
-        B2 --> B3["Draw 3 Relationship Cards"]
-        B3 --> B4["Select 1 Relationship Card / Floor Nudge"]
-        B4 --> B5["Observe Dynamic Repercussions"]
-    end
-
-    subgraph Phase3["Phase 3: Night Wrap & The Edit"]
-        C1["Confessional Booth: 1-on-1 Interview"] --> C2["Extract Crucial Soundbite"]
-        C2 --> C3["The Edit Suite: Select 3 Scene Clips"]
-        C3 --> C4["Broadcast Episode & Review Ratings"]
-    end
-
-    Phase1 --> Phase2
-    Phase2 --> Phase3
-    Phase3 -->|"Next Day Roll"| Phase1
+    A["09:00 — Morning Briefing with Maya (Exec)<br/>• Delivers Network Mandate<br/>• Draw 2 Event Cards ──> Pick 1"] --> B["15:00 — Radio Comm with Chika (Floor PA)<br/>• Monitors live tension on the floor<br/>• Draw 2 Relationship Nudges ──> Pick 1"]
+    B --> C["22:00 — The Edit Suite with Toby (Lead Editor)<br/>• Assembles 2 Cuts from today's footage<br/>• Pick Cut A (Drama) or Cut B (Romance)"]
+    C --> D["08:00 — Overnight Ratings & House Fallout<br/>• Viewership score against Mandate<br/>• Morning mood & safety shift for cast"]
+    D -->|"Next Day Cycle"| A
 ```
 
 ---
 
-## 2. Phase Breakdown
+## 2. Phase-by-Phase Breakdown
 
-### Phase 1: Morning Call Sheet (Strategy & Environment)
-* **Time**: 08:00 – 10:00
-* **Player Role**: Production Manager.
-* **Actions**:
-  1. **Status Board**: Check the current status of the four housemates:
-     - Physical stats: `stamina` and `hunger`.
-     - Psychological stats: `confidence` and `safety`.
-     - Pairwise affinities: `attraction` and `connection`.
-  2. **Network Directive**: The daily email from Executive Producer Morrison specifying today's target (e.g., *"We need eyes on Mio today"*, or *"Get Ren out of his shell"*).
-  3. **Event Card Draft**: Draw 3 random **Event Cards** from the deck.
-     - Choose 1 card to play.
-     - Assign specific housemates if the card requires a pairing (e.g. *Grocery Run: Ren + Mio*).
-
----
-
-### Phase 2: Live Surveillance & Producer Levers (Observation & Nudges)
-* **Time**: 12:00 – 20:00
-* **Player Role**: Control Room Director.
-* **Core Commands**:
-  - `switch-feed <room>` / `go <room>`: Focus the control room switcher on a specific room (`kitchen`, `lounge`, `patio`, `studio`, `dining-room`, `girls-room`, `guys-room`).
-  - `follow <actor>`: Lock the active camera onto a specific housemate as they move through the house.
-  - `look <feature>`: Inspect subtle micro-behaviors (e.g., *the uneaten bowl of soup*, *the body language between Mio and Daichi at the counter*).
-* **The Afternoon Floor Nudge**:
-  - Midday, tensions reach a plateau. The system deals **3 Relationship Cards** to the player.
-  - The player selects 1 card to deploy via floor PA or whisper mic (e.g., *"The Vulnerability Push: Ask Daichi about his last ex"*).
-  - The player observes how the cast reacts in real-time.
+### Phase 1: 09:00 — The Call Sheet with Maya (Executive Producer)
+* **Location**: Control Room / Video Village.
+* **The Scene**: Maya steps in with an iced coffee and an iPad displaying overnight audience metrics.
+* **The Network Mandate**: Maya announces what the suits upstairs are demanding today:
+  * *Conflict Mandate*: *"Viewers say the house is too quiet. We need blood or someone crying."*
+  * *Romance Mandate*: *"The 18–34 demo wants butterflies. We need a spark or a confession."*
+  * *Cringe / Buzz Mandate*: *"We need awkward friction or someone embarrassing themselves."*
+* **The Choice (Event Cards)**: Maya presents **two Event Cards** pitched by network programming:
+  * E.g., Option A: *"Grocery Budget Squeeze"* (Forces Ren + Mio into logistical friction).
+  * E.g., Option B: *"AC & Wi-Fi Blackout"* (Traps all four housemates on the patio).
+* **Player Action**: Select **1 Event Card** and assign the target cast members.
 
 ---
 
-### Phase 3: Night Wrap & The Edit (Extraction & Assembly)
-* **Time**: 21:00 – 01:00
-* **Player Role**: Confessor & Post-Production Editor.
-* **Step 1: The Confessional Booth (`confessional <actor>`)**:
-  - Summon one housemate into the soundproof Diary Room.
-  - Choose one of three probing producer questions:
-    - *The Empathic Probe*: Focuses on their private feelings and doubts (raises `connection` with producer, restores `safety`).
-    - *The Provocative Probe*: Pushes them to comment on another housemate's hidden motives (generates a spicy soundbite, lowers `safety`).
-    - *The Reality Check*: Forces them to confront an uncomfortable truth about themselves (shifts `confidence`).
-  - The housemate's response generates a **Golden Soundbite** for the edit.
-
-* **Step 2: The Daily Broadcast Assembly**:
-  - In the [`studio`](file:///Users/li-hsuanlung/Projects/cinder/content/aera/locales/en/rooms.json#L99), the player reviews the day's automatically tagged clips:
-    - *Morning Event Footage* (2 clips available).
-    - *Afternoon Nudge Fallout* (2 clips available).
-    - *Unscripted Background Banter* (2 clips available).
-  - The player selects **3 Clips + 1 Confessional Soundbite** to broadcast as the daily 22-minute episode.
-
-* **Step 3: Ratings & Social Media Feedback**:
-  - The broadcast airs overnight.
-  - Metrics evaluated:
-    - **Drama / Friction Score**
-    - **Romance / Tension Score**
-    - **Wholesome / Chemistry Score**
-  - Next morning: Producer reviews viewer ratings, trending tweets, and morning housemate reactions.
+### Phase 2: 15:00 — Live Comms with Chika (Floor PA)
+* **Location**: Control Room switchboard, observing multi-cam feeds.
+* **The Scene**: The morning event has played out, generating natural friction or awkwardness. Chika radios from behind the set walls:
+* **The Situation Report**: Chika breaks down the immediate human scene on screen:
+  * *"Boss, Ren was riding Mio's ass about the grocery bill. Mio's on the patio holding back tears. Daichi is out there reading with a tea kettle."*
+* **The Choice (Relationship / Nudge Cards)**: Chika offers **two tactical ways to intervene**:
+  * Option A (*Stir the Drama*): *"Tell Ren he needs to go out there and apologize right now."* (Forces a tense, defensive confrontation).
+  * Option B (*Ignite Romance*): *"Tell Daichi to offer Mio a cup of tea and ask what's wrong."* (Sparks tender intimacy between Daichi and Mio).
+* **Player Action**: Pick **1 Nudge**. Chika delivers it on the floor; the player watches the live reaction play out on the monitors.
 
 ---
 
-## 3. The Two-Day Narrative Arc ("The Pilot Shoot")
+### Phase 3: 22:00 — The Cutting Room with Toby (Lead Editor)
+* **Location**: The Edit Bay (Studio).
+* **The Scene**: Toby sits in the dark with two 4K monitors, coffee dregs, and an ash-streaked hoodie.
+* **How the Cuts are Generated**:
+  The cuts are the **direct narrative children** of your two daytime choices:
+  * Footage Pool 1 = Morning Event (*Market argument between Ren & Mio*).
+  * Footage Pool 2 = Afternoon Nudge (*Daichi comforting Mio on the patio*).
+  * Footage Pool 3 = Confessional Soundbite (*Toby's 1-question booth interview with Mio*).
+* **The Choice (The Two Cuts)**:
+  Toby frames today's footage into two competing 22-minute broadcast cuts:
 
-### Day 1: Arrivals & The Welcome Dinner
-* **Theme**: First Impressions, Posturing, and Insecurity.
-* **Day 1 Goal**: Break the ice. Force the cast out of polite corporate pleasantries into initial emotional vulnerability.
-* **Key Milestones**:
-  - Morning/Afternoon: Move-in, room choices, unpacking.
-  - Evening: Preparing the first shared dinner. Seating arrangements at the dining table.
-  - Night: Bedroom debriefs (girls debriefing boys; boys debriefing girls) + First Confessional.
-  - Episode 1 Broadcast: Establishes the cast's public personas.
+  | Cut Option | The Story Framing | Ratings Impact | Cast Fallout Next Morning |
+  | :--- | :--- | :--- | :--- |
+  | **Cut A: The Conflict Edit** *(e.g., "Recipe for Disaster")* | Leads with the market fight. Cuts out Daichi so Mio looks completely abandoned. Uses Mio's tearful soundbite. | ⭐⭐⭐⭐⭐ **Massive Buzz**<br/>Hits Maya's Conflict Mandate. `#RenIsToxic` trends on Twitter. | 💔 **Ren's Safety -4**<br/>Ren feels demonized and betrayed. Refuses to cook for the house tomorrow. |
+  | **Cut B: The Romance Edit** *(e.g., "Afternoon Tea")* | Treats the market fight as a brief joke. Dedicates 12 minutes to Daichi and Mio's tender patio talk. | ⭐⭐⭐ **Modest Ratings**<br/>Misses Maya's conflict target. Warm, loyal audience reception. | 💕 **Daichi/Mio Connection +3**<br/>The pair's bond is reinforced. Ren's dignity is spared. |
 
-### Day 2: The Spark & The House Meeting
-* **Theme**: Jealousy, Confrontation, and Romantic Momentum.
-* **Day 2 Goal**: Convert initial sparks into real choices; push unspoken grievances to the surface.
-* **Key Milestones**:
-  - Morning: Overnight ratings review. Morning coffee and workout dynamics.
-  - Afternoon: Paired errand or group task driven by the Event Card.
-  - Evening: An unscripted or engineered **House Meeting / Game Night** over wine. A secret crush is confessed or a chore grievance erupts.
-  - Late Night: Final Confessionals and the Season Pilot assembly.
-  - Finale: The Network Executive calls with the final verdict on the series.
+* **Player Action**: Select **Cut A** or **Cut B** for satellite uplink.
+
+---
+
+### Phase 4: 08:00 — Broadcast Resolution & Morning Fallout
+The episode airs overnight. When the player wakes up at 08:00, the terminal displays the **Morning Report**:
+1. **Viewership & Social Media Trend**:
+   - Ratings number (compared against target).
+   - Top 3 viewer tweets reacting to last night's episode.
+2. **Network Executive Feedback**:
+   - A short text from Maya (praising the buzz or warning that numbers are soft).
+3. **House Atmosphere Shift**:
+   - New stat modifiers applied to the cast based on how they were portrayed.
+   - Sets the baseline for Day 2's morning interactions.
+
+---
+
+## 3. The 2-Day Pilot Arc
+
+* **Day 1: First Impressions & The Spark**
+  * *Theme*: Breaking the ice and establishing the cast's public vs. private personas.
+  * *Maya's Target*: Prove that these four people have combustible chemistry.
+  * *Climax*: The Welcome Dinner and the first overnight broadcast cut.
+* **Day 2: The Pressure Cooker & The Finale**
+  * *Theme*: Jealousy, romantic choices, and breaking points.
+  * *Maya's Target*: Deliver a definitive romantic kiss or an explosive house meeting.
+  * *Climax*: The final broadcast cut that determines whether the network greenlights the series or cancels the pilot.
