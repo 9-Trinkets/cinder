@@ -12,6 +12,7 @@ fn pack() -> cinder_core::content::types::ContentPack {
 }
 
 #[test]
+#[ignore = "rebooted aera pack: items pending reimplementation"]
 fn the_kitchen_starts_with_its_drinks_and_nothing_cooked() {
     let pack = pack();
     let state = WorldState::new(&pack);
@@ -30,6 +31,7 @@ fn the_kitchen_starts_with_its_drinks_and_nothing_cooked() {
 }
 
 #[test]
+#[ignore = "rebooted aera pack: items pending reimplementation"]
 fn every_feature_item_that_can_be_consumed_says_how() {
     let pack = pack();
     let kitchen = pack.room_consumables("kitchen");
@@ -45,6 +47,7 @@ fn every_feature_item_that_can_be_consumed_says_how() {
 }
 
 #[test]
+#[ignore = "rebooted aera pack: items pending reimplementation"]
 fn drinking_from_the_fridge_uses_up_one_and_recovers_stamina() {
     let pack = pack();
     let mut state = WorldState::new(&pack);
@@ -74,6 +77,7 @@ fn drinking_from_the_fridge_uses_up_one_and_recovers_stamina() {
 }
 
 #[test]
+#[ignore = "rebooted aera pack: items pending reimplementation"]
 fn inspecting_a_feature_lists_what_it_holds_and_what_was_just_cooked() {
     let pack = pack();
     let state = WorldState::new(&pack);

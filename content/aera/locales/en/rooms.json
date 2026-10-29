@@ -1,167 +1,218 @@
 [
   {
-    "id": "entrance",
-    "title": "Entrance",
-    "summary": "The front entry is clean, bright, and carefully staged in the way high-end houses always are. Shoes line the wall more politely than the people inside probably feel.",
-    "inspect_text": "The entrance is all warm wood, soft indirect lighting, and the faint sense that everyone noticed it the moment they arrived. House shoes are lined up under a bench. A mirror catches the door, the hallway, and whoever is deciding whether to enter as themselves or as a version worth filming.",
+    "id": "control-room",
+    "title": "Control Room",
+    "summary": "The air-conditioned production nerve center stationed two doors down Jinhua Street. Monitors glow across folding tables, and comms headsets hiss with quiet radio traffic.",
+    "inspect_text": "The control room is chilled to sixty-six degrees to keep the switcher racks and tape decks from sweating. Three folding tables hold eight high-definition reference monitors cycling through camera feeds of the Da'an villa. A whiteboard on the wall tracks daily call sheets, audio frequencies, and the cast's lavalier numbers. Through the heavy curtains, the humid Taipei heat feels a million miles away.",
     "features": [
       {
-        "id": "shoe-bench",
-        "label": "shoe bench",
+        "id": "switcher-desk",
+        "label": "switcher desk",
         "aliases": [
-          "bench",
-          "shoes"
+          "switcher",
+          "desk",
+          "monitors",
+          "board"
         ],
-        "inspect_text": "The shoe bench already feels like social evidence. Even in a beautiful house, people reveal themselves by what they kick off first and what they leave perfectly aligned."
+        "inspect_text": "Eight Sony reference monitors display live feeds from the villa: kitchen island, dining table, lounge terrazzo, and rooftop terrace. The switcher board's illuminated tally lights glow soft amber."
       },
       {
-        "id": "entry-mirror",
-        "label": "entry mirror",
+        "id": "whiteboard",
+        "label": "production whiteboard",
         "aliases": [
-          "mirror"
+          "board",
+          "whiteboard",
+          "call sheet"
         ],
-        "inspect_text": "The mirror catches arrivals and departures in one glance. It feels like a good place to fix your face before joining everyone else."
+        "inspect_text": "A dry-erase board scrawled with network directives, microphone battery logs, and today's schedule for Maya, Chika, and Toby."
+      },
+      {
+        "id": "comms-station",
+        "label": "headset comms station",
+        "aliases": [
+          "comms",
+          "headset",
+          "radio"
+        ],
+        "inspect_text": "Three multi-channel radio headsets hang from metal hooks. Channel 1 links directly to Chika's walkie-talkie behind the villa walls."
       }
     ],
     "exits": [
       {
-        "room_id": "lounge",
-        "label": "lounge",
+        "room_id": "alley",
+        "label": "Jinhua Lane 183",
         "aliases": [
-          "living room",
-          "living"
+          "alley",
+          "street",
+          "lane",
+          "outside"
         ]
       }
     ]
   },
   {
-    "id": "lounge",
-    "title": "Lounge",
-    "summary": "The lounge is the heart of the house: a low sofa, soft evening light, and enough visual space for silence to mean something.",
-    "inspect_text": "The lounge is designed to make conversations feel accidental and cinematic at the same time. A long sofa faces a low table. The house opens outward from here toward the kitchen, patio, and bedrooms, so nearly every shared mood passes through this room eventually.",
+    "id": "alley",
+    "title": "Jinhua Lane 183",
+    "summary": "A tranquil residential lane paved with grey interlocking bricks, lined with flowering bougainvillea, potted ferns, and parked vintage scooters.",
+    "inspect_text": "The lane is quiet enough to hear banyan leaves rustling in the breeze and the low rumble of an MRT train deep underground. Potted monstera, flowering magenta bougainvillea, and laundry hanging behind historic iron grilles line the facades of the old three-story townhouses. Two doors down is the villa entrance; behind you is the rented production control room.",
     "features": [
       {
-        "id": "sofa",
-        "label": "long sofa",
+        "id": "bougainvillea",
+        "label": "bougainvillea trellis",
         "aliases": [
-          "sofa",
-          "couch"
+          "flowers",
+          "trellis",
+          "bougainvillea",
+          "plants"
         ],
-        "allow_rest": true,
-        "inspect_text": "The sofa is deep enough for group conversations and dangerous enough for unresolved tension. It looks like the kind of place where someone will eventually say more than they meant to."
+        "inspect_text": "Vibrant magenta bougainvillea climbs the weathered concrete wall of the neighboring townhouse, dropping papery petals onto the grey pavers."
       },
       {
-        "id": "coffee-table",
-        "label": "coffee table",
+        "id": "scooters",
+        "label": "parked vintage scooters",
         "aliases": [
-          "table",
-          "low table"
+          "scooters",
+          "bikes",
+          "motorcycles"
         ],
-        "inspect_text": "The coffee table is almost too photogenic. Mugs, phones, mail, and one badly timed confession could all end up here."
+        "inspect_text": "A row of parked scooters: Kai's vintage Yamaha SR150 with weathered leather saddlebags, Chika's green scooter with a scratched helmet, and two quiet electric Gogoros."
       }
     ],
     "exits": [
       {
-        "room_id": "entrance",
-        "label": "entrance",
+        "room_id": "control-room",
+        "label": "control room",
         "aliases": [
-          "entry",
-          "front"
+          "control",
+          "truck",
+          "village",
+          "production"
+        ]
+      },
+      {
+        "room_id": "entrance",
+        "label": "villa entrance",
+        "aliases": [
+          "entrance",
+          "genkan",
+          "villa",
+          "house",
+          "in"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "entrance",
+    "title": "Genkan",
+    "summary": "The sunken terrazzo entryway of the villa. A bench of reclaimed camphor wood sits beneath geometric 1970s iron window grilles.",
+    "inspect_text": "Polished grey concrete steps drop down from the front door into the genkan. Reclaimed camphor wood forms a low bench where street shoes are exchanged for leather indoor slippers. Geometric 1970s iron grilles frame frosted begonia glass, casting patterned shadows across the floor. The open kitchen and living room extend just beyond the threshold.",
+    "features": [
+      {
+        "id": "shoe-bench",
+        "label": "camphor shoe bench",
+        "aliases": [
+          "bench",
+          "shoe bench",
+          "shoes"
+        ],
+        "inspect_text": "A thick, fragrant slab of camphor wood. Beneath it sit six pairs of shoes: Ren's oiled kitchen clogs, Kai's worn Chuck Taylors, Mio's platform boots, Daichi's carbon running shoes, Aera's minimalist sandals, and Yuhan's leather mules."
+      },
+      {
+        "id": "slipper-rack",
+        "label": "leather slippers",
+        "aliases": [
+          "slippers",
+          "rack"
+        ],
+        "inspect_text": "A wooden rack holding simple tan leather slippers for moving silently across the villa's terrazzo and wooden floors."
+      },
+      {
+        "id": "entry-grilles",
+        "label": "iron window grilles",
+        "aliases": [
+          "grilles",
+          "window",
+          "glass"
+        ],
+        "inspect_text": "Historic Taiwanese security grilles twisted into geometric floral motifs, holding panes of frosted begonia glass that blur the alleyway outside."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "alley",
+        "label": "alley",
+        "aliases": [
+          "out",
+          "outside",
+          "street",
+          "lane"
+        ]
+      },
+      {
+        "room_id": "lounge",
+        "label": "living lounge",
+        "aliases": [
+          "lounge",
+          "living",
+          "living room"
         ]
       },
       {
         "room_id": "kitchen",
-        "label": "kitchen",
-        "aliases": []
-      },
-      {
-        "room_id": "dining-room",
-        "label": "dining room",
+        "label": "open kitchen",
         "aliases": [
-          "dining",
-          "table"
-        ]
-      },
-      {
-        "room_id": "studio",
-        "label": "studio",
-        "aliases": [
-          "work room",
-          "creative room"
-        ]
-      },
-      {
-        "room_id": "patio",
-        "label": "patio",
-        "aliases": [
-          "deck",
-          "outside"
-        ]
-      },
-      {
-        "room_id": "girls-room",
-        "label": "girls' room",
-        "aliases": [
-          "women's room",
-          "shared girls room"
-        ]
-      },
-      {
-        "room_id": "guys-room",
-        "label": "guys' room",
-        "aliases": [
-          "men's room",
-          "shared guys room"
+          "kitchen"
         ]
       }
     ]
   },
   {
     "id": "kitchen",
-    "title": "Kitchen",
-    "summary": "The kitchen is sleek, generous, and impossible to ignore. It invites competence, collaboration, and judgment in equal measure.",
-    "inspect_text": "The kitchen is large enough that two people can work side by side without touching, which somehow makes every near-touch more noticeable. The counters are immaculate for now. A wide island faces the lounge, making it hard to cook here without also being part of the room's social weather.",
+    "title": "Open Kitchen",
+    "summary": "A central stainless-steel island with commercial gas burners, overhead copper racks, and deep sinks. The culinary heart of the house.",
+    "inspect_text": "Professional stainless steel dominates the space, balanced by warm teak cabinets and matte black fixtures. A commercial four-burner gas range sits beneath an industrial range hood. Beside the prep sink rests a neat wooden pour-over coffee station, a glass-door beverage fridge, and Ren's canvas knife roll, laid out with clinical precision.",
     "features": [
       {
-        "id": "island",
-        "label": "kitchen island",
+        "id": "kitchen-island",
+        "label": "stainless-steel island",
         "aliases": [
           "island",
-          "counter"
+          "counter",
+          "stove",
+          "range"
         ],
-        "items": {
-          "garlic-noodles": 0,
-          "miso-salmon": 0,
-          "vegetable-stir-fry": 0,
-          "honey-toast-and-fruit": 0,
-          "citrus-iced-tea": 6,
-          "yuzu-lemonade": 0,
-          "iced-matcha": 0,
-          "pour-over-coffee": 0
-        },
-        "inspect_text": "The island practically demands shared prep work. A cutting board and knife sit ready, and the counter has space for whatever tonight's cook decides to make."
+        "inspect_text": "A massive brushed stainless-steel prep island with commercial gas burners and an end-grain wooden chopping block. It's built for two people to cook side-by-side—or bump shoulders uncomfortably."
+      },
+      {
+        "id": "pour-over-station",
+        "label": "pour-over coffee station",
+        "aliases": [
+          "coffee",
+          "pour over",
+          "dripper",
+          "grinder"
+        ],
+        "inspect_text": "A brass Hario dripper, a goose-neck kettle with digital temperature readout, and a matte black conical burr grinder. A glass jar holds fresh medium-roast beans from a boutique roaster in Zhongshan."
       },
       {
         "id": "fridge",
-        "label": "double-door fridge",
+        "label": "glass-door refrigerator",
         "aliases": [
           "fridge",
           "refrigerator"
         ],
-        "items": {
-          "sparkling-water": 6,
-          "herbal-tea": 0
-        },
-        "inspect_text": "The fridge hums steadily, stocked with sparkling water and whatever fresh ingredients the household has gathered."
+        "inspect_text": "A commercial glass-front refrigerator stocked with cold oat milk, bottles of Taiwanese sparkling mineral water, fresh Yilan mountain greens, tofu cakes, and several bottles of natural orange wine."
       }
     ],
     "exits": [
       {
-        "room_id": "lounge",
-        "label": "lounge",
+        "room_id": "entrance",
+        "label": "genkan",
         "aliases": [
-          "living room",
-          "living"
+          "entrance",
+          "door",
+          "genkan"
         ]
       },
       {
@@ -169,7 +220,8 @@
         "label": "dining room",
         "aliases": [
           "dining",
-          "table"
+          "table",
+          "dining room"
         ]
       }
     ]
@@ -177,133 +229,104 @@
   {
     "id": "dining-room",
     "title": "Dining Room",
-    "summary": "The dining room is small compared to the rest of the house, which is exactly why meals here will matter.",
-    "inspect_text": "A long table anchors the dining room without overpowering it. There is no television here, no good way to avoid eye contact, and no graceful place to hide once everyone sits down. The room feels made for routine dinners that quietly change the shape of a house.",
+    "summary": "A solid Taiwanese cypress ten-seater table under low ceramic pendant lamps. Where group meals and quiet standoffs occur.",
+    "inspect_text": "The ten-foot dining table is cut from a single reclaimed slab of Taiwanese cypress (hinoki), smooth and faintly fragrant. Ten wishbone chairs surround it. Three fluted ceramic pendant lamps hang low over the surface, casting a warm 2400K pool of light that makes every glance and hesitation across the table impossible to hide.",
     "features": [
       {
-        "id": "dining-table",
-        "label": "long table",
+        "id": "cypress-table",
+        "label": "cypress dining table",
         "aliases": [
           "table",
-          "dining table"
+          "dining table",
+          "cypress table"
         ],
-        "inspect_text": "The table is large enough for all four housemates and small enough that every seating choice will mean something."
+        "inspect_text": "The long cypress table bears the natural grain of mountain timber. It is large enough for all six housemates to dine together, yet intimate enough that foot-touches and subtle eye-rolls are instantly noticed."
       },
       {
-        "id": "pendant-light",
-        "label": "pendant light",
+        "id": "ceramic-pendants",
+        "label": "fluted pendant lamps",
         "aliases": [
-          "light"
+          "lamps",
+          "lights",
+          "pendants"
         ],
-        "inspect_text": "The pendant light makes the room feel warmer than the conversations may always deserve."
+        "inspect_text": "Low-slung handmade ceramic lamp shades in matte terracotta, casting pools of warm golden light over the table while leaving the surrounding room in soft shadow."
       }
     ],
     "exits": [
-      {
-        "room_id": "lounge",
-        "label": "lounge",
-        "aliases": [
-          "living room",
-          "living"
-        ]
-      },
       {
         "room_id": "kitchen",
-        "label": "kitchen",
-        "aliases": []
-      },
-      {
-        "room_id": "patio",
-        "label": "patio",
+        "label": "open kitchen",
         "aliases": [
-          "deck",
-          "outside"
+          "kitchen"
         ]
-      }
-    ]
-  },
-  {
-    "id": "studio",
-    "title": "Studio",
-    "summary": "A small creative room doubles as work corner, fitting room, and retreat from the house's main social current.",
-    "inspect_text": "The studio is half practical workspace, half self-invention chamber. A rack of clothes stands near a rolling mirror. A desk holds editing gear, chargers, notebooks, and the kind of unfinished tasks people carry back from real jobs. This room feels private even with the door open.",
-    "features": [
-      {
-        "id": "clothes-rack",
-        "label": "clothes rack",
-        "aliases": [
-          "rack",
-          "clothes"
-        ],
-        "inspect_text": "The clothes rack looks temporary, but temporary things often decide the mood of a room first."
       },
-      {
-        "id": "editing-desk",
-        "label": "editing desk",
-        "aliases": [
-          "desk",
-          "computer"
-        ],
-        "items": {
-          "clip-ren": 0,
-          "clip-aera": 0,
-          "clip-mio": 0,
-          "clip-daichi": 0
-        },
-        "inspect_text": "The desk is crowded with headphones, adapters, notebooks, and careful disorder. It belongs to someone whose work depends on seeing patterns other people miss."
-      }
-    ],
-    "exits": [
       {
         "room_id": "lounge",
-        "label": "lounge",
+        "label": "living lounge",
         "aliases": [
-          "living room",
-          "living"
+          "lounge",
+          "living",
+          "living room"
         ]
       },
       {
-        "room_id": "girls-room",
-        "label": "girls' room",
+        "room_id": "courtyard",
+        "label": "interior courtyard",
         "aliases": [
-          "women's room",
-          "shared girls room"
+          "courtyard",
+          "garden",
+          "patio"
         ]
       }
     ]
   },
   {
-    "id": "patio",
-    "title": "Patio",
-    "summary": "The patio opens the house up to air and distance. It feels made for private talks disguised as casual lingering.",
-    "inspect_text": "The patio is open enough to feel like escape without actually leaving the house. A narrow table sits beside a few chairs. Plants soften the edges. In daylight it would feel healthy and aspirational. At night it feels like the place where people admit things more carefully than they do indoors.",
+    "id": "lounge",
+    "title": "Sunken Living Lounge",
+    "summary": "Sunken into emerald-flecked terrazzo. A long low modular sofa, floor cushions, and art monographs, with no TV in sight.",
+    "inspect_text": "Three shallow concrete steps descend into a sunken floor of polished emerald-and-white flecked terrazzo (mo-shi-zi), delightfully cool beneath bare feet. A deep, modular slate-grey linen sofa wraps around two sides of the space. There is deliberately no television; low teak bookshelves hold art monographs and photography collections, and floor-to-ceiling iron glass doors open out into the verdant courtyard.",
     "features": [
       {
-        "id": "patio-table",
-        "label": "narrow patio table",
+        "id": "modular-sofa",
+        "label": "low modular sofa",
         "aliases": [
+          "sofa",
+          "couch",
+          "modular sofa"
+        ],
+        "allow_rest": true,
+        "inspect_text": "A low-slung, ultra-deep sofa upholstered in textured slate linen. Floor cushions allow three or four people to lounge in close proximity without having to sit upright."
+      },
+      {
+        "id": "travertine-table",
+        "label": "travertine coffee table",
+        "aliases": [
+          "coffee table",
           "table",
-          "patio table"
+          "travertine"
         ],
-        "inspect_text": "The patio table feels like a setting for one coffee, two drinks, or one conversation that goes on longer than planned."
+        "inspect_text": "A low slab of porous cream travertine. At any given hour, it holds half-empty mugs of roasted barley tea, sketchbooks, and discarded reading glasses."
       },
       {
-        "id": "plants",
-        "label": "potted plants",
+        "id": "bookshelf",
+        "label": "art monograph bookshelf",
         "aliases": [
-          "plants",
-          "herbs"
+          "bookshelf",
+          "books",
+          "shelf"
         ],
-        "inspect_text": "The potted plants make the patio feel curated rather than wild. Someone will eventually use watering them as an excuse to avoid a harder conversation."
+        "inspect_text": "Built-in teak shelves filled with Japanese architectural volumes, Korean indie film retrospectives, and vintage Taipei street photography books."
       }
     ],
     "exits": [
       {
-        "room_id": "lounge",
-        "label": "lounge",
+        "room_id": "entrance",
+        "label": "genkan",
         "aliases": [
-          "living room",
-          "living"
+          "entrance",
+          "door",
+          "genkan"
         ]
       },
       {
@@ -311,108 +334,387 @@
         "label": "dining room",
         "aliases": [
           "dining",
-          "table"
+          "dining room"
+        ]
+      },
+      {
+        "room_id": "courtyard",
+        "label": "interior courtyard",
+        "aliases": [
+          "courtyard",
+          "garden",
+          "outside"
+        ]
+      },
+      {
+        "room_id": "studio",
+        "label": "design studio (2F)",
+        "aliases": [
+          "studio",
+          "up",
+          "stairs",
+          "second floor",
+          "2f"
+        ]
+      },
+      {
+        "room_id": "confessional",
+        "label": "diary room (Basement)",
+        "aliases": [
+          "diary room",
+          "confessional",
+          "down",
+          "basement"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "courtyard",
+    "title": "Interior Courtyard",
+    "summary": "An open-air atrium framed by raw board-formed concrete. A fifty-year-old banyan tree and wild elephant-ear leaves catch the afternoon rain.",
+    "inspect_text": "Natural daylight pours down three stories into this raw concrete courtyard. A mature banyan tree's aerial roots twist into a bed of smooth river stones, surrounded by giant elephant-ear leaves (guanyin-lian) and wild ferns. When summer thunderstorms break over Taipei, rain cascades down the concrete walls into a recessed gravel drain.",
+    "features": [
+      {
+        "id": "banyan-tree",
+        "label": "fifty-year banyan tree",
+        "aliases": [
+          "tree",
+          "banyan",
+          "roots"
+        ],
+        "inspect_text": "A majestic banyan tree whose aerial roots drape down toward the river stones, its dense canopy filtering the intense subtropical sunlight into dancing dappled shadows."
+      },
+      {
+        "id": "stone-bench",
+        "label": "carved stone bench",
+        "aliases": [
+          "bench",
+          "stone bench"
+        ],
+        "allow_rest": true,
+        "inspect_text": "A smooth bench hewn from grey Guanyin stone. The stone stays cool even during the heat of mid-afternoon, making it an ideal retreat for solitary phone calls or quiet conversations."
+      },
+      {
+        "id": "elephant-ears",
+        "label": "giant elephant-ear plants",
+        "aliases": [
+          "plants",
+          "leaves",
+          "ferns"
+        ],
+        "inspect_text": "Lush tropical elephant-ear leaves the size of dinner trays. Droplets of rain or condensation glisten on their waxy green surfaces."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "lounge",
+        "label": "living lounge",
+        "aliases": [
+          "lounge",
+          "living",
+          "inside"
+        ]
+      },
+      {
+        "room_id": "dining-room",
+        "label": "dining room",
+        "aliases": [
+          "dining",
+          "dining room"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "studio",
+    "title": "Design Studio & Library",
+    "summary": "A glass-walled creative workspace overlooking the courtyard. Contains dual-monitor editing bays, drafting tables, and a vintage turntable.",
+    "inspect_text": "Large iron-frame windows overlook the courtyard below. A long birch workbench holds Aera's twin calibrated color reference monitors and editing control surface. Across the room sits Yuhan's tilted drafting table covered with tracing paper blueprints, and on a low credenza, a vintage Marantz turntable spins vinyl records at low volume.",
+    "features": [
+      {
+        "id": "editing-station",
+        "label": "video editing station",
+        "aliases": [
+          "editing",
+          "monitors",
+          "computer",
+          "station"
+        ],
+        "inspect_text": "Two 4K calibrated color grading displays, a pair of studio monitor speakers, and a jog-shuttle editing wheel. A pair of closed-back studio headphones rests on a cork block."
+      },
+      {
+        "id": "drafting-table",
+        "label": "architectural drafting table",
+        "aliases": [
+          "drafting table",
+          "table",
+          "blueprints"
+        ],
+        "inspect_text": "An adjustable wooden drafting board clamped with brass parallel bars. Rolls of butter paper and heavy blueprint tubes lean in a canvas basket."
+      },
+      {
+        "id": "turntable",
+        "label": "vintage vinyl turntable",
+        "aliases": [
+          "turntable",
+          "vinyl",
+          "record player",
+          "records"
+        ],
+        "inspect_text": "A warm walnut-cased turntable hooked up to a tube amplifier. Stacks of vinyl records include Taiwanese indie dream-pop, Japanese city pop, and quiet piano solos."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "lounge",
+        "label": "living lounge (1F)",
+        "aliases": [
+          "lounge",
+          "down",
+          "stairs",
+          "first floor",
+          "1f"
+        ]
+      },
+      {
+        "room_id": "girls-room",
+        "label": "girls' dormitory",
+        "aliases": [
+          "girls room",
+          "bedroom",
+          "dorm"
+        ]
+      },
+      {
+        "room_id": "rooftop",
+        "label": "rooftop terrace (3F)",
+        "aliases": [
+          "rooftop",
+          "roof",
+          "up",
+          "terrace",
+          "3f"
         ]
       }
     ]
   },
   {
     "id": "girls-room",
-    "title": "Girls' Room",
-    "summary": "The shared girls' room is tidy in a way that still leaves room for self-curation. It feels closer to backstage than sanctuary.",
-    "inspect_text": "Two beds, two wardrobes, and a few carefully claimed surfaces turn the shared girls' room into a negotiation between privacy and presentation. Makeup, chargers, folded clothes, and notebooks are already beginning to sort the room into emotional territories.",
+    "title": "Girls' Dormitory",
+    "summary": "An elevated tatami platform holding three low linen futons, partitioned by begonia-embossed glass and a tall industrial clothing rack.",
+    "inspect_text": "Fragrant rush tatami mats cover the elevated sleeping platform, where three low linen futons are neatly made. Soft sliding partitions with begonia-embossed glass diffuse the morning light. A tall industrial steel clothing rack holds a striking cross-section of wardrobes: Aera's oversized Korean tailoring, Mio's avant-garde streetwear, and Yuhan's structured black linens.",
     "features": [
       {
-        "id": "shared-beds",
-        "label": "shared beds",
+        "id": "futons",
+        "label": "tatami futon beds",
         "aliases": [
           "beds",
-          "bed"
+          "futons",
+          "tatami"
         ],
         "allow_rest": true,
-        "inspect_text": "The beds make the room feel less performative for a moment. Rest is one of the few things here that cannot really be faked."
+        "inspect_text": "Three minimalist floor futons dressed in crisp washed linen duvets in charcoal, unbleached flax, and pale sage. Small bedside reading lamps sit on lacquered trays."
       },
       {
-        "id": "vanity",
-        "label": "small vanity",
+        "id": "clothing-rack",
+        "label": "industrial clothing rack",
         "aliases": [
-          "vanity",
+          "rack",
+          "clothes",
+          "wardrobe"
+        ],
+        "inspect_text": "Heavy steel pipe rack hung with designer trench coats, vintage leather jackets, and pleated trousers. The top shelf holds hat boxes and camera cases."
+      },
+      {
+        "id": "vanity-mirror",
+        "label": "shared vanity mirror",
+        "aliases": [
           "mirror",
-          "makeup"
+          "vanity"
         ],
-        "inspect_text": "The vanity turns getting ready into a public-private act. Even ordinary routines look a little more intentional here."
-      },
-      {
-        "id": "shared-wardrobe",
-        "label": "shared wardrobe",
-        "aliases": [
-          "wardrobe",
-          "closet"
-        ],
-        "inspect_text": "The wardrobe is already dividing itself into personalities."
+        "inspect_text": "A broad vanity mirror framed by soft LED globes. The wooden surface below is crowded with expensive skincare serums, lip tints, and bottles of boutique fragrance."
       }
     ],
     "exits": [
       {
-        "room_id": "lounge",
-        "label": "lounge",
+        "room_id": "studio",
+        "label": "design studio",
         "aliases": [
-          "living room",
-          "living"
+          "studio",
+          "out",
+          "hallway"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "rooftop",
+    "title": "Rooftop Terrace",
+    "summary": "Weathered teak decking under a corrugated glass awning. Twin humming laundry machines, festoon fairy lights, and views of Taipei 101.",
+    "inspect_text": "Warm teak boards stretch underfoot beneath a high corrugated glass roof that shelters the terrace from afternoon cloudbursts. Twin washing machines hum softly in the laundry corner, surrounded by drying racks of clothes catching the warm evening draft. Festoon lights string between steel posts, illuminating a comfortable outdoor daybed. Across the terracotta rooftops of Da'an, the spire of Taipei 101 glimmers in the night haze.",
+    "features": [
+      {
+        "id": "terrace-couch",
+        "label": "teak outdoor daybed",
+        "aliases": [
+          "couch",
+          "daybed",
+          "terrace couch",
+          "bed"
+        ],
+        "allow_rest": true,
+        "inspect_text": "A deep outdoor daybed with weather-resistant charcoal cushions and throw pillows. It smells faintly of cedar and evening rain—a favorite spot for midnight beers."
+      },
+      {
+        "id": "washing-machines",
+        "label": "laundry machines",
+        "aliases": [
+          "laundry",
+          "washer",
+          "washing machine"
+        ],
+        "inspect_text": "Two commercial front-loading washers and dryers humming through rinse cycles. A bottle of eucalyptus laundry detergent sits on the dryer."
+      },
+      {
+        "id": "festoon-lights",
+        "label": "festoon string lights",
+        "aliases": [
+          "lights",
+          "fairy lights",
+          "festoon"
+        ],
+        "inspect_text": "Heavy outdoor string lights with vintage amber Edison bulbs, bathing the rooftop in a soft, nostalgic glow after sunset."
+      },
+      {
+        "id": "skyline-view",
+        "label": "Taipei 101 skyline",
+        "aliases": [
+          "view",
+          "skyline",
+          "taipei 101",
+          "city"
+        ],
+        "inspect_text": "Between the rusty metal fire escapes and water tanks of neighboring townhouses, the illuminated tiers of Taipei 101 rise into the subtropical clouds."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "studio",
+        "label": "design studio (2F)",
+        "aliases": [
+          "studio",
+          "down",
+          "stairs",
+          "2f"
         ]
       },
       {
-        "room_id": "studio",
-        "label": "studio",
+        "room_id": "guys-room",
+        "label": "guys' dormitory",
         "aliases": [
-          "work room",
-          "creative room"
+          "guys room",
+          "bedroom",
+          "dorm"
         ]
       }
     ]
   },
   {
     "id": "guys-room",
-    "title": "Guys' Room",
-    "summary": "The shared guys' room feels spare, functional, and not yet fully inhabited.",
-    "inspect_text": "The shared guys' room is cleaner than comfortable so far. Duffel bags, a training mat, neatly stacked basics, and a laptop charger on the floor all suggest two men still deciding how much of themselves to unpack here.",
+    "title": "Guys' Dormitory",
+    "summary": "Polished terrazzo with three industrial steel-frame beds, Daichi's road bike on a wall mount, and Kai's guitar amp in the corner.",
+    "inspect_text": "Airy, clean, and masculine in an unstudied way. Polished grey terrazzo holds three black powder-coated steel beds with charcoal linen duvets. On the far brick wall, Daichi's matte-black carbon road bike hangs from precision aluminum brackets above a foam roller. In the corner sits Kai's vintage tweed guitar amplifier and guitar gig bags, beside Ren's neatly stacked Japanese culinary magazines.",
     "features": [
       {
-        "id": "shared-beds",
-        "label": "shared beds",
+        "id": "steel-beds",
+        "label": "steel-frame beds",
         "aliases": [
           "beds",
-          "bed"
+          "steel beds"
         ],
         "allow_rest": true,
-        "inspect_text": "The beds still feel half temporary, but they are the clearest invitation in the room to stop performing and actually recover."
+        "inspect_text": "Three black steel beds: Daichi's bed is made with military precision; Kai's bed has a tangled duvet and loose guitar picks; Ren's bed is flanked by a stack of culinary notebooks."
       },
       {
-        "id": "training-mat",
-        "label": "training mat",
+        "id": "road-bike",
+        "label": "carbon road bike wall mount",
         "aliases": [
-          "mat",
-          "exercise mat"
+          "bike",
+          "road bike",
+          "mount"
         ],
-        "inspect_text": "The training mat is the clearest sign that routine came into the house before intimacy did."
+        "inspect_text": "An ultra-light aerodynamic racing bicycle with deep-section carbon wheels, spotless chain, and a GPS computer mount on the cockpit."
       },
       {
-        "id": "duffel-bags",
-        "label": "duffel bags",
+        "id": "guitar-corner",
+        "label": "vintage guitar amp and cases",
         "aliases": [
-          "bags",
-          "duffels"
+          "guitar",
+          "amp",
+          "cases"
         ],
-        "inspect_text": "The duffel bags still look half ready to leave, which makes the room feel temporary in a telling way."
+        "inspect_text": "A 1970s Fender tweed combo amplifier, a beaten-up hard shell guitar case plastered with indie band stickers, and a coiled cloth instrument cable."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "rooftop",
+        "label": "rooftop terrace",
+        "aliases": [
+          "rooftop",
+          "roof",
+          "out",
+          "terrace"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "confessional",
+    "title": "Diary Room",
+    "summary": "A soundproof subterranean booth with a single wooden stool facing a two-way mirror and a high-definition studio lens.",
+    "inspect_text": "Completely isolated from the house above. Sound-dampening acoustic charcoal panels line the walls, absorbing every stray frequency. A single polished wooden stool sits beneath a soft overhead key light. In front of the stool is a dark two-way mirror, behind which a hidden studio camera and teleprompter record every blink, swallow, and hesitation.",
+    "features": [
+      {
+        "id": "interview-stool",
+        "label": "wooden interview stool",
+        "aliases": [
+          "stool",
+          "chair"
+        ],
+        "allow_rest": true,
+        "inspect_text": "A backless oak stool bolted to the floor in the center of the key light. Anyone sitting here has nowhere to hide their body language."
+      },
+      {
+        "id": "two-way-mirror",
+        "label": "two-way glass mirror",
+        "aliases": [
+          "mirror",
+          "glass",
+          "camera"
+        ],
+        "inspect_text": "A dark pane of one-way glass. To the contestant, it reflects only their own isolated face; to the production team behind it, the camera lens is staring straight into their eyes."
+      },
+      {
+        "id": "microphone",
+        "label": "overhead boom microphone",
+        "aliases": [
+          "mic",
+          "microphone"
+        ],
+        "inspect_text": "A hyper-cardioid shotgun microphone suspended from the acoustic ceiling, sensitive enough to capture whispered confessions and sharp intakes of breath."
       }
     ],
     "exits": [
       {
         "room_id": "lounge",
-        "label": "lounge",
+        "label": "living lounge (1F)",
         "aliases": [
-          "living room",
-          "living"
+          "lounge",
+          "up",
+          "stairs",
+          "exit"
         ]
       }
     ]

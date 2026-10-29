@@ -1,14 +1,15 @@
 {
   "id": "aera",
   "title": "Aera",
-  "start_room_id": "lounge",
-  "start_time_minutes": 1020,
-  "intro_text": "Four strangers have moved into a beautiful house and agreed to let their time here be observed like a documentary. They keep their jobs, keep their habits, and keep pretending the cameras are not changing anything. The first introductions are only just beginning in the lounge. You are not one of them. You are the eye that decides where to look.",
+  "start_room_id": "control-room",
+  "start_time_minutes": 540,
+  "intro_text": "A renovated three-story villa in the leafy alleys of Da'an District. Six young professionals from Taipei, Tokyo, and Seoul have moved in together, agreeing to let their lives and ambitions be observed. Two doors down the lane in the production control room, the monitors are glowing and your crew is waiting for your first call. You are the showrunner. The story begins where you choose to look.",
   "help_text": "Frequently used commands:\n{available_commands}\n- Tab switches focus between command and transcript\n- Up/Down recalls command history when command is focused\n- Up/Down scrolls the transcript when transcript is focused\n- PageUp/PageDown/Home/End scroll the transcript faster\n- ? opens the menu",
   "prompt_context": {
     "subtext_notes": [
-      "This is a documentary house experiment where four strangers live together.",
-      "The player is an observing camera presence, not a participant in the house."
+      "This is an unscripted reality television simulation set in Da'an, Taipei.",
+      "The player is the Showrunner / Lead Producer stationed in the Video Village control room.",
+      "Six housemates live in the villa; three production crew members assist the player."
     ]
   }
 }
