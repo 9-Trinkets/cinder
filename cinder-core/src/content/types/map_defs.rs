@@ -38,4 +38,6 @@ pub struct MapRoomDefinition {
     pub room_id: String,
     pub x: f64,
     pub y: f64,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub has_stairs: Option<bool>,
 }

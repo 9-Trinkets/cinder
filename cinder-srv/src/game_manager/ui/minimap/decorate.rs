@@ -39,15 +39,19 @@ impl<'a> RoomDecorator<'a> {
     ) -> Option<MinimapRoom> {
         let room = self.content.room(&map_room.room_id)?;
         let (ally_names, hostile_names) = self.entity_names(&map_room.room_id);
+        let visited = visibility.is_visited(&room.id);
+        let has_stairs = (visited || visibility.fully_revealed())
+            && room_has_stairs(self.content, self.state, map_room);
         Some(MinimapRoom {
             id: room.id.clone(),
             label: room.title.clone(),
             x: map_room.x,
             y: map_room.y,
             current: room.id == current_room_id,
-            visited: visibility.is_visited(&room.id),
+            visited,
             has_teleport: self.entity_tracking
                 && is_teleport_anchor(self.content, self.state, &map_room.room_id),
+            has_stairs,
             ally_count: ally_names.len(),
             hostile_count: hostile_names.len(),
             ally_names,
@@ -97,4 +101,50 @@ fn is_teleport_anchor(content: &ContentPack, state: &WorldState, room_id: &str) 
         });
     let chalk = state.chalk_anchors.iter().any(|anchor| anchor == room_id);
     permanent || chalk
+}
+
+/// Whether a room contains stairs (inter-floor connection or explicit stair exit/feature).
+fn room_has_stairs(
+    content: &ContentPack,
+    state: &WorldState,
+    map_room: &MapRoomDefinition,
+) -> bool {
+    if let Some(explicit) = map_room.has_stairs {
+        return explicit;
+    }
+    let Some(room) = content.room(&map_room.room_id) else {
+        return false;
+    };
+    let has_stair_feature = room.features.iter().any(|f| {
+        f.id.to_ascii_lowercase().contains("stair")
+            || f.label.to_ascii_lowercase().contains("stair")
+    });
+    room.exits.iter().any(|exit| {
+        if !content.exit_is_open(state, &room.id, exit) {
+            return false;
+        }
+        if exit.label.to_ascii_lowercase().contains("stair")
+            || exit
+                .menu_label
+                .as_deref()
+                .map_or(false, |m| m.to_ascii_lowercase().contains("stair"))
+            || exit.aliases.iter().any(|a| {
+                let alias = a.trim().to_ascii_lowercase();
+                alias == "up"
+                    || alias == "down"
+                    || alias.contains("stair")
+                    || alias.contains("step")
+            })
+        {
+            return true;
+        }
+        if has_stair_feature {
+            let from_map = content.map_for_room(&room.id).map(|m| &m.id);
+            let to_map = content.map_for_room(&exit.room_id).map(|m| &m.id);
+            if from_map.is_some() && to_map.is_some() && from_map != to_map {
+                return true;
+            }
+        }
+        false
+    })
 }

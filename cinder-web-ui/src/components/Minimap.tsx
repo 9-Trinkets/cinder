@@ -143,14 +143,32 @@ export default function Minimap({
                   vectorEffect="non-scaling-stroke"
                 />
 
-                {/* Center marker: current player dot or portal diamond */}
+                {/* Center marker: current player dot or portal diamond or stairs */}
                 {room.current ? (
-                  <circle
-                    cx={position.x}
-                    cy={position.y}
-                    r="1.5"
-                    fill="var(--color-base)"
-                  />
+                  <g>
+                    <circle
+                      cx={position.x}
+                      cy={position.y}
+                      r="1.5"
+                      fill="var(--color-base)"
+                    />
+                    {room.has_stairs && !room.has_teleport && (
+                      <path
+                        d={`
+                          M ${position.x + 1.2} ${position.y + 3.2}
+                          H ${position.x + 2.4}
+                          V ${position.y + 2.0}
+                          H ${position.x + 3.6}
+                        `}
+                        fill="none"
+                        stroke="var(--color-base)"
+                        strokeWidth="0.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        opacity="0.85"
+                      />
+                    )}
+                  </g>
                 ) : room.has_teleport ? (
                   <polygon
                     points={`
@@ -160,6 +178,23 @@ export default function Minimap({
                       ${position.x - 2.5},${position.y}
                     `}
                     fill="var(--color-foam)"
+                    opacity="0.95"
+                  />
+                ) : room.has_stairs ? (
+                  <path
+                    d={`
+                      M ${position.x - 2.4} ${position.y + 2.2}
+                      H ${position.x - 0.8}
+                      V ${position.y}
+                      H ${position.x + 0.8}
+                      V ${position.y - 2.2}
+                      H ${position.x + 2.4}
+                    `}
+                    fill="none"
+                    stroke="var(--color-iris)"
+                    strokeWidth="1.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     opacity="0.95"
                   />
                 ) : null}
@@ -232,12 +267,29 @@ export default function Minimap({
             : `${map.visited_count} ${uiText.minimap_charted_label}`}
         </span>
       </div>
-      {(map.has_teleports || map.entity_tracking) && (
+      {(map.has_teleports || map.has_stairs || map.entity_tracking) && (
         <div className="flex flex-wrap items-center gap-3 pt-1 border-t border-subtle/50 text-[10px] tracking-wider text-muted">
           {map.has_teleports && (
             <span className="inline-flex items-center gap-1.5">
               <span className="inline-block h-2 w-2 rounded-full border border-dashed border-[var(--color-foam)] bg-[var(--color-foam)]/30" />
               <span>{t('hud.portal')}</span>
+            </span>
+          )}
+          {map.has_stairs && (
+            <span className="inline-flex items-center gap-1.5">
+              <svg
+                className="h-2.5 w-2.5 text-[var(--color-iris)]"
+                viewBox="0 0 10 10"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M 1.5 8.5 H 4 V 5.5 H 6.5 V 2.5 H 9" />
+              </svg>
+              <span>{t('hud.stairs')}</span>
             </span>
           )}
           {map.entity_tracking && (

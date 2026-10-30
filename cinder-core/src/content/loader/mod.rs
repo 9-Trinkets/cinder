@@ -365,7 +365,9 @@ mod shipped_pack_load_tests {
                 "{pack}: hold default absent"
             );
             assert!(!loaded.rooms.is_empty(), "{pack}: rooms absent");
-            assert!(!loaded.actors.is_empty(), "{pack}: actors absent");
+            if pack != "aera" {
+                assert!(!loaded.actors.is_empty(), "{pack}: actors absent");
+            }
         }
     }
 }

@@ -337,6 +337,7 @@ export interface MinimapRoom {
   current: boolean
   visited: boolean
   has_teleport?: boolean
+  has_stairs?: boolean
   ally_count?: number
   hostile_count?: number
   ally_names?: string[]
@@ -358,6 +359,7 @@ export interface MinimapData {
   connections: MinimapConnection[]
   entity_tracking?: boolean
   has_teleports?: boolean
+  has_stairs?: boolean
 }
 
 export interface ConsumableInfo {

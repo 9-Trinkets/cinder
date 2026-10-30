@@ -45,6 +45,7 @@ impl<P: RevealPolicy> MinimapProjector<P> {
         let rooms = project_rooms(map, &visibility, current_room_id, &decorator);
         let connections = project_connections(content, state, map, &visibility);
         let has_teleports = rooms.iter().any(|room| room.has_teleport);
+        let has_stairs = rooms.iter().any(|room| room.has_stairs);
 
         Some(MinimapData {
             id: map.id.clone(),
@@ -56,6 +57,7 @@ impl<P: RevealPolicy> MinimapProjector<P> {
             connections,
             entity_tracking,
             has_teleports,
+            has_stairs,
         })
     }
 }
@@ -155,11 +157,13 @@ mod tests {
                     room_id: "lounge".to_string(),
                     x: 0.0,
                     y: 0.0,
+                    has_stairs: None,
                 },
                 MapRoomDefinition {
                     room_id: "kitchen".to_string(),
                     x: 1.0,
                     y: 0.0,
+                    has_stairs: None,
                 },
             ],
             fog: true,
@@ -324,5 +328,73 @@ mod tests {
         assert_eq!(lounge.ally_names, vec!["Blair".to_string()]);
         assert_eq!(lounge.hostile_count, 1);
         assert_eq!(lounge.hostile_names, vec!["Casey".to_string()]);
+    }
+
+    #[test]
+    fn minimap_marks_rooms_with_stairs_and_computes_map_has_stairs() {
+        let mut content = mapped_pack();
+        // Add an exit with "stairs" in the label and "up" in aliases
+        content.rooms[0].exits.push(RoomExitDefinition {
+            room_id: "studio".to_string(),
+            label: "Stairs Up to 2F".to_string(),
+            menu_label: Some("Stairs Up to 2F".to_string()),
+            aliases: vec!["up".to_string(), "stairs".to_string()],
+            when: vec![],
+        });
+        // Reveal the map
+        content.maps[0].fog = false;
+        let state = WorldState::new(&content);
+
+        let minimap = build_minimap(&state, &content, "lounge").unwrap();
+        assert!(minimap.has_stairs);
+
+        let lounge = minimap.rooms.iter().find(|r| r.id == "lounge").unwrap();
+        assert!(lounge.has_stairs);
+
+        let kitchen = minimap.rooms.iter().find(|r| r.id == "kitchen").unwrap();
+        assert!(!kitchen.has_stairs);
+    }
+
+    #[test]
+    fn aera_floors_show_stairs_indicators_on_minimap_and_legend() {
+        let content =
+            cinder_core::content::loader::load_named_pack("aera", Some("en")).expect("aera loads");
+        let state = WorldState::new(&content);
+
+        // 1F (Ground Floor): player at entrance
+        let ground = build_minimap(&state, &content, "entrance").expect("ground floor minimap");
+        assert_eq!(ground.id, "ground-floor");
+        assert!(ground.has_stairs, "1F must have has_stairs for legend");
+        let lounge = ground.rooms.iter().find(|r| r.id == "lounge").unwrap();
+        assert!(lounge.has_stairs, "Lounge has stairs to 2F & B1");
+        let entrance = ground.rooms.iter().find(|r| r.id == "entrance").unwrap();
+        assert!(!entrance.has_stairs);
+        let kitchen = ground.rooms.iter().find(|r| r.id == "kitchen").unwrap();
+        assert!(!kitchen.has_stairs);
+
+        // 2F (Studio & Dorm): player at studio
+        let second = build_minimap(&state, &content, "studio").expect("second floor minimap");
+        assert_eq!(second.id, "second-floor");
+        assert!(second.has_stairs, "2F must have has_stairs for legend");
+        let studio = second.rooms.iter().find(|r| r.id == "studio").unwrap();
+        assert!(studio.has_stairs, "Studio has stairs to 1F & 3F");
+        let girls_room = second.rooms.iter().find(|r| r.id == "girls-room").unwrap();
+        assert!(!girls_room.has_stairs);
+
+        // 3F (Rooftop & Dorm): player at rooftop
+        let third = build_minimap(&state, &content, "rooftop").expect("third floor minimap");
+        assert_eq!(third.id, "third-floor");
+        assert!(third.has_stairs, "3F must have has_stairs for legend");
+        let rooftop = third.rooms.iter().find(|r| r.id == "rooftop").unwrap();
+        assert!(rooftop.has_stairs, "Rooftop has stairs to 2F");
+        let guys_room = third.rooms.iter().find(|r| r.id == "guys-room").unwrap();
+        assert!(!guys_room.has_stairs);
+
+        // B1 (Basement): player at confessional
+        let b1 = build_minimap(&state, &content, "confessional").expect("basement minimap");
+        assert_eq!(b1.id, "basement");
+        assert!(b1.has_stairs, "B1 must have has_stairs for legend");
+        let confessional = b1.rooms.iter().find(|r| r.id == "confessional").unwrap();
+        assert!(confessional.has_stairs, "Confessional has stairs to 1F");
     }
 }

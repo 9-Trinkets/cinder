@@ -276,6 +276,7 @@ impl FloorBuilder {
                 room_id: draft.id.clone(),
                 x: draft.x,
                 y: draft.y,
+                has_stairs: None,
             });
             built_rooms.push(RoomDefinition {
                 items: Default::default(),
