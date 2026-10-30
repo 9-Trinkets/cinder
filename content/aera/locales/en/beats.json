@@ -1,6 +1,6 @@
 {
   "initial_stage_ids": [
-    "stage-morning-start"
+    "stage-midnight-brewing"
   ],
   "stages": [
     {
@@ -54,7 +54,9 @@
       "advance_signals": [
         "feature_observed:editing-station"
       ],
-      "next_stage_ids": [],
+      "next_stage_ids": [
+        "stage-midnight-brewing"
+      ],
       "narrative_lines": []
     },
     {

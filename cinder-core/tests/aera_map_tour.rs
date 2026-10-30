@@ -453,7 +453,8 @@ fn aera_autonomous_quest_navigation_flow() {
     let rules = pack.movement_rules("aera");
     let mut noop_trace = |_role: &str, _topic: &str, _payload: serde_json::Value| Ok(());
 
-    // --- STEP 1: Aera starts in Lounge with quest stage-morning-start ---
+    // Explicitly set morning-edit quest for testing autonomous navigation flow
+    state.active_objective_stage_ids = vec!["stage-morning-start".to_string()];
     assert_eq!(
         state.active_objective_stage_ids,
         vec!["stage-morning-start"]
@@ -674,8 +675,11 @@ fn aera_autonomous_quest_navigation_flow() {
         .collect();
     apply_events(&mut state, &pack, &ts_events5);
 
-    // Quest complete! All stages in quest completed.
-    assert!(state.active_objective_stage_ids.is_empty());
+    // Morning edit quest complete! Automatically chains to late-night tea quest.
+    assert_eq!(
+        state.active_objective_stage_ids,
+        vec!["stage-midnight-brewing".to_string()]
+    );
 }
 
 #[test]
@@ -711,8 +715,11 @@ fn two_actor_relationship_quest_and_expression_flow() {
     assert_eq!(state.pair_stat("aera", "ren", "safety"), 1);
     assert_eq!(state.pair_stat("aera", "ren", "attraction"), 0);
 
-    // Activate the Late-Night Pour-Over relationship quest
-    state.active_objective_stage_ids = vec!["stage-midnight-brewing".to_string()];
+    // The Late-Night Pour-Over is the active starting quest by default
+    assert_eq!(
+        state.active_objective_stage_ids,
+        vec!["stage-midnight-brewing".to_string()]
+    );
 
     // --- STEP 1: Aera autonomous pathfinding from Lounge to Kitchen ---
     let turn1 =
