@@ -281,6 +281,30 @@
         "prompt_verb": "inspect",
         "visible_by_default": true
       }
+    },
+    {
+      "id": "act",
+      "command": "ACT",
+      "label": "Act",
+      "group": "expression",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "none",
+      "input_mode": "freeform_text",
+      "effects": [
+        "remember_in_room"
+      ],
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "observe",
+        "sort_order": 800
+      },
+      "npc": {
+        "prompt_verb": "do",
+        "visible_by_default": true
+      }
     }
   ]
 }

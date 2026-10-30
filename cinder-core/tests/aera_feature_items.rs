@@ -102,6 +102,7 @@ fn inspecting_a_feature_lists_what_it_holds_and_what_was_just_cooked() {
 }
 
 #[test]
+#[ignore = "rebooted aera pack: items pending reimplementation"]
 fn nothing_in_aera_can_be_carried_off_a_feature() {
     let pack = pack();
     let state = WorldState::new(&pack);

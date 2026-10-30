@@ -31,6 +31,38 @@
         "prompt_note_if_actor_incomplete": "You are in the Design Studio. Inspect the video editing station to load the card and review today's footage.",
         "prompt_note_if_others_incomplete": ""
       }
+    },
+    {
+      "id": "tea-midnight-brewing",
+      "stage_ids": ["stage-midnight-brewing"],
+      "guidance": {
+        "prompt_note_if_actor_incomplete": "It's past midnight. The smell of roasted barley tea drifts from the Open Kitchen where Ren is prepping. Head toward the Open Kitchen.",
+        "prompt_note_if_others_incomplete": ""
+      }
+    },
+    {
+      "id": "tea-offered",
+      "stage_ids": ["stage-tea-offered"],
+      "guidance": {
+        "prompt_note_if_actor_incomplete": "You are in the Open Kitchen with Ren. Ren pours a steaming mug of roasted barley tea across the counter. Accept the tea with a quiet gesture.",
+        "prompt_note_if_others_incomplete": ""
+      }
+    },
+    {
+      "id": "tea-vulnerable-talk",
+      "stage_ids": ["stage-vulnerable-talk"],
+      "guidance": {
+        "prompt_note_if_actor_incomplete": "Holding the warm ceramic mug, speak with Ren about the pressure of editing today's footage and your fatigue.",
+        "prompt_note_if_others_incomplete": ""
+      }
+    },
+    {
+      "id": "tea-diary-confession",
+      "stage_ids": ["stage-diary-confession"],
+      "guidance": {
+        "prompt_note_if_actor_incomplete": "After the quiet moment with Ren, head down the basement stairs to the soundproof B1 Diary Room to record your thoughts for tonight's confessional.",
+        "prompt_note_if_others_incomplete": ""
+      }
     }
   ]
 }

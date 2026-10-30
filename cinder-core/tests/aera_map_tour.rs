@@ -677,3 +677,290 @@ fn aera_autonomous_quest_navigation_flow() {
     // Quest complete! All stages in quest completed.
     assert!(state.active_objective_stage_ids.is_empty());
 }
+
+#[test]
+fn two_actor_relationship_quest_and_expression_flow() {
+    use cinder_core::engine::actor_turn::{build_actor_turn, realize_actor_turn_action};
+    use cinder_core::engine::dialogue::{
+        ActorTurnActionDecision, DirectSpeechIntentDecision, ScriptedDialogueGenerator,
+        render_actor_turn_decider_prompt,
+    };
+    use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
+    use cinder_core::engine::reducer::apply_events;
+    use cinder_core::engine::state::ConversationMemoryKind;
+    use std::sync::Arc;
+
+    let pack = Arc::new(load_named_pack("aera", Some("en")).expect("aera loads"));
+    let mut state = WorldState::new(&pack);
+
+    // Initial state: Aera in lounge, Ren in kitchen
+    let aera = pack.actor("aera").expect("aera defined");
+    let ren = pack.actor("ren").expect("ren defined");
+    let aera_rules = pack.movement_rules("aera");
+    let mut noop_trace = |_role: &str, _topic: &str, _payload: serde_json::Value| Ok(());
+
+    assert_eq!(state.actor_room_id("aera", &aera.room_id), "lounge");
+    assert_eq!(state.actor_room_id("ren", &ren.room_id), "kitchen");
+
+    // Ren starts with the mugicha tea
+    assert!(state.actor_has_item("ren", "mugicha-tea"));
+    assert!(!state.actor_has_item("aera", "mugicha-tea"));
+
+    // Initial pair stats
+    assert_eq!(state.pair_stat("aera", "ren", "connection"), 1);
+    assert_eq!(state.pair_stat("aera", "ren", "safety"), 1);
+    assert_eq!(state.pair_stat("aera", "ren", "attraction"), 0);
+
+    // Activate the Late-Night Pour-Over relationship quest
+    state.active_objective_stage_ids = vec!["stage-midnight-brewing".to_string()];
+
+    // --- STEP 1: Aera autonomous pathfinding from Lounge to Kitchen ---
+    let turn1 =
+        build_actor_turn(Arc::clone(&pack), &state, aera, &aera_rules).expect("build turn 1");
+    let prompt1 = render_actor_turn_decider_prompt(&turn1.request);
+
+    // Prompt contains character notes and tea quest guidance
+    assert!(prompt1.contains("Kim Ae-ra"));
+    assert!(prompt1.contains("The smell of roasted barley tea drifts from the Open Kitchen"));
+    // Pathfinder chooses entrance as next hop toward kitchen
+    assert!(prompt1.contains("MOVE entrance"));
+
+    let dialogue = Arc::new(
+        ScriptedDialogueGenerator::new()
+            .with_reply(
+                "aera",
+                "I've been staring at the monitor for ten hours straight... I'm terrified none of the footage makes sense.",
+            )
+            .with_attraction_intent(
+                "aera",
+                "ren",
+                DirectSpeechIntentDecision("VULNERABLE".to_string()),
+            ),
+    );
+
+    // Move to entrance
+    let move_entrance = ActorTurnActionDecision::MoveTo {
+        room_id: "entrance".to_string(),
+    };
+    let events = realize_actor_turn_action(
+        &pack,
+        dialogue.as_ref(),
+        &state,
+        aera,
+        &move_entrance,
+        &turn1.realization_context,
+        &mut noop_trace,
+    )
+    .expect("realize move entrance");
+    let ts_events: Vec<_> = events.into_iter().map(TimestampedWorldEvent::now).collect();
+    apply_events(&mut state, &pack, &ts_events);
+    assert_eq!(state.actor_room_id("aera", &aera.room_id), "entrance");
+
+    // Next hop: entrance -> kitchen
+    let turn_entry =
+        build_actor_turn(Arc::clone(&pack), &state, aera, &aera_rules).expect("build turn entry");
+    let move_kitchen = ActorTurnActionDecision::MoveTo {
+        room_id: "kitchen".to_string(),
+    };
+    let events = realize_actor_turn_action(
+        &pack,
+        dialogue.as_ref(),
+        &state,
+        aera,
+        &move_kitchen,
+        &turn_entry.realization_context,
+        &mut noop_trace,
+    )
+    .expect("realize move kitchen");
+    let ts_events: Vec<_> = events.into_iter().map(TimestampedWorldEvent::now).collect();
+    apply_events(&mut state, &pack, &ts_events);
+
+    // --- STEP 2: Both in Kitchen. Stage advances to stage-tea-offered ---
+    assert_eq!(state.actor_room_id("aera", &aera.room_id), "kitchen");
+    assert_eq!(state.actor_room_id("ren", &ren.room_id), "kitchen");
+    assert_eq!(
+        state.active_objective_stage_ids,
+        vec!["stage-tea-offered".to_string()]
+    );
+
+    // Ren transfers tea to Aera
+    let transfer = TimestampedWorldEvent::now(WorldEvent::ItemTransferred {
+        item_id: "mugicha-tea".to_string(),
+        from_actor_id: "ren".to_string(),
+        to_actor_id: "aera".to_string(),
+        initiator_actor_id: Some("ren".to_string()),
+    });
+    apply_events(&mut state, &pack, &[transfer]);
+
+    // Verify item transferred
+    assert!(!state.actor_has_item("ren", "mugicha-tea"));
+    assert!(state.actor_has_item("aera", "mugicha-tea"));
+
+    // Stage advances to stage-vulnerable-talk upon item transfer
+    assert_eq!(
+        state.active_objective_stage_ids,
+        vec!["stage-vulnerable-talk".to_string()]
+    );
+
+    // --- STEP 3: Aera performs non-verbal micro-gesture (`act`) ---
+    let turn2 =
+        build_actor_turn(Arc::clone(&pack), &state, aera, &aera_rules).expect("build turn 2");
+    let prompt2 = render_actor_turn_decider_prompt(&turn2.request);
+    assert!(prompt2.contains("Holding the warm ceramic mug, speak with Ren"));
+    assert!(prompt2.contains("ACT"));
+
+    let act_decision = ActorTurnActionDecision::Command {
+        command_id: "act".to_string(),
+        target_room_id: None,
+        target_actor_id: None,
+        feature_id: None,
+        consumable_id: None,
+        context_label: None,
+        freeform_text: Some(
+            "wraps both hands around the hot ceramic mug, letting the steam warm her face"
+                .to_string(),
+        ),
+    };
+    let act_events = realize_actor_turn_action(
+        &pack,
+        dialogue.as_ref(),
+        &state,
+        aera,
+        &act_decision,
+        &turn2.realization_context,
+        &mut noop_trace,
+    )
+    .expect("realize act");
+    let ts_act_events: Vec<_> = act_events
+        .into_iter()
+        .map(TimestampedWorldEvent::now)
+        .collect();
+    apply_events(&mut state, &pack, &ts_act_events);
+
+    // Verify: Ren's conversation memory with Aera contains the action memory
+    let history = state.conversation_history("ren", "aera");
+    assert!(
+        history
+            .iter()
+            .any(|line| line.kind == ConversationMemoryKind::Action
+                && line
+                    .text
+                    .contains("Aera wraps both hands around the hot ceramic mug")),
+        "expected action memory in history: {history:?}"
+    );
+
+    // --- STEP 4: Aera speaks to Ren with VULNERABLE intent ---
+    let speak_decision = ActorTurnActionDecision::Command {
+        command_id: "speak".to_string(),
+        target_room_id: None,
+        target_actor_id: Some("ren".to_string()),
+        feature_id: None,
+        consumable_id: None,
+        context_label: None,
+        freeform_text: None,
+    };
+    let speak_events = realize_actor_turn_action(
+        &pack,
+        dialogue.as_ref(),
+        &state,
+        aera,
+        &speak_decision,
+        &turn2.realization_context,
+        &mut noop_trace,
+    )
+    .expect("realize speak");
+    let ts_speak_events: Vec<_> = speak_events
+        .into_iter()
+        .map(TimestampedWorldEvent::now)
+        .collect();
+    apply_events(&mut state, &pack, &ts_speak_events);
+
+    // Verify pair stats updated (+2 connection, +2 safety from VULNERABLE intent)
+    assert_eq!(state.pair_stat("aera", "ren", "connection"), 3);
+    assert_eq!(state.pair_stat("aera", "ren", "safety"), 3);
+    assert_eq!(state.pair_stat("aera", "ren", "attraction"), 0);
+
+    // Verify speech recorded in conversation memory
+    let history_after = state.conversation_history("aera", "ren");
+    assert!(
+        history_after
+            .iter()
+            .any(|line| line.kind == ConversationMemoryKind::Speech
+                && line
+                    .text
+                    .contains("I've been staring at the monitor for ten hours straight")),
+        "expected speech in history: {history_after:?}"
+    );
+
+    // Stage advanced to stage-diary-confession
+    assert_eq!(
+        state.active_objective_stage_ids,
+        vec!["stage-diary-confession".to_string()]
+    );
+
+    // --- STEP 5: Aera retreats to B1 Diary Room (Confessional) ---
+    // From Kitchen, pathfinder routes: Kitchen -> Entrance -> Lounge -> Confessional
+    let turn3 =
+        build_actor_turn(Arc::clone(&pack), &state, aera, &aera_rules).expect("build turn 3");
+    let prompt3 = render_actor_turn_decider_prompt(&turn3.request);
+    assert!(prompt3.contains("head down the basement stairs to the soundproof B1 Diary Room"));
+    assert!(prompt3.contains("MOVE entrance"));
+
+    let move_entry3 = ActorTurnActionDecision::MoveTo {
+        room_id: "entrance".to_string(),
+    };
+    let events = realize_actor_turn_action(
+        &pack,
+        dialogue.as_ref(),
+        &state,
+        aera,
+        &move_entry3,
+        &turn3.realization_context,
+        &mut noop_trace,
+    )
+    .expect("realize move entry 3");
+    let ts_events: Vec<_> = events.into_iter().map(TimestampedWorldEvent::now).collect();
+    apply_events(&mut state, &pack, &ts_events);
+
+    // From Entrance to Lounge
+    let turn_lounge =
+        build_actor_turn(Arc::clone(&pack), &state, aera, &aera_rules).expect("build turn lounge");
+    let move_lounge = ActorTurnActionDecision::MoveTo {
+        room_id: "lounge".to_string(),
+    };
+    let events = realize_actor_turn_action(
+        &pack,
+        dialogue.as_ref(),
+        &state,
+        aera,
+        &move_lounge,
+        &turn_lounge.realization_context,
+        &mut noop_trace,
+    )
+    .expect("realize move lounge");
+    let ts_events: Vec<_> = events.into_iter().map(TimestampedWorldEvent::now).collect();
+    apply_events(&mut state, &pack, &ts_events);
+
+    // From Lounge down to Confessional (B1)
+    let turn_conf = build_actor_turn(Arc::clone(&pack), &state, aera, &aera_rules)
+        .expect("build turn confessional");
+    let move_conf = ActorTurnActionDecision::MoveTo {
+        room_id: "confessional".to_string(),
+    };
+    let events = realize_actor_turn_action(
+        &pack,
+        dialogue.as_ref(),
+        &state,
+        aera,
+        &move_conf,
+        &turn_conf.realization_context,
+        &mut noop_trace,
+    )
+    .expect("realize move confessional");
+    let ts_events: Vec<_> = events.into_iter().map(TimestampedWorldEvent::now).collect();
+    apply_events(&mut state, &pack, &ts_events);
+
+    // Arrived in confessional - quest fully completed!
+    assert_eq!(state.actor_room_id("aera", &aera.room_id), "confessional");
+    assert!(state.active_objective_stage_ids.is_empty());
+}

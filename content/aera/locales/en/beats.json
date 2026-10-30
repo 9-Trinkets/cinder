@@ -56,6 +56,63 @@
       ],
       "next_stage_ids": [],
       "narrative_lines": []
+    },
+    {
+      "id": "stage-midnight-brewing",
+      "quest_id": "late-night-tea",
+      "quest_title": "The Late-Night Pour-Over",
+      "quest_kind": "relationship",
+      "summary": "Ren is brewing roasted barley tea in the Open Kitchen. Head down to find a warm drink.",
+      "advance_signals": [
+        "actor_entered:aera:kitchen"
+      ],
+      "next_stage_ids": [
+        "stage-tea-offered"
+      ],
+      "narrative_lines": []
+    },
+    {
+      "id": "stage-tea-offered",
+      "quest_id": "late-night-tea",
+      "quest_title": "The Late-Night Pour-Over",
+      "quest_kind": "relationship",
+      "summary": "Ren offers a steaming mug of roasted barley tea across the kitchen island.",
+      "advance_signals": [
+        "item_transferred:mugicha-tea",
+        "item_acquired:mugicha-tea"
+      ],
+      "next_stage_ids": [
+        "stage-vulnerable-talk"
+      ],
+      "narrative_lines": []
+    },
+    {
+      "id": "stage-vulnerable-talk",
+      "quest_id": "late-night-tea",
+      "quest_title": "The Late-Night Pour-Over",
+      "quest_kind": "relationship",
+      "summary": "Holding the warm mug, talk with Ren with emotional honesty about your fatigue.",
+      "advance_signals": [
+        "speech_between:aera:ren",
+        "speech_between:ren:aera",
+        "actor_spoken:aera:ren"
+      ],
+      "next_stage_ids": [
+        "stage-diary-confession"
+      ],
+      "narrative_lines": []
+    },
+    {
+      "id": "stage-diary-confession",
+      "quest_id": "late-night-tea",
+      "quest_title": "The Late-Night Pour-Over",
+      "quest_kind": "relationship",
+      "summary": "Head down to the soundproof B1 Diary Room to record your honest reflections on tonight.",
+      "advance_signals": [
+        "actor_entered:aera:confessional"
+      ],
+      "next_stage_ids": [],
+      "narrative_lines": []
     }
   ]
 }

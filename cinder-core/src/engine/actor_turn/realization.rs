@@ -143,15 +143,19 @@ pub fn realize_actor_turn_action(
                             "actor turn decider returned freeform text for non-freeform command '{command_id}'"
                         ))));
                     }
-                    let generated_text = actor_action_dialogue(
-                        content,
-                        dialogue,
-                        state,
-                        actor,
-                        &realization_context.current_room_id,
-                        emit_trace,
-                    )
-                    .unwrap_or(text);
+                    let generated_text = if text.trim().is_empty() {
+                        actor_action_dialogue(
+                            content,
+                            dialogue,
+                            state,
+                            actor,
+                            &realization_context.current_room_id,
+                            emit_trace,
+                        )
+                        .unwrap_or(text)
+                    } else {
+                        text
+                    };
                     let _ = render_actor_action_text(&actor.name, &generated_text).map_err(
                         |error| -> Box<dyn Error> { Box::new(std::io::Error::other(error)) },
                     )?;

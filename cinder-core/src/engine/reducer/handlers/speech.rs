@@ -156,6 +156,22 @@ fn handle_targeted_message(
         ));
     }
 
+    lines.extend_lines(advance_objective_for_signal(
+        state,
+        content,
+        &format!("speech_between:{actor_id}:{recipient_id}"),
+    ));
+    lines.extend_lines(advance_objective_for_signal(
+        state,
+        content,
+        &format!("speech_between:{recipient_id}:{actor_id}"),
+    ));
+    lines.extend_lines(advance_objective_for_signal(
+        state,
+        content,
+        &format!("actor_spoken:{actor_id}:{recipient_id}"),
+    ));
+
     let involves_player =
         content.is_player_actor(recipient_id) || content.is_player_actor(actor_id);
     if involves_player {

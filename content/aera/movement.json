@@ -6,7 +6,11 @@
           "target_room_id": "kitchen",
           "any_active_stage_ids": [
             "stage-morning-start",
-            "stage-retrieve-card"
+            "stage-retrieve-card",
+            "stage-midnight-brewing",
+            "stage-kitchen-convergence",
+            "stage-tea-offered",
+            "stage-vulnerable-talk"
           ],
           "target_behavior": "stay"
         },
@@ -15,6 +19,28 @@
           "any_active_stage_ids": [
             "stage-bring-to-studio",
             "stage-edit-at-studio"
+          ],
+          "target_behavior": "stay"
+        },
+        {
+          "target_room_id": "confessional",
+          "any_active_stage_ids": [
+            "stage-diary-confession"
+          ],
+          "target_behavior": "stay"
+        }
+      ]
+    },
+    "ren": {
+      "target_rules": [
+        {
+          "target_room_id": "kitchen",
+          "any_active_stage_ids": [
+            "stage-midnight-brewing",
+            "stage-kitchen-convergence",
+            "stage-tea-offered",
+            "stage-vulnerable-talk",
+            "stage-diary-confession"
           ],
           "target_behavior": "stay"
         }
