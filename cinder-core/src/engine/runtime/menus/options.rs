@@ -142,7 +142,7 @@ impl CinderRuntime {
                     id: room.id.clone(),
                     title: title.clone(),
                     command: format!("go {exit_label}"),
-                    menu_text: String::new(),
+                    menu_text: room.title.clone(),
                 }
             })
             .collect::<Vec<_>>();

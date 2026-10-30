@@ -450,8 +450,8 @@
       },
       {
         "room_id": "studio",
-        "label": "stairs up to 2F (Design Studio)",
-        "menu_label": "Stairs Up to 2F (Design Studio)",
+        "label": "stairs up to 2F",
+        "menu_label": "Stairs Up to 2F",
         "aliases": [
           "studio",
           "design studio",
@@ -469,8 +469,8 @@
       },
       {
         "room_id": "confessional",
-        "label": "stairs down to B1 (Diary Room)",
-        "menu_label": "Stairs Down to B1 (Diary Room)",
+        "label": "stairs down to B1",
+        "menu_label": "Stairs Down to B1",
         "aliases": [
           "confessional",
           "diary room",
@@ -809,8 +809,8 @@
     "exits": [
       {
         "room_id": "lounge",
-        "label": "stairs down to 1F (Living Lounge)",
-        "menu_label": "Stairs Down to 1F (Living Lounge)",
+        "label": "stairs down to 1F",
+        "menu_label": "Stairs Down to 1F",
         "aliases": [
           "lounge",
           "living",
@@ -844,8 +844,8 @@
       },
       {
         "room_id": "rooftop",
-        "label": "spiral stairs up to 3F (Rooftop Terrace)",
-        "menu_label": "Spiral Stairs Up to 3F (Rooftop Terrace)",
+        "label": "spiral stairs up to 3F",
+        "menu_label": "Spiral Stairs Up to 3F",
         "aliases": [
           "rooftop",
           "roof",
@@ -1171,8 +1171,8 @@
     "exits": [
       {
         "room_id": "studio",
-        "label": "spiral stairs down to 2F (Design Studio)",
-        "menu_label": "Spiral Stairs Down to 2F (Design Studio)",
+        "label": "spiral stairs down to 2F",
+        "menu_label": "Spiral Stairs Down to 2F",
         "aliases": [
           "studio",
           "design studio",
@@ -1484,8 +1484,8 @@
     "exits": [
       {
         "room_id": "lounge",
-        "label": "stairs up to 1F (Living Lounge)",
-        "menu_label": "Stairs Up to 1F (Living Lounge)",
+        "label": "stairs up to 1F",
+        "menu_label": "Stairs Up to 1F",
         "aliases": [
           "lounge",
           "living",

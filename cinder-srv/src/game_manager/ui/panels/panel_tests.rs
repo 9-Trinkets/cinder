@@ -779,3 +779,33 @@ fn layla_do_is_offered_only_where_something_can_be_done() {
         "citadel_corridor_south"
     ));
 }
+
+#[test]
+fn aera_exit_panel_options_separate_movement_title_and_destination_subtitle() {
+    use super::options::map_exit_panel_options;
+    let pack = cinder_core::loader::load_named_pack("aera", Some("en")).expect("aera loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "lounge".to_string();
+    let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
+
+    let options = map_exit_panel_options(&runtime).expect("exit options");
+
+    // Regular horizontal room exits (e.g. entrance, dining room) have no subtitle
+    let entrance = options.iter().find(|o| o.id == "entrance").unwrap();
+    assert_eq!(entrance.title, "Front Entry");
+    assert_eq!(entrance.subtitle, None);
+
+    let dining = options.iter().find(|o| o.id == "dining-room").unwrap();
+    assert_eq!(dining.title, "Dining Room");
+    assert_eq!(dining.subtitle, None);
+
+    // Stairs Up to 2F has clean title and destination room as subtitle
+    let studio = options.iter().find(|o| o.id == "studio").unwrap();
+    assert_eq!(studio.title, "Stairs Up to 2F");
+    assert_eq!(studio.subtitle.as_deref(), Some("Design Studio & Library"));
+
+    // Stairs Down to B1 has clean title and destination room as subtitle
+    let confessional = options.iter().find(|o| o.id == "confessional").unwrap();
+    assert_eq!(confessional.title, "Stairs Down to B1");
+    assert_eq!(confessional.subtitle.as_deref(), Some("Diary Room"));
+}
