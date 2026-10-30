@@ -1,3 +1,24 @@
 {
-  "actors": {}
+  "actors": {
+    "aera": {
+      "target_rules": [
+        {
+          "target_room_id": "kitchen",
+          "any_active_stage_ids": [
+            "stage-morning-start",
+            "stage-retrieve-card"
+          ],
+          "target_behavior": "stay"
+        },
+        {
+          "target_room_id": "studio",
+          "any_active_stage_ids": [
+            "stage-bring-to-studio",
+            "stage-edit-at-studio"
+          ],
+          "target_behavior": "stay"
+        }
+      ]
+    }
+  }
 }

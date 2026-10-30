@@ -73,7 +73,10 @@
           "stove",
           "range"
         ],
-        "inspect_text": "A massive brushed stainless-steel prep island with commercial gas burners and an end-grain wooden chopping block. It's built for two people to cook side-by-side—or bump shoulders uncomfortably."
+        "inspect_text": "A massive brushed stainless-steel prep island with commercial gas burners and an end-grain wooden chopping block. It's built for two people to cook side-by-side—or bump shoulders uncomfortably.",
+        "items": {
+          "cfexpress-card": 1
+        }
       },
       {
         "id": "pour-over-station",

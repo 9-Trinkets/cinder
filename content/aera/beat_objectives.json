@@ -1,3 +1,36 @@
 {
-  "objectives": []
+  "objectives": [
+    {
+      "id": "morning-edit-start",
+      "stage_ids": ["stage-morning-start"],
+      "guidance": {
+        "prompt_note_if_actor_incomplete": "You need your high-speed CFexpress card from the kitchen island before you can begin cutting today's footage. Move toward the Open Kitchen.",
+        "prompt_note_if_others_incomplete": ""
+      }
+    },
+    {
+      "id": "morning-edit-retrieve",
+      "stage_ids": ["stage-retrieve-card"],
+      "guidance": {
+        "prompt_note_if_actor_incomplete": "You are in the Open Kitchen. Inspect the stainless-steel island to pick up the CFexpress card.",
+        "prompt_note_if_others_incomplete": ""
+      }
+    },
+    {
+      "id": "morning-edit-studio",
+      "stage_ids": ["stage-bring-to-studio"],
+      "guidance": {
+        "prompt_note_if_actor_incomplete": "You have your card. Head through the living lounge and take the teak stairs up to the 2F Design Studio.",
+        "prompt_note_if_others_incomplete": ""
+      }
+    },
+    {
+      "id": "morning-edit-assemble",
+      "stage_ids": ["stage-edit-at-studio"],
+      "guidance": {
+        "prompt_note_if_actor_incomplete": "You are in the Design Studio. Inspect the video editing station to load the card and review today's footage.",
+        "prompt_note_if_others_incomplete": ""
+      }
+    }
+  ]
 }

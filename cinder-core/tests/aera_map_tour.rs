@@ -435,3 +435,245 @@ fn floor_transitions_have_clear_indicators_in_titles_exits_and_panels() {
     runtime.run_turn("go up").expect("go up to 1F");
     assert_eq!(runtime.current_room_id().unwrap(), "lounge");
 }
+
+#[test]
+fn aera_autonomous_quest_navigation_flow() {
+    use cinder_core::engine::actor_turn::{build_actor_turn, realize_actor_turn_action};
+    use cinder_core::engine::dialogue::{
+        ActorTurnActionDecision, ScriptedDialogueGenerator, render_actor_turn_decider_prompt,
+    };
+    use cinder_core::engine::events::TimestampedWorldEvent;
+    use cinder_core::engine::reducer::apply_events;
+    use std::sync::Arc;
+
+    let pack = Arc::new(load_named_pack("aera", Some("en")).expect("aera loads"));
+    let mut state = WorldState::new(&pack);
+    let dialogue = Arc::new(ScriptedDialogueGenerator::new());
+    let actor = pack.actor("aera").expect("aera defined");
+    let rules = pack.movement_rules("aera");
+    let mut noop_trace = |_role: &str, _topic: &str, _payload: serde_json::Value| Ok(());
+
+    // --- STEP 1: Aera starts in Lounge with quest stage-morning-start ---
+    assert_eq!(
+        state.active_objective_stage_ids,
+        vec!["stage-morning-start"]
+    );
+    assert_eq!(state.actor_room_id("aera", &actor.room_id), "lounge");
+
+    let build1 = build_actor_turn(Arc::clone(&pack), &state, actor, &rules).expect("build step 1");
+    let prompt1 = render_actor_turn_decider_prompt(&build1.request);
+
+    // Verify Prompt Structure: Character Persona, Spatial Grounding, and Quest Guidance
+    assert!(prompt1.contains("Kim Ae-ra"));
+    assert!(prompt1.contains("Sunken Living Lounge"));
+    assert!(prompt1.contains("You need your high-speed CFexpress card from the kitchen island"));
+    // Lounge connects to entrance, which pathfinder selects as next hop to kitchen
+    assert!(prompt1.contains("MOVE entrance"));
+
+    // Realize Move to Front Entry
+    let decision1 = ActorTurnActionDecision::MoveTo {
+        room_id: "entrance".to_string(),
+    };
+    let events1 = realize_actor_turn_action(
+        &pack,
+        dialogue.as_ref(),
+        &state,
+        actor,
+        &decision1,
+        &build1.realization_context,
+        &mut noop_trace,
+    )
+    .expect("realize step 1");
+    let ts_events1: Vec<_> = events1
+        .into_iter()
+        .map(TimestampedWorldEvent::now)
+        .collect();
+    apply_events(&mut state, &pack, &ts_events1);
+    assert_eq!(state.actor_room_id("aera", &actor.room_id), "entrance");
+
+    // In Entrance, next hop to kitchen is Kitchen
+    let build_entry =
+        build_actor_turn(Arc::clone(&pack), &state, actor, &rules).expect("build entry");
+    let prompt_entry = render_actor_turn_decider_prompt(&build_entry.request);
+    assert!(prompt_entry.contains("MOVE kitchen"));
+
+    let decision_entry = ActorTurnActionDecision::MoveTo {
+        room_id: "kitchen".to_string(),
+    };
+    let events_entry = realize_actor_turn_action(
+        &pack,
+        dialogue.as_ref(),
+        &state,
+        actor,
+        &decision_entry,
+        &build_entry.realization_context,
+        &mut noop_trace,
+    )
+    .expect("realize entry");
+    let ts_events_entry: Vec<_> = events_entry
+        .into_iter()
+        .map(TimestampedWorldEvent::now)
+        .collect();
+    apply_events(&mut state, &pack, &ts_events_entry);
+
+    // --- STEP 2: In Kitchen, stage advanced to stage-retrieve-card ---
+    assert_eq!(state.actor_room_id("aera", &actor.room_id), "kitchen");
+    assert_eq!(
+        state.active_objective_stage_ids,
+        vec!["stage-retrieve-card"]
+    );
+
+    let build2 = build_actor_turn(Arc::clone(&pack), &state, actor, &rules).expect("build step 2");
+    let prompt2 = render_actor_turn_decider_prompt(&build2.request);
+    assert!(prompt2.contains("Open Kitchen"));
+    assert!(prompt2.contains("Inspect the stainless-steel island to pick up the CFexpress card"));
+
+    // Realize Inspect Kitchen Island
+    let decision2 = ActorTurnActionDecision::Command {
+        command_id: "inspect_feature".to_string(),
+        target_room_id: None,
+        target_actor_id: None,
+        feature_id: Some("kitchen-island".to_string()),
+        consumable_id: None,
+        context_label: None,
+        freeform_text: None,
+    };
+    let events2 = realize_actor_turn_action(
+        &pack,
+        dialogue.as_ref(),
+        &state,
+        actor,
+        &decision2,
+        &build2.realization_context,
+        &mut noop_trace,
+    )
+    .expect("realize step 2");
+    let ts_events2: Vec<_> = events2
+        .into_iter()
+        .map(TimestampedWorldEvent::now)
+        .collect();
+    apply_events(&mut state, &pack, &ts_events2);
+
+    // --- STEP 3: Stage advanced to stage-bring-to-studio. Target is 2F studio ---
+    assert_eq!(
+        state.active_objective_stage_ids,
+        vec!["stage-bring-to-studio"]
+    );
+
+    // Multi-hop pathfinding: from Kitchen, next hop toward Studio is Front Entry
+    let build3 = build_actor_turn(Arc::clone(&pack), &state, actor, &rules).expect("build step 3");
+    let prompt3 = render_actor_turn_decider_prompt(&build3.request);
+    assert!(prompt3.contains("Head through the living lounge and take the teak stairs"));
+    assert!(prompt3.contains("MOVE entrance"));
+
+    let decision3 = ActorTurnActionDecision::MoveTo {
+        room_id: "entrance".to_string(),
+    };
+    let events3 = realize_actor_turn_action(
+        &pack,
+        dialogue.as_ref(),
+        &state,
+        actor,
+        &decision3,
+        &build3.realization_context,
+        &mut noop_trace,
+    )
+    .expect("realize step 3");
+    let ts_events3: Vec<_> = events3
+        .into_iter()
+        .map(TimestampedWorldEvent::now)
+        .collect();
+    apply_events(&mut state, &pack, &ts_events3);
+    assert_eq!(state.actor_room_id("aera", &actor.room_id), "entrance");
+
+    // From Front Entry, next hop toward Studio is Lounge
+    let build_entry2 =
+        build_actor_turn(Arc::clone(&pack), &state, actor, &rules).expect("build entry 2");
+    let prompt_entry2 = render_actor_turn_decider_prompt(&build_entry2.request);
+    assert!(prompt_entry2.contains("MOVE lounge"));
+
+    let decision_entry2 = ActorTurnActionDecision::MoveTo {
+        room_id: "lounge".to_string(),
+    };
+    let events_entry2 = realize_actor_turn_action(
+        &pack,
+        dialogue.as_ref(),
+        &state,
+        actor,
+        &decision_entry2,
+        &build_entry2.realization_context,
+        &mut noop_trace,
+    )
+    .expect("realize entry 2");
+    let ts_events_entry2: Vec<_> = events_entry2
+        .into_iter()
+        .map(TimestampedWorldEvent::now)
+        .collect();
+    apply_events(&mut state, &pack, &ts_events_entry2);
+    assert_eq!(state.actor_room_id("aera", &actor.room_id), "lounge");
+
+    // --- STEP 4: In Lounge, next hop toward Studio is Studio (via 2F stairs) ---
+    let build4 = build_actor_turn(Arc::clone(&pack), &state, actor, &rules).expect("build step 4");
+    let prompt4 = render_actor_turn_decider_prompt(&build4.request);
+    assert!(prompt4.contains("MOVE studio"));
+
+    let decision4 = ActorTurnActionDecision::MoveTo {
+        room_id: "studio".to_string(),
+    };
+    let events4 = realize_actor_turn_action(
+        &pack,
+        dialogue.as_ref(),
+        &state,
+        actor,
+        &decision4,
+        &build4.realization_context,
+        &mut noop_trace,
+    )
+    .expect("realize step 4");
+    let ts_events4: Vec<_> = events4
+        .into_iter()
+        .map(TimestampedWorldEvent::now)
+        .collect();
+    apply_events(&mut state, &pack, &ts_events4);
+
+    // --- STEP 5: Arrived at Studio on 2F. Stage advanced to stage-edit-at-studio ---
+    assert_eq!(state.actor_room_id("aera", &actor.room_id), "studio");
+    assert_eq!(
+        state.active_objective_stage_ids,
+        vec!["stage-edit-at-studio"]
+    );
+
+    let build5 = build_actor_turn(Arc::clone(&pack), &state, actor, &rules).expect("build step 5");
+    let prompt5 = render_actor_turn_decider_prompt(&build5.request);
+    assert!(prompt5.contains("Design Studio & Library"));
+    assert!(prompt5.contains("Inspect the video editing station"));
+
+    // Realize Inspect Editing Station
+    let decision5 = ActorTurnActionDecision::Command {
+        command_id: "inspect_feature".to_string(),
+        target_room_id: None,
+        target_actor_id: None,
+        feature_id: Some("editing-station".to_string()),
+        consumable_id: None,
+        context_label: None,
+        freeform_text: None,
+    };
+    let events5 = realize_actor_turn_action(
+        &pack,
+        dialogue.as_ref(),
+        &state,
+        actor,
+        &decision5,
+        &build5.realization_context,
+        &mut noop_trace,
+    )
+    .expect("realize step 5");
+    let ts_events5: Vec<_> = events5
+        .into_iter()
+        .map(TimestampedWorldEvent::now)
+        .collect();
+    apply_events(&mut state, &pack, &ts_events5);
+
+    // Quest complete! All stages in quest completed.
+    assert!(state.active_objective_stage_ids.is_empty());
+}

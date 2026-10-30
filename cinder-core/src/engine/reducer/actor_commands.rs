@@ -174,6 +174,21 @@ pub(super) fn handle_actor_command_used(
             lines.narration(command_text);
         }
     }
+    if let Some(feature_id) = command_context.feature_id {
+        lines.extend_lines(advance_objective_for_signal(
+            state,
+            content,
+            &format!(
+                "feature_observed:{}:{}",
+                command_context.room_id, feature_id
+            ),
+        ));
+        lines.extend_lines(advance_objective_for_signal(
+            state,
+            content,
+            &format!("feature_observed:{feature_id}"),
+        ));
+    }
     lines.extend_lines(advance_objective_for_signal(state, content, "command_used"));
     Some(lines)
 }

@@ -65,6 +65,7 @@
       "effects": [
         "move_actor"
       ],
+      "event_text": "{actor_name} heads toward the {target_room_title}.",
       "player_command": {
         "target_mode": "room_reference",
         "usage": "go <room>",
@@ -87,6 +88,10 @@
           "data_source": "exits",
           "on_select": "execute_command"
         }
+      },
+      "npc": {
+        "prompt_verb": "move",
+        "visible_by_default": true
       }
     },
     {
@@ -195,6 +200,10 @@
         "overflow": false,
         "group": "recovery",
         "sort_order": 500
+      },
+      "npc": {
+        "prompt_verb": "rest",
+        "visible_by_default": true
       }
     },
     {
@@ -229,6 +238,48 @@
         "overflow": false,
         "group": "",
         "sort_order": 600
+      },
+      "npc": {
+        "prompt_verb": "speak",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "inspect_feature",
+      "command": "INSPECT FEATURE",
+      "label": "Inspect Feature",
+      "group": "observation",
+      "phrases": [
+        "look at",
+        "look",
+        "inspect",
+        "x"
+      ],
+      "player_enabled": true,
+      "target_mode": "feature",
+      "effects": [
+        "observe_feature"
+      ],
+      "event_text": "{actor_name} inspects the {feature_label}.",
+      "player_command": {
+        "target_mode": "actor_or_feature_reference",
+        "usage": "inspect <thing>",
+        "example": "inspect island",
+        "advances_time": false,
+        "input": {
+          "required": true
+        }
+      },
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "observe",
+        "sort_order": 700
+      },
+      "npc": {
+        "prompt_verb": "inspect",
+        "visible_by_default": true
       }
     }
   ]

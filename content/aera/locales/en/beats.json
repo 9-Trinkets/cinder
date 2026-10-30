@@ -1,4 +1,61 @@
 {
-  "initial_stage_ids": [],
-  "stages": []
+  "initial_stage_ids": [
+    "stage-morning-start"
+  ],
+  "stages": [
+    {
+      "id": "stage-morning-start",
+      "quest_id": "morning-edit",
+      "quest_title": "Morning Edit Assembly",
+      "quest_kind": "main",
+      "summary": "Head to the Open Kitchen to retrieve your CFexpress card.",
+      "advance_signals": [
+        "actor_entered:aera:kitchen"
+      ],
+      "next_stage_ids": [
+        "stage-retrieve-card"
+      ],
+      "narrative_lines": []
+    },
+    {
+      "id": "stage-retrieve-card",
+      "quest_id": "morning-edit",
+      "quest_title": "Morning Edit Assembly",
+      "quest_kind": "main",
+      "summary": "Inspect the kitchen island to find the CFexpress card.",
+      "advance_signals": [
+        "feature_observed:kitchen-island"
+      ],
+      "next_stage_ids": [
+        "stage-bring-to-studio"
+      ],
+      "narrative_lines": []
+    },
+    {
+      "id": "stage-bring-to-studio",
+      "quest_id": "morning-edit",
+      "quest_title": "Morning Edit Assembly",
+      "quest_kind": "main",
+      "summary": "Take the card up to the 2F Design Studio editing bay.",
+      "advance_signals": [
+        "actor_entered:aera:studio"
+      ],
+      "next_stage_ids": [
+        "stage-edit-at-studio"
+      ],
+      "narrative_lines": []
+    },
+    {
+      "id": "stage-edit-at-studio",
+      "quest_id": "morning-edit",
+      "quest_title": "Morning Edit Assembly",
+      "quest_kind": "main",
+      "summary": "Inspect the video editing station in the Design Studio to review today's A-roll.",
+      "advance_signals": [
+        "feature_observed:editing-station"
+      ],
+      "next_stage_ids": [],
+      "narrative_lines": []
+    }
+  ]
 }
