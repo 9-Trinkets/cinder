@@ -1,20 +1,61 @@
 [
   {
-    "id": "daan-villa",
-    "label": "Da'an Villa",
+    "id": "offsite",
+    "label": "Production Village",
+    "fog": false,
     "rooms": [
-      { "room_id": "control-room", "x": -3.0, "y": 0.0 },
-      { "room_id": "alley", "x": -1.5, "y": 0.0 },
-      { "room_id": "entrance", "x": 0.0, "y": 0.0 },
-      { "room_id": "kitchen", "x": 2.5, "y": 0.0 },
-      { "room_id": "dining-room", "x": 5.0, "y": 0.0 },
-      { "room_id": "lounge", "x": 2.5, "y": 2.5 },
-      { "room_id": "courtyard", "x": 5.0, "y": 2.5 },
-      { "room_id": "confessional", "x": 0.0, "y": 5.0 },
-      { "room_id": "studio", "x": 2.5, "y": 5.0 },
-      { "room_id": "girls-room", "x": 5.0, "y": 5.0 },
-      { "room_id": "guys-room", "x": 0.0, "y": 7.5 },
-      { "room_id": "rooftop", "x": 2.5, "y": 7.5 }
+      { "room_id": "control-room", "x": 0.0, "y": 0.0 },
+      { "room_id": "alley", "x": 3.0, "y": 0.0 }
+    ],
+    "reveal_conditions": [
+      { "kind": "always" }
+    ]
+  },
+  {
+    "id": "ground-floor",
+    "label": "1F - Ground Floor",
+    "fog": false,
+    "rooms": [
+      { "room_id": "entrance", "x": 0.0, "y": 2.5 },
+      { "room_id": "kitchen", "x": 0.0, "y": 0.0 },
+      { "room_id": "dining-room", "x": 3.0, "y": 0.0 },
+      { "room_id": "lounge", "x": 3.0, "y": 2.5 },
+      { "room_id": "courtyard", "x": 6.0, "y": 1.25 }
+    ],
+    "reveal_conditions": [
+      { "kind": "always" }
+    ]
+  },
+  {
+    "id": "second-floor",
+    "label": "2F - Studio & Dorm",
+    "fog": false,
+    "rooms": [
+      { "room_id": "studio", "x": 0.0, "y": 0.0 },
+      { "room_id": "girls-room", "x": 3.5, "y": 0.0 }
+    ],
+    "reveal_conditions": [
+      { "kind": "always" }
+    ]
+  },
+  {
+    "id": "third-floor",
+    "label": "3F - Rooftop & Dorm",
+    "fog": false,
+    "rooms": [
+      { "room_id": "guys-room", "x": 0.0, "y": 0.0 },
+      { "room_id": "rooftop", "x": 3.5, "y": 0.0 }
+    ],
+    "reveal_conditions": [
+      { "kind": "always" }
+    ]
+  },
+  {
+    "id": "basement",
+    "label": "B1 - Sub-Level",
+    "fog": false,
+    "rooms": [
+      { "room_id": "confessional", "x": 0.0, "y": 0.0 }
     ],
     "reveal_conditions": [
       { "kind": "always" }
