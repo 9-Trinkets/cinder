@@ -94,7 +94,9 @@
         "label": "villa entrance",
         "aliases": [
           "entrance",
-          "genkan",
+          "front entry",
+          "entry",
+          "foyer",
           "villa",
           "house",
           "in"
@@ -104,9 +106,9 @@
   },
   {
     "id": "entrance",
-    "title": "Genkan",
+    "title": "Front Entry",
     "summary": "The sunken terrazzo entryway of the villa. A bench of reclaimed camphor wood sits beneath geometric 1970s iron window grilles.",
-    "inspect_text": "Polished grey concrete steps drop down from the front door into the genkan. Reclaimed camphor wood forms a low bench where street shoes are exchanged for leather indoor slippers. Geometric 1970s iron grilles frame frosted begonia glass, casting patterned shadows across the floor. The open kitchen and living room extend just beyond the threshold.",
+    "inspect_text": "Polished grey concrete steps drop down from the front door into the entryway. Reclaimed camphor wood forms a low bench where street shoes are exchanged for leather indoor slippers. Geometric 1970s iron grilles frame frosted begonia glass, casting patterned shadows across the floor. The open kitchen and living room extend just beyond the threshold.",
     "features": [
       {
         "id": "shoe-bench",
@@ -116,7 +118,7 @@
           "shoe bench",
           "shoes"
         ],
-        "inspect_text": "A thick, fragrant slab of camphor wood. Beneath it sit six pairs of shoes: Ren's oiled kitchen clogs, Kai's worn Chuck Taylors, Mio's platform boots, Daichi's carbon running shoes, Aera's minimalist sandals, and Yuhan's leather mules."
+        "inspect_text": "A thick, fragrant slab of camphor wood. Beneath it sit rows of neatly lined shoes: work clogs, worn sneakers, platform boots, and leather mules."
       },
       {
         "id": "slipper-rack",
@@ -208,11 +210,13 @@
     "exits": [
       {
         "room_id": "entrance",
-        "label": "genkan",
+        "label": "front entry",
         "aliases": [
           "entrance",
-          "door",
-          "genkan"
+          "front entry",
+          "entry",
+          "foyer",
+          "door"
         ]
       },
       {
@@ -322,11 +326,13 @@
     "exits": [
       {
         "room_id": "entrance",
-        "label": "genkan",
+        "label": "front entry",
         "aliases": [
           "entrance",
-          "door",
-          "genkan"
+          "front entry",
+          "entry",
+          "foyer",
+          "door"
         ]
       },
       {
