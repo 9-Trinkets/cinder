@@ -113,7 +113,7 @@
       ],
       "player_command": {
         "usage": "speak <person> [message]（與 <人物> 對話 [內容]）",
-        "example": "與 艾拉 對話 早安",
+        "example": "與 愛羅 對話 早安",
         "input": {
           "prompt": "你想說什麼？",
           "placeholder": "說些真誠自然的話..."

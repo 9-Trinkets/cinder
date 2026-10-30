@@ -1105,8 +1105,9 @@ fn aera_defaults_to_zh_tw_with_complete_flavor_and_features() {
     let ren_actor = pack.actor("ren").expect("ren defined");
     assert_eq!(ren_actor.name, "蓮");
 
-    // Verify opening title is Chinese only
-    assert_eq!(pack.opening.title, "艾拉");
+    // Verify opening and settings titles use standardized Chinese name
+    assert_eq!(pack.opening.title, "愛羅");
+    assert_eq!(pack.settings.title, "愛羅");
 }
 
 #[test]

@@ -30,12 +30,12 @@
   "minimap_charted_label": "已探索房間",
   "act_closure_title": "第 {day_number} 天結束",
   "act_closure_current_focus_label": "當前焦點",
-  "act_closure_highlights_label": "今晚在《艾拉》",
+  "act_closure_highlights_label": "今晚在《愛羅》",
   "act_closure_relationships_label": "關係動態看板",
   "act_closure_empty_highlights": "平靜的一段時間，主要是觀察與日常流動。",
   "act_closure_empty_relationships": "尚未觀察到明顯的關係變化。",
   "final_summary_title": "第一章結束",
-  "final_summary_highlights_label": "今晚在《艾拉》",
+  "final_summary_highlights_label": "今晚在《愛羅》",
   "final_summary_relationships_label": "關係動態看板",
   "final_summary_preview_label": "即將到來",
   "final_summary_empty_preview": "明天即將到來，但輪廓仍在形成中。",
@@ -43,7 +43,7 @@
     "title": "第一章結束",
     "sections": [
       {
-        "title": "今晚在《艾拉》",
+        "title": "今晚在《愛羅》",
         "source": "transcript_highlights"
       },
       {
@@ -66,11 +66,11 @@
   "npc_tick_soft_error": "{actor_name}愣了一下，一臉困惑。",
   "look_panel_title": "查看",
   "game_closure": {
-    "title": "這就是《艾拉》",
+    "title": "這就是《愛羅》",
     "subtitle_template": "",
     "sections": [
       {
-        "title": "今晚在《艾拉》",
+        "title": "今晚在《愛羅》",
         "source": "transcript_highlights"
       },
       {
