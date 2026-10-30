@@ -89,6 +89,44 @@
       }
     },
     {
+      "id": "interact",
+      "command": "INTERACT",
+      "label": "Interact",
+      "group": "interaction",
+      "phrases": [
+        "interact",
+        "do",
+        "use"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "effects": [
+        "use_interaction"
+      ],
+      "available": {},
+      "ui": {
+        "bar": true,
+        "overflow": false,
+        "panel": "interact",
+        "panel_config": {
+          "title": "Interact",
+          "prompt": "What would you like to operate?",
+          "data_source": "feature_interactions",
+          "on_select": "execute_command"
+        },
+        "group": "interact",
+        "sort_order": 300
+      },
+      "player_command": {
+        "usage": "interact <target> or do <action>",
+        "example": "do close soundproof door",
+        "advances_time": true,
+        "input": {
+          "required": true
+        }
+      }
+    },
+    {
       "id": "follow",
       "command": "FOLLOW",
       "label": "Follow",

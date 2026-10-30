@@ -134,3 +134,166 @@ fn player_can_tour_entire_daan_villa() {
     runtime.run_turn("go rooftop").expect("go rooftop");
     assert_eq!(runtime.current_room_id().unwrap(), "rooftop");
 }
+
+#[test]
+fn player_can_operate_doors_and_doors_gate_movement() {
+    let runtime = aera_runtime();
+
+    // Move from entrance to lounge
+    runtime.run_turn("go lounge").expect("go lounge");
+    assert_eq!(runtime.current_room_id().unwrap(), "lounge");
+
+    // Door starts open
+    let look_open = runtime
+        .run_turn("look confessional-door")
+        .expect("look door");
+    assert!(
+        look_open
+            .lines
+            .iter()
+            .any(|l| l.text.contains("stands ajar"))
+    );
+
+    // Close the confessional door
+    let close_res = runtime
+        .run_turn("do close confessional door")
+        .expect("close door");
+    assert!(
+        close_res
+            .lines
+            .iter()
+            .any(|l| l.text.contains("magnetic latch seals"))
+    );
+
+    // Inspecting now shows it sealed
+    let look_closed = runtime
+        .run_turn("look confessional-door")
+        .expect("look door closed");
+    assert!(
+        look_closed
+            .lines
+            .iter()
+            .any(|l| l.text.contains("amber 'ON AIR' indicator glows"))
+    );
+
+    // Attempting to go to confessional fails while closed
+    runtime
+        .run_turn("go confessional")
+        .expect("go confessional");
+    assert_eq!(
+        runtime.current_room_id().unwrap(),
+        "lounge",
+        "movement should be blocked by closed door"
+    );
+
+    // Open the door
+    runtime
+        .run_turn("do open confessional door")
+        .expect("open door");
+
+    // Now movement succeeds
+    runtime
+        .run_turn("go confessional")
+        .expect("go confessional");
+    assert_eq!(runtime.current_room_id().unwrap(), "confessional");
+
+    // Inside confessional, close the door from within
+    runtime
+        .run_turn("do close confessional door")
+        .expect("close from inside");
+    let look_inside = runtime
+        .run_turn("look confessional-door")
+        .expect("look door inside");
+    assert!(
+        look_inside
+            .lines
+            .iter()
+            .any(|l| l.text.contains("sealed shut from the inside"))
+    );
+
+    // Leaving is blocked while closed
+    runtime.run_turn("go lounge").expect("go lounge blocked");
+    assert_eq!(runtime.current_room_id().unwrap(), "confessional");
+
+    // Open the door from inside
+    runtime
+        .run_turn("do open confessional door")
+        .expect("open from inside");
+    runtime.run_turn("go lounge").expect("go lounge");
+    assert_eq!(runtime.current_room_id().unwrap(), "lounge");
+
+    // Test sliding door in 2F studio / girls-room
+    runtime.run_turn("go studio").expect("go studio");
+    assert_eq!(runtime.current_room_id().unwrap(), "studio");
+
+    // Close sliding door
+    runtime
+        .run_turn("do slide bedroom door shut")
+        .expect("slide shut");
+    runtime
+        .run_turn("go girls-room")
+        .expect("go girls-room blocked");
+    assert_eq!(
+        runtime.current_room_id().unwrap(),
+        "studio",
+        "movement should be blocked by closed sliding door"
+    );
+
+    // Reopen and enter
+    runtime
+        .run_turn("do slide bedroom door open")
+        .expect("slide open");
+    runtime.run_turn("go girls-room").expect("go girls-room");
+    assert_eq!(runtime.current_room_id().unwrap(), "girls-room");
+
+    // Return to studio and head up to rooftop
+    runtime.run_turn("go studio").expect("go studio");
+    runtime.run_turn("go rooftop").expect("go rooftop");
+    assert_eq!(runtime.current_room_id().unwrap(), "rooftop");
+
+    // Test guys-door on 3F
+    runtime
+        .run_turn("shut terrace door")
+        .expect("shut terrace door directly");
+    runtime
+        .run_turn("go guys-room")
+        .expect("go guys-room blocked");
+    assert_eq!(
+        runtime.current_room_id().unwrap(),
+        "rooftop",
+        "movement should be blocked by closed terrace door"
+    );
+
+    // Reopen terrace door directly
+    runtime
+        .run_turn("open terrace door")
+        .expect("open terrace door directly");
+    runtime.run_turn("go guys-room").expect("go guys-room");
+    assert_eq!(runtime.current_room_id().unwrap(), "guys-room");
+
+    // Head back down to lounge
+    runtime.run_turn("go rooftop").expect("go rooftop");
+    runtime.run_turn("go studio").expect("go studio");
+    runtime.run_turn("go lounge").expect("go lounge");
+    assert_eq!(runtime.current_room_id().unwrap(), "lounge");
+
+    // Test courtyard accordion doors
+    runtime
+        .run_turn("close accordion doors")
+        .expect("close accordion doors");
+    runtime
+        .run_turn("go courtyard")
+        .expect("go courtyard blocked");
+    assert_eq!(
+        runtime.current_room_id().unwrap(),
+        "lounge",
+        "movement should be blocked by closed accordion doors"
+    );
+
+    // Reopen accordion doors
+    runtime
+        .run_turn("open accordion doors")
+        .expect("open accordion doors");
+    runtime.run_turn("go courtyard").expect("go courtyard");
+    assert_eq!(runtime.current_room_id().unwrap(), "courtyard");
+}

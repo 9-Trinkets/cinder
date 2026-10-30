@@ -206,6 +206,185 @@
           "shelf"
         ],
         "inspect_text": "Built-in teak shelves filled with Japanese architectural volumes, Korean indie film retrospectives, and vintage Taipei street photography books."
+      },
+      {
+        "id": "courtyard-accordion-doors",
+        "label": "courtyard accordion doors",
+        "aliases": [
+          "accordion doors",
+          "glass doors",
+          "courtyard doors",
+          "folding doors"
+        ],
+        "inspect_text": "Floor-to-ceiling iron-framed glass accordion doors connecting the lounge and the interior courtyard.",
+        "states": [
+          "open",
+          "closed"
+        ],
+        "descriptions": [
+          {
+            "when": [
+              "feature:courtyard-accordion-doors=open"
+            ],
+            "inspect_text": "The black iron-framed accordion doors are folded flat against the wall, seamlessly joining the sunken lounge with the verdant courtyard."
+          },
+          {
+            "when": [
+              "feature:courtyard-accordion-doors=closed"
+            ],
+            "inspect_text": "The floor-to-ceiling glass accordion doors are closed shut, keeping the summer heat and humidity in the courtyard while maintaining a clear view of the banyan tree."
+          }
+        ],
+        "interactions": [
+          {
+            "id": "close",
+            "label": "Fold the accordion doors shut",
+            "aliases": [
+              "close accordion doors",
+              "shut accordion doors",
+              "close courtyard doors",
+              "shut courtyard doors"
+            ],
+            "when": [
+              "feature:courtyard-accordion-doors=open"
+            ],
+            "lines": [
+              "You pull the heavy iron accordion doors across the brass track until the rubber weatherstripping seals tight."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "feature": "lounge/courtyard-accordion-doors",
+                "state": "closed"
+              },
+              {
+                "kind": "set_feature_state",
+                "feature": "courtyard/courtyard-accordion-doors",
+                "state": "closed"
+              }
+            ],
+            "repeatable": true
+          },
+          {
+            "id": "open",
+            "label": "Fold the accordion doors open",
+            "aliases": [
+              "open accordion doors",
+              "fold accordion doors",
+              "open courtyard doors"
+            ],
+            "when": [
+              "feature:courtyard-accordion-doors=closed"
+            ],
+            "lines": [
+              "You unlock the central latch and fold the glass panels accordion-style back against the wall, opening the lounge to the courtyard breeze."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "feature": "lounge/courtyard-accordion-doors",
+                "state": "open"
+              },
+              {
+                "kind": "set_feature_state",
+                "feature": "courtyard/courtyard-accordion-doors",
+                "state": "open"
+              }
+            ],
+            "repeatable": true
+          }
+        ]
+      },
+      {
+        "id": "confessional-door",
+        "label": "acoustic soundproof door",
+        "aliases": [
+          "door",
+          "soundproof door",
+          "confessional door",
+          "diary door",
+          "acoustic door"
+        ],
+        "inspect_text": "A heavy acoustic soundproof door leading down to the basement diary room.",
+        "states": [
+          "open",
+          "closed"
+        ],
+        "descriptions": [
+          {
+            "when": [
+              "feature:confessional-door=open"
+            ],
+            "inspect_text": "The heavy acoustic door to the basement diary room stands ajar. The 'ON AIR' indicator above the frame is unlit."
+          },
+          {
+            "when": [
+              "feature:confessional-door=closed"
+            ],
+            "inspect_text": "The heavy acoustic door to the basement diary room is sealed shut. The amber 'ON AIR' indicator glows softly above the frame."
+          }
+        ],
+        "interactions": [
+          {
+            "id": "close",
+            "label": "Close the soundproof door",
+            "aliases": [
+              "close soundproof door",
+              "shut soundproof door",
+              "close confessional door",
+              "shut confessional door",
+              "close diary door",
+              "shut diary door"
+            ],
+            "when": [
+              "feature:confessional-door=open"
+            ],
+            "lines": [
+              "You pull the heavy acoustic door shut until the magnetic latch seals with a muffled thud."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "feature": "lounge/confessional-door",
+                "state": "closed"
+              },
+              {
+                "kind": "set_feature_state",
+                "feature": "confessional/confessional-door",
+                "state": "closed"
+              }
+            ],
+            "repeatable": true
+          },
+          {
+            "id": "open",
+            "label": "Open the soundproof door",
+            "aliases": [
+              "open soundproof door",
+              "open confessional door",
+              "open diary door"
+            ],
+            "when": [
+              "feature:confessional-door=closed"
+            ],
+            "lines": [
+              "You turn the brushed metal lever handle and push the heavy acoustic door open."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "feature": "lounge/confessional-door",
+                "state": "open"
+              },
+              {
+                "kind": "set_feature_state",
+                "feature": "confessional/confessional-door",
+                "state": "open"
+              }
+            ],
+            "repeatable": true
+          }
+        ]
       }
     ],
     "exits": [
@@ -235,6 +414,9 @@
           "courtyard",
           "garden",
           "outside"
+        ],
+        "when": [
+          "feature:courtyard-accordion-doors=open"
         ]
       },
       {
@@ -256,6 +438,9 @@
           "confessional",
           "down",
           "basement"
+        ],
+        "when": [
+          "feature:confessional-door=open"
         ]
       }
     ]
@@ -295,6 +480,94 @@
           "ferns"
         ],
         "inspect_text": "Lush tropical elephant-ear leaves the size of dinner trays. Droplets of rain or condensation glisten on their waxy green surfaces."
+      },
+      {
+        "id": "courtyard-accordion-doors",
+        "label": "courtyard accordion doors",
+        "aliases": [
+          "accordion doors",
+          "glass doors",
+          "courtyard doors",
+          "folding doors"
+        ],
+        "inspect_text": "Floor-to-ceiling iron-framed glass accordion doors connecting the lounge and the interior courtyard.",
+        "states": [
+          "open",
+          "closed"
+        ],
+        "descriptions": [
+          {
+            "when": [
+              "feature:courtyard-accordion-doors=open"
+            ],
+            "inspect_text": "The iron accordion doors are folded open flat against the wall, joining the atrium with the sunken lounge."
+          },
+          {
+            "when": [
+              "feature:courtyard-accordion-doors=closed"
+            ],
+            "inspect_text": "The glass accordion doors are folded shut, reflecting the banyan tree and keeping the living room cooled."
+          }
+        ],
+        "interactions": [
+          {
+            "id": "close",
+            "label": "Fold the accordion doors shut",
+            "aliases": [
+              "close accordion doors",
+              "shut accordion doors",
+              "close courtyard doors",
+              "shut courtyard doors"
+            ],
+            "when": [
+              "feature:courtyard-accordion-doors=open"
+            ],
+            "lines": [
+              "You pull the iron accordion doors shut, sealing the courtyard from the lounge."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "feature": "lounge/courtyard-accordion-doors",
+                "state": "closed"
+              },
+              {
+                "kind": "set_feature_state",
+                "feature": "courtyard/courtyard-accordion-doors",
+                "state": "closed"
+              }
+            ],
+            "repeatable": true
+          },
+          {
+            "id": "open",
+            "label": "Fold the accordion doors open",
+            "aliases": [
+              "open accordion doors",
+              "fold accordion doors",
+              "open courtyard doors"
+            ],
+            "when": [
+              "feature:courtyard-accordion-doors=closed"
+            ],
+            "lines": [
+              "You release the latch and fold the accordion doors back, connecting the courtyard to the lounge."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "feature": "lounge/courtyard-accordion-doors",
+                "state": "open"
+              },
+              {
+                "kind": "set_feature_state",
+                "feature": "courtyard/courtyard-accordion-doors",
+                "state": "open"
+              }
+            ],
+            "repeatable": true
+          }
+        ]
       }
     ],
     "exits": [
@@ -305,6 +578,9 @@
           "lounge",
           "living",
           "inside"
+        ],
+        "when": [
+          "feature:courtyard-accordion-doors=open"
         ]
       },
       {
@@ -354,6 +630,105 @@
           "records"
         ],
         "inspect_text": "A warm walnut-cased turntable hooked up to a tube amplifier. Stacks of vinyl records include Taiwanese indie dream-pop, Japanese city pop, and quiet piano solos."
+      },
+      {
+        "id": "girls-sliding-door",
+        "label": "frosted begonia sliding door",
+        "aliases": [
+          "sliding door",
+          "begonia door",
+          "door",
+          "girls door",
+          "screen"
+        ],
+        "inspect_text": "A dark-stained cypress sliding door with frosted begonia glass panes leading to the girls' dormitory.",
+        "states": [
+          "open",
+          "closed"
+        ],
+        "descriptions": [
+          {
+            "when": [
+              "feature:girls-sliding-door=open"
+            ],
+            "inspect_text": "The dark-stained cypress sliding door is slid open against the wall, leaving the doorway into the girls' dormitory wide open."
+          },
+          {
+            "when": [
+              "feature:girls-sliding-door=closed"
+            ],
+            "inspect_text": "The cypress sliding door is drawn shut. Vintage frosted begonia glass diffuses the warm interior lights of the girls' room."
+          }
+        ],
+        "interactions": [
+          {
+            "id": "close",
+            "label": "Slide the bedroom door shut",
+            "aliases": [
+              "close sliding door",
+              "shut sliding door",
+              "slide door shut",
+              "slide bedroom door shut",
+              "slide the bedroom door shut",
+              "close bedroom door",
+              "shut bedroom door",
+              "close girls door",
+              "close door",
+              "shut door"
+            ],
+            "when": [
+              "feature:girls-sliding-door=open"
+            ],
+            "lines": [
+              "You slide the cypress door smoothly along its wooden track until it gently clicks closed."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "feature": "studio/girls-sliding-door",
+                "state": "closed"
+              },
+              {
+                "kind": "set_feature_state",
+                "feature": "girls-room/girls-sliding-door",
+                "state": "closed"
+              }
+            ],
+            "repeatable": true
+          },
+          {
+            "id": "open",
+            "label": "Slide the bedroom door open",
+            "aliases": [
+              "open sliding door",
+              "slide door open",
+              "slide bedroom door open",
+              "slide the bedroom door open",
+              "open bedroom door",
+              "open girls door",
+              "open door"
+            ],
+            "when": [
+              "feature:girls-sliding-door=closed"
+            ],
+            "lines": [
+              "You slide the begonia glass door back along its recessed track, opening the entrance."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "feature": "studio/girls-sliding-door",
+                "state": "open"
+              },
+              {
+                "kind": "set_feature_state",
+                "feature": "girls-room/girls-sliding-door",
+                "state": "open"
+              }
+            ],
+            "repeatable": true
+          }
+        ]
       }
     ],
     "exits": [
@@ -375,6 +750,9 @@
           "girls room",
           "bedroom",
           "dorm"
+        ],
+        "when": [
+          "feature:girls-sliding-door=open"
         ]
       },
       {
@@ -425,6 +803,105 @@
           "vanity"
         ],
         "inspect_text": "A broad vanity mirror framed by soft LED globes. The wooden surface below is crowded with expensive skincare serums, lip tints, and bottles of boutique fragrance."
+      },
+      {
+        "id": "girls-sliding-door",
+        "label": "frosted begonia sliding door",
+        "aliases": [
+          "sliding door",
+          "begonia door",
+          "door",
+          "girls door",
+          "screen"
+        ],
+        "inspect_text": "A dark-stained cypress sliding door with frosted begonia glass panes leading to the girls' dormitory.",
+        "states": [
+          "open",
+          "closed"
+        ],
+        "descriptions": [
+          {
+            "when": [
+              "feature:girls-sliding-door=open"
+            ],
+            "inspect_text": "The dark-stained cypress sliding door is pushed back, revealing the sunlit design studio outside."
+          },
+          {
+            "when": [
+              "feature:girls-sliding-door=closed"
+            ],
+            "inspect_text": "The cypress sliding door is closed tight, ensuring total privacy inside the dormitory."
+          }
+        ],
+        "interactions": [
+          {
+            "id": "open",
+            "label": "Slide the bedroom door open",
+            "aliases": [
+              "open sliding door",
+              "slide door open",
+              "slide bedroom door open",
+              "slide the bedroom door open",
+              "open bedroom door",
+              "open girls door",
+              "open door"
+            ],
+            "when": [
+              "feature:girls-sliding-door=closed"
+            ],
+            "lines": [
+              "You slide the begonia glass door open, looking out into the studio."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "feature": "studio/girls-sliding-door",
+                "state": "open"
+              },
+              {
+                "kind": "set_feature_state",
+                "feature": "girls-room/girls-sliding-door",
+                "state": "open"
+              }
+            ],
+            "repeatable": true
+          },
+          {
+            "id": "close",
+            "label": "Slide the bedroom door shut",
+            "aliases": [
+              "close sliding door",
+              "shut sliding door",
+              "slide door shut",
+              "slide bedroom door shut",
+              "slide the bedroom door shut",
+              "close bedroom door",
+              "shut bedroom door",
+              "close girls door",
+              "close door",
+              "shut door"
+            ],
+            "when": [
+              "feature:girls-sliding-door=open"
+            ],
+            "lines": [
+              "You pull the sliding door shut from inside, isolating the room."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "feature": "studio/girls-sliding-door",
+                "state": "closed"
+              },
+              {
+                "kind": "set_feature_state",
+                "feature": "girls-room/girls-sliding-door",
+                "state": "closed"
+              }
+            ],
+            "repeatable": true
+          }
+        ]
       }
     ],
     "exits": [
@@ -435,6 +912,9 @@
           "studio",
           "out",
           "hallway"
+        ],
+        "when": [
+          "feature:girls-sliding-door=open"
         ]
       }
     ]
@@ -487,6 +967,93 @@
           "city"
         ],
         "inspect_text": "Between the rusty metal fire escapes and water tanks of neighboring townhouses, the illuminated tiers of Taipei 101 rise into the subtropical clouds."
+      },
+      {
+        "id": "guys-door",
+        "label": "fluted glass terrace door",
+        "aliases": [
+          "terrace door",
+          "guys door",
+          "door",
+          "glass door"
+        ],
+        "inspect_text": "A fluted glass terrace door connecting the rooftop terrace to the guys' dormitory.",
+        "states": [
+          "open",
+          "closed"
+        ],
+        "descriptions": [
+          {
+            "when": [
+              "feature:guys-door=open"
+            ],
+            "inspect_text": "The terrace door stands propped open, letting the evening rooftop air drift into the bedroom."
+          },
+          {
+            "when": [
+              "feature:guys-door=closed"
+            ],
+            "inspect_text": "The terrace door is shut firmly against the mountain wind, its fluted glass panes rattling faintly in the frame."
+          }
+        ],
+        "interactions": [
+          {
+            "id": "close",
+            "label": "Shut the terrace door",
+            "aliases": [
+              "shut terrace door",
+              "close terrace door",
+              "shut guys door",
+              "close guys door"
+            ],
+            "when": [
+              "feature:guys-door=open"
+            ],
+            "lines": [
+              "You pull the terrace door shut against the weatherstripping until the latch catches."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "feature": "rooftop/guys-door",
+                "state": "closed"
+              },
+              {
+                "kind": "set_feature_state",
+                "feature": "guys-room/guys-door",
+                "state": "closed"
+              }
+            ],
+            "repeatable": true
+          },
+          {
+            "id": "open",
+            "label": "Open the terrace door",
+            "aliases": [
+              "open terrace door",
+              "open guys door"
+            ],
+            "when": [
+              "feature:guys-door=closed"
+            ],
+            "lines": [
+              "You turn the brass latch and push the terrace door open to the rooftop breezes."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "feature": "rooftop/guys-door",
+                "state": "open"
+              },
+              {
+                "kind": "set_feature_state",
+                "feature": "guys-room/guys-door",
+                "state": "open"
+              }
+            ],
+            "repeatable": true
+          }
+        ]
       }
     ],
     "exits": [
@@ -507,6 +1074,9 @@
           "guys room",
           "bedroom",
           "dorm"
+        ],
+        "when": [
+          "feature:guys-door=open"
         ]
       }
     ]
@@ -546,6 +1116,93 @@
           "cases"
         ],
         "inspect_text": "A 1970s Fender tweed combo amplifier, a beaten-up hard shell guitar case plastered with indie band stickers, and a coiled cloth instrument cable."
+      },
+      {
+        "id": "guys-door",
+        "label": "fluted glass terrace door",
+        "aliases": [
+          "terrace door",
+          "guys door",
+          "door",
+          "glass door"
+        ],
+        "inspect_text": "A fluted glass terrace door connecting the rooftop terrace to the guys' dormitory.",
+        "states": [
+          "open",
+          "closed"
+        ],
+        "descriptions": [
+          {
+            "when": [
+              "feature:guys-door=open"
+            ],
+            "inspect_text": "The fluted glass terrace door stands propped open to the rooftop terrace."
+          },
+          {
+            "when": [
+              "feature:guys-door=closed"
+            ],
+            "inspect_text": "The terrace door is pulled shut from within the bedroom, filtering the city lights outside into vertical fluted stripes."
+          }
+        ],
+        "interactions": [
+          {
+            "id": "open",
+            "label": "Open the terrace door",
+            "aliases": [
+              "open terrace door",
+              "open guys door"
+            ],
+            "when": [
+              "feature:guys-door=closed"
+            ],
+            "lines": [
+              "You unlatch the terrace door and push it open to the night air."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "feature": "rooftop/guys-door",
+                "state": "open"
+              },
+              {
+                "kind": "set_feature_state",
+                "feature": "guys-room/guys-door",
+                "state": "open"
+              }
+            ],
+            "repeatable": true
+          },
+          {
+            "id": "close",
+            "label": "Shut the terrace door",
+            "aliases": [
+              "shut terrace door",
+              "close terrace door",
+              "shut guys door",
+              "close guys door"
+            ],
+            "when": [
+              "feature:guys-door=open"
+            ],
+            "lines": [
+              "You pull the fluted glass door shut, quieting the rooftop draft."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "feature": "rooftop/guys-door",
+                "state": "closed"
+              },
+              {
+                "kind": "set_feature_state",
+                "feature": "guys-room/guys-door",
+                "state": "closed"
+              }
+            ],
+            "repeatable": true
+          }
+        ]
       }
     ],
     "exits": [
@@ -557,6 +1214,9 @@
           "roof",
           "out",
           "terrace"
+        ],
+        "when": [
+          "feature:guys-door=open"
         ]
       }
     ]
@@ -595,6 +1255,96 @@
           "microphone"
         ],
         "inspect_text": "A hyper-cardioid shotgun microphone suspended from the acoustic ceiling, sensitive enough to capture whispered confessions and sharp intakes of breath."
+      },
+      {
+        "id": "confessional-door",
+        "label": "acoustic soundproof door",
+        "aliases": [
+          "door",
+          "soundproof door",
+          "confessional door",
+          "diary door",
+          "acoustic door"
+        ],
+        "inspect_text": "A heavy acoustic soundproof door leading down to the basement diary room.",
+        "states": [
+          "open",
+          "closed"
+        ],
+        "descriptions": [
+          {
+            "when": [
+              "feature:confessional-door=open"
+            ],
+            "inspect_text": "The heavy acoustic door to the lounge upstairs stands ajar, revealing the emerald terrazzo floor above."
+          },
+          {
+            "when": [
+              "feature:confessional-door=closed"
+            ],
+            "inspect_text": "The heavy acoustic door is sealed shut from the inside, completely insulating this space from the rest of the house."
+          }
+        ],
+        "interactions": [
+          {
+            "id": "open",
+            "label": "Open the soundproof door",
+            "aliases": [
+              "open soundproof door",
+              "open confessional door",
+              "open diary door"
+            ],
+            "when": [
+              "feature:confessional-door=closed"
+            ],
+            "lines": [
+              "You press the release latch and push the soundproof door open, revealing the light from the lounge above."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "feature": "lounge/confessional-door",
+                "state": "open"
+              },
+              {
+                "kind": "set_feature_state",
+                "feature": "confessional/confessional-door",
+                "state": "open"
+              }
+            ],
+            "repeatable": true
+          },
+          {
+            "id": "close",
+            "label": "Close the soundproof door",
+            "aliases": [
+              "close soundproof door",
+              "shut soundproof door",
+              "close confessional door",
+              "shut confessional door",
+              "close diary door"
+            ],
+            "when": [
+              "feature:confessional-door=open"
+            ],
+            "lines": [
+              "You pull the door firmly shut, sealing yourself in total silence."
+            ],
+            "effects": [
+              {
+                "kind": "set_feature_state",
+                "feature": "lounge/confessional-door",
+                "state": "closed"
+              },
+              {
+                "kind": "set_feature_state",
+                "feature": "confessional/confessional-door",
+                "state": "closed"
+              }
+            ],
+            "repeatable": true
+          }
+        ]
       }
     ],
     "exits": [
@@ -606,6 +1356,9 @@
           "up",
           "stairs",
           "exit"
+        ],
+        "when": [
+          "feature:confessional-door=open"
         ]
       }
     ]
