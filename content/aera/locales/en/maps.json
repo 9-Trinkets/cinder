@@ -1,17 +1,5 @@
 [
   {
-    "id": "offsite",
-    "label": "Production Village",
-    "fog": false,
-    "rooms": [
-      { "room_id": "control-room", "x": 0.0, "y": 0.0 },
-      { "room_id": "alley", "x": 3.0, "y": 0.0 }
-    ],
-    "reveal_conditions": [
-      { "kind": "always" }
-    ]
-  },
-  {
     "id": "ground-floor",
     "label": "1F - Ground Floor",
     "fog": false,

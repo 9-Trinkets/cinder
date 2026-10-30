@@ -1,110 +1,5 @@
 [
   {
-    "id": "control-room",
-    "title": "Control Room",
-    "summary": "The air-conditioned production nerve center stationed two doors down Jinhua Street. Monitors glow across folding tables, and comms headsets hiss with quiet radio traffic.",
-    "inspect_text": "The control room is chilled to sixty-six degrees to keep the switcher racks and tape decks from sweating. Three folding tables hold eight high-definition reference monitors cycling through camera feeds of the Da'an villa. A whiteboard on the wall tracks daily call sheets, audio frequencies, and the cast's lavalier numbers. Through the heavy curtains, the humid Taipei heat feels a million miles away.",
-    "features": [
-      {
-        "id": "switcher-desk",
-        "label": "switcher desk",
-        "aliases": [
-          "switcher",
-          "desk",
-          "monitors",
-          "board"
-        ],
-        "inspect_text": "Eight Sony reference monitors display live feeds from the villa: kitchen island, dining table, lounge terrazzo, and rooftop terrace. The switcher board's illuminated tally lights glow soft amber."
-      },
-      {
-        "id": "whiteboard",
-        "label": "production whiteboard",
-        "aliases": [
-          "board",
-          "whiteboard",
-          "call sheet"
-        ],
-        "inspect_text": "A dry-erase board scrawled with network directives, microphone battery logs, and today's schedule for Maya, Chika, and Toby."
-      },
-      {
-        "id": "comms-station",
-        "label": "headset comms station",
-        "aliases": [
-          "comms",
-          "headset",
-          "radio"
-        ],
-        "inspect_text": "Three multi-channel radio headsets hang from metal hooks. Channel 1 links directly to Chika's walkie-talkie behind the villa walls."
-      }
-    ],
-    "exits": [
-      {
-        "room_id": "alley",
-        "label": "Jinhua Lane 183",
-        "aliases": [
-          "alley",
-          "street",
-          "lane",
-          "outside"
-        ]
-      }
-    ]
-  },
-  {
-    "id": "alley",
-    "title": "Jinhua Lane 183",
-    "summary": "A tranquil residential lane paved with grey interlocking bricks, lined with flowering bougainvillea, potted ferns, and parked vintage scooters.",
-    "inspect_text": "The lane is quiet enough to hear banyan leaves rustling in the breeze and the low rumble of an MRT train deep underground. Potted monstera, flowering magenta bougainvillea, and laundry hanging behind historic iron grilles line the facades of the old three-story townhouses. Two doors down is the villa entrance; behind you is the rented production control room.",
-    "features": [
-      {
-        "id": "bougainvillea",
-        "label": "bougainvillea trellis",
-        "aliases": [
-          "flowers",
-          "trellis",
-          "bougainvillea",
-          "plants"
-        ],
-        "inspect_text": "Vibrant magenta bougainvillea climbs the weathered concrete wall of the neighboring townhouse, dropping papery petals onto the grey pavers."
-      },
-      {
-        "id": "scooters",
-        "label": "parked vintage scooters",
-        "aliases": [
-          "scooters",
-          "bikes",
-          "motorcycles"
-        ],
-        "inspect_text": "A row of parked scooters: Kai's vintage Yamaha SR150 with weathered leather saddlebags, Chika's green scooter with a scratched helmet, and two quiet electric Gogoros."
-      }
-    ],
-    "exits": [
-      {
-        "room_id": "control-room",
-        "label": "control room",
-        "aliases": [
-          "control",
-          "truck",
-          "village",
-          "production"
-        ]
-      },
-      {
-        "room_id": "entrance",
-        "label": "villa entrance",
-        "aliases": [
-          "entrance",
-          "front entry",
-          "entry",
-          "foyer",
-          "villa",
-          "house",
-          "in"
-        ]
-      }
-    ]
-  },
-  {
     "id": "entrance",
     "title": "Front Entry",
     "summary": "The sunken terrazzo entryway of the villa. A bench of reclaimed camphor wood sits beneath geometric 1970s iron window grilles.",
@@ -141,16 +36,6 @@
       }
     ],
     "exits": [
-      {
-        "room_id": "alley",
-        "label": "alley",
-        "aliases": [
-          "out",
-          "outside",
-          "street",
-          "lane"
-        ]
-      },
       {
         "room_id": "lounge",
         "label": "living lounge",

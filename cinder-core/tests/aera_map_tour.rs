@@ -13,11 +13,7 @@ fn aera_runtime() -> CinderRuntime {
 #[test]
 fn every_aera_room_loads_with_complete_flavor_and_features() {
     let pack = load_named_pack("aera", Some("en")).expect("aera loads");
-    assert_eq!(
-        pack.rooms.len(),
-        12,
-        "expected 12 rooms in Da'an villa + video village"
-    );
+    assert_eq!(pack.rooms.len(), 10, "expected 10 rooms in Da'an villa");
 
     for room in &pack.rooms {
         assert!(
@@ -64,30 +60,20 @@ fn every_aera_room_loads_with_complete_flavor_and_features() {
 }
 
 #[test]
-fn player_can_tour_entire_daan_villa_from_control_room() {
+fn player_can_tour_entire_daan_villa() {
     let runtime = aera_runtime();
 
-    // Start in control room
-    assert_eq!(runtime.current_room_id().unwrap(), "control-room");
+    // Start in front entry
+    assert_eq!(runtime.current_room_id().unwrap(), "entrance");
 
-    // Walk into the alley
-    runtime.run_turn("go alley").expect("go alley");
-    assert_eq!(runtime.current_room_id().unwrap(), "alley");
-
-    // Inspect bougainvillea feature
-    let look_flowers = runtime
-        .run_turn("look bougainvillea")
-        .expect("look bougainvillea");
+    // Inspect camphor shoe bench
+    let look_bench = runtime.run_turn("look bench").expect("look bench");
     assert!(
-        look_flowers
+        look_bench
             .lines
             .iter()
-            .any(|line| line.text.contains("magenta bougainvillea"))
+            .any(|line| line.text.contains("fragrant slab of camphor wood"))
     );
-
-    // Enter the villa genkan
-    runtime.run_turn("go entrance").expect("go entrance");
-    assert_eq!(runtime.current_room_id().unwrap(), "entrance");
 
     // Head into the open kitchen
     runtime.run_turn("go kitchen").expect("go kitchen");
