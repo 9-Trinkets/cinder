@@ -1100,7 +1100,7 @@ fn aera_defaults_to_zh_tw_with_complete_flavor_and_features() {
 
     // Verify actors only use Chinese names in zh-TW
     let aera_actor = pack.actor("aera").expect("aera defined");
-    assert_eq!(aera_actor.name, "艾拉");
+    assert_eq!(aera_actor.name, "愛羅");
 
     let ren_actor = pack.actor("ren").expect("ren defined");
     assert_eq!(ren_actor.name, "蓮");
@@ -1218,7 +1218,7 @@ fn aera_autonomous_quest_navigation_flow_zh_tw() {
     let prompt1 = render_actor_turn_decider_prompt(&build1.request);
 
     // Verify Prompt Structure in zh-TW: Character Persona, Spatial Grounding, and Quest Guidance
-    assert!(prompt1.contains("艾拉"));
+    assert!(prompt1.contains("愛羅"));
     assert!(prompt1.contains("下沉式客廳"));
     assert!(
         prompt1.contains("在開始剪輯今天的毛片前，你需要先去廚房中島拿回你的高速 CFexpress 記憶卡。動身前往開放式廚房。")
