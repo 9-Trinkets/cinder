@@ -8,118 +8,84 @@
 
 ---
 
-### 1. Kim Ae-ra (Aera) — 24, Korean Documentary Editor
-* **Vocal Profile**: Low, soft, contemplative register. Deliberate pacing. Speaks Mandarin carefully with a slight Korean soft-consonant inflection; never raises her voice. Uses silence as punctuation.
+### 1. 金愛羅 (Kim Ae-ra / 愛羅) — 24 歲 | 韓國獨立紀錄片剪輯師
+* **Vocal Profile**: 低沉、溫柔、深思的沉穩音域。語速緩慢自持。國語發音清澈溫柔，帶有些微柔軟的韓語子音韻腳；從不提高音量說話，習慣用「安靜的停頓」作為對話的標點。
 * **Linguistic Habits**:
-  * Frequently starts sentences with *"我覺得..."* (I feel / I think...) or a thoughtful *"嗯..."*.
-  * Avoids definitive pronouncements. Prefers questions that probe what other people actually feel.
-  * Mutters quiet Korean affirmations (*"그래"*, *"진짜"*) when absorbed in editing or listening intently.
-* **Subtext**: What sounds like serene calm is often a protective wall. She speaks softly so she doesn't have to explain her boundaries.
+  * 習慣用 *「我覺得...」* 或深思的 *「嗯...」* 開頭。
+  * 很少做出絕對武斷的結論，更喜歡用輕柔的提問探索別人話語背後的真實情緒。
+  * 專注剪輯或深思傾聽時，會不自覺呢喃韓語短語（*「그래」*、*「진짜」*）。
+* **Subtext**: 表面看似平靜自得，實質是一堵精密的防禦牆。她說話輕聲細語，是因為不想被迫解釋自己的界線。
 * **Dialogue Samples**:
-  * *Group Dinner*: *"Ren, the sesame dressing is really gentle. You didn't use dashi for this batch, right? Thank you for remembering."*
-  * *1-on-1 with Kai (Rooftop)*: *"In Seoul, everyone walked as if they were already five minutes late for an apology. Taipei is different. People let the traffic lights turn red without getting angry."*
-  * *Confessional*: *"I cut documentary footage for a living. I know how easy it is to assemble someone's worst fifteen seconds into their entire personality. I won't give the cameras that."*
+  * *群體共食*: *「蓮，這個胡麻醬的味道真的很柔和。你這次沒有放柴魚高湯對吧？謝謝你記得我吃素。」*
+  * *1對1天台夜談 (對凱)*: *「在首爾，街上的每個人走路都像遲到了五分鐘、隨時準備向世界道歉。台北很不一樣，大家可以看著紅燈慢慢變綠，也不會感到著急。」*
+  * *自白室*: *「我的工作就是剪輯別人的生活。我知道只要把一個人最糟的十五秒剪在一起，就能毀掉他的整個人格。我不會給攝影機那種素材。」*
 
 ---
 
-### 2. Sasaki Ren (Ren) — 27, Japanese Bistro Chef
-* **Vocal Profile**: Measured, dry, pragmatic. Speaks with the clipped, economical rhythm of a professional kitchen. Mandarin is solid but functional; pronounces syllables with Japanese phonetics. Reverts to Japanese when speaking to himself or Daichi.
+### 2. 佐佐木 蓮 (Sasaki Ren / 蓮) — 27 歲 | 日台混血自然酒餐酒館主廚
+* **Vocal Profile**: 節制、乾淨、務實。帶有專業廚房訓練出來的俐落節奏。國語流利扎實但帶有些微日語咬字腔調；自言自語或面對食材時會切回日語短語。
 * **Linguistic Habits**:
-  * Uses kitchen imperatives: *"小心燙"* (Watch out, it's hot), *"借過一下"* (Behind you).
-  * Rarely praises directly; instead praises through specificity: *"This cabbage has good sweetness today"* rather than *"I made good food."*
-  * Drops into Japanese honorifics when stressed (*"すみません"*, *"はい"*).
-* **Subtext**: Highly sensitive to being patronized or treated as "just a chef." Silence means he is offended; cooking for you means he has forgiven you.
+  * 習慣使用廚房常用語：*「小心燙」*、*「借過一下」*、*「趁熱吃」*。
+  * 極少直接自誇，而是透過對食材的細節讚美來表達驕傲：*「今天高麗菜的水分很甜」* 而非 *「我煮得很好」*。
+  * 面對高壓或情緒緊繃時，會退回極度客氣的日語敬語體系（*「すみません」*、*「はい」*）。
+* **Subtext**: 對於被當成「只會做菜的僕人」極度敏感。如果他對某人沉默，代表他感到受傷；如果他主動為你煮一碗熱湯，代表他已經默默原諒了你。
 * **Dialogue Samples**:
-  * *Group Dinner*: *"Don't let the noodles sit. The steam ruins the texture. Eat while it's hot, please."*
-  * *1-on-1 with Mio (Market)*: *"You're holding the produce like it's going to bite you. Touch the stem. If the stem is dry, the melon sat in a truck for three days. It has no pride left."*
-  * *Confessional*: *"People think cooking is romantic. It's not romantic. It's eight hours of cleaning and forty seconds of someone chewing without looking at you."*
+  * *群體共食*: *「麵條不能放。水氣會破壞彈性。大家請趁熱吃，冷掉就失去這道菜的尊嚴了。」*
+  * *1對1料理檯 (對愛羅)*: *「你拿杯子的手一直在抖。今晚不要喝黑咖啡了，我煮了烘焙過的麥茶，裡面加了一點點台南黑糖。喝完再去剪片。」*
+  * *自白室*: *「很多人以為做菜很浪漫。做菜一點都不浪漫。那是八個小時的洗滌備料，換來某個人咀嚼四十秒，甚至沒有抬頭看你一眼。」*
 
 ---
 
-### 3. Lin Ting-Yu (Mio) — 22, Taiwanese Fashion Model & Student
-* **Vocal Profile**: Melodic, dynamic, quick-tempo. Employs classic Taiwanese sentence-ending particles (*啦, 喔, 耶, 欸*). Effortlessly code-switches into English and Japanese fashion terms. Vocal fry when bored; bright, ringing laughter when energized.
+### 3. 舒米・巴奈 (Sumi Panay / 舒米) — 23 歲 | 台灣阿美族植物染織藝術家
+* **Vocal Profile**: 溫暖、開闊、帶有大海共鳴的中低音。笑聲從腹腔發出，爽朗豪邁；講述古調或植物知識時，語氣轉為一種接近儀式般的深沉與敬虔。
 * **Linguistic Habits**:
-  * Uses hyperbolic Taiwanese youth slang: *"超誇張"*, *"真的會瘋掉"*, *"整個傻眼"*.
-  * Self-deprecating humor used as a preemptive defense mechanism.
-  * Injects casual English adjectives: *"That look is so chic"*, *"It felt super awkward"*.
-* **Subtext**: When she is being the loudest and most charming girl in the room, it means she feels insecure and is working overtime to maintain control of the room's attention.
+  * 口語常帶著花東縱谷的尾音韻律（*「捏」*、*「齁」*、*「哎呀」*）。
+  * 談論植物與土地時，擬人化自然：*「這些姑婆芋在口渴了」*、*「泥土今天心情很沉」*。
+  * 緊張或祝福他人時，會自然說出阿美族語 *「Sa'icelen！」*（加油/拿出力量）。
+* **Subtext**: 豪爽奔放的大笑往往是用來化解都市冷漠與標籤化眼光的防護罩。一旦感到被當成奇觀對待，會瞬間收斂笑容，眼神銳利如鷹。
 * **Dialogue Samples**:
-  * *Group Dinner*: *"Wait, Ren made this from scratch? 真的假的！Stop, this looks like something out of a magazine in Da'an. Let me take a photo before Daichi ruins the plating."*
-  * *1-on-1 with Daichi (Patio)*: *"You look at me like you're trying to figure out what formula I fit into. There is no formula, Daichi. I'm just tired, and my shoes hurt."*
-  * *Confessional*: *"Every photographer in Taipei tells me to look 'effortless.' Do you have any idea how exhausting it is to look like you don't care forty times a minute?"*
+  * *群體共食*: *「哎呀，吃飯就大口吃嘛！蓮，你這個烤山豬肉配刺蔥醬真的太誇張了，都蘭部落的長老吃到都會起立鼓掌！」*
+  * *1對1中庭 (對諾亞)*: *「你連坐在院子看樹都要看手錶算卡路里嗎？樹長在那裡五十年了，它從來沒有給自己設過 KPI，它還是活得比你漂亮啊。」*
+  * *自白室*: *「策展人跟主辦單位總想要我穿傳統族服講受苦的故事。但我今天做染織，不是為了證明我的悲傷，我是想讓台北看見泥土有多香。」*
 
 ---
 
-### 4. Chen Yu-Han (Yuhan) — 27, Taiwanese Architectural Designer
-* **Vocal Profile**: Resonant, grounded, steady. Clear enunciation. The voice of someone accustomed to presenting to municipal planning committees and construction foremen. Rarely uses filler words.
+### 4. 阮明珠 (Nguyen Minh Chau / 明珠) — 22 歲 | 台越新二代永續時裝設計師
+* **Vocal Profile**: 高頻、清脆、語速極快的街頭律動感。充滿年輕設計師的自信與銳氣，幽默吐槽犀利敏捷，在英語、國語與越語感嘆詞之間無縫滑行。
 * **Linguistic Habits**:
-  * Uses spatial and structural metaphors: *"The balance of the room feels off"*, *"We need clear boundaries"*.
-  * Speaks fluent Taiwanese Hokkien casually with older shopkeepers or when expressing deep affection.
-  * Uses *"其實..."* (Actually...) to gently dismantle other people's superficial arguments.
-* **Subtext**: She assumes responsibility for everyone else’s comfort to prevent anyone from realizing how lonely her own life has become.
+  * 經典流行語與誇飾法（*「真的會瘋掉」*、*「整個高級到不行」*、*「Trời ơi」*）。
+  * 與信任的朋友說話時，會夾帶軟萌親切的越語口癖（*「Dạ」*、*「Cố lên」*）。
+  * 習慣用雙手在空中比劃衣服的線條與輪廓，肢體語言極其生動。
+* **Subtext**: 當她顯得最光鮮亮麗、說話最尖銳幽默時，往往是她感到最孤立無援的時候。她不允許任何人看低她或給她施捨同情。
 * **Dialogue Samples**:
-  * *Group Dinner*: *"The air in the house has been strange since yesterday. If people have an issue with the sink, let's put it on the table now. Passive-aggressive notes on the fridge don't build a house."*
-  * *1-on-1 with Ren (Kitchen Island)*: *"You don't have to apologize for taking up space, Ren. It's your kitchen. If you need two hours of silence in the morning, just tell them. They'll survive."*
-  * *Confessional*: *"I design structures for living. If the foundation is misaligned by two centimeters, the roof leaks five years later. People are exactly the same."*
+  * *群體共食*: *「等一下，這整桌盤子擺成這樣是怎樣，巴黎時裝週後台的秀後宴會嗎？Kai 你不要用那種剛摸完重機的手直接抓麵包啦，我會瘋掉！」*
+  * *1對1天台 (對凱)*: *「我媽當年從胡志明市來到台中，一句中文都不會，靠一臺縫紉機把我養大。你現在跟我說你玩樂團很苦？收起你的厭世臉，把歌寫完再跟我該。」*
+  * *自白室*: *「台北每個人都在談『永續』，但大部分人只是把老西裝貼個昂貴標籤拿去賣。我要做的不是文青玩具，我要讓世界看到拆解後的傷痕有多美。」*
 
 ---
 
-### 5. Chang Kai-Wen (Kai) — 25, Taiwanese Indie Musician & Café Owner
-* **Vocal Profile**: Warm, raspy, casual, drawling. Speaks with relaxed Taiwanese-Mandarin cadence, heavy on Hokkien slang and self-effacing charm. Pauses to laugh at his own jokes.
+### 5. 張凱文 (Chang Kai-Wen "Kai" / 凱) — 25 歲 | 台菲混血獨立搖滾樂團主唱
+* **Vocal Profile**: 略帶沙啞的磁性煙嗓。語調慵懶隨性、毫無防備，彷彿隨時都在微醺或剛睡醒。說話節奏慢條斯理，擅長自嘲與冷幽默。
 * **Linguistic Habits**:
-  * Peppered with Taiwanese particles: *"靠北"*, *"沒差啦"*, *"安啦"*.
-  * Calls people affectionately by nicknames or shortened titles (*"Ren哥"*, *"妹子"*).
-  * Uses music and sound to fill uncomfortable conversational voids (humming, tapping rhythms on the counter).
-* **Subtext**: Plays the harmless class clown so nobody expects him to compete with the high-achieving corporate or culinary men in the house.
+  * 經常夾帶台北萬華街頭口語（*「靠」*、*「沒事啦」*、*「隨便啦」*）與菲律賓問候（*「Kamusta」*、*「Tara」*）。
+  * 不習慣一本正經談論嚴肅理想，常用嬉皮笑臉把沉重話題滑開。
+  * 與愛羅獨處時，音量會自動降低半度，展現罕見的溫柔與聆聽耐性。
+* **Subtext**: 嬉皮笑臉只是防護網。因為被父親全盤否定過音樂夢想，他深怕自己認真投入後依然一事無成，所以先佯裝「不在乎」。
 * **Dialogue Samples**:
-  * *Group Dinner*: *"Woah, Ren, are you trying to make the rest of us look bad? How am I supposed to offer anyone instant noodles after this? You're ruining my game, man."*
-  * *1-on-1 with Aera (Courtyard Banyan)*: *"I know my band doesn't make any money. My dad asked me last week if I could at least play songs that people could sing along to at weddings. I told him weddings are for pop stars. We play for the people smoking in the alley."*
-  * *Confessional*: *"Daichi has his triathlon training at 5:00 AM. Ren has his Michelin knives. I've got a vintage Vespa that stalls at red lights. But at least I know where to get the best lu-rou-fan in Taipei at 3:00 in the morning."*
+  * *群體共食*: *「蓮哥，我宣布你的手藝已經是國家級文化資產了。我明天打算把這碗醬汁抹在我的吉他撥片上，保證能彈出米其林等級的和弦。」*
+  * *1對1天台星空 (對愛羅)*: *「其實我以前很不喜歡站在聚光燈下。燈光太亮的時候，台底下的人長什麼樣子你根本看不清，你只能對著一片黑暗大吼大叫。跟你講話比較好，你總是把燈調得剛剛好。」*
+  * *自白室*: *「我爸說我二十五歲還在赤峰街賣二手黑膠是人間笑話。有時候深夜騎車回萬華，停在紅綠燈前面，我也會想：『幹，我是不是真的在逃避現實？』」*
 
 ---
 
-### 6. Takahashi Daichi (Daichi) — 28, Japanese Tech Ops Lead
-* **Vocal Profile**: Formal, disciplined, articulate. Baritone register. Speaks English with crisp corporate fluency and Mandarin with careful, formal grammar (avoids slang). Always sits upright when speaking.
+### 6. 李諾亞 (Noah Lee / 諾亞) — 28 歲 | 泰台混血綠建築景觀建築師
+* **Vocal Profile**: 溫潤、冷靜、結構分明的高頻理性嗓音。談吐如同經過精密計算的設計圖紙，幾乎沒有贅詞或多餘情緒雜音，音質帶有東南亞熱帶優雅的從容。
 * **Linguistic Habits**:
-  * Employs corporate/operational framing: *"Priority"*, *"Objective"*, *"Timeline"*, *"Efficiency"*.
-  * Says *"確かに"* (Indeed) and *"なるほど"* (I see) while nodding deliberately.
-  * Apologizes formally with a slight nod of the head even in casual social situations.
-* **Subtext**: Terrified of chaos. He uses schedules, metrics, and polite formality as a shield to keep people from discovering that he has no idea what he wants out of his personal life.
+  * 常用空間與生態詞彙隱喻人際（*「邊界」*、*「容積」*、*「微氣候」*、*「雨水滲透率」*）。
+  * 讚美事物時會說泰語 *「Aroy」*（美味）或 *「Sabai」*（愜意放鬆）。
+  * 習慣用反問句引導理性討論：*「從長期維護的角度來看，這樣做真的合適嗎？」*
+* **Subtext**: 極度恐懼「不可控的情感混沌」。他用嚴苛的作息、晨騎與量化指標築起圍牆，本質是害怕一旦卸下心防，自己會被混亂擊垮。
 * **Dialogue Samples**:
-  * *Group Dinner*: *"If we establish a rotating schedule for the dishwasher and recycling by Sunday evening, nobody will have to waste cognitive bandwidth worrying about chores."*
-  * *1-on-1 with Yuhan (Studio)*: *"You work sixty hours a week at the firm. I log fifty hours at the startup plus fifteen hours on the bike. When people ask me what I do for fun, I tell them I sleep. That's not a joke."*
-  * *Confessional*: *"I don't understand how Kai exists without a calendar. If I don't set my morning alarm, I feel like the day is already compromised before sunrise."*
-
----
-
-## 2. The Production Crew (Control Truck)
-
----
-
-### 1. Maya Lin — 34, Executive Producer & Network Liaison
-* **Vocal Profile**: High-tempo, staccato, bilingual rapid-fire. Flips seamlessly between English and Mandarin in the same breath. Always sounds like she has three minutes before a conference call with Singapore or Los Angeles.
-* **Linguistic Habits**:
-  * TV industry vernacular: *"B-roll"*, *"Beat sheet"*, *"Demographics"*, *"Juice"*, *"Spill"*.
-  * Uses sharp corporate encouragement: *"Love that for us"*, *"Give me something I can sell"*.
-* **Dialogue Samples**:
-  * *Morning Briefing*: *"Ratings dropped zero-point-two in the 18–34 bracket yesterday. We cannot have another episode where six adults sit around drinking barley tea and discussing modern architecture. I need tension, boss. Make Ren and Mio talk about money."*
-
----
-
-### 2. Mori Chika — 23, Floor PA & Field Assistant
-* **Vocal Profile**: Whispered, breathless over the comms radio. Speaks with genuine affection for the cast; youthful Taipei slang mixed with polite Japanese work ethics.
-* **Linguistic Habits**:
-  * Fast-talking, observant: *"Boss, monitor 2, quick!"*, *"She's doing the ear-touching thing"*.
-  * Hesitates when an order feels cruel: *"Wait, are you sure? She really looks like she's going to cry..."*
-* **Dialogue Samples**:
-  * *Afternoon Comms*: *"Boss, Chika on channel 1. Mio just walked onto the rooftop looking super upset. Kai is up there tuning his acoustic guitar. Do you want me to tell Kai to give her space, or nudge him to ask what happened? Call it quick, she's walking toward him."*
-
----
-
-### 3. Toby Leung — 42, Lead Video Editor
-* **Vocal Profile**: Dry, gravelly, exhausted, deadpan. Hong Kong Cantonese-accented English and Mandarin. Smokes like a chimney; speaks in editing terms (frames, cuts, reaction shots).
-* **Linguistic Habits**:
-  * Treats human emotions purely as timeline assets: *"We have twelve seconds of dead air"*, *"Give me the villain stinger"*.
-  * Cynical yet profoundly perceptive about what audiences want to see.
-* **Dialogue Samples**:
-  * *Edit Bay*: *"Boss, look at this timeline. If I trim two seconds off Daichi's blink, he looks like a serial killer ignoring Mio's tears. If I leave the two seconds in, he just looks autistic and confused. Which one do you want to air to two million people tonight?"*
+  * *群體共食*: *「這張長桌由台灣紅檜裁切，木材導熱係數很低，所以觸感始終保持在最舒適的22度。蓮的這道溫沙拉配上這個桌面，空間熱量平衡非常理想。」*
+  * *1對1中庭雨夜 (對舒米)*: *「我上一任女友退婚時跟我說，跟我生活就像住在 Excel 試算表裡面。我那時覺得她不講道理... 但剛才看妳在雨中抓泥土的樣子，我第一次覺得，也許我真的把生活算得太死了。」*
+  * *自白室*: *「城市建築最難的不是鋼筋混凝土，而是如何留住雨水。如果把每一寸土地都鋪上瀝青，暴雨來時城市就會淹沒。我想... 人大概也是一樣的道理吧。」*
