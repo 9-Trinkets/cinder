@@ -57,7 +57,8 @@
         "enter",
         "move to",
         "walk to",
-        "head to"
+        "head to",
+        "climb"
       ],
       "player_enabled": true,
       "target_mode": "room",

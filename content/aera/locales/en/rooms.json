@@ -1,8 +1,8 @@
 [
   {
     "id": "entrance",
-    "title": "Front Entry",
-    "summary": "The sunken terrazzo entryway of the villa. A bench of reclaimed camphor wood sits beneath geometric 1970s iron window grilles.",
+    "title": "Front Entry (1F)",
+    "summary": "The sunken terrazzo entryway on the ground floor. A bench of reclaimed camphor wood sits beneath geometric 1970s iron window grilles.",
     "inspect_text": "Polished grey concrete steps drop down from the front door into the entryway. Reclaimed camphor wood forms a low bench where street shoes are exchanged for leather indoor slippers. Geometric 1970s iron grilles frame frosted begonia glass, casting patterned shadows across the floor. The open kitchen and living room extend just beyond the threshold.",
     "features": [
       {
@@ -39,6 +39,7 @@
       {
         "room_id": "lounge",
         "label": "living lounge",
+        "menu_label": "Sunken Living Lounge",
         "aliases": [
           "lounge",
           "living",
@@ -48,6 +49,7 @@
       {
         "room_id": "kitchen",
         "label": "open kitchen",
+        "menu_label": "Open Kitchen",
         "aliases": [
           "kitchen"
         ]
@@ -56,8 +58,8 @@
   },
   {
     "id": "kitchen",
-    "title": "Open Kitchen",
-    "summary": "A central stainless-steel island with commercial gas burners, overhead copper racks, and deep sinks. The culinary heart of the house.",
+    "title": "Open Kitchen (1F)",
+    "summary": "A central stainless-steel island on the ground floor with commercial gas burners, overhead copper racks, and deep sinks. The culinary heart of the house.",
     "inspect_text": "Professional stainless steel dominates the space, balanced by warm teak cabinets and matte black fixtures. A commercial four-burner gas range sits beneath an industrial range hood. Beside the prep sink rests a neat wooden pour-over coffee station, a glass-door beverage fridge, and Ren's canvas knife roll, laid out with clinical precision.",
     "features": [
       {
@@ -96,6 +98,7 @@
       {
         "room_id": "entrance",
         "label": "front entry",
+        "menu_label": "Front Entry",
         "aliases": [
           "entrance",
           "front entry",
@@ -107,6 +110,7 @@
       {
         "room_id": "dining-room",
         "label": "dining room",
+        "menu_label": "Dining Room",
         "aliases": [
           "dining",
           "table",
@@ -117,8 +121,8 @@
   },
   {
     "id": "dining-room",
-    "title": "Dining Room",
-    "summary": "A solid Taiwanese cypress ten-seater table under low ceramic pendant lamps. Where group meals and quiet standoffs occur.",
+    "title": "Dining Room (1F)",
+    "summary": "A solid Taiwanese cypress ten-seater table on the ground floor under low ceramic pendant lamps. Where group meals and quiet standoffs occur.",
     "inspect_text": "The ten-foot dining table is cut from a single reclaimed slab of Taiwanese cypress (hinoki), smooth and faintly fragrant. Ten wishbone chairs surround it. Three fluted ceramic pendant lamps hang low over the surface, casting a warm 2400K pool of light that makes every glance and hesitation across the table impossible to hide.",
     "features": [
       {
@@ -146,6 +150,7 @@
       {
         "room_id": "kitchen",
         "label": "open kitchen",
+        "menu_label": "Open Kitchen",
         "aliases": [
           "kitchen"
         ]
@@ -153,6 +158,7 @@
       {
         "room_id": "lounge",
         "label": "living lounge",
+        "menu_label": "Sunken Living Lounge",
         "aliases": [
           "lounge",
           "living",
@@ -162,19 +168,21 @@
       {
         "room_id": "courtyard",
         "label": "interior courtyard",
+        "menu_label": "Interior Courtyard",
         "aliases": [
           "courtyard",
           "garden",
-          "patio"
+          "patio",
+          "outside"
         ]
       }
     ]
   },
   {
     "id": "lounge",
-    "title": "Sunken Living Lounge",
-    "summary": "Sunken into emerald-flecked terrazzo. A long low modular sofa, floor cushions, and art monographs, with no TV in sight.",
-    "inspect_text": "Three shallow concrete steps descend into a sunken floor of polished emerald-and-white flecked terrazzo (mo-shi-zi), delightfully cool beneath bare feet. A deep, modular slate-grey linen sofa wraps around two sides of the space. There is deliberately no television; low teak bookshelves hold art monographs and photography collections, and floor-to-ceiling iron glass doors open out into the verdant courtyard.",
+    "title": "Sunken Living Lounge (1F)",
+    "summary": "Sunken into emerald-flecked terrazzo. Low modular sofa, art monographs, floating teak stairs up to 2F, and an acoustic soundproof door down to B1.",
+    "inspect_text": "Three shallow concrete steps descend into a sunken floor of polished emerald-and-white flecked terrazzo (mo-shi-zi), delightfully cool beneath bare feet. A deep, modular slate-grey linen sofa wraps around two sides of the space. There is deliberately no television; low teak bookshelves hold art monographs and photography collections, and floor-to-ceiling iron glass doors open out into the verdant courtyard. Along the exposed concrete wall, a cantilevered staircase of floating teak steps leads up to the 2F design studio, while a heavy acoustic door conceals the stairs down to the B1 diary room.",
     "features": [
       {
         "id": "modular-sofa",
@@ -206,6 +214,21 @@
           "shelf"
         ],
         "inspect_text": "Built-in teak shelves filled with Japanese architectural volumes, Korean indie film retrospectives, and vintage Taipei street photography books."
+      },
+      {
+        "id": "cantilevered-stairs",
+        "label": "cantilevered teak stairs up to 2F",
+        "aliases": [
+          "stairs",
+          "staircase",
+          "steps",
+          "stairs up",
+          "teak stairs",
+          "cantilevered stairs",
+          "upstairs",
+          "up"
+        ],
+        "inspect_text": "Open floating teak steps anchored into board-formed concrete, climbing along the wall up to the second-floor design studio."
       },
       {
         "id": "courtyard-accordion-doors",
@@ -303,7 +326,10 @@
           "soundproof door",
           "confessional door",
           "diary door",
-          "acoustic door"
+          "acoustic door",
+          "stairs down",
+          "basement stairs",
+          "basement door"
         ],
         "inspect_text": "A heavy acoustic soundproof door leading down to the basement diary room.",
         "states": [
@@ -391,6 +417,7 @@
       {
         "room_id": "entrance",
         "label": "front entry",
+        "menu_label": "Front Entry",
         "aliases": [
           "entrance",
           "front entry",
@@ -402,6 +429,7 @@
       {
         "room_id": "dining-room",
         "label": "dining room",
+        "menu_label": "Dining Room",
         "aliases": [
           "dining",
           "dining room"
@@ -410,6 +438,7 @@
       {
         "room_id": "courtyard",
         "label": "interior courtyard",
+        "menu_label": "Interior Courtyard",
         "aliases": [
           "courtyard",
           "garden",
@@ -421,23 +450,40 @@
       },
       {
         "room_id": "studio",
-        "label": "design studio (2F)",
+        "label": "stairs up to 2F (Design Studio)",
+        "menu_label": "Stairs Up to 2F (Design Studio)",
         "aliases": [
           "studio",
+          "design studio",
           "up",
+          "upstairs",
           "stairs",
+          "stairs up",
+          "stairs to 2f",
+          "stairs up to 2f",
           "second floor",
-          "2f"
+          "2f",
+          "cantilevered stairs",
+          "climb stairs"
         ]
       },
       {
         "room_id": "confessional",
-        "label": "diary room (Basement)",
+        "label": "stairs down to B1 (Diary Room)",
+        "menu_label": "Stairs Down to B1 (Diary Room)",
         "aliases": [
-          "diary room",
           "confessional",
+          "diary room",
           "down",
-          "basement"
+          "downstairs",
+          "stairs",
+          "stairs down",
+          "stairs to b1",
+          "stairs down to b1",
+          "basement",
+          "b1",
+          "soundproof door",
+          "acoustic door"
         ],
         "when": [
           "feature:confessional-door=open"
@@ -447,8 +493,8 @@
   },
   {
     "id": "courtyard",
-    "title": "Interior Courtyard",
-    "summary": "An open-air atrium framed by raw board-formed concrete. A fifty-year-old banyan tree and wild elephant-ear leaves catch the afternoon rain.",
+    "title": "Interior Courtyard (1F)",
+    "summary": "An open-air ground-floor atrium framed by raw board-formed concrete. A fifty-year-old banyan tree and wild elephant-ear leaves catch the afternoon rain.",
     "inspect_text": "Natural daylight pours down three stories into this raw concrete courtyard. A mature banyan tree's aerial roots twist into a bed of smooth river stones, surrounded by giant elephant-ear leaves (guanyin-lian) and wild ferns. When summer thunderstorms break over Taipei, rain cascades down the concrete walls into a recessed gravel drain.",
     "features": [
       {
@@ -574,6 +620,7 @@
       {
         "room_id": "lounge",
         "label": "living lounge",
+        "menu_label": "Sunken Living Lounge",
         "aliases": [
           "lounge",
           "living",
@@ -586,6 +633,7 @@
       {
         "room_id": "dining-room",
         "label": "dining room",
+        "menu_label": "Dining Room",
         "aliases": [
           "dining",
           "dining room"
@@ -595,9 +643,9 @@
   },
   {
     "id": "studio",
-    "title": "Design Studio & Library",
-    "summary": "A glass-walled creative workspace overlooking the courtyard. Contains dual-monitor editing bays, drafting tables, and a vintage turntable.",
-    "inspect_text": "Large iron-frame windows overlook the courtyard below. A long birch workbench holds Aera's twin calibrated color reference monitors and editing control surface. Across the room sits Yuhan's tilted drafting table covered with tracing paper blueprints, and on a low credenza, a vintage Marantz turntable spins vinyl records at low volume.",
+    "title": "Design Studio & Library (2F)",
+    "summary": "A glass-walled creative workspace on the second floor overlooking the courtyard. Flanked by editing bays, drafting tables, an open stairwell down to 1F, and a spiral staircase to 3F.",
+    "inspect_text": "Large iron-frame windows overlook the courtyard below. A long birch workbench holds Aera's twin calibrated color reference monitors and editing control surface. Across the room sits Yuhan's tilted drafting table covered with tracing paper blueprints, and on a low credenza, a vintage Marantz turntable spins vinyl records at low volume. An open stairwell leads down to the 1F living lounge, a sliding door opens into the girls' dormitory, and a black spiral staircase corkscrews up to the 3F rooftop terrace.",
     "features": [
       {
         "id": "editing-station",
@@ -630,6 +678,33 @@
           "records"
         ],
         "inspect_text": "A warm walnut-cased turntable hooked up to a tube amplifier. Stacks of vinyl records include Taiwanese indie dream-pop, Japanese city pop, and quiet piano solos."
+      },
+      {
+        "id": "stairwell-down",
+        "label": "open stairwell down to 1F",
+        "aliases": [
+          "stairwell",
+          "stairs down",
+          "stairs",
+          "steps down",
+          "downstairs",
+          "down"
+        ],
+        "inspect_text": "A wide wooden opening with a minimalist steel railing, looking down into the sunken emerald terrazzo of the living lounge on the ground floor."
+      },
+      {
+        "id": "spiral-stairs-up",
+        "label": "black spiral stairs up to 3F",
+        "aliases": [
+          "spiral stairs",
+          "spiral staircase",
+          "stairs up",
+          "rooftop stairs",
+          "spiral",
+          "upstairs",
+          "up"
+        ],
+        "inspect_text": "A matte-black steel spiral staircase corkscrewing through an open ceiling lightwell up to the rooftop terrace."
       },
       {
         "id": "girls-sliding-door",
@@ -734,20 +809,32 @@
     "exits": [
       {
         "room_id": "lounge",
-        "label": "living lounge (1F)",
+        "label": "stairs down to 1F (Living Lounge)",
+        "menu_label": "Stairs Down to 1F (Living Lounge)",
         "aliases": [
           "lounge",
+          "living",
+          "living room",
           "down",
+          "downstairs",
           "stairs",
+          "stairs down",
+          "stairs to 1f",
+          "stairs down to 1f",
           "first floor",
-          "1f"
+          "ground floor",
+          "1f",
+          "stairwell"
         ]
       },
       {
         "room_id": "girls-room",
         "label": "girls' dormitory",
+        "menu_label": "Girls' Dormitory",
         "aliases": [
           "girls room",
+          "girls-room",
+          "girls dormitory",
           "bedroom",
           "dorm"
         ],
@@ -757,12 +844,21 @@
       },
       {
         "room_id": "rooftop",
-        "label": "rooftop terrace (3F)",
+        "label": "spiral stairs up to 3F (Rooftop Terrace)",
+        "menu_label": "Spiral Stairs Up to 3F (Rooftop Terrace)",
         "aliases": [
           "rooftop",
           "roof",
-          "up",
           "terrace",
+          "up",
+          "upstairs",
+          "spiral stairs",
+          "spiral staircase",
+          "stairs",
+          "stairs up",
+          "stairs to 3f",
+          "spiral stairs up to 3f",
+          "third floor",
           "3f"
         ]
       }
@@ -770,9 +866,9 @@
   },
   {
     "id": "girls-room",
-    "title": "Girls' Dormitory",
-    "summary": "An elevated tatami platform holding three low linen futons, partitioned by begonia-embossed glass and a tall industrial clothing rack.",
-    "inspect_text": "Fragrant rush tatami mats cover the elevated sleeping platform, where three low linen futons are neatly made. Soft sliding partitions with begonia-embossed glass diffuse the morning light. A tall industrial steel clothing rack holds a striking cross-section of wardrobes: Aera's oversized Korean tailoring, Mio's avant-garde streetwear, and Yuhan's structured black linens.",
+    "title": "Girls' Dormitory (2F)",
+    "summary": "The second-floor dormitory with an elevated tatami platform holding three low linen futons, partitioned from the studio by begonia-embossed sliding glass.",
+    "inspect_text": "Fragrant rush tatami mats cover the elevated sleeping platform of this second-floor sanctuary, where three low linen futons are neatly made. Soft sliding partitions with begonia-embossed glass diffuse the morning light and open back into the design studio. A tall industrial steel clothing rack holds a striking cross-section of wardrobes: Aera's oversized Korean tailoring, Mio's avant-garde streetwear, and Yuhan's structured black linens.",
     "features": [
       {
         "id": "futons",
@@ -908,10 +1004,12 @@
       {
         "room_id": "studio",
         "label": "design studio",
+        "menu_label": "Design Studio & Library",
         "aliases": [
           "studio",
           "out",
-          "hallway"
+          "hallway",
+          "door"
         ],
         "when": [
           "feature:girls-sliding-door=open"
@@ -921,9 +1019,9 @@
   },
   {
     "id": "rooftop",
-    "title": "Rooftop Terrace",
-    "summary": "Weathered teak decking under a corrugated glass awning. Twin humming laundry machines, festoon fairy lights, and views of Taipei 101.",
-    "inspect_text": "Warm teak boards stretch underfoot beneath a high corrugated glass roof that shelters the terrace from afternoon cloudbursts. Twin washing machines hum softly in the laundry corner, surrounded by drying racks of clothes catching the warm evening draft. Festoon lights string between steel posts, illuminating a comfortable outdoor daybed. Across the terracotta rooftops of Da'an, the spire of Taipei 101 glimmers in the night haze.",
+    "title": "Rooftop Terrace (3F)",
+    "summary": "Weathered teak decking on the third floor under a corrugated glass awning, with humming laundry machines, festoon fairy lights, spiral stairs down to 2F, and views of Taipei 101.",
+    "inspect_text": "Warm teak boards stretch across the third-floor terrace beneath a high corrugated glass roof that shelters the space from afternoon cloudbursts. Twin washing machines hum softly in the laundry corner, surrounded by drying racks of clothes catching the warm evening draft. Festoon lights string between steel posts, illuminating a comfortable outdoor daybed. In the corner, a matte-black spiral staircase descends to the 2F studio, while a fluted glass door opens into the guys' dormitory. Across the terracotta rooftops of Da'an, the spire of Taipei 101 glimmers in the night haze.",
     "features": [
       {
         "id": "terrace-couch",
@@ -967,6 +1065,20 @@
           "city"
         ],
         "inspect_text": "Between the rusty metal fire escapes and water tanks of neighboring townhouses, the illuminated tiers of Taipei 101 rise into the subtropical clouds."
+      },
+      {
+        "id": "spiral-stairs-down",
+        "label": "spiral stairs down to 2F",
+        "aliases": [
+          "spiral stairs",
+          "spiral staircase",
+          "stairs down",
+          "stairs",
+          "downstairs",
+          "down",
+          "spiral"
+        ],
+        "inspect_text": "The top of the matte-black spiral staircase, sheltered beneath the corrugated glass awning, leading down into the second-floor design studio."
       },
       {
         "id": "guys-door",
@@ -1059,19 +1171,31 @@
     "exits": [
       {
         "room_id": "studio",
-        "label": "design studio (2F)",
+        "label": "spiral stairs down to 2F (Design Studio)",
+        "menu_label": "Spiral Stairs Down to 2F (Design Studio)",
         "aliases": [
           "studio",
+          "design studio",
           "down",
+          "downstairs",
+          "spiral stairs",
+          "spiral staircase",
           "stairs",
+          "stairs down",
+          "stairs to 2f",
+          "spiral stairs down to 2f",
+          "second floor",
           "2f"
         ]
       },
       {
         "room_id": "guys-room",
         "label": "guys' dormitory",
+        "menu_label": "Guys' Dormitory",
         "aliases": [
           "guys room",
+          "guys-room",
+          "guys dormitory",
           "bedroom",
           "dorm"
         ],
@@ -1083,9 +1207,9 @@
   },
   {
     "id": "guys-room",
-    "title": "Guys' Dormitory",
-    "summary": "Polished terrazzo with three industrial steel-frame beds, Daichi's road bike on a wall mount, and Kai's guitar amp in the corner.",
-    "inspect_text": "Airy, clean, and masculine in an unstudied way. Polished grey terrazzo holds three black powder-coated steel beds with charcoal linen duvets. On the far brick wall, Daichi's matte-black carbon road bike hangs from precision aluminum brackets above a foam roller. In the corner sits Kai's vintage tweed guitar amplifier and guitar gig bags, beside Ren's neatly stacked Japanese culinary magazines.",
+    "title": "Guys' Dormitory (3F)",
+    "summary": "The third-floor guys' dormitory with polished terrazzo, three industrial steel-frame beds, Daichi's road bike on a wall mount, and a terrace door to 3F rooftop.",
+    "inspect_text": "Airy, clean, and masculine in an unstudied way, occupying the top floor alongside the terrace. Polished grey terrazzo holds three black powder-coated steel beds with charcoal linen duvets. On the far brick wall, Daichi's matte-black carbon road bike hangs from precision aluminum brackets above a foam roller. In the corner sits Kai's vintage tweed guitar amplifier and guitar gig bags, beside Ren's neatly stacked Japanese culinary magazines. A fluted glass door opens directly onto the 3F rooftop terrace.",
     "features": [
       {
         "id": "steel-beds",
@@ -1209,11 +1333,14 @@
       {
         "room_id": "rooftop",
         "label": "rooftop terrace",
+        "menu_label": "Rooftop Terrace",
         "aliases": [
           "rooftop",
           "roof",
+          "terrace",
           "out",
-          "terrace"
+          "terrace door",
+          "door"
         ],
         "when": [
           "feature:guys-door=open"
@@ -1223,9 +1350,9 @@
   },
   {
     "id": "confessional",
-    "title": "Diary Room",
-    "summary": "A soundproof subterranean booth with a single wooden stool facing a two-way mirror and a high-definition studio lens.",
-    "inspect_text": "Completely isolated from the house above. Sound-dampening acoustic charcoal panels line the walls, absorbing every stray frequency. A single polished wooden stool sits beneath a soft overhead key light. In front of the stool is a dark two-way mirror, behind which a hidden studio camera and teleprompter record every blink, swallow, and hesitation.",
+    "title": "Diary Room (B1)",
+    "summary": "A soundproof subterranean booth in the basement with a single wooden stool facing a two-way mirror and concrete steps leading back up to 1F.",
+    "inspect_text": "Completely isolated in the basement beneath the house. Sound-dampening acoustic charcoal panels line the walls, absorbing every stray frequency. A single polished wooden stool sits beneath a soft overhead key light. In front of the stool is a dark two-way mirror, behind which a hidden studio camera and teleprompter record every blink, swallow, and hesitation. Behind the stool, a heavy acoustic door opens to concrete steps leading back up to the 1F living lounge.",
     "features": [
       {
         "id": "interview-stool",
@@ -1258,15 +1385,22 @@
       },
       {
         "id": "confessional-door",
-        "label": "acoustic soundproof door",
+        "label": "acoustic soundproof door to 1F",
         "aliases": [
           "door",
           "soundproof door",
           "confessional door",
           "diary door",
-          "acoustic door"
+          "acoustic door",
+          "stairs",
+          "steps",
+          "stairs up",
+          "concrete steps",
+          "staircase",
+          "upstairs",
+          "up"
         ],
-        "inspect_text": "A heavy acoustic soundproof door leading down to the basement diary room.",
+        "inspect_text": "A heavy acoustic soundproof door leading up the concrete steps to the 1F living lounge.",
         "states": [
           "open",
           "closed"
@@ -1350,12 +1484,23 @@
     "exits": [
       {
         "room_id": "lounge",
-        "label": "living lounge (1F)",
+        "label": "stairs up to 1F (Living Lounge)",
+        "menu_label": "Stairs Up to 1F (Living Lounge)",
         "aliases": [
           "lounge",
+          "living",
+          "living room",
           "up",
+          "upstairs",
           "stairs",
-          "exit"
+          "stairs up",
+          "stairs to 1f",
+          "stairs up to 1f",
+          "first floor",
+          "ground floor",
+          "1f",
+          "exit",
+          "out"
         ],
         "when": [
           "feature:confessional-door=open"

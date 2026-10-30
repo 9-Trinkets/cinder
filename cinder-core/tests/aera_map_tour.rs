@@ -297,3 +297,134 @@ fn player_can_operate_doors_and_doors_gate_movement() {
     runtime.run_turn("go courtyard").expect("go courtyard");
     assert_eq!(runtime.current_room_id().unwrap(), "courtyard");
 }
+
+#[test]
+fn floor_transitions_have_clear_indicators_in_titles_exits_and_panels() {
+    let pack = load_named_pack("aera", Some("en")).expect("aera loads");
+
+    // 1. Every room title has a floor indicator (1F, 2F, 3F, or B1)
+    for room in &pack.rooms {
+        let has_floor_tag = room.title.contains("(1F)")
+            || room.title.contains("(2F)")
+            || room.title.contains("(3F)")
+            || room.title.contains("(B1)");
+        assert!(
+            has_floor_tag,
+            "room '{}' title '{}' should indicate its floor",
+            room.id, room.title
+        );
+    }
+
+    // 2. Inter-floor exits must declare menu_label and label indicating destination floor
+    let lounge = pack.room("lounge").unwrap();
+    let to_studio = lounge.exits.iter().find(|e| e.room_id == "studio").unwrap();
+    assert!(to_studio.label.contains("2F"));
+    assert!(to_studio.menu_label.as_ref().unwrap().contains("2F"));
+
+    let to_confessional = lounge
+        .exits
+        .iter()
+        .find(|e| e.room_id == "confessional")
+        .unwrap();
+    assert!(to_confessional.label.contains("B1"));
+    assert!(to_confessional.menu_label.as_ref().unwrap().contains("B1"));
+
+    let studio = pack.room("studio").unwrap();
+    let to_lounge = studio.exits.iter().find(|e| e.room_id == "lounge").unwrap();
+    assert!(to_lounge.label.contains("1F"));
+    assert!(to_lounge.menu_label.as_ref().unwrap().contains("1F"));
+
+    let to_rooftop = studio
+        .exits
+        .iter()
+        .find(|e| e.room_id == "rooftop")
+        .unwrap();
+    assert!(to_rooftop.label.contains("3F"));
+    assert!(to_rooftop.menu_label.as_ref().unwrap().contains("3F"));
+
+    let rooftop = pack.room("rooftop").unwrap();
+    let roof_to_studio = rooftop
+        .exits
+        .iter()
+        .find(|e| e.room_id == "studio")
+        .unwrap();
+    assert!(roof_to_studio.label.contains("2F"));
+    assert!(roof_to_studio.menu_label.as_ref().unwrap().contains("2F"));
+
+    let confessional = pack.room("confessional").unwrap();
+    let conf_to_lounge = confessional
+        .exits
+        .iter()
+        .find(|e| e.room_id == "lounge")
+        .unwrap();
+    assert!(conf_to_lounge.label.contains("1F"));
+    assert!(conf_to_lounge.menu_label.as_ref().unwrap().contains("1F"));
+
+    // 3. Runtime inspection and movement using intuitive directional/stair commands
+    let runtime = aera_runtime();
+
+    // From entrance, go to lounge
+    runtime.run_turn("go lounge").expect("go lounge");
+    assert_eq!(runtime.current_room_id().unwrap(), "lounge");
+
+    // Inspecting room reveals the exits including floor details
+    let look_lounge = runtime.run_turn("look").expect("look lounge");
+    let look_text = look_lounge
+        .lines
+        .iter()
+        .map(|l| l.text.as_str())
+        .collect::<Vec<_>>()
+        .join(" ");
+    assert!(look_text.contains("Exits:"));
+    assert!(look_text.contains("stairs up to 2F"));
+    assert!(look_text.contains("stairs down to B1"));
+
+    // Inspecting stairs in lounge
+    let look_stairs = runtime.run_turn("look stairs").expect("look stairs");
+    assert!(
+        look_stairs
+            .lines
+            .iter()
+            .any(|l| l.text.contains("cantilevered teak stairs up to 2F")
+                || l.text.contains("Open floating teak steps"))
+    );
+
+    // Climb stairs to 2F
+    runtime.run_turn("climb stairs").expect("climb stairs");
+    assert_eq!(runtime.current_room_id().unwrap(), "studio");
+
+    // Inspecting open stairwell down and spiral stairs up in studio
+    let look_stairwell = runtime.run_turn("look stairwell").expect("look stairwell");
+    assert!(look_stairwell.lines.iter().any(|l| {
+        l.text
+            .contains("looking down into the sunken emerald terrazzo")
+    }));
+
+    let look_spiral = runtime
+        .run_turn("look spiral stairs")
+        .expect("look spiral stairs");
+    assert!(look_spiral.lines.iter().any(|l| {
+        l.text
+            .contains("matte-black steel spiral staircase corkscrewing")
+    }));
+
+    // Go up to 3F
+    runtime.run_turn("go up").expect("go up to 3F");
+    assert_eq!(runtime.current_room_id().unwrap(), "rooftop");
+
+    // Go down to 2F
+    runtime.run_turn("go down").expect("go down to 2F");
+    assert_eq!(runtime.current_room_id().unwrap(), "studio");
+
+    // Go down to 1F
+    runtime.run_turn("go down").expect("go down to 1F");
+    assert_eq!(runtime.current_room_id().unwrap(), "lounge");
+
+    // Go down to B1
+    runtime.run_turn("go down").expect("go down to B1");
+    assert_eq!(runtime.current_room_id().unwrap(), "confessional");
+
+    // Go up to 1F
+    runtime.run_turn("go up").expect("go up to 1F");
+    assert_eq!(runtime.current_room_id().unwrap(), "lounge");
+}
