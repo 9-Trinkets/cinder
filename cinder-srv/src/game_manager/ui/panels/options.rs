@@ -102,8 +102,8 @@ fn map_actor_target_options(
         .collect())
 }
 
-/// Options for a panel backed by room exits. The authored menu label, when it
-/// differs from the room title, becomes the subtitle.
+/// Options for a panel backed by room exits. When the authored exit label differs
+/// from the destination room title, the destination room title becomes the subtitle.
 pub(crate) fn map_exit_panel_options(
     runtime: &CinderRuntime,
 ) -> Result<Vec<PanelOptionData>, String> {
@@ -112,12 +112,10 @@ pub(crate) fn map_exit_panel_options(
         .map_err(|error| error.to_string())?
         .into_iter()
         .map(|option| {
-            let cleaned_menu_text = strip_floor_tag(&option.menu_text);
-            let cleaned_title = strip_floor_tag(&option.title);
-            let subtitle = if !cleaned_menu_text.is_empty()
-                && !cleaned_menu_text.eq_ignore_ascii_case(cleaned_title)
+            let subtitle = if !option.menu_text.is_empty()
+                && !option.menu_text.eq_ignore_ascii_case(&option.title)
             {
-                Some(cleaned_menu_text.to_string())
+                Some(option.menu_text.clone())
             } else {
                 None
             };
@@ -127,21 +125,6 @@ pub(crate) fn map_exit_panel_options(
             }
         })
         .collect())
-}
-
-/// Strips floor tags like " (1F)", " (2F)", " (3F)", " (B1)", " (Floor 1)" from room names.
-fn strip_floor_tag(name: &str) -> &str {
-    let trimmed = name.trim();
-    if let Some(open) = trimmed.rfind(" (") {
-        if trimmed.ends_with(')') {
-            let inner = &trimmed[open + 2..trimmed.len() - 1];
-            let upper = inner.to_ascii_uppercase();
-            if upper.starts_with('B') || upper.ends_with('F') || upper.contains("FLOOR") {
-                return trimmed[..open].trim();
-            }
-        }
-    }
-    trimmed
 }
 
 pub(crate) fn craftable_item_panel_options(

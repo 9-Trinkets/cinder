@@ -33,6 +33,8 @@ pub struct RoomDefinition {
     pub inspect_text: String,
     #[serde(default)]
     pub allow_rest: bool,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub floor: Option<String>,
     pub features: Vec<RoomFeatureDefinition>,
     pub exits: Vec<RoomExitDefinition>,
     /// Conditional description overrides, checked in order; the first whose
@@ -45,6 +47,23 @@ pub struct RoomDefinition {
     /// the player can pick up with Take.
     #[serde(default)]
     pub items: BTreeMap<String, u32>,
+}
+
+impl Default for RoomDefinition {
+    fn default() -> Self {
+        Self {
+            id: String::new(),
+            title: String::new(),
+            summary: String::new(),
+            inspect_text: String::new(),
+            allow_rest: false,
+            floor: None,
+            features: Vec::new(),
+            exits: Vec::new(),
+            descriptions: Vec::new(),
+            items: BTreeMap::new(),
+        }
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

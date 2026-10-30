@@ -301,6 +301,8 @@ pub struct UiSnapshot {
     pub npc_tick_interval_ms: u64,
     pub day_number: u32,
     pub current_room_name: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub current_room_floor: Option<String>,
     pub followed_actor_name: Option<String>,
     pub help_text: String,
     pub about_body: String,

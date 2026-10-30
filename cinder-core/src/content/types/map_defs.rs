@@ -5,6 +5,8 @@ use serde::{Deserialize, Serialize};
 pub struct MapDefinition {
     pub id: String,
     pub label: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub floor: Option<String>,
     #[serde(default)]
     pub rooms: Vec<MapRoomDefinition>,
     /// Whether rooms stay hidden until the player has been there. Off for a place
@@ -26,6 +28,7 @@ impl Default for MapDefinition {
         Self {
             id: String::new(),
             label: String::new(),
+            floor: None,
             rooms: Vec::new(),
             fog: true,
             reveal_when: Vec::new(),

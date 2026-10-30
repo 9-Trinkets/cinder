@@ -267,6 +267,7 @@ mod tests {
             summary: String::new(),
             inspect_text: String::new(),
             allow_rest: false,
+            floor: None,
             features,
             exits,
             descriptions: Vec::new(),

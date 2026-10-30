@@ -302,15 +302,22 @@ fn player_can_operate_doors_and_doors_gate_movement() {
 fn floor_transitions_have_clear_indicators_in_titles_exits_and_panels() {
     let pack = load_named_pack("aera", Some("en")).expect("aera loads");
 
-    // 1. Every room title has a floor indicator (1F, 2F, 3F, or B1)
+    // 1. Every room has a first-class floor attribute, while titles stay clean without parentheticals
     for room in &pack.rooms {
-        let has_floor_tag = room.title.contains("(1F)")
+        let floor = pack.room_floor(&room.id);
+        assert!(
+            matches!(floor, Some("1F" | "2F" | "3F" | "B1")),
+            "room '{}' should have a valid floor attribute, got {:?}",
+            room.id,
+            floor
+        );
+        let has_unclean_parenthetical = room.title.contains("(1F)")
             || room.title.contains("(2F)")
             || room.title.contains("(3F)")
             || room.title.contains("(B1)");
         assert!(
-            has_floor_tag,
-            "room '{}' title '{}' should indicate its floor",
+            !has_unclean_parenthetical,
+            "room '{}' title '{}' should not contain floor parenthetical",
             room.id, room.title
         );
     }

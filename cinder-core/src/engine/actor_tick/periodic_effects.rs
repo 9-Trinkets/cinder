@@ -113,6 +113,7 @@ mod tests {
             summary: String::new(),
             inspect_text: String::new(),
             allow_rest: false,
+            floor: None,
             features: Vec::new(),
             exits: Vec::new(),
             descriptions: Vec::new(),

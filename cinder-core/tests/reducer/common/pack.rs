@@ -69,6 +69,7 @@ pub fn reducer_test_pack() -> ContentPack {
                 when: Vec::new(),
             }],
             descriptions: vec![],
+            floor: None,
         },
         RoomDefinition {
             items: Default::default(),
@@ -86,6 +87,7 @@ pub fn reducer_test_pack() -> ContentPack {
                 when: Vec::new(),
             }],
             descriptions: vec![],
+            floor: None,
         },
     ];
     pack.actors = vec![

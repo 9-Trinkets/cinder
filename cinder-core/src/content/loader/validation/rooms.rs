@@ -42,6 +42,7 @@ mod tests {
             summary: String::new(),
             inspect_text: String::new(),
             allow_rest: false,
+            floor: None,
             features: vec![RoomFeatureDefinition {
                 id: "shelf".to_string(),
                 label: "shelf".to_string(),

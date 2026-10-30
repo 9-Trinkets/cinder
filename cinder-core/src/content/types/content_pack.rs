@@ -110,6 +110,18 @@ impl ContentPack {
             .find(|map| map.rooms.iter().any(|room| room.room_id == room_id))
     }
 
+    /// The floor a room belongs to (e.g. "1F", "2F", "B1"), checking the room definition first
+    /// and falling back to the room's map definition.
+    pub fn room_floor(&self, room_id: &str) -> Option<&str> {
+        if let Some(room) = self.room(room_id) {
+            if let Some(floor) = &room.floor {
+                return Some(floor.as_str());
+            }
+        }
+        self.map_for_room(room_id)
+            .and_then(|map| map.floor.as_deref())
+    }
+
     pub fn room(&self, room_id: &str) -> Option<&RoomDefinition> {
         self.room_index.get(room_id).map(|&i| &self.rooms[i])
     }

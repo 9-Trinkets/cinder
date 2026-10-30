@@ -300,7 +300,10 @@ export default function GamePage() {
           aria-label={t('hud.openStatusFolio')}
         >
           <div className="flex items-center gap-2 text-xs text-muted truncate">
-            <span className="font-semibold text-text truncate">{uiSnapshot.current_room_name}</span>
+            <span className="font-semibold text-text truncate">
+              {uiSnapshot.current_room_name}
+              {uiSnapshot.current_room_floor ? ` (${uiSnapshot.current_room_floor})` : ''}
+            </span>
             {uiSnapshot.show_clock !== false && (
               <>
                 <span className="text-muted/40 font-mono">&bull;</span>

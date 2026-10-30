@@ -104,6 +104,7 @@ pub(super) fn build_ui_snapshot(
         .room(&current_room_id)
         .map(|room| room.title.clone())
         .unwrap_or(current_room_id.clone());
+    let current_room_floor = content.room_floor(&current_room_id).map(str::to_string);
     let followed_actor_name = runtime
         .followed_actor_id()
         .map_err(|error| error.to_string())?
@@ -180,6 +181,7 @@ pub(super) fn build_ui_snapshot(
         npc_tick_interval_ms: content.settings.npc_tick_interval_ms,
         day_number,
         current_room_name,
+        current_room_floor,
         followed_actor_name,
         help_text: runtime.help_text(),
         about_body: content.ui_text.about_body.clone(),

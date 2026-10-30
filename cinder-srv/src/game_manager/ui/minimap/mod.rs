@@ -152,6 +152,7 @@ mod tests {
         content.maps = vec![MapDefinition {
             id: "test-floor".to_string(),
             label: "Test Floor".to_string(),
+            floor: None,
             rooms: vec![
                 MapRoomDefinition {
                     room_id: "lounge".to_string(),

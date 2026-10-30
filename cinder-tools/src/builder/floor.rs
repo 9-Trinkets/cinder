@@ -285,6 +285,7 @@ impl FloorBuilder {
                 summary: draft.summary,
                 inspect_text: draft.inspect_text,
                 allow_rest: false,
+                floor: None,
                 features: draft.features,
                 exits,
                 descriptions: Vec::new(),
@@ -294,6 +295,7 @@ impl FloorBuilder {
         let map = MapDefinition {
             id: self.map_id,
             label: self.map_label,
+            floor: None,
             rooms: map_rooms,
             fog: true,
             reveal_when: Vec::new(),

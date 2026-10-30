@@ -355,6 +355,7 @@ fn boss_triggers_emit_boss_cues_for_adjacent_and_distant_rooms() {
         summary: String::new(),
         inspect_text: String::new(),
         allow_rest: false,
+        floor: None,
         features: vec![],
         exits: vec![RoomExitDefinition {
             room_id: KITCHEN_ID.to_string(),
@@ -469,6 +470,7 @@ fn distant_minion_is_silent_but_depletion_emits_distant_cue() {
         summary: String::new(),
         inspect_text: String::new(),
         allow_rest: false,
+        floor: None,
         features: vec![],
         exits: vec![RoomExitDefinition {
             room_id: KITCHEN_ID.to_string(),
@@ -574,6 +576,7 @@ fn offscreen_kills_emit_anonymous_kill_cues_and_deduplicate() {
         summary: String::new(),
         inspect_text: String::new(),
         allow_rest: false,
+        floor: None,
         features: vec![],
         exits: vec![RoomExitDefinition {
             room_id: KITCHEN_ID.to_string(),

@@ -412,6 +412,7 @@ export interface UiSnapshot {
   npc_tick_interval_ms: number
   day_number: number
   current_room_name: string
+  current_room_floor?: string
   followed_actor_name: string | null
   help_text: string
   about_body: string

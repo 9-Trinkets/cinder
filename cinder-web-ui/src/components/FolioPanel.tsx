@@ -26,6 +26,9 @@ export default function FolioPanel({
         </span>
         <h3 className="text-xl font-bold font-prose text-text tracking-tight">
           {uiSnapshot.current_room_name}
+          {uiSnapshot.current_room_floor && (
+            <span className="text-muted text-sm font-mono ml-2 font-normal">({uiSnapshot.current_room_floor})</span>
+          )}
         </h3>
         <div className="flex items-center gap-2.5 text-xs text-muted mt-1 font-mono">
           {uiSnapshot.show_clock !== false && (

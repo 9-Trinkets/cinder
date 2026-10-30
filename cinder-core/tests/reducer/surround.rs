@@ -589,6 +589,7 @@ fn surround_removes_all_surrounding_sigils_on_success() {
             },
         ],
         descriptions: vec![],
+        floor: None,
     });
     for r in ["north", "south", "east"] {
         pack.rooms.push(RoomDefinition {
@@ -607,6 +608,7 @@ fn surround_removes_all_surrounding_sigils_on_success() {
                 when: Vec::new(),
             }],
             descriptions: vec![],
+            floor: None,
         });
     }
 

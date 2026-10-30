@@ -52,7 +52,12 @@ export default function StatusPanel({
   const renderers: Record<string, () => ReactNode> = {
     location: () => (
       <Section title={t('hud.location')} defaultOpen>
-        <p className="text-text font-medium">{uiSnapshot.current_room_name}</p>
+        <p className="text-text font-medium">
+          {uiSnapshot.current_room_name}
+          {uiSnapshot.current_room_floor && (
+            <span className="text-muted text-xs font-mono ml-2">({uiSnapshot.current_room_floor})</span>
+          )}
+        </p>
         {uiSnapshot.show_clock !== false && (
           <p className="text-text text-xs">
             {t('hud.day', { day: uiSnapshot.day_number })}

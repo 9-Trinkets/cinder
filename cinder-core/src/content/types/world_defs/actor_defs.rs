@@ -5,7 +5,7 @@ use crate::engine::state::ActorRelationship;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ActorPromptContext {
     #[serde(default)]
     pub character_notes: Vec<String>,
@@ -113,6 +113,40 @@ pub struct ActorDefinition {
     /// Authored things the player can say to this actor from the Talk panel.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub interactions: Vec<super::super::Interaction>,
+}
+
+impl Default for ActorDefinition {
+    fn default() -> Self {
+        Self {
+            id: String::new(),
+            name: String::new(),
+            room_id: String::new(),
+            level: 1,
+            initial_stats: BTreeMap::new(),
+            initial_pair_stats: BTreeMap::new(),
+            aliases: Vec::new(),
+            tags: Vec::new(),
+            inspect_text: String::new(),
+            required_consumable_tags: Vec::new(),
+            attackable: false,
+            drops: BTreeMap::new(),
+            initial_equipment: BTreeMap::new(),
+            initial_inventory: BTreeMap::new(),
+            xp_drop: 0,
+            attack_interval_minutes: None,
+            starts_away: false,
+            initial_hostile: false,
+            initial_relationship: None,
+            attack_kind: String::new(),
+            resistances: BTreeMap::new(),
+            skills: Vec::new(),
+            prompt_context: ActorPromptContext::default(),
+            transformations: Vec::new(),
+            game_data: BTreeMap::new(),
+            unlocked_when: Vec::new(),
+            interactions: Vec::new(),
+        }
+    }
 }
 
 impl ActorDefinition {
