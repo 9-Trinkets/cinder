@@ -5,7 +5,7 @@ mod overlay;
 mod validation;
 
 use crate::content::loader::bundled::{read_messages, read_system_text, read_ui_text};
-use crate::content::loader::fs::{LocalizedPaths, read_json, read_optional_json};
+use crate::content::loader::fs::{LocalizedPaths, read_optional_json};
 use crate::content::loader::index::build_index;
 use crate::content::loader::overlay::read_with_overlay;
 use crate::content::types::{
@@ -170,7 +170,12 @@ pub fn load_pack_from_dir_with_locale(
     let teleports = paths
         .read_optional::<TeleportNetworkDefinition>("teleports.json")?
         .unwrap_or_default();
-    let beat_objectives = read_json::<BeatObjectivesDefinition>(path, "beat_objectives.json")?;
+    let beat_objectives = read_with_overlay::<BeatObjectivesDefinition>(
+        path,
+        &effective_locale,
+        "beat_objectives.json",
+    )?
+    .unwrap_or_default();
     let hooks =
         read_optional_json::<BTreeMap<String, Value>>(path, "hooks.json")?.unwrap_or_default();
     let speech_intents: SpeechIntentsConfig =

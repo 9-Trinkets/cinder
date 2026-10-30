@@ -1,0 +1,82 @@
+{
+  "language_name": "繁體中文",
+  "menu_button_label": "? 選單",
+  "act_ended_title": "本段結束",
+  "game_over_hint": "↑/↓ 或 PageUp/PageDown 捲動",
+  "menu_option_list_title": "選擇一個項目",
+  "menu_choice_hint": "使用 ↑/↓ 與 Enter 進行選擇。",
+  "menu_choice_transcript": "選擇了 {title}",
+  "shell_menu_title": "選單",
+  "shell_menu_close_hint": "使用 ↑/↓ 與 Enter 選擇。Esc 關閉。",
+  "help_label": "說明",
+  "resume_label": "繼續",
+  "language_menu_label": "語言",
+  "bookmark_menu_label": "書籤",
+  "bookmark_modal_title": "書籤",
+  "create_bookmark_label": "+ 將此刻設為書籤",
+  "bookmark_empty": "尚未儲存任何書籤。點擊上方將此刻存為書籤。",
+  "about_label": "關於",
+  "exit_label": "離開",
+  "about_body": "Made with love by 9 Trinkets\nwww.9trinkets.com",
+  "language_modal_title": "顯示語言",
+  "language_changed_text": "顯示語言已切換為 {language_name}。",
+  "modal_close_hint": "按 Enter 或 Esc 關閉。",
+  "look_group_room": "房間",
+  "look_group_things": "物件",
+  "look_group_people": "人物",
+  "room_items_sidebar_label": "房間內的物品",
+  "minimap_sidebar_label": "平面格局",
+  "minimap_revealed_label": "所有房間",
+  "minimap_charted_label": "已探索房間",
+  "act_closure_title": "第 {day_number} 天結束",
+  "act_closure_current_focus_label": "當前焦點",
+  "act_closure_highlights_label": "今晚在 Aera",
+  "act_closure_relationships_label": "關係動態看板",
+  "act_closure_empty_highlights": "平靜的一段時間，主要是觀察與日常流動。",
+  "act_closure_empty_relationships": "尚未觀察到明顯的關係變化。",
+  "final_summary_title": "第一章結束",
+  "final_summary_highlights_label": "今晚在 Aera",
+  "final_summary_relationships_label": "關係動態看板",
+  "final_summary_preview_label": "即將到來",
+  "final_summary_empty_preview": "明天即將到來，但輪廓仍在形成中。",
+  "act_closure": {
+    "title": "第一章結束",
+    "sections": [
+      {
+        "title": "今晚在 Aera",
+        "source": "transcript_highlights"
+      },
+      {
+        "title": "關係動態看板",
+        "source": "relationship_summary"
+      },
+      {
+        "title": "即將到來",
+        "source": "continuation_preview"
+      }
+    ]
+  },
+  "exit_confirm_title": "離開故事？",
+  "exit_confirm_body": "返回書庫？你的進度已自動儲存。",
+  "projector_skip_hint": "按 Enter 快轉。Esc 關閉。",
+  "projector_title_prefix": "放映機",
+  "error_prefix": "錯誤：",
+  "response_worker_disconnected": "模型回應工作進程已斷線。",
+  "menu_unavailable": "該選單已不再可用。",
+  "npc_tick_soft_error": "{actor_name}愣了一下，一臉困惑。",
+  "look_panel_title": "查看",
+  "game_closure": {
+    "title": "這就是 Aera",
+    "subtitle_template": "",
+    "sections": [
+      {
+        "title": "今晚在 Aera",
+        "source": "transcript_highlights"
+      },
+      {
+        "title": "關係動態看板",
+        "source": "relationship_summary"
+      }
+    ]
+  }
+}

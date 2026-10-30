@@ -11,6 +11,7 @@ pub fn read_optional_json<T: DeserializeOwned>(
     read_optional_path(&path.join(file_name))
 }
 
+#[allow(dead_code)]
 pub fn read_json<T: DeserializeOwned>(path: &Path, file_name: &str) -> Result<T, Box<dyn Error>> {
     read_required_path(&path.join(file_name))
 }

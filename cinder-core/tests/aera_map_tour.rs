@@ -10,6 +10,12 @@ fn aera_runtime() -> CinderRuntime {
     CinderRuntime::from_state(pack, state, false).expect("runtime creates")
 }
 
+fn aera_runtime_zh_tw() -> CinderRuntime {
+    let pack = load_named_pack("aera", None).expect("aera loads default zh-TW");
+    let state = WorldState::new(&pack);
+    CinderRuntime::from_state(pack, state, false).expect("runtime creates")
+}
+
 #[test]
 fn every_aera_room_loads_with_complete_flavor_and_features() {
     let pack = load_named_pack("aera", Some("en")).expect("aera loads");
@@ -1026,5 +1032,247 @@ fn two_actor_relationship_quest_and_expression_flow() {
     assert!(
         state.active_objective_stage_ids.is_empty(),
         "all quest stages completed"
+    );
+}
+
+#[test]
+fn aera_defaults_to_zh_tw_with_complete_flavor_and_features() {
+    let pack = load_named_pack("aera", None).expect("aera loads default zh-TW");
+    assert_eq!(pack.settings.default_language, "zh-TW");
+    assert_eq!(pack.rooms.len(), 10, "expected 10 rooms in Da'an villa");
+
+    let titles: Vec<_> = pack.rooms.iter().map(|r| r.title.as_str()).collect();
+    assert!(titles.contains(&"玄關門廊"));
+    assert!(titles.contains(&"開放式廚房"));
+    assert!(titles.contains(&"長桌餐廳"));
+    assert!(titles.contains(&"下沉式客廳"));
+    assert!(titles.contains(&"天井中庭"));
+    assert!(titles.contains(&"設計工作室與書房"));
+    assert!(titles.contains(&"女生臥室"));
+    assert!(titles.contains(&"頂樓露台"));
+    assert!(titles.contains(&"男生臥室"));
+    assert!(titles.contains(&"自白室"));
+
+    for room in &pack.rooms {
+        assert!(!room.title.trim().is_empty());
+        assert!(!room.summary.trim().is_empty());
+        assert!(!room.inspect_text.trim().is_empty());
+        assert!(!room.features.is_empty());
+        assert!(!room.exits.is_empty());
+
+        for feature in &room.features {
+            assert!(!feature.label.trim().is_empty());
+            assert!(!feature.inspect_text.trim().is_empty());
+        }
+    }
+
+    // Verify items in zh-TW
+    let cf_card = pack
+        .items
+        .iter()
+        .find(|i| i.id == "cfexpress-card")
+        .expect("cfexpress card exists");
+    assert_eq!(cf_card.label, "CFexpress 高速記憶卡");
+
+    let mugicha = pack
+        .items
+        .iter()
+        .find(|i| i.id == "mugicha-tea")
+        .expect("mugicha tea exists");
+    assert_eq!(mugicha.label, "熱氣騰騰的焙煎麥茶");
+
+    // Verify actions in zh-TW
+    let look_act = pack
+        .actions
+        .iter()
+        .find(|a| a.id == "look")
+        .expect("look action");
+    assert_eq!(look_act.label, "查看");
+    assert!(look_act.phrases.contains(&"查看".to_string()));
+
+    let move_act = pack
+        .actions
+        .iter()
+        .find(|a| a.id == "move")
+        .expect("move action");
+    assert_eq!(move_act.label, "移動");
+    assert!(move_act.phrases.contains(&"前往".to_string()));
+}
+
+#[test]
+fn player_can_tour_entire_daan_villa_in_traditional_chinese() {
+    let runtime = aera_runtime_zh_tw();
+
+    // Start in front entry
+    assert_eq!(runtime.current_room_id().unwrap(), "entrance");
+
+    // Inspect camphor shoe bench in Chinese
+    let look_bench = runtime
+        .run_turn("查看 樟木穿鞋凳")
+        .expect("查看 樟木穿鞋凳");
+    assert!(
+        look_bench
+            .lines
+            .iter()
+            .any(|line| line.text.contains("厚實且散發淡淡木香的樟木老板材"))
+    );
+
+    // Head into the open kitchen
+    runtime
+        .run_turn("前往 開放式廚房")
+        .expect("前往 開放式廚房");
+    assert_eq!(runtime.current_room_id().unwrap(), "kitchen");
+
+    // Step into the dining room
+    runtime.run_turn("前往 長桌餐廳").expect("前往 長桌餐廳");
+    assert_eq!(runtime.current_room_id().unwrap(), "dining-room");
+
+    // Step into the interior courtyard
+    runtime.run_turn("前往 天井中庭").expect("前往 天井中庭");
+    assert_eq!(runtime.current_room_id().unwrap(), "courtyard");
+
+    // Step into the sunken living lounge
+    runtime
+        .run_turn("前往 下沉式客廳")
+        .expect("前往 下沉式客廳");
+    assert_eq!(runtime.current_room_id().unwrap(), "lounge");
+
+    // Inspect modular sofa
+    let look_sofa = runtime.run_turn("查看 沙發").expect("查看 沙發");
+    assert!(
+        look_sofa
+            .lines
+            .iter()
+            .any(|line| line.text.contains("低矮且極深沉的組合沙發"))
+    );
+
+    // Go down to the soundproof Diary Room (Basement)
+    runtime.run_turn("前往 自白室").expect("前往 自白室");
+    assert_eq!(runtime.current_room_id().unwrap(), "confessional");
+
+    // Return to the lounge
+    runtime.run_turn("前往 客廳").expect("前往 客廳");
+    assert_eq!(runtime.current_room_id().unwrap(), "lounge");
+
+    // Climb stairs to 2F Design Studio
+    runtime.run_turn("前往 工作室").expect("前往 工作室");
+    assert_eq!(runtime.current_room_id().unwrap(), "studio");
+
+    // Check the Girls' Dormitory on 2F
+    runtime.run_turn("前往 女生臥室").expect("前往 女生臥室");
+    assert_eq!(runtime.current_room_id().unwrap(), "girls-room");
+
+    // Back to studio
+    runtime.run_turn("前往 工作室").expect("前往 工作室");
+    assert_eq!(runtime.current_room_id().unwrap(), "studio");
+
+    // Climb stairs to 3F Rooftop Terrace
+    runtime.run_turn("前往 頂樓露台").expect("前往 頂樓露台");
+    assert_eq!(runtime.current_room_id().unwrap(), "rooftop");
+
+    // Check the Guys' Dormitory on 3F
+    runtime.run_turn("前往 男生臥室").expect("前往 男生臥室");
+    assert_eq!(runtime.current_room_id().unwrap(), "guys-room");
+
+    // Return to rooftop
+    runtime.run_turn("前往 頂樓露台").expect("前往 頂樓露台");
+    assert_eq!(runtime.current_room_id().unwrap(), "rooftop");
+}
+
+#[test]
+fn aera_autonomous_quest_navigation_flow_zh_tw() {
+    use cinder_core::engine::actor_turn::{build_actor_turn, realize_actor_turn_action};
+    use cinder_core::engine::dialogue::{
+        ActorTurnActionDecision, ScriptedDialogueGenerator, render_actor_turn_decider_prompt,
+    };
+    use cinder_core::engine::events::TimestampedWorldEvent;
+    use cinder_core::engine::reducer::apply_events;
+    use std::sync::Arc;
+
+    let pack = Arc::new(load_named_pack("aera", None).expect("aera loads default zh-TW"));
+    let mut state = WorldState::new(&pack);
+    let dialogue = Arc::new(ScriptedDialogueGenerator::new());
+    let actor = pack.actor("aera").expect("aera defined");
+    let rules = pack.movement_rules("aera");
+    let mut noop_trace = |_role: &str, _topic: &str, _payload: serde_json::Value| Ok(());
+
+    // Explicitly set morning-edit quest for testing autonomous navigation flow in zh-TW
+    state.active_objective_stage_ids = vec!["stage-morning-start".to_string()];
+    assert_eq!(
+        state.active_objective_stage_ids,
+        vec!["stage-morning-start"]
+    );
+    assert_eq!(state.actor_room_id("aera", &actor.room_id), "lounge");
+
+    let build1 = build_actor_turn(Arc::clone(&pack), &state, actor, &rules).expect("build step 1");
+    let prompt1 = render_actor_turn_decider_prompt(&build1.request);
+
+    // Verify Prompt Structure in zh-TW: Character Persona, Spatial Grounding, and Quest Guidance
+    assert!(prompt1.contains("金愛羅"));
+    assert!(prompt1.contains("下沉式客廳"));
+    assert!(
+        prompt1.contains("在開始剪輯今天的毛片前，你需要先去廚房中島拿回你的高速 CFexpress 記憶卡。動身前往開放式廚房。")
+    );
+    assert!(prompt1.contains("MOVE entrance"));
+
+    // Realize Move to Front Entry
+    let decision1 = ActorTurnActionDecision::MoveTo {
+        room_id: "entrance".to_string(),
+    };
+    let events1 = realize_actor_turn_action(
+        &pack,
+        dialogue.as_ref(),
+        &state,
+        actor,
+        &decision1,
+        &build1.realization_context,
+        &mut noop_trace,
+    )
+    .expect("realize step 1");
+    let ts_events1: Vec<_> = events1
+        .into_iter()
+        .map(TimestampedWorldEvent::now)
+        .collect();
+    apply_events(&mut state, &pack, &ts_events1);
+    assert_eq!(state.actor_room_id("aera", &actor.room_id), "entrance");
+
+    // In Entrance, next hop to kitchen is Kitchen
+    let build_entry =
+        build_actor_turn(Arc::clone(&pack), &state, actor, &rules).expect("build entry");
+    let prompt_entry = render_actor_turn_decider_prompt(&build_entry.request);
+    assert!(prompt_entry.contains("MOVE kitchen"));
+
+    let decision_entry = ActorTurnActionDecision::MoveTo {
+        room_id: "kitchen".to_string(),
+    };
+    let events_entry = realize_actor_turn_action(
+        &pack,
+        dialogue.as_ref(),
+        &state,
+        actor,
+        &decision_entry,
+        &build_entry.realization_context,
+        &mut noop_trace,
+    )
+    .expect("realize entry");
+    let ts_events_entry: Vec<_> = events_entry
+        .into_iter()
+        .map(TimestampedWorldEvent::now)
+        .collect();
+    apply_events(&mut state, &pack, &ts_events_entry);
+
+    // --- STEP 2: In Kitchen, stage advanced to stage-retrieve-card ---
+    assert_eq!(state.actor_room_id("aera", &actor.room_id), "kitchen");
+    assert_eq!(
+        state.active_objective_stage_ids,
+        vec!["stage-retrieve-card"]
+    );
+
+    // Turn 2: In kitchen, prompt guidance should instruct inspecting island
+    let build_kitchen =
+        build_actor_turn(Arc::clone(&pack), &state, actor, &rules).expect("build kitchen");
+    let prompt_kitchen = render_actor_turn_decider_prompt(&build_kitchen.request);
+    assert!(
+        prompt_kitchen.contains("你已經在開放式廚房。檢視不鏽鋼中島，取回你的 CFexpress 記憶卡。")
     );
 }
