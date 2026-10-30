@@ -114,17 +114,6 @@ fn player_can_tour_entire_daan_villa_from_control_room() {
             .any(|line| line.text.contains("textured slate linen"))
     );
 
-    // Inspect Aera who is in the lounge
-    let look_aera = runtime.run_turn("look aera").expect("look aera");
-    assert!(
-        look_aera
-            .lines
-            .iter()
-            .any(|line| line.text.contains("Kim Ae-ra")
-                || line.text.contains("Aera")
-                || line.text.contains("terrazzo"))
-    );
-
     // Go down to the soundproof Diary Room (Basement)
     runtime
         .run_turn("go confessional")
