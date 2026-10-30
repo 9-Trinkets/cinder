@@ -25,8 +25,13 @@
         {
           "target_room_id": "confessional",
           "any_active_stage_ids": [
-            "stage-diary-confession"
+            "stage-diary-confession",
+            "stage-diary-record"
           ],
+          "target_behavior": "stay"
+        },
+        {
+          "target_room_id": "lounge",
           "target_behavior": "stay"
         }
       ]
@@ -40,8 +45,13 @@
             "stage-kitchen-convergence",
             "stage-tea-offered",
             "stage-vulnerable-talk",
-            "stage-diary-confession"
+            "stage-diary-confession",
+            "stage-diary-record"
           ],
+          "target_behavior": "stay"
+        },
+        {
+          "target_room_id": "kitchen",
           "target_behavior": "stay"
         }
       ]

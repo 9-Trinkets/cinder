@@ -60,7 +60,15 @@
       "id": "tea-diary-confession",
       "stage_ids": ["stage-diary-confession"],
       "guidance": {
-        "prompt_note_if_actor_incomplete": "After the quiet moment with Ren, head down the basement stairs to the soundproof B1 Diary Room to record your thoughts for tonight's confessional.",
+        "prompt_note_if_actor_incomplete": "After the quiet moment with Ren, head down the basement stairs to the soundproof B1 Diary Room.",
+        "prompt_note_if_others_incomplete": ""
+      }
+    },
+    {
+      "id": "tea-diary-record",
+      "stage_ids": ["stage-diary-record"],
+      "guidance": {
+        "prompt_note_if_actor_incomplete": "You are alone in the soundproof B1 Diary Room. Rest on the interview stool or record your honest reflections before the two-way mirror.",
         "prompt_note_if_others_incomplete": ""
       }
     }

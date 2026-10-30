@@ -967,7 +967,64 @@ fn two_actor_relationship_quest_and_expression_flow() {
     let ts_events: Vec<_> = events.into_iter().map(TimestampedWorldEvent::now).collect();
     apply_events(&mut state, &pack, &ts_events);
 
-    // Arrived in confessional - quest fully completed!
+    // Arrived in confessional - stage transitioned to stage-diary-record!
     assert_eq!(state.actor_room_id("aera", &aera.room_id), "confessional");
-    assert!(state.active_objective_stage_ids.is_empty());
+    assert_eq!(
+        state.active_objective_stage_ids,
+        vec!["stage-diary-record".to_string()]
+    );
+
+    // --- STEP 6: In Diary Room, Aera rests on the interview stool to decompress ---
+    let turn_conf_post = build_actor_turn(Arc::clone(&pack), &state, aera, &aera_rules)
+        .expect("build turn conf post");
+    let prompt_post = render_actor_turn_decider_prompt(&turn_conf_post.request);
+    assert!(
+        prompt_post
+            .contains("You are alone in the soundproof B1 Diary Room. Rest on the interview stool")
+    );
+
+    // Find REST affordance
+    let rest_affordance = turn_conf_post
+        .request
+        .affordances
+        .iter()
+        .find(|a| a.command_id == "rest")
+        .expect("rest affordance available");
+    let rest_decision = rest_affordance
+        .invocation
+        .clone()
+        .into_decision(None)
+        .unwrap();
+
+    let events = realize_actor_turn_action(
+        &pack,
+        dialogue.as_ref(),
+        &state,
+        aera,
+        &rest_decision,
+        &turn_conf_post.realization_context,
+        &mut noop_trace,
+    )
+    .expect("realize rest on stool");
+    assert_eq!(events.len(), 1);
+    match &events[0] {
+        WorldEvent::ActorCommandUsed {
+            command_id,
+            context_label,
+            ..
+        } => {
+            assert_eq!(command_id, "rest");
+            assert_eq!(context_label.as_deref(), Some("wooden interview stool"));
+        }
+        other => panic!("expected ActorCommandUsed event, got {other:?}"),
+    }
+
+    let ts_events: Vec<_> = events.into_iter().map(TimestampedWorldEvent::now).collect();
+    apply_events(&mut state, &pack, &ts_events);
+
+    // Verify quest stage completed via actor_command:aera:rest
+    assert!(
+        state.active_objective_stage_ids.is_empty(),
+        "all quest stages completed"
+    );
 }

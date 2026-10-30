@@ -189,6 +189,16 @@ pub(super) fn handle_actor_command_used(
             &format!("feature_observed:{feature_id}"),
         ));
     }
+    lines.extend_lines(advance_objective_for_signal(
+        state,
+        content,
+        &format!("actor_command:{}:{}", command_context.actor_id, command_id),
+    ));
+    lines.extend_lines(advance_objective_for_signal(
+        state,
+        content,
+        &format!("actor_command:{command_id}"),
+    ));
     lines.extend_lines(advance_objective_for_signal(state, content, "command_used"));
     Some(lines)
 }

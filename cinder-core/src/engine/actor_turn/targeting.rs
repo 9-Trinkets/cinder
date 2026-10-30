@@ -34,7 +34,6 @@ pub(crate) fn validate_command_target_contract(
         CommandTargetMode::None => {
             if target_room_id.is_some()
                 || target_actor_id.is_some()
-                || context_label.is_some()
                 || feature_id.is_some()
                 || consumable_id.is_some()
             {

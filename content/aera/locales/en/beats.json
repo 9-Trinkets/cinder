@@ -113,6 +113,23 @@
       "advance_signals": [
         "actor_entered:aera:confessional"
       ],
+      "next_stage_ids": [
+        "stage-diary-record"
+      ],
+      "narrative_lines": []
+    },
+    {
+      "id": "stage-diary-record",
+      "quest_id": "late-night-tea",
+      "quest_title": "The Late-Night Pour-Over",
+      "quest_kind": "relationship",
+      "summary": "Take a quiet moment on the interview stool in the Diary Room to decompress and record your reflections.",
+      "advance_signals": [
+        "actor_command:aera:rest",
+        "actor_command:rest",
+        "actor_command:aera:act",
+        "feature_observed:two-way-mirror"
+      ],
       "next_stage_ids": [],
       "narrative_lines": []
     }

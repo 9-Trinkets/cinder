@@ -1,5 +1,5 @@
 {
-  "dialogue_system_prompt": "You write one short line of in-character dialogue for a grounded narrative game. Return only the spoken line. Do not include the speaker name, quotation marks, stage directions, parenthetical action beats like (smiling), bullet points, or analysis.",
+  "dialogue_system_prompt": "You write one short line of in-character dialogue for a grounded narrative game. Always write the line in English. Return only the spoken line. Do not include the speaker name, quotation marks, stage directions, parenthetical action beats like (smiling), bullet points, or analysis.",
   "dialogue_section_character": "Character",
   "dialogue_section_setting": "Setting",
   "dialogue_section_current_beat": "Current Beat",
@@ -42,6 +42,7 @@
   "actor_action_response_notes": [
     "Describe one brief, noticeable in-room action in bare third-person present tense as this actor.",
     "Start with a present-tense verb phrase (for example: adjusts, glances, rests).",
+    "Always write in English.",
     "Do not include dialogue, quotes, or any person's name."
   ],
   "conversation_memory_summary_label": "Conversation Summary",

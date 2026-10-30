@@ -185,10 +185,11 @@
         "wait"
       ],
       "player_enabled": true,
-      "target_mode": "none",
+      "target_mode": "context_label",
       "effects": [
         "remember_in_room"
       ],
+      "event_text": "{actor_name} takes a quiet moment to rest on the {context_label}.",
       "player_command": {
         "usage": "rest",
         "example": "rest",
