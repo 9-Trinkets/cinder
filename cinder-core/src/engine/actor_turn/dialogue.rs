@@ -200,12 +200,13 @@ pub(crate) fn actor_room_speak_dialogue(
         "everyone here",
     )?;
     let text = generate_traced(dialogue, &request, emit_trace)?;
+    let (clean_text, _) = crate::engine::dialogue_grounding::extract_gift_tags(&text);
     Ok(vec![WorldEvent::ChannelMessage {
         message: ChannelMessage::room_broadcast(
             content,
             state,
             (&actor.id, &actor.name),
-            &text,
+            &clean_text,
             current_room_id,
         ),
     }])

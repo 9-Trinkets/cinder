@@ -187,6 +187,70 @@ export function HighlightedText({
 const DIALOGUE_PATTERN =
   /^([\p{L}][\p{L}\p{N}_\s.'-]{0,63}?)(?:\s*(?:\(\s*(?:to\s+)?([^)]+)\)|（\s*(?:對\s*)?([^）]+)）))?\s*[:：]\s*(.*)$/su
 
+const MATCHING_PAIRS: [string, string][] = [
+  ['「', '」'],
+  ['『', '』'],
+  ['“', '”'],
+  ['‘', '’'],
+  ['«', '»'],
+  ['‹', '›'],
+]
+
+function stripSingleOuterQuote(text: string): string {
+  const trimmed = text.trim()
+  if (trimmed.length < 2) return trimmed
+
+  // Check matching asymmetric pairs
+  for (const [open, close] of MATCHING_PAIRS) {
+    if (trimmed.startsWith(open) && trimmed.endsWith(close)) {
+      let depth = 0
+      let closedEarly = false
+      const chars = Array.from(trimmed)
+      for (let i = 0; i < chars.length; i++) {
+        const c = chars[i]
+        if (c === open) {
+          depth++
+        } else if (c === close) {
+          depth--
+          if (depth === 0 && i < chars.length - 1) {
+            closedEarly = true
+            break
+          }
+        }
+      }
+      if (!closedEarly && depth === 0) {
+        return chars.slice(1, -1).join('').trim()
+      }
+    }
+  }
+
+  // Check symmetric quotes (", ')
+  for (const quote of ['"', "'"]) {
+    if (trimmed.startsWith(quote) && trimmed.endsWith(quote)) {
+      const chars = Array.from(trimmed)
+      let count = 0
+      for (const c of chars) {
+        if (c === quote) count++
+      }
+      if (count === 2) {
+        return chars.slice(1, -1).join('').trim()
+      }
+    }
+  }
+
+  return trimmed
+}
+
+export function stripOuterQuotes(text: string): string {
+  let current = text.trim()
+  for (let i = 0; i < 3; i++) {
+    const next = stripSingleOuterQuote(current)
+    if (next === current) break
+    current = next
+  }
+  return current
+}
+
 // A single narration line that holds several paragraphs is shown paragraph by
 // paragraph, so that a spoken paragraph still gets the speech style.
 function paragraphsWithSpeech(line: Line): string[] | null {
@@ -273,7 +337,7 @@ const TranscriptLine = memo(function TranscriptLine({
         </span>
         <div className="text-text text-base leading-[1.8] italic">
           <HighlightedText
-            text={content}
+            text={stripOuterQuotes(content)}
             query={searchQuery ?? ''}
             craftedLabels={craftedLabels ?? []}
             interactableLabels={[]}
@@ -354,7 +418,7 @@ const TranscriptLine = memo(function TranscriptLine({
           </div>
           <div className="text-text text-base leading-[1.8]">
             <HighlightedText
-              text={speech}
+              text={stripOuterQuotes(speech)}
               query={searchQuery ?? ''}
               craftedLabels={craftedLabels ?? []}
               interactableLabels={interactableLabels ?? []}

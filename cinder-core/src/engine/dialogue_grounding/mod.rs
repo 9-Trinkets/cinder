@@ -488,10 +488,76 @@ pub(crate) fn extract_gift_tags(raw: &str) -> (String, Vec<String>) {
     let final_text = if normalized.is_empty() && !gifts.is_empty() {
         "Here, take this.".to_string()
     } else {
-        normalized
+        strip_outer_quotes(&normalized)
     };
 
     (final_text, gifts)
+}
+
+const MATCHING_PAIRS: &[(char, char)] = &[
+    ('「', '」'),
+    ('『', '』'),
+    ('“', '”'),
+    ('‘', '’'),
+    ('«', '»'),
+    ('‹', '›'),
+];
+
+pub(crate) fn strip_outer_quotes(text: &str) -> String {
+    let mut current = text.trim();
+    for _ in 0..3 {
+        let trimmed = current.trim();
+        let stripped = strip_single_outer_quote(trimmed);
+        if stripped == trimmed {
+            break;
+        }
+        current = stripped;
+    }
+    current.to_string()
+}
+
+fn strip_single_outer_quote(s: &str) -> &str {
+    let trimmed = s.trim();
+    if trimmed.chars().count() < 2 {
+        return trimmed;
+    }
+
+    // Check asymmetric matching pairs
+    for &(open, close) in MATCHING_PAIRS {
+        if trimmed.starts_with(open) && trimmed.ends_with(close) {
+            let mut depth = 0;
+            let mut closed_early = false;
+            let chars: Vec<char> = trimmed.chars().collect();
+            for (i, &c) in chars.iter().enumerate() {
+                if c == open {
+                    depth += 1;
+                } else if c == close {
+                    depth -= 1;
+                    if depth == 0 && i < chars.len() - 1 {
+                        closed_early = true;
+                        break;
+                    }
+                }
+            }
+            if !closed_early && depth == 0 {
+                let inner = &trimmed[open.len_utf8()..trimmed.len() - close.len_utf8()];
+                return inner.trim();
+            }
+        }
+    }
+
+    // Check symmetric quotes ('"', '\'')
+    for &quote in &['"', '\''] {
+        if trimmed.starts_with(quote) && trimmed.ends_with(quote) {
+            let count = trimmed.chars().filter(|&c| c == quote).count();
+            if count == 2 {
+                let inner = &trimmed[quote.len_utf8()..trimmed.len() - quote.len_utf8()];
+                return inner.trim();
+            }
+        }
+    }
+
+    trimmed
 }
 
 /// Resolves a `[GIVE: ...]` tag to an item the giver can actually hand over.
@@ -658,5 +724,42 @@ mod tests {
         let (clean, gifts) = extract_gift_tags(raw);
         assert_eq!(clean, "I have nothing for you, wanderer.");
         assert!(gifts.is_empty());
+    }
+
+    #[test]
+    fn strips_outer_corner_bracket_quotes() {
+        let raw = "「嗯，謝謝你......（輕輕喝了一口）有時候真的覺得背負著什麼。」";
+        let (clean, gifts) = extract_gift_tags(raw);
+        assert_eq!(
+            clean,
+            "嗯，謝謝你......（輕輕喝了一口）有時候真的覺得背負著什麼。"
+        );
+        assert!(gifts.is_empty());
+    }
+
+    #[test]
+    fn strips_outer_double_quotes_and_curly_quotes() {
+        let raw1 = "\"I think we should talk about this later.\"";
+        let (clean1, _) = extract_gift_tags(raw1);
+        assert_eq!(clean1, "I think we should talk about this later.");
+
+        let raw2 = "“We are all looking for something.”";
+        let (clean2, _) = extract_gift_tags(raw2);
+        assert_eq!(clean2, "We are all looking for something.");
+    }
+
+    #[test]
+    fn preserves_multiple_quoted_spans_in_one_sentence() {
+        let raw = "「你好」然後「再見」";
+        let (clean, _) = extract_gift_tags(raw);
+        assert_eq!(clean, "「你好」然後「再見」");
+    }
+
+    #[test]
+    fn strips_outer_quotes_with_embedded_gift_tags() {
+        let raw = "「[give: hot-tea] 請喝杯熱茶吧。」";
+        let (clean, gifts) = extract_gift_tags(raw);
+        assert_eq!(clean, "請喝杯熱茶吧。");
+        assert_eq!(gifts, vec!["hot-tea"]);
     }
 }
