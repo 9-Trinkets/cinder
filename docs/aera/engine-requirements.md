@@ -75,3 +75,4 @@ When a cut is selected in `menu-day1-night-cut`, a simple hook or beat effect:
   - 1 Night editing conversation + Confessional.
   - 1 Morning resolution report.
 * **Tested & Verified**: Because choices use Cinder's native menu and beat mechanisms, playthroughs can be fully covered by automated regression tests in `cinder-core/tests/aera_*.rs`.
+* **Action & Autonomy Reference**: See [Actor Actions & Reality-Show Autonomy](file:///Users/li-hsuanlung/Projects/cinder/docs/aera/actions-and-autonomy.md) for the complete housemate action taxonomy, speech intent mechanics, and verified integration test scenarios.

@@ -34,6 +34,9 @@ Each card in *Aera* is represented as a structured data object that can be autho
 }
 ```
 
+> [!NOTE]
+> For the complete vocabulary of autonomous actions (`move`, `act`, `inspect_feature`, `speak`, `confess`) that housemates execute in response to cards, see [Actor Actions & Reality-Show Autonomy](file:///Users/li-hsuanlung/Projects/cinder/docs/aera/actions-and-autonomy.md).
+
 ---
 
 ## 2. Starter Deck: 8 Event Cards (Macro / Environmental)
