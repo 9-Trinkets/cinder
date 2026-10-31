@@ -2,11 +2,11 @@
 
 **Status:** Phases 0 to 3 are built. Phases 4 and 5 are planned. Sections 2 and 4 describe what exists; the examples use the compact condition forms the loader accepts.
 
-How the engine should model things in a room that the player or an NPC can operate and that keep a state afterwards: a lamp, a valve, a gate, a desk, a projector. Written for every pack, not for one. The survey below shows Layla, Aera and Ella need the same thing, and Layla's unlocks and valve already use it. Decisions made: **interaction** is the name (it avoids confusing it further with *action* and *affordance*, which were used interchangeably before), topics are replaced by interactions now, and a feature's states are declared.
+How the engine should model things in a room that the player or an NPC can operate and that keep a state afterwards: a lamp, a valve, a gate, a desk, a projector. Written for every pack, not for one. The survey below shows Layla and Ella need the same thing, and Layla's unlocks and valve already use it. Decisions made: **interaction** is the name (it avoids confusing it further with *action* and *affordance*, which were used interchangeably before), topics are replaced by interactions now, and a feature's states are declared.
 
 ## 1. What we found
 
-There is no first-class interactive object today. Every case in the four packs is built from the same three pieces:
+There is no first-class interactive object today. Every case in the shipped packs is built from the same three pieces:
 
 1. **A room-bound action** gated by `allowed_rooms`, because actions cannot target a feature.
 2. **A hook that sets a story variable.**
@@ -17,8 +17,6 @@ There is no first-class interactive object today. Every case in the four packs i
 | Steam valve opens the fortress gate | Layla `turn_steam_valve`, hook `valve.diverted` | Action in `village_west_1`, sets `fortress_gate_open`. The valve feature is inspect-only. The action has no `blocked_by_story_var`, so it can be repeated. |
 | Gate, cage, courtyard cages, safe unlocks | Layla `unlock_*` (4 actions, 4 hooks) | The same block copied four times: key item, room, content event, hook, story var. `fortress_gate_open` is written by two different actions. |
 | Boss-gated exits and rooms | Layla `descriptions[]`, exit `requires_story_var` | Generic engine features, but each reads a different kind of condition. |
-| Cooking, brewing, plating | Aera (9 actions) | `allowed_rooms: ["kitchen"]` stands in for the kitchen island feature. State is objective-progress keys plus a loose room item. |
-| Editing desk, watching clips | Aera `edit`, `watch` | Items created at a feature's stock. |
 | Projector | Ella | A menu sets a story variable, and a stage reads it. The projector feature is inspect-only. |
 | Sofa, beds | `allow_rest` | Stateless stat bump, for NPCs only. |
 
@@ -96,7 +94,6 @@ An **interaction** is an authored choice with a label, optional conditions, line
 - **The valve becomes an interaction on the valve feature,** and can no longer be repeated by accident. It is also closed once the fortress gate is open, however that happened.
 - **Typed phrases are `aliases`** on the interaction, matched as the whole input before action phrases. The Use panel lists a key through the offered interaction that needs it.
 - **Why not in the right room:** an interaction typed in another room gets the same "must be in <room>" message the old actions gave.
-- **Aera's kitchen actions** can later become interactions on the kitchen island, which lets NPCs act on a feature too (Phase 4).
 
 Interactions apply **effects.** Instead of a second effect type, they use the same effect list as hooks (`set_story_var`, `acquire_item`, `adjust_actor_stat`, `narrate_message`, `move_actors`, ...), plus a few new ones that remove today's workaround through a story variable:
 - `set_feature_state`
@@ -119,7 +116,6 @@ Stage effects (`AdvanceEffect`) and hook effects (`WorldHookEffect`) become **on
 | Per-feature inspect text | `descriptions` by state | 2 |
 | `requires_room_item`, `requires_room_without_item` | a `when` over the room's items | 1 |
 | Story variable as the only state | feature state, with story variables kept for global flags | 2 |
-| Aera kitchen and studio actions, `allowed_rooms` as a stand-in | interactions on the kitchen island and desk | 4 |
 | Two effect enums | one `Effect` | 5 |
 | Five hook entry points | one | not planned |
 
@@ -136,10 +132,10 @@ Each step keeps the pack working: the loader accepts the old field and the new o
 | Phase | Adds | Replaces | Proves it on |
 |---|---|---|---|
 | 0 | One condition evaluator, and one truthiness helper | The two copies of `story_var_is_truthy` | Existing tests |
-| 1 | `when` on exits, descriptions, actions, topics and the rest, with the old fields rewritten as sugar | Eight separate gates | Layla and Aera, with identical behavior |
+| 1 | `when` on exits, descriptions, actions, topics and the rest, with the old fields rewritten as sugar | Eight separate gates | Layla, with identical behavior |
 | 2 | Feature state, per-state descriptions, interactions on features, the Do panel. Topics become interactions on actors. | Topics, inspect-only features | **Wren's topics, and the engine tests** |
 | 3 | Layla's unlocks and the valve as interactions, with `aliases` for typed phrases, and `consume_item`, `run_hook` and `emit_signal` effects | Five copied action blocks | Layla gate, cages, safe, valve |
-| 4 | NPCs target features | Aera's `allowed_rooms` stand-in | Aera kitchen |
+| 4 | NPCs target features | Feature interaction stand-in | Feature interactions |
 | 5 | One effect list | Stage effects and hook effects | Everything |
 
 Phase 3 removed the most copy-paste. Phases 4 and 5 are larger and can wait, and no pack needs them yet.
@@ -155,4 +151,4 @@ Phase 3 removed the most copy-paste. Phases 4 and 5 are larger and can wait, and
 1. **Layla's behavior must not change.** Phase 1's sugar and Phase 3's migration each need before-and-after tests that replay the existing gate and unlock flows.
 2. **Localization.** Interaction labels and per-state descriptions are player text and live in each locale's files, like everything else.
 3. **Saved games.** Feature state is new data with a default, so old saves load. Story variables stay as they are.
-4. **What NPCs can do with features** (Phase 4) is the least settled part, because Aera's NPC turns pick commands from a prompted list.
+4. **What NPCs can do with features** (Phase 4) is the least settled part, because NPC turns pick commands from a prompted list.

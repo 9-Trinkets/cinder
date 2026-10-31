@@ -720,13 +720,13 @@ fn live_test_synapse_transition_commentary() {
 
 #[test]
 fn follow_and_unfollow_commands_and_panel_options() {
-    let mut pack = load_named_pack("aera", Some("en")).expect("aera loads and validates");
+    let mut pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     if pack.actor("ren").is_none() {
         pack.actors
             .push(cinder_core::content::types::ActorDefinition {
                 id: "ren".to_string(),
                 name: "Ren".to_string(),
-                room_id: "entrance".to_string(),
+                room_id: pack.rooms[0].id.clone(),
                 ..Default::default()
             });
     }

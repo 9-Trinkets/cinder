@@ -113,7 +113,7 @@ pub struct ContentSettingsDefinition {
     #[serde(default)]
     pub autonomous_actor_dialogue: bool,
     /// Whether the web UI shows the player's free-text input box. Spectator
-    /// packs (e.g. Aera's control room) set this to false so the player
+    /// packs (e.g. spectator packs) set this to false so the player
     /// watches the show instead of typing commands.
     #[serde(default = "default_true")]
     pub show_player_input: bool,

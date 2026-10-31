@@ -95,7 +95,7 @@ Visual pass (headless Chromium driven by Playwright, since the browser extension
 - Lists (exits, items, people, party, drops) joined with `, ` and `and`; they now use `、` and `和` in Chinese through `list.*` messages.
 
 Still open:
-- Aera and Isla still show English pack metadata in zh-TW (they ship no zh-TW locale; Ella now has a settings overlay).
-- The book-recommender flow (Isla/Aera) still contains English strings.
+- Isla still shows English pack metadata in zh-TW (it ships no zh-TW locale; Ella now has a settings overlay).
+- The book-recommender flow (Isla) still contains English strings.
 - Layla's Orva is now 奧爾娃 in the game zh-TW, matching the novel.
 - Typed give commands still need the English word `to` (`給予 藥水 to 小宰德`).

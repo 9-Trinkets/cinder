@@ -669,13 +669,13 @@ mod tests {
         assert!(codes.contains(&"zh-TW"), "layla must ship zh-TW: {codes:?}");
         assert_eq!(codes.first().copied(), Some("en"), "en sorts first");
 
-        let aera = pack_locale_options("aera");
+        let isla = pack_locale_options("isla");
         assert_eq!(
-            aera.iter()
+            isla.iter()
                 .map(|option| option.code.as_str())
                 .collect::<Vec<_>>(),
             vec!["en"],
-            "aera ships English only"
+            "isla ships English only"
         );
 
         // A pack without a locales/ directory still reports the default fallback.

@@ -3,7 +3,7 @@
 //! Typical local usage:
 //!
 //! ```bash
-//! cargo run -p cinder-srv --bin debug_playthrough -- --pack aera --transcript-limit 20
+//! cargo run -p cinder-srv --bin debug_playthrough -- --pack layla --transcript-limit 20
 //! ```
 //!
 //! If Postgres is only exposed inside Docker Compose, run it on the Compose network:
@@ -13,7 +13,7 @@
 //!   -v "$PWD":/work -w /work \
 //!   -e CINDER_DATABASE_URL='postgres://cinder:cinder@postgres:5432/cinder' \
 //!   rust:1-bookworm \
-//!   cargo run -p cinder-srv --bin debug_playthrough -- --pack aera --transcript-limit 20
+//!   cargo run -p cinder-srv --bin debug_playthrough -- --pack layla --transcript-limit 20
 //! ```
 //!
 //! Useful filters:
@@ -252,21 +252,21 @@ mod tests {
             "--player".to_string(),
             "naush".to_string(),
             "--pack".to_string(),
-            "aera".to_string(),
+            "layla".to_string(),
             "--transcript-limit".to_string(),
             "50".to_string(),
         ])
         .expect("parse");
 
         assert_eq!(args.player.as_deref(), Some("naush"));
-        assert_eq!(args.pack.as_deref(), Some("aera"));
+        assert_eq!(args.pack.as_deref(), Some("layla"));
         assert_eq!(args.transcript_limit, 50);
     }
 
     #[test]
     fn collect_objective_story_vars_filters_to_beat_objective_keys() {
         let content =
-            cinder_core::content::loader::load_named_pack("aera", Some("en")).expect("load aera");
+            cinder_core::content::loader::load_named_pack("layla", Some("en")).expect("load layla");
         let mut state = WorldState::new(&content);
         state
             .story_vars

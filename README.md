@@ -13,7 +13,6 @@ by the Rust engine, and rendered through a responsive, themeable web UI.
 
 | Content Pack | Title | Description |
 |---|---|---|
-| `aera` | Aera | You're the director behind a reality show house, watching four strangers navigate attraction and trust over a few days. Mostly you stay silent and let it play out — a quiet instruction or well-timed twist pushes the story where you want it. |
 | `ella` | Ella | The last night home before everything changes. In a small apartment with her Taiwanese immigrant parents, love gets said through food and small gestures more than words — see what finally gets spoken before she walks out the door. |
 | `isla` | Isla | Stories first. Toys are sleeping. You are Isla, a child psychologist at Willow House, a children's counseling center in an old brick rowhouse in Philadelphia. Prepare for each session, choose a picture book from the attic shelves, and notice what the child tells you with their hands before their words. |
 | `layla` | Layla | Wake lost. Learn the rules. Choose who you become. Layla wakes with no memory in a goblin cave, beside a golem that does not move. To win her way out she must capture the cave from the shaman and its chalk-marked servants — claiming territory one room at a time. Below it waits an elf army that refuses to be bound, and beyond them, old fire held prisoner until it is released. Every rule she learns was built on purpose, for a purpose she cannot remember — and each one is training her to become something she will have to decide for herself. |
@@ -121,14 +120,14 @@ Inspect the latest persisted playthrough, including transcript and `beat_objecti
 story vars:
 
 ```bash
-cargo run -p cinder-srv --bin debug_playthrough -- --pack aera --transcript-limit 20
+cargo run -p cinder-srv --bin debug_playthrough -- --pack layla --transcript-limit 20
 ```
 
 Print actor-turn prompt data from a saved playthrough, including system prompt,
 request JSON, and rendered prompt text:
 
 ```bash
-cargo run -p cinder-srv --bin debug_prompts -- --pack aera --actor ren
+cargo run -p cinder-srv --bin debug_prompts -- --pack layla --actor sakhra
 ```
 
 When Postgres is only reachable on the Docker Compose network, run the utilities
@@ -139,13 +138,13 @@ docker run --rm --network cinder_default \
   -v "$PWD":/work -w /work \
   -e CINDER_DATABASE_URL='postgres://cinder:cinder@postgres:5432/cinder' \
   rust:1-bookworm \
-  cargo run -p cinder-srv --bin debug_playthrough -- --pack aera --transcript-limit 20
+  cargo run -p cinder-srv --bin debug_playthrough -- --pack layla --transcript-limit 20
 
 docker run --rm --network cinder_default \
   -v "$PWD":/work -w /work \
   -e CINDER_DATABASE_URL='postgres://cinder:cinder@postgres:5432/cinder' \
   rust:1-bookworm \
-  cargo run -p cinder-srv --bin debug_prompts -- --pack aera --actor ren
+  cargo run -p cinder-srv --bin debug_prompts -- --pack layla --actor sakhra
 ```
 
 ## Workflow

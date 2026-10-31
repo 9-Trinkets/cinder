@@ -361,7 +361,7 @@ mod shipped_pack_load_tests {
 
     #[test]
     fn shipped_packs_load_behavior_and_movement() {
-        for pack in ["aera", "ella", "isla", "layla"] {
+        for pack in ["ella", "isla", "layla"] {
             let dir = pack_dir(pack);
             let loaded = load_pack_from_dir_with_locale(&dir, Some("en"))
                 .unwrap_or_else(|e| panic!("pack {pack} failed to load: {e}"));
@@ -370,9 +370,7 @@ mod shipped_pack_load_tests {
                 "{pack}: hold default absent"
             );
             assert!(!loaded.rooms.is_empty(), "{pack}: rooms absent");
-            if pack != "aera" {
-                assert!(!loaded.actors.is_empty(), "{pack}: actors absent");
-            }
+            assert!(!loaded.actors.is_empty(), "{pack}: actors absent");
         }
     }
 }

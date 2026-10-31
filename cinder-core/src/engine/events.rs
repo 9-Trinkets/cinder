@@ -321,16 +321,16 @@ mod tests {
     #[test]
     fn actor_action_text_normalizes_sentence_start() {
         assert_eq!(
-            render_actor_action_text("Aera", "Adjust a chair at the table").unwrap(),
-            "Aera adjust a chair at the table."
+            render_actor_action_text("Alice", "Adjust a chair at the table").unwrap(),
+            "Alice adjust a chair at the table."
         );
     }
 
     #[test]
     fn actor_action_text_strips_repeated_actor_name() {
         assert_eq!(
-            render_actor_action_text("Aera", "Aera smooths the stack of mail.").unwrap(),
-            "Aera smooths the stack of mail."
+            render_actor_action_text("Alice", "Alice smooths the stack of mail.").unwrap(),
+            "Alice smooths the stack of mail."
         );
     }
 }

@@ -3,13 +3,13 @@
 //! Typical local usage:
 //!
 //! ```bash
-//! cargo run -p cinder-srv --bin debug_prompts -- --pack aera
+//! cargo run -p cinder-srv --bin debug_prompts -- --pack layla
 //! ```
 //!
 //! Print one actor's prompt from the latest matching playthrough:
 //!
 //! ```bash
-//! cargo run -p cinder-srv --bin debug_prompts -- --pack aera --actor ren
+//! cargo run -p cinder-srv --bin debug_prompts -- --pack layla --actor sakhra
 //! ```
 //!
 //! If Postgres is only exposed inside Docker Compose, run it on the Compose network:
@@ -19,7 +19,7 @@
 //!   -v "$PWD":/work -w /work \
 //!   -e CINDER_DATABASE_URL='postgres://cinder:cinder@postgres:5432/cinder' \
 //!   rust:1-bookworm \
-//!   cargo run -p cinder-srv --bin debug_prompts -- --pack aera --actor ren
+//!   cargo run -p cinder-srv --bin debug_prompts -- --pack layla --actor sakhra
 //! ```
 
 use cinder_core::content::loader::load_named_pack;
@@ -213,15 +213,15 @@ mod tests {
     fn parse_args_accepts_actor_filters() {
         let args = parse_args(vec![
             "--pack".to_string(),
-            "aera".to_string(),
+            "layla".to_string(),
             "--actor".to_string(),
-            "ren".to_string(),
+            "sakhra".to_string(),
             "--all-actors".to_string(),
         ])
         .expect("parse");
 
-        assert_eq!(args.pack.as_deref(), Some("aera"));
-        assert_eq!(args.actor.as_deref(), Some("ren"));
+        assert_eq!(args.pack.as_deref(), Some("layla"));
+        assert_eq!(args.actor.as_deref(), Some("sakhra"));
         assert!(args.all_actors);
     }
 }

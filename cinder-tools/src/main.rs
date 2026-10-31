@@ -26,7 +26,7 @@ enum Commands {
     },
     /// Lint content pack reference integrity
     Lint {
-        /// Optional pack name (e.g. 'layla', 'aera'). If omitted, all packs are checked.
+        /// Optional pack name (e.g. 'layla', 'ella'). If omitted, all packs are checked.
         #[arg(short, long)]
         pack: Option<String>,
         /// Content root directory (default: content)

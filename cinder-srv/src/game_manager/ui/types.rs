@@ -317,7 +317,7 @@ pub struct UiSnapshot {
     pub follow_options: Vec<MenuOptionData>,
     pub autonomous_actor_dialogue: bool,
     /// Whether the web UI should show the player's free-text input box.
-    /// False for spectator packs (e.g. Aera) where the player watches rather
+    /// False for spectator packs where the player watches rather
     /// than types commands.
     pub show_player_input: bool,
     pub show_clock: bool,
