@@ -154,12 +154,6 @@ export function runCommand(token: string, playId: string, input: string, display
   })
 }
 
-export function runRealtimeTick(token: string, playId: string) {
-  return reqAuth<CommandResponse>(`/games/${playId}/tick`, token, {
-    method: 'POST',
-  })
-}
-
 export interface LocaleItem {
   code: string
   label: string

@@ -15,12 +15,6 @@ pub struct TeleportNetworkDefinition {
     pub permanent_anchors: Vec<TeleportAnchorDefinition>,
 }
 
-impl TeleportNetworkDefinition {
-    pub fn chalk_capacity(&self) -> usize {
-        self.max_chalk_anchors.unwrap_or(3)
-    }
-}
-
 /// A permanent teleport platform. It is only available while its `when`
 /// conditions hold (set by pack content, e.g. a `player.moved` hook).
 #[derive(Debug, Clone, Serialize, Deserialize)]

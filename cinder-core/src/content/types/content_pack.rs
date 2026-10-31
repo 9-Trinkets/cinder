@@ -379,18 +379,6 @@ impl ContentPack {
             .find(|event| event.id == event_id)
     }
 
-    pub fn player_commands(&self) -> Vec<&ActionDefinition> {
-        self.actions
-            .iter()
-            .filter(|action| action.player_enabled)
-            .collect()
-    }
-
-    pub fn player_action_enabled(&self, action_id: &str) -> bool {
-        self.action(action_id)
-            .is_some_and(|action| action.player_enabled)
-    }
-
     /// Whether player item transfers (taking items) are declaratively enabled
     /// by an action in this pack.
     pub fn player_can_take_items(&self) -> bool {
@@ -665,25 +653,6 @@ impl ContentPack {
                     .collect()
             })
             .unwrap_or_default()
-    }
-
-    pub fn resolve_consumable_in_room<'a>(
-        &'a self,
-        room_id: &str,
-        raw_target: &str,
-    ) -> Option<RoomConsumableRef<'a>> {
-        let target = raw_target.trim().to_ascii_lowercase();
-        self.room_consumables(room_id)
-            .into_iter()
-            .find(|candidate| {
-                candidate.consumable.label.eq_ignore_ascii_case(&target)
-                    || candidate.consumable.id.eq_ignore_ascii_case(&target)
-                    || candidate
-                        .consumable
-                        .aliases
-                        .iter()
-                        .any(|alias| alias.eq_ignore_ascii_case(&target))
-            })
     }
 
     pub fn room_consumable<'a>(

@@ -60,11 +60,6 @@ pub fn charm_bonus(level: u32) -> u32 {
     TABLE[idx]
 }
 
-/// Follower cap for charm (compatibility): 2 * skill_level (2 to 20).
-pub fn charm_follower_cap(level: u32) -> usize {
-    (2 * level.clamp(1, 10)) as usize
-}
-
 /// Flat bonus damage for strike: skill_level - 1 (+0 to +9).
 pub fn strike_bonus_damage(level: u32) -> i32 {
     level.clamp(1, 10).saturating_sub(1) as i32

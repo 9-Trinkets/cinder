@@ -324,22 +324,6 @@ impl WorldState {
         base + weapon_bonus + strike_bonus
     }
 
-    /// Total count of active trace mark items across all room inventories.
-    pub fn total_active_trace_marks(&self, content: &ContentPack) -> usize {
-        self.inventory
-            .room_item_stock
-            .iter()
-            .filter(|(key, count)| {
-                if **count == 0 {
-                    return false;
-                }
-                let item_id = key.split("::").nth(1).unwrap_or(key.as_str());
-                content.item(item_id).is_some_and(|item| item.trace_mark)
-            })
-            .map(|(_, count)| *count as usize)
-            .sum()
-    }
-
     /// Effective combat defense rating: the actor's effective defense attribute
     /// (e.g. `endurance`) plus any equipment bonuses to `"defense"`.
     pub fn actor_combat_defense(&self, content: &ContentPack, actor_id: &str) -> i32 {
@@ -433,25 +417,6 @@ impl WorldState {
                 .keys()
                 .map(|stat_key| {
                     let current = self.actor_stat(actor_id, stat_key);
-                    let init = initial.get(stat_key).copied().unwrap_or(0);
-                    (stat_key.clone(), current - init)
-                })
-                .collect(),
-        )
-    }
-
-    pub fn pair_stat_deltas(
-        &self,
-        first_id: &str,
-        second_id: &str,
-    ) -> Option<BTreeMap<String, i32>> {
-        let key = Self::conversation_key(first_id, second_id);
-        let initial = self.combat.initial_pair_stats.get(&key)?;
-        Some(
-            initial
-                .keys()
-                .map(|stat_key| {
-                    let current = self.pair_stat(first_id, second_id, stat_key);
                     let init = initial.get(stat_key).copied().unwrap_or(0);
                     (stat_key.clone(), current - init)
                 })

@@ -8,8 +8,7 @@ use std::path::Path;
 use super::zone::{Direction, Zone};
 
 #[derive(Debug, Clone)]
-#[allow(dead_code)]
-pub struct RoomDraft {
+pub(crate) struct RoomDraft {
     pub x: f64,
     pub y: f64,
     pub id: String,
@@ -158,35 +157,6 @@ impl FloorBuilder {
         );
     }
 
-    #[allow(dead_code)]
-    pub fn connect_gated(
-        &mut self,
-        id_a: &str,
-        id_b: &str,
-        dir: Direction,
-        label_a: impl Into<String>,
-        aliases_a: Vec<String>,
-        requires_story_var: impl Into<String>,
-    ) {
-        let opp = dir.opposite();
-        self.add_exit(
-            id_a,
-            id_b,
-            label_a,
-            aliases_a,
-            Some(dir.label().to_string()),
-            requires_story_var,
-        );
-        self.add_exit(
-            id_b,
-            id_a,
-            opp.label(),
-            opp.default_aliases(),
-            Some(opp.label().to_string()),
-            "",
-        );
-    }
-
     pub fn zone_for(&self, x: usize, y: usize) -> Option<&Zone> {
         self.zones.iter().find(|z| z.contains(x, y))
     }
@@ -220,48 +190,6 @@ impl FloorBuilder {
             {
                 let to_id_clone = to_id.clone();
                 self.connect_bidirectional(&from_id, &to_id_clone, Direction::South);
-            }
-        }
-    }
-
-    #[allow(dead_code)]
-    pub fn connect_adjacent_zones(&mut self, zone_a_name: &str, zone_b_name: &str, dir: Direction) {
-        let coords: Vec<(usize, usize)> = self.grid.keys().copied().collect();
-        for &(x, y) in &coords {
-            let Some(za) = self.zone_for(x, y) else {
-                continue;
-            };
-            if za.name != zone_a_name {
-                continue;
-            }
-
-            let (nx, ny) = match dir {
-                Direction::North => {
-                    if y > 0 {
-                        (x, y - 1)
-                    } else {
-                        continue;
-                    }
-                }
-                Direction::South => (x, y + 1),
-                Direction::East => (x + 1, y),
-                Direction::West => {
-                    if x > 0 {
-                        (x - 1, y)
-                    } else {
-                        continue;
-                    }
-                }
-                _ => continue,
-            };
-
-            if let Some(target_id) = self.grid.get(&(nx, ny))
-                && let Some(zb) = self.zone_for(nx, ny)
-                && zb.name == zone_b_name
-            {
-                let from_id = self.grid[&(x, y)].clone();
-                let to_id = target_id.clone();
-                self.connect_bidirectional(&from_id, &to_id, dir);
             }
         }
     }

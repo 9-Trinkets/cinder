@@ -167,13 +167,6 @@ impl WorldState {
             .unwrap_or(&[])
     }
 
-    pub fn actor_has_observed_room(&self, actor_id: &str, room_id: &str) -> bool {
-        self.actors
-            .actor_observed_room_ids
-            .get(actor_id)
-            .is_some_and(|rooms| rooms.contains(room_id))
-    }
-
     pub fn mark_actor_observed_room(&mut self, actor_id: &str, room_id: &str) {
         self.actors
             .actor_observed_room_ids

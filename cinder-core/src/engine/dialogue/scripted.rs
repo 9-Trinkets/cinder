@@ -34,59 +34,6 @@ impl ScriptedDialogueGenerator {
         self
     }
 
-    pub fn with_menu_intent(mut self, menu_id: &str, should_open: bool) -> Self {
-        self.menu_intents.insert(
-            menu_id.to_string(),
-            MenuIntentDecision {
-                should_open,
-                label: if should_open { "OPEN" } else { "PASS" }.to_string(),
-            },
-        );
-        self
-    }
-
-    pub fn with_actor_turn_action(
-        mut self,
-        actor_id: &str,
-        decision: ActorTurnActionDecision,
-    ) -> Self {
-        self.actor_turn_actions
-            .insert(actor_id.to_string(), decision);
-        self
-    }
-
-    pub fn with_memory_summary(
-        mut self,
-        participant_a_id: &str,
-        participant_b_id: &str,
-        summary: &str,
-    ) -> Self {
-        let key = if participant_a_id <= participant_b_id {
-            format!("{participant_a_id}::{participant_b_id}")
-        } else {
-            format!("{participant_b_id}::{participant_a_id}")
-        };
-        self.memory_summaries.insert(key, summary.to_string());
-        self
-    }
-
-    pub fn with_attraction_intent(
-        mut self,
-        actor_id: &str,
-        other_person_id: &str,
-        decision: DirectSpeechIntentDecision,
-    ) -> Self {
-        self.attraction_intents
-            .insert(format!("{actor_id}::{other_person_id}"), decision);
-        self
-    }
-
-    pub fn with_perspective_review(mut self, actor_id: &str, review: PerspectiveReview) -> Self {
-        self.perspective_reviews
-            .insert(actor_id.to_string(), review);
-        self
-    }
-
     pub fn with_stage_assignment(mut self, stage_id: &str, assignment: StageAssignment) -> Self {
         self.stage_assignments
             .insert(stage_id.to_string(), assignment);

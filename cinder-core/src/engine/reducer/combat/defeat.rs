@@ -99,7 +99,7 @@ pub(in crate::engine::reducer) fn defeat_actor(
 
 /// Awards the defeated actor's full XP independently to each party member and
 /// applies the recipient's own level table.
-pub(in crate::engine::reducer) fn award_defeat_xp(
+fn award_defeat_xp(
     state: &mut WorldState,
     content: &ContentPack,
     defeated_actor_id: &str,
@@ -274,7 +274,7 @@ fn narrate_unlocked_skills(
     }
 }
 
-pub(in crate::engine::reducer) fn spawn_defeat_drops(
+fn spawn_defeat_drops(
     state: &mut WorldState,
     content: &ContentPack,
     actor_id: &str,

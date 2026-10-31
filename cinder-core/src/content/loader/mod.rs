@@ -68,10 +68,6 @@ pub fn available_packs() -> Vec<String> {
     packs
 }
 
-pub fn load_pack_settings(pack_id: &str) -> Result<ContentSettingsDefinition, Box<dyn Error>> {
-    load_pack_settings_for_locale(pack_id, None)
-}
-
 /// Loads a pack's settings with the locale's `settings.json` overlay applied
 /// (title, tagline, description, tags and channel labels), falling back to the
 /// pack-root values when the locale ships no overlay.

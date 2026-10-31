@@ -6,17 +6,8 @@ use crate::engine::state::WorldState;
 use super::combat::apply_attack_target;
 use super::equipment::{apply_equip, apply_unequip, apply_use_item};
 
-#[allow(unused_imports)]
-pub(super) use super::actor_command_realization::apply_actor_command_realization_effects;
-#[allow(unused_imports)]
-pub(super) use super::actor_commands::{
-    ActorCommandContext, apply_actor_command_effects, handle_actor_command_used,
-    record_actor_command_memory, render_actor_command_text, resolve_actor_command_labels,
-};
-#[allow(unused_imports)]
-pub(super) use super::combat::{
-    actor_display_name, award_defeat_xp, defeat_actor, defeat_player_if_dead, spawn_defeat_drops,
-};
+use super::actor_commands::ActorCommandContext;
+pub(super) use super::combat::{actor_display_name, defeat_player_if_dead};
 pub(super) use super::movement::{ActorMoveTransitionContext, apply_actor_move_transition};
 pub(super) use super::surround::{trigger_placement_hooks, trigger_surrounded_hooks};
 

@@ -106,18 +106,6 @@ impl WorldState {
             .any(|party| party.members.contains(left) && party.members.contains(right))
     }
 
-    /// The leader an actor's party rallies around. Player parties fall back to
-    /// the player actor; AI parties without an authored leader have none.
-    pub fn party_leader_for(&self, content: &ContentPack, actor_id: &str) -> Option<String> {
-        let party = self.party_of_actor(actor_id)?;
-        if let Some(leader) = &party.leader {
-            return Some(leader.clone());
-        }
-        party
-            .is_player_controlled()
-            .then(|| content.settings.combat.player_actor_id.clone())
-    }
-
     /// Sets a content-authored order for any actor, bypassing the allied-only
     /// checks so a pack can drive an AI party (`controller: ai`) reactively.
     pub fn set_authored_party_order(&mut self, actor_id: &str, order: PartyOrderKind) {

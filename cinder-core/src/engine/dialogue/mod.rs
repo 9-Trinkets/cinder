@@ -17,16 +17,7 @@ use self::prompts::{
     actor_turn_decider_system_prompt, build_actor_turn_action_prompt,
     build_conversation_memory_summary_prompt, build_direct_speech_intent_prompt,
     build_hostility_plan_prompt, build_menu_intent_prompt, build_scene_brief_dialogue_prompt,
-    dialogue_system_prompt,
 };
-
-pub fn render_scene_dialogue_prompt(request: &DialogueRequest) -> String {
-    build_scene_brief_dialogue_prompt(request)
-}
-
-pub fn scene_dialogue_system_prompt_text(request: &DialogueRequest) -> String {
-    dialogue_system_prompt(request).to_string()
-}
 
 pub fn render_actor_turn_decider_prompt(request: &ActorTurnActionRequest) -> String {
     build_actor_turn_action_prompt(request)

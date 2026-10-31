@@ -1,9 +1,5 @@
 use std::path::PathBuf;
 
-pub fn cinder_turn_workflow_path() -> PathBuf {
-    workflow_path_for_id("cinder_turn")
-}
-
 pub fn workflow_path_for_id(workflow_id: &str) -> PathBuf {
     crate::project_dir()
         .join("config")

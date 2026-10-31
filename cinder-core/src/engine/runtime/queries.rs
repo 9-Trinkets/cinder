@@ -8,7 +8,6 @@ use crate::engine::neuron::WorkflowDefinition;
 use crate::engine::state::display_actor_name;
 use std::collections::HashMap;
 use std::error::Error;
-use std::sync::{Arc, Mutex};
 
 impl CinderRuntime {
     pub fn current_intro_text(&self) -> Result<String, Box<dyn Error>> {
@@ -55,14 +54,6 @@ impl CinderRuntime {
             .lock()
             .map_err(|_| "failed to lock runtime state for followed actor")?;
         Ok(state.relations.followed_actor_id.clone())
-    }
-
-    pub fn player_has_item(&self, item_id: &str) -> Result<bool, Box<dyn Error>> {
-        let state = self
-            .state
-            .lock()
-            .map_err(|_| "failed to lock runtime state for inventory")?;
-        Ok(state.has_item(item_id))
     }
 
     pub fn has_item_in_storage(
@@ -351,20 +342,6 @@ impl CinderRuntime {
         self.content.as_ref()
     }
 
-    pub fn with_content(&self, content: ContentPack) -> Self {
-        Self {
-            content: Arc::new(content),
-            dialogue: Arc::clone(&self.dialogue),
-            state: Arc::clone(&self.state),
-            workflow: self.workflow.clone(),
-            actor_tick_workflow: self.actor_tick_workflow.clone(),
-            trace_events: self.trace_events,
-            trace_dir: self.trace_dir.clone(),
-            act_closure: Arc::new(Mutex::new(None)),
-            game_closure: Arc::new(Mutex::new(None)),
-        }
-    }
-
     pub fn workflow(&self) -> &WorkflowDefinition {
         &self.workflow
     }
@@ -405,20 +382,6 @@ impl CinderRuntime {
             .lock()
             .map_err(|_| "failed to lock runtime state for projector narrative")?;
         Ok(std::mem::take(&mut state.pending_projector_narrative_lines))
-    }
-
-    pub fn active_stage_summaries(&self) -> Result<Vec<String>, Box<dyn Error>> {
-        let state = self
-            .state
-            .lock()
-            .map_err(|_| "failed to lock runtime state for active stages")?;
-        Ok(state
-            .active_objective_stage_ids
-            .iter()
-            .filter_map(|id| self.content.beats.stages.iter().find(|s| s.id == *id))
-            .map(|s| render_story_text(&s.summary, &state))
-            .filter(|s| !s.is_empty())
-            .collect())
     }
 }
 
